@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/lottery_ck.iml" filepath="$PROJECT_DIR$/.idea/lottery_ck.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lottery_ck.iml" filepath="$PROJECT_DIR$/lottery_ck.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/lottery_ck_android.iml" filepath="$PROJECT_DIR$/android/lottery_ck_android.iml" />
     </modules>
   </component>
 </project>
