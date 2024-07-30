@@ -1,8 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:lottery_ck/modules/signup/controller/signup.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
@@ -69,196 +68,316 @@ class SignupPage extends StatelessWidget {
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Column(
-                            children: [
-                              const Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'ຊື່',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.textPrimary,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 2,
+                          child: Form(
+                            key: controller.keyForm,
+                            child: Column(
+                              children: [
+                                const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'ຊື່',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
                                     ),
                                   ),
                                 ),
-                                onChanged: (value) {
-                                  controller.firstName = value;
-                                },
-                              ),
-                              const SizedBox(height: 16),
-                              const Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'ນາມສະກຸນ',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.textPrimary,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
+                                const SizedBox(height: 8),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 2,
+                                      ),
                                     ),
                                   ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 2,
-                                    ),
-                                  ),
+                                  onChanged: (value) {
+                                    controller.firstName = value;
+                                  },
                                 ),
-                                onChanged: (value) {
-                                  controller.lastName = value;
-                                },
-                              ),
-                              const SizedBox(height: 16),
-                              const Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'ເບີໂທລະສັບ',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.textPrimary,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 2,
+                                const SizedBox(height: 16),
+                                const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'ນາມສະກຸນ',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
                                     ),
                                   ),
                                 ),
-                                onChanged: (value) {
-                                  controller.phone = value;
-                                },
-                              ),
-                              const SizedBox(height: 16),
-                              const Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'ລະຫັດຜ່ານ',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.textPrimary,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
+                                const SizedBox(height: 8),
+                                TextFormField(
+                                  decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 2,
+                                      ),
                                     ),
                                   ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 2,
-                                    ),
-                                  ),
+                                  onChanged: (value) {
+                                    controller.lastName = value;
+                                  },
                                 ),
-                                onChanged: (value) {
-                                  controller.password = value;
-                                },
-                              ),
-                              const SizedBox(height: 16),
-                              const Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'ຢືນຢັນລະຫັດ',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.textPrimary,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              TextFormField(
-                                decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      color: AppColors.primary,
-                                      width: 2,
+                                const SizedBox(height: 16),
+                                const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'ເບີໂທລະສັບ',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
                                     ),
                                   ),
                                 ),
-                                onChanged: (value) {
-                                  controller.confirmPassword = value;
-                                },
-                              ),
-                              const SizedBox(height: 24),
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 0,
-                                  shadowColor: Colors.transparent,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                                const SizedBox(height: 8),
+                                InternationalPhoneNumberInput(
+                                  // initialValue: PhoneNumber(
+                                  //   isoCode: 'LA',
+                                  // ),
+                                  countries: ['LA', 'TH'],
+                                  inputDecoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.redGradient,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.redGradient,
+                                      ),
+                                    ),
                                   ),
-                                  fixedSize: Size(MediaQuery.of(context).size.width, 48),
-                                  backgroundColor: AppColors.primary,
-                                  foregroundColor: Colors.white,
+                                  selectorConfig: SelectorConfig(
+                                    selectorType: PhoneInputSelectorType.DIALOG,
+                                  ),
+                                  onInputChanged: (value) {
+                                    logger.d('value 107 $value');
+                                    if (value.phoneNumber != null) {
+                                      controller.phone = value.phoneNumber!;
+                                    }
+                                  },
+                                  formatInput: false,
+                                  validator: (value) {
+                                    if (value!.length < 7) {
+                                      return "minimum length is 7 digits";
+                                    }
+                                    if (value == "") {
+                                      return "Plaese fill phone number";
+                                    }
+                                    if (!GetUtils.isPhoneNumber(value)) {
+                                      return "Invalid phone number";
+                                    }
+                                    return null;
+                                  },
                                 ),
-                                onPressed: () {
-                                  controller.register();
-                                },
-                                child: Text(
-                                  'ລົງທະບຽນ',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
+                                // TextFormField(
+                                //   keyboardType: TextInputType.phone,
+                                //   validator: (value) {
+                                //     if (value != null &&
+                                //         GetUtils.isPhoneNumber(value)) {
+                                //       return null;
+                                //     }
+                                //     return "Please enter phone number";
+                                //   },
+                                //   decoration: InputDecoration(
+                                //     enabledBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         color: AppColors.primary,
+                                //       ),
+                                //     ),
+                                //     focusedBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         color: AppColors.primary,
+                                //         width: 2,
+                                //       ),
+                                //     ),
+                                //     focusedErrorBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         color: AppColors.redGradient,
+                                //         width: 2,
+                                //       ),
+                                //     ),
+                                //     errorBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         color: AppColors.redGradient,
+                                //       ),
+                                //     ),
+                                //   ),
+                                //   onChanged: (value) {
+                                //     controller.phone = value;
+                                //   },
+                                // ),
+                                const SizedBox(height: 16),
+                                const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'ລະຫັດຜ່ານ',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                const SizedBox(height: 8),
+                                TextFormField(
+                                  validator: (value) {
+                                    if (controller.confirmPassword == value) {
+                                      return null;
+                                    }
+                                    return "Password not match";
+                                  },
+                                  decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.redGradient,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.redGradient,
+                                      ),
+                                    ),
+                                  ),
+                                  onChanged: (value) {
+                                    controller.password = value;
+                                  },
+                                ),
+                                const SizedBox(height: 16),
+                                const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'ຢືນຢັນລະຫັດ',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                TextFormField(
+                                  // autovalidateMode: AutovalidateMode.always,
+                                  validator: (value) {
+                                    if (controller.password == value) {
+                                      return null;
+                                    }
+                                    return "Password not match";
+                                  },
+                                  decoration: InputDecoration(
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.redGradient,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.redGradient,
+                                      ),
+                                    ),
+                                  ),
+                                  onChanged: (value) {
+                                    controller.confirmPassword = value;
+                                  },
+                                ),
+                                const SizedBox(height: 24),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    shadowColor: Colors.transparent,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    fixedSize: Size(
+                                        MediaQuery.of(context).size.width, 48),
+                                    backgroundColor: AppColors.primary,
+                                    foregroundColor: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    controller.register();
+                                  },
+                                  child: Text(
+                                    'ລົງທະບຽນ',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -292,7 +411,8 @@ class Header extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             clipBehavior: Clip.hardEdge,
             child: InkWell(
-              overlayColor: WidgetStateProperty.all<Color>(AppColors.backButtonHover),
+              overlayColor:
+                  WidgetStateProperty.all<Color>(AppColors.backButtonHover),
               onTap: onTap,
               child: Container(
                 width: 50,
