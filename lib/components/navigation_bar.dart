@@ -31,123 +31,116 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 60,
+      padding: EdgeInsets.symmetric(vertical: 6, horizontal: 6),
+      height: 74,
       decoration: BoxDecoration(
         // color: AppColors.primary,
-        color: Colors.white,
+        borderRadius: BorderRadius.circular(50),
+        color: AppColors.primary,
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            child: NavigationItem(
-              changeTab: changeTab,
-              index: 0,
-              currentIndex: widget.menuIndex,
-              icon: SvgPicture.asset(
-                AppIcon.home,
-                colorFilter: const ColorFilter.mode(
-                  // Colors.white.withOpacity(0.8),
-                  Colors.grey,
-                  BlendMode.srcIn,
-                ),
+          NavigationItem(
+            changeTab: changeTab,
+            index: 0,
+            currentIndex: widget.menuIndex,
+            icon: SvgPicture.asset(
+              AppIcon.home,
+              colorFilter: const ColorFilter.mode(
+                // Colors.white.withOpacity(0.8),
+                Colors.white,
+                BlendMode.srcIn,
               ),
-              activeIcon: SvgPicture.asset(
-                AppIcon.homeBold,
-                colorFilter: const ColorFilter.mode(
-                  AppColors.primary,
-                  BlendMode.srcIn,
-                ),
-              ),
-              label: 'Home',
             ),
+            activeIcon: SvgPicture.asset(
+              AppIcon.homeBold,
+              colorFilter: const ColorFilter.mode(
+                AppColors.primary,
+                BlendMode.srcIn,
+              ),
+            ),
+            label: 'หน้าหลัก',
           ),
-          Expanded(
-            child: NavigationItem(
-              changeTab: changeTab,
-              index: 1,
-              currentIndex: widget.menuIndex,
-              icon: SvgPicture.asset(
-                AppIcon.history,
-                colorFilter: ColorFilter.mode(
-                  Colors.grey,
-                  BlendMode.srcIn,
-                ),
+          NavigationItem(
+            changeTab: changeTab,
+            index: 1,
+            currentIndex: widget.menuIndex,
+            icon: SvgPicture.asset(
+              AppIcon.history,
+              colorFilter: ColorFilter.mode(
+                Colors.white,
+                BlendMode.srcIn,
               ),
-              activeIcon: SvgPicture.asset(
-                AppIcon.historyBold,
-                colorFilter: ColorFilter.mode(
-                  AppColors.primary,
-                  BlendMode.srcIn,
-                ),
-              ),
-              label: 'History',
             ),
+            activeIcon: SvgPicture.asset(
+              AppIcon.historyBold,
+              colorFilter: ColorFilter.mode(
+                AppColors.primary,
+                BlendMode.srcIn,
+              ),
+            ),
+            label: 'ประวัติซื้อ',
           ),
-          Expanded(
-            child: NavigationItem(
-              changeTab: changeTab,
-              index: 2,
-              currentIndex: widget.menuIndex,
-              icon: SvgPicture.asset(
-                AppIcon.lottery,
-                colorFilter: ColorFilter.mode(
-                  Colors.grey,
-                  BlendMode.srcIn,
-                ),
+          NavigationItem(
+            changeTab: changeTab,
+            index: 2,
+            currentIndex: widget.menuIndex,
+            icon: SvgPicture.asset(
+              AppIcon.lottery,
+              colorFilter: ColorFilter.mode(
+                Colors.white,
+                BlendMode.srcIn,
               ),
-              activeIcon: SvgPicture.asset(
-                AppIcon.lotteryBold,
-                colorFilter: ColorFilter.mode(
-                  AppColors.primary,
-                  BlendMode.srcIn,
-                ),
-              ),
-              label: 'Lottery',
             ),
+            activeIcon: SvgPicture.asset(
+              AppIcon.lotteryBold,
+              colorFilter: ColorFilter.mode(
+                AppColors.primary,
+                BlendMode.srcIn,
+              ),
+            ),
+            label: 'ผลหวย',
           ),
-          Expanded(
-            child: NavigationItem(
-              changeTab: changeTab,
-              index: 3,
-              currentIndex: widget.menuIndex,
-              icon: SvgPicture.asset(
-                AppIcon.notification,
-                colorFilter: ColorFilter.mode(
-                  Colors.grey,
-                  BlendMode.srcIn,
-                ),
+          NavigationItem(
+            changeTab: changeTab,
+            index: 3,
+            currentIndex: widget.menuIndex,
+            icon: SvgPicture.asset(
+              AppIcon.notification,
+              colorFilter: ColorFilter.mode(
+                Colors.white,
+                BlendMode.srcIn,
               ),
-              activeIcon: SvgPicture.asset(
-                AppIcon.notificationBold,
-                colorFilter: ColorFilter.mode(
-                  AppColors.primary,
-                  BlendMode.srcIn,
-                ),
-              ),
-              label: 'Notification',
             ),
+            activeIcon: SvgPicture.asset(
+              AppIcon.notificationBold,
+              colorFilter: ColorFilter.mode(
+                AppColors.primary,
+                BlendMode.srcIn,
+              ),
+            ),
+            label: 'แจ้งเตือน',
           ),
-          Expanded(
-            child: NavigationItem(
-              changeTab: changeTab,
-              index: 1,
-              currentIndex: widget.menuIndex,
-              icon: SvgPicture.asset(
-                AppIcon.setting,
-                colorFilter: ColorFilter.mode(
-                  Colors.grey,
-                  BlendMode.srcIn,
-                ),
+          NavigationItem(
+            changeTab: changeTab,
+            index: 1,
+            currentIndex: widget.menuIndex,
+            icon: SvgPicture.asset(
+              AppIcon.setting,
+              colorFilter: ColorFilter.mode(
+                Colors.white,
+                BlendMode.srcIn,
               ),
-              activeIcon: SvgPicture.asset(
-                AppIcon.settingBold,
-                colorFilter: ColorFilter.mode(
-                  AppColors.primary,
-                  BlendMode.srcIn,
-                ),
-              ),
-              label: 'Setting',
             ),
+            activeIcon: SvgPicture.asset(
+              AppIcon.settingBold,
+              colorFilter: ColorFilter.mode(
+                AppColors.primary,
+                BlendMode.srcIn,
+              ),
+            ),
+            label: 'ตั้งค่า',
           ),
         ],
       ),

@@ -18,11 +18,11 @@ class LoginPage extends StatelessWidget {
             children: [
               // Background gradient
               Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.backgroundGradientStart,
-                      AppColors.backgroundGradientEnd,
+                      Colors.white,
+                      AppColors.primary.withOpacity(0.2),
                     ],
                     begin: Alignment(0.0, -0.6),
                     end: Alignment.bottomCenter,
@@ -185,7 +185,8 @@ class LoginPage extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                fixedSize: Size(MediaQuery.of(context).size.width, 48),
+                                fixedSize:
+                                    Size(MediaQuery.of(context).size.width, 48),
                                 backgroundColor: AppColors.primary,
                                 foregroundColor: Colors.white,
                               ),
@@ -208,7 +209,8 @@ class LoginPage extends StatelessWidget {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                fixedSize: Size(MediaQuery.of(context).size.width, 48),
+                                fixedSize:
+                                    Size(MediaQuery.of(context).size.width, 48),
                                 backgroundColor: Colors.transparent,
                                 foregroundColor: AppColors.primary,
                               ),

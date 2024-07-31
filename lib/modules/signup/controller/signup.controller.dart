@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
@@ -12,27 +13,36 @@ class SignupController extends GetxController {
   String confirmPassword = '';
   GlobalKey<FormState> keyForm = GlobalKey<FormState>();
 
+  Future<void> testLogout() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
   Future<void> register() async {
-    logger.d({
-      firstName,
-      lastName,
-      phone,
-      password,
-      confirmPassword,
-    });
-    logger.d(keyForm.currentState?.validate());
-    logger.d("run register");
+    await testLogout();
     if (keyForm.currentState != null && keyForm.currentState!.validate()) {
-      final appwriteController = AppWriteController.to;
-      final email = '$phone@ckmail.com';
-      logger.d(GetUtils.isEmail(email));
-      Get.toNamed(RouteName.otp, arguments: {
-        "whenSuccess": () {
-          logger.d("otp success !");
-        }
-      });
-      // final name = '$firstName $lastName';
-      // await appwriteController.register(email, password, name);
+      const isSuccess = true;
+      if (isSuccess) {
+        Get.toNamed(RouteName.otp, arguments: {
+          "whenSuccess": () {
+            logger.d("otp success !");
+            createUserAppwrite();
+          },
+          "phoneNumber": phone,
+        });
+      }
+    }
+  }
+
+  Future<void> createUserAppwrite() async {
+    final appwriteController = AppWriteController.to;
+    final email = '$phone@ckmail.com';
+    final name = '$firstName $lastName';
+    // final isSuccess = await appwriteController.register(email, password, name);
+    const isSuccess = true;
+    logger.d(isSuccess);
+    if (isSuccess) {
+      logger.d("go to layout!");
+      Get.offAllNamed(RouteName.layout);
     }
   }
 }

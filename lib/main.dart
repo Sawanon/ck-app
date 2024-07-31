@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       // home: LoginPage(),
       initialBinding: InitialBinding(),
       getPages: AppRoutes.appRoutes(),
-      initialRoute: RouteName.login,
+      initialRoute: RouteName.layout,
     );
   }
 }

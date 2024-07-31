@@ -20,26 +20,41 @@ class NavigationItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        overlayColor: WidgetStateProperty.all(Colors.white.withOpacity(0.2)),
-        onTap: () {
-          changeTab(index);
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            renderIcon(active: currentIndex == index, icon: icon, activeIcon: activeIcon),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: currentIndex == index ? FontWeight.w700 : FontWeight.w500,
-                color: currentIndex == index ? AppColors.primary : Colors.grey,
+    return Container(
+      width: 62,
+      height: 62,
+      clipBehavior: Clip.hardEdge,
+      decoration: BoxDecoration(
+        color: currentIndex == index ? Colors.white : Colors.transparent,
+        shape: BoxShape.circle,
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          overlayColor: WidgetStateProperty.all(Colors.white.withOpacity(0.2)),
+          onTap: () {
+            changeTab(index);
+          },
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              renderIcon(
+                  active: currentIndex == index,
+                  icon: icon,
+                  activeIcon: activeIcon),
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w400,
+                  // fontWeight:
+                  //     currentIndex == index ? FontWeight.w700 : FontWeight.w500,
+                  color:
+                      currentIndex == index ? AppColors.primary : Colors.white,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

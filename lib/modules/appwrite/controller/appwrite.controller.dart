@@ -1,7 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:get/get.dart';
-import 'package:lottery_ck/modules/firebase_messaging/controller/firebase_messaging.dart';
+import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
 import 'package:lottery_ck/utils.dart';
 
 class AppWriteController extends GetxController {
@@ -12,7 +12,10 @@ class AppWriteController extends GetxController {
   Client client = Client();
   @override
   void onInit() {
-    client.setEndpoint("https://baas.moevedigital.com/v1").setProject("667afb24000fbd66b4df").setSelfSigned(status: false);
+    client
+        .setEndpoint("https://baas.moevedigital.com/v1")
+        .setProject("667afb24000fbd66b4df")
+        .setSelfSigned(status: false);
     account = Account(client);
 
     super.onInit();
@@ -30,7 +33,9 @@ class AppWriteController extends GetxController {
       logger.d(element.name);
       logger.d(element.providerType);
     }
-    final pushTarget = user.targets.where((element) => element.providerType == 'push').toList();
+    final pushTarget = user.targets
+        .where((element) => element.providerType == 'push')
+        .toList();
     logger.d(pushTarget);
     logger.d(pushTarget.length);
     if (pushTarget.isEmpty) {
@@ -50,14 +55,15 @@ class AppWriteController extends GetxController {
     logger.d(target);
   }
 
-  Future<void> register(String email, String password, String name) async {
+  Future<bool> register(String email, String password, String name) async {
     logger.d("run register appwrite");
-    await account.create(
+    final user = await account.create(
       userId: ID.unique(),
       email: email,
       password: password,
       name: name,
     );
+    return user.status;
     // account.createPushTarget(targetId: targetId, identifier: identifier)
     // await login(email, password);
   }
