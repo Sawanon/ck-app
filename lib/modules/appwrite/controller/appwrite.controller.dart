@@ -21,6 +21,10 @@ class AppWriteController extends GetxController {
     super.onInit();
   }
 
+  Future<void> loginWithPhoneNumber(String phoneNumber) async {
+    logger.d(phoneNumber);
+  }
+
   Future<void> login(String email, String password) async {
     await account.createEmailPasswordSession(email: email, password: password);
     final user = await account.get();
@@ -72,5 +76,14 @@ class AppWriteController extends GetxController {
     await account.deleteSession(sessionId: 'current');
     logger.d("logout");
     user = null;
+  }
+
+  Future<bool> isUserLoggedIn() async {
+    try {
+      await account.get();
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/utils.dart';
@@ -5,6 +7,8 @@ import 'package:lottery_ck/utils.dart';
 class OtpController extends GetxController {
   final argrument = Get.arguments;
   String verificationId = '';
+  int count = 0;
+  StreamSubscription<User?>? _authStateChanges;
 
   Future<void> sendVerifyOTP() async {
     try {
@@ -34,20 +38,39 @@ class OtpController extends GetxController {
   }
 
   void subscribeAuthStateChange() {
-    FirebaseAuth.instance.authStateChanges().listen((User? user) {
-      if (user == null) {
-        logger.d('User is currently signed out!');
-      } else {
-        logger.d('User is signed in!');
-        runWhenSuccess();
-      }
-    });
+    _authStateChanges = FirebaseAuth.instance.authStateChanges().listen(
+      (User? user) {
+        if (user == null) {
+          logger.d('User is currently signed out!');
+        } else {
+          logger.d('User is signed in!');
+          ++count;
+          logger.d(count);
+          unsubscribeAuthStateChange();
+          runWhenSuccess();
+        }
+      },
+    );
+  }
+
+  void unsubscribeAuthStateChange() async {
+    await _authStateChanges?.cancel();
+  }
+
+  Future<void> signOut() async {
+    logger.d("signOut");
+    await FirebaseAuth.instance.signOut();
+  }
+
+  void setup() async {
+    await signOut();
+    await sendVerifyOTP();
+    subscribeAuthStateChange();
   }
 
   @override
   void onInit() {
-    sendVerifyOTP();
-    subscribeAuthStateChange();
+    setup();
     super.onInit();
   }
 
@@ -73,10 +96,5 @@ class OtpController extends GetxController {
         e.toString(),
       );
     }
-  }
-
-  Future<void> signOut() async {
-    logger.d("signOut");
-    await FirebaseAuth.instance.signOut();
   }
 }

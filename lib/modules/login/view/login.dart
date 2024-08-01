@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:lottery_ck/modules/login/controller/login.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/route/route_name.dart';
@@ -88,57 +89,113 @@ class LoginPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            TextFormField(
-                              decoration: InputDecoration(
+                            InternationalPhoneNumberInput(
+                              // initialValue: PhoneNumber(
+                              //   isoCode: 'LA',
+                              // ),
+                              countries: ['LA', 'TH'],
+                              inputDecoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: AppColors.primary,
                                   ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                     color: AppColors.primary,
                                     width: 2,
                                   ),
                                 ),
-                              ),
-                              onChanged: (value) {
-                                controller.username = value;
-                              },
-                            ),
-                            const SizedBox(height: 16),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'ລະຫັດຜ່ານ',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                            TextFormField(
-                              decoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
+                                focusedErrorBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(
-                                    color: AppColors.primary,
+                                  borderSide: const BorderSide(
+                                    color: AppColors.redGradient,
                                     width: 2,
                                   ),
                                 ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    color: AppColors.redGradient,
+                                  ),
+                                ),
                               ),
-                              onChanged: (value) {
-                                controller.password = value;
+                              selectorConfig: SelectorConfig(
+                                selectorType: PhoneInputSelectorType.DIALOG,
+                              ),
+                              onInputChanged: (value) {
+                                logger.d('value 107 $value');
+                                if (value.phoneNumber != null) {
+                                  controller.username = value.phoneNumber!;
+                                }
+                              },
+                              formatInput: false,
+                              validator: (value) {
+                                if (value!.length < 7) {
+                                  return "minimum length is 7 digits";
+                                }
+                                if (value == "") {
+                                  return "Plaese fill phone number";
+                                }
+                                if (!GetUtils.isPhoneNumber(value)) {
+                                  return "Invalid phone number";
+                                }
+                                return null;
                               },
                             ),
+                            // TextFormField(
+                            //   decoration: InputDecoration(
+                            //     enabledBorder: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(10),
+                            //       borderSide: BorderSide(
+                            //         color: AppColors.primary,
+                            //       ),
+                            //     ),
+                            //     focusedBorder: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(10),
+                            //       borderSide: BorderSide(
+                            //         color: AppColors.primary,
+                            //         width: 2,
+                            //       ),
+                            //     ),
+                            //   ),
+                            //   onChanged: (value) {
+                            //     controller.username = value;
+                            //   },
+                            // ),
+                            // const SizedBox(height: 16),
+                            // Align(
+                            //   alignment: Alignment.centerLeft,
+                            //   child: Text(
+                            //     'ລະຫັດຜ່ານ',
+                            //     style: TextStyle(
+                            //       fontSize: 20,
+                            //       fontWeight: FontWeight.w400,
+                            //     ),
+                            //   ),
+                            // ),
+                            // TextFormField(
+                            //   decoration: InputDecoration(
+                            //     enabledBorder: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(10),
+                            //       borderSide: BorderSide(
+                            //         color: AppColors.primary,
+                            //       ),
+                            //     ),
+                            //     focusedBorder: OutlineInputBorder(
+                            //       borderRadius: BorderRadius.circular(10),
+                            //       borderSide: BorderSide(
+                            //         color: AppColors.primary,
+                            //         width: 2,
+                            //       ),
+                            //     ),
+                            //   ),
+                            //   onChanged: (value) {
+                            //     controller.password = value;
+                            //   },
+                            // ),
                             const SizedBox(height: 36),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
