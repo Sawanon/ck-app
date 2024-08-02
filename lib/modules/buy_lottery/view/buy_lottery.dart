@@ -236,6 +236,7 @@ class BuyLottery extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             logger.d("confirm");
+                            controller.test();
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -262,26 +263,33 @@ class BuyLottery extends StatelessWidget {
               ],
             ),
           ),
-          if (!controller.isUserLoggedIn)
-            Container(
-              height: 144,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8,
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  logger.d("Please login");
-                  Get.toNamed(RouteName.login);
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(10),
+          Obx(
+            () {
+              if (!controller.isUserLoggedIn.value) {
+                return Container(
+                  height: 144,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8,
                   ),
-                ),
-              ),
-            ),
+                  child: GestureDetector(
+                    onTap: () {
+                      logger.d("Please login");
+                      controller.test();
+                      Get.toNamed(RouteName.login);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.red.withOpacity(0.4),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                );
+              }
+              return const SizedBox();
+            },
+          ),
         ],
       );
     });

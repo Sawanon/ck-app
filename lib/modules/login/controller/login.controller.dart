@@ -1,5 +1,8 @@
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
+import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
+import 'package:lottery_ck/repository/user_repository/user.repository.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
 
@@ -29,17 +32,20 @@ class LoginController extends GetxController {
     final appwriteController = AppWriteController.to;
     final email = '$username@ckmail.com';
     await appwriteController.login(email, username);
+    // setup user await - sawanon:20240802
+    Get.delete<BuyLotteryController>();
+    Get.delete<UserStore>();
+    // Get.put<BuyLotteryController>(BuyLotteryController());
+    // final buylotteryController = BuyLotteryController.to;
+    // buylotteryController.checkUser();
   }
 
   Future<void> tryLogin() async {
     try {
-      final email = '$username@ckmail.com';
-      final appwriteController = AppWriteController.to;
-      await appwriteController.login(email, username);
-      logger.d("login success");
+      await loginAppwrite();
       Get.offAllNamed(RouteName.layout);
     } catch (e) {
-      logger.d("login failed go to register page");
+      logger.e("login failed go to register page: $e");
       Get.offNamed(
         RouteName.signup,
         arguments: {

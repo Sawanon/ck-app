@@ -7,6 +7,7 @@ import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/login/controller/login.controller.dart';
 import 'package:lottery_ck/modules/otp/controller/otp.controller.dart';
+import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/signup/controller/signup.controller.dart';
 import 'package:lottery_ck/repository/user_repository/user.repository.dart';
 
@@ -16,12 +17,15 @@ class InitialBinding extends Bindings {
     Get.put<FirebaseMessagingController>(FirebaseMessagingController());
     Get.put<FirebaseAuthController>(FirebaseAuthController());
     Get.put<AppWriteController>(AppWriteController());
-    // Get.put<UserStore>(UserStore());
+    Get.put<UserStore>(UserStore());
     Get.put<LayoutController>(LayoutController());
     Get.lazyPut<LoginController>(() => LoginController(), fenix: true);
     Get.lazyPut<SignupController>(() => SignupController(), fenix: true);
     Get.lazyPut<OtpController>(() => OtpController(), fenix: true);
     Get.put<HomeController>(HomeController());
     Get.put<BuyLotteryController>(BuyLotteryController());
+    // Get.lazyPut<BuyLotteryController>(() => BuyLotteryController(),
+    //     fenix: true);
+    Get.lazyPut<SettingController>(() => SettingController(), fenix: true);
   }
 }

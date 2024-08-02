@@ -124,7 +124,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
           ),
           NavigationItem(
             changeTab: changeTab,
-            index: 1,
+            index: 4,
             currentIndex: widget.menuIndex,
             icon: SvgPicture.asset(
               AppIcon.setting,

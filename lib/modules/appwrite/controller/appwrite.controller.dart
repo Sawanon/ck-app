@@ -9,6 +9,7 @@ class AppWriteController extends GetxController {
   static AppWriteController get to => Get.find();
   late Account account;
   late User? user;
+  late Databases databases;
   Client client = Client();
   @override
   void onInit() {
@@ -17,7 +18,7 @@ class AppWriteController extends GetxController {
         .setProject("667afb24000fbd66b4df")
         .setSelfSigned(status: false);
     account = Account(client);
-
+    databases = Databases(client);
     super.onInit();
   }
 

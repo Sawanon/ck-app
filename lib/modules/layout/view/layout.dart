@@ -6,6 +6,7 @@ import 'package:lottery_ck/modules/home/view/home.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/lottery_history/view/lottery_history.dart';
 import 'package:lottery_ck/modules/notification/view/notification.dart';
+import 'package:lottery_ck/modules/setting/view/setting.dart';
 import 'package:lottery_ck/res/color.dart';
 
 class LayoutPage extends StatelessWidget {
@@ -15,6 +16,7 @@ class LayoutPage extends StatelessWidget {
     HistoryPage(),
     LotteryHistoryPage(),
     NotificationPage(),
+    SettingPage(),
   ];
 
   @override
