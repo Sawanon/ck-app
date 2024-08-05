@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
+import 'package:lottery_ck/modules/couldflare/view/cloudflare.dart';
 import 'package:lottery_ck/modules/layout/view/layout.dart';
 import 'package:lottery_ck/modules/login/view/login.dart';
 import 'package:lottery_ck/modules/login/view/login_appwrite.dart';
@@ -36,6 +37,11 @@ class AppRoutes {
         GetPage(
           name: RouteName.otp,
           page: () => OtpPage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.cloudflare,
+          page: () => CloudFlarePage(),
           transition: Transition.rightToLeft,
         ),
       ];

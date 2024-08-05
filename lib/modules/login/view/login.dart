@@ -248,7 +248,9 @@ class LoginPage extends StatelessWidget {
                                 foregroundColor: Colors.white,
                               ),
                               onPressed: () {
-                                controller.login();
+                                // controller.login();
+                                Get.toNamed(RouteName.cloudflare);
+                                Get.snackbar('title', 'message');
                               },
                               child: Text(
                                 'ເຂົ້າສູ່ລະບົບ',

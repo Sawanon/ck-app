@@ -60,7 +60,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                 BlendMode.srcIn,
               ),
             ),
-            label: 'หน้าหลัก',
+            label: 'ໜ້າຫຼັກ',
           ),
           NavigationItem(
             changeTab: changeTab,
@@ -80,7 +80,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                 BlendMode.srcIn,
               ),
             ),
-            label: 'ประวัติซื้อ',
+            label: 'ປະຫວັດ',
           ),
           NavigationItem(
             changeTab: changeTab,

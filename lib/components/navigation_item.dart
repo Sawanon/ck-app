@@ -51,6 +51,7 @@ class NavigationItem extends StatelessWidget {
                   //     currentIndex == index ? FontWeight.w700 : FontWeight.w500,
                   color:
                       currentIndex == index ? AppColors.primary : Colors.white,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
