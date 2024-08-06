@@ -5,6 +5,9 @@ import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.contro
 import 'package:lottery_ck/utils.dart';
 
 class AppWriteController extends GetxController {
+  static const String _databaseName = 'lottory';
+  static const String USER = 'user';
+  static const _roleUserId = "669a2cfd00141edc45ef";
   final String _providerId = '6694bc1400115d5369eb';
   static AppWriteController get to => Get.find();
   late Account account;
@@ -60,15 +63,41 @@ class AppWriteController extends GetxController {
     logger.d(target);
   }
 
-  Future<bool> register(String email, String password, String name) async {
-    logger.d("run register appwrite");
-    final user = await account.create(
-      userId: ID.unique(),
-      email: email,
-      password: password,
-      name: name,
-    );
-    return user.status;
+  Future<bool> register(String email, String password, String firstName,
+      String lastName, String phoneNumber) async {
+    try {
+      logger.d("run register appwrite");
+      final user = await account.create(
+        userId: ID.unique(),
+        email: email,
+        password: password,
+        name: '$firstName $lastName',
+      );
+
+      final userDocument = await databases.createDocument(
+        databaseId: _databaseName,
+        collectionId: USER,
+        documentId: ID.unique(),
+        data: {
+          "username": email,
+          "userId": user.$id,
+          "firstname": firstName,
+          "lastname": lastName,
+          "email": email,
+          "phone": phoneNumber,
+          "type": 'user',
+          "address": "-",
+          "user_roles": _roleUserId,
+        },
+      );
+      logger.d(userDocument.data);
+      return user.status;
+    } on Exception catch (e) {
+      Get.snackbar("register failed", "$e");
+      logger.e(e.toString());
+      return false;
+    }
+    // final phoneNumber =
     // account.createPushTarget(targetId: targetId, identifier: identifier)
     // await login(email, password);
   }

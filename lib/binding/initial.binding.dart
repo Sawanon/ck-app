@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
+import 'package:lottery_ck/modules/couldflare/controller/cloudflare.controller.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_auth.controller.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
@@ -27,5 +28,7 @@ class InitialBinding extends Bindings {
     // Get.lazyPut<BuyLotteryController>(() => BuyLotteryController(),
     //     fenix: true);
     Get.lazyPut<SettingController>(() => SettingController(), fenix: true);
+    Get.lazyPut<CloudFlareController>(() => CloudFlareController(),
+        fenix: true);
   }
 }

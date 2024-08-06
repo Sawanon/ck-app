@@ -30,6 +30,7 @@ class OtpController extends GetxController {
         },
       );
     } catch (e) {
+      logger.e(e.toString());
       Get.snackbar(
         "Something went wrong",
         e.toString(),
@@ -91,6 +92,7 @@ class OtpController extends GetxController {
 
       logger.d(userCredential.user?.phoneNumber);
     } catch (e) {
+      logger.e(e.toString());
       Get.snackbar(
         "confirmOTP failed",
         e.toString(),

@@ -89,61 +89,63 @@ class LoginPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            InternationalPhoneNumberInput(
-                              // initialValue: PhoneNumber(
-                              //   isoCode: 'LA',
-                              // ),
-                              countries: ['LA', 'TH'],
-                              inputDecoration: InputDecoration(
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
+                            Form(
+                              key: controller.keyForm,
+                              child: InternationalPhoneNumberInput(
+                                // initialValue: PhoneNumber(
+                                //   isoCode: 'LA',
+                                // ),
+                                countries: ['LA', 'TH'],
+                                inputDecoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.primary,
+                                      width: 2,
+                                    ),
+                                  ),
+                                  focusedErrorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.redGradient,
+                                      width: 2,
+                                    ),
+                                  ),
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: AppColors.redGradient,
+                                    ),
                                   ),
                                 ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.primary,
-                                    width: 2,
-                                  ),
+                                selectorConfig: const SelectorConfig(
+                                  selectorType: PhoneInputSelectorType.DIALOG,
                                 ),
-                                focusedErrorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.redGradient,
-                                    width: 2,
-                                  ),
-                                ),
-                                errorBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: const BorderSide(
-                                    color: AppColors.redGradient,
-                                  ),
-                                ),
+                                onInputChanged: (value) {
+                                  if (value.phoneNumber != null) {
+                                    controller.phoneNumber = value.phoneNumber!;
+                                  }
+                                },
+                                formatInput: false,
+                                validator: (value) {
+                                  if (value!.length < 7) {
+                                    return "minimum length is 7 digits";
+                                  }
+                                  if (value == "") {
+                                    return "Plaese fill phone number";
+                                  }
+                                  if (!GetUtils.isPhoneNumber(value)) {
+                                    return "Invalid phone number";
+                                  }
+                                  return null;
+                                },
                               ),
-                              selectorConfig: SelectorConfig(
-                                selectorType: PhoneInputSelectorType.DIALOG,
-                              ),
-                              onInputChanged: (value) {
-                                logger.d('value 107 $value');
-                                if (value.phoneNumber != null) {
-                                  controller.username = value.phoneNumber!;
-                                }
-                              },
-                              formatInput: false,
-                              validator: (value) {
-                                if (value!.length < 7) {
-                                  return "minimum length is 7 digits";
-                                }
-                                if (value == "") {
-                                  return "Plaese fill phone number";
-                                }
-                                if (!GetUtils.isPhoneNumber(value)) {
-                                  return "Invalid phone number";
-                                }
-                                return null;
-                              },
                             ),
                             // TextFormField(
                             //   decoration: InputDecoration(
@@ -196,45 +198,51 @@ class LoginPage extends StatelessWidget {
                             //     controller.password = value;
                             //   },
                             // ),
-                            const SizedBox(height: 36),
+                            const SizedBox(height: 16),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 24,
-                                      height: 24,
-                                      child: Checkbox(
-                                        value: false,
-                                        onChanged: (value) {},
-                                      ),
+                                // Row(
+                                //   children: [
+                                //     SizedBox(
+                                //       width: 24,
+                                //       height: 24,
+                                //       child: Checkbox(
+                                //         value: false,
+                                //         onChanged: (value) {},
+                                //       ),
+                                //     ),
+                                //     const SizedBox(width: 8),
+                                //     const Text(
+                                //       'ບັນທຶກລະຫັດຜ່ານ',
+                                //       style: TextStyle(
+                                //         fontSize: 16,
+                                //         fontWeight: FontWeight.w700,
+                                //         color: AppColors.textPrimary,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.snackbar(
+                                        'Forget password', "Coming soon");
+                                  },
+                                  child: const Text(
+                                    'ລືມລະຫັດຜ່ານ',
+                                    style: TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      decorationThickness: 2,
+                                      decorationColor: AppColors.textPrimary,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
                                     ),
-                                    const SizedBox(width: 8),
-                                    const Text(
-                                      'ບັນທຶກລະຫັດຜ່ານ',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700,
-                                        color: AppColors.textPrimary,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const Text(
-                                  'ລືມລະຫັດຜ່ານ',
-                                  style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    decorationThickness: 2,
-                                    decorationColor: AppColors.textPrimary,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w700,
-                                    color: AppColors.textPrimary,
                                   ),
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 42),
+                            const SizedBox(height: 24),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 elevation: 0,
@@ -248,9 +256,7 @@ class LoginPage extends StatelessWidget {
                                 foregroundColor: Colors.white,
                               ),
                               onPressed: () {
-                                // controller.login();
-                                Get.toNamed(RouteName.cloudflare);
-                                Get.snackbar('title', 'message');
+                                controller.login();
                               },
                               child: Text(
                                 'ເຂົ້າສູ່ລະບົບ',
@@ -261,30 +267,30 @@ class LoginPage extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 8),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                shadowColor: Colors.transparent,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                fixedSize:
-                                    Size(MediaQuery.of(context).size.width, 48),
-                                backgroundColor: Colors.transparent,
-                                foregroundColor: AppColors.primary,
-                              ),
-                              onPressed: () {
-                                Get.toNamed(RouteName.signup);
-                              },
-                              child: Text(
-                                'ລົງທະບຽນ',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.textPrimary,
-                                ),
-                              ),
-                            ),
+                            // ElevatedButton(
+                            //   style: ElevatedButton.styleFrom(
+                            //     elevation: 0,
+                            //     shadowColor: Colors.transparent,
+                            //     shape: RoundedRectangleBorder(
+                            //       borderRadius: BorderRadius.circular(10),
+                            //     ),
+                            //     fixedSize:
+                            //         Size(MediaQuery.of(context).size.width, 48),
+                            //     backgroundColor: Colors.transparent,
+                            //     foregroundColor: AppColors.primary,
+                            //   ),
+                            //   onPressed: () {
+                            //     Get.toNamed(RouteName.signup);
+                            //   },
+                            //   child: Text(
+                            //     'ລົງທະບຽນ',
+                            //     style: TextStyle(
+                            //       fontSize: 16,
+                            //       fontWeight: FontWeight.w700,
+                            //       color: AppColors.textPrimary,
+                            //     ),
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
