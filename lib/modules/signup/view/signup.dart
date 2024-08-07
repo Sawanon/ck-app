@@ -99,7 +99,27 @@ class SignupPage extends StatelessWidget {
                                         width: 2,
                                       ),
                                     ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.errorBorder,
+                                        width: 4,
+                                      ),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.errorBorder,
+                                        width: 4,
+                                      ),
+                                    ),
                                   ),
+                                  validator: (value) {
+                                    if (value == null || value == "") {
+                                      return "Please enter your first name";
+                                    }
+                                    return null;
+                                  },
                                   onChanged: (value) {
                                     controller.firstName = value;
                                   },
@@ -132,7 +152,27 @@ class SignupPage extends StatelessWidget {
                                         width: 2,
                                       ),
                                     ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.errorBorder,
+                                        width: 4,
+                                      ),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.errorBorder,
+                                        width: 4,
+                                      ),
+                                    ),
                                   ),
+                                  validator: (value) {
+                                    if (value == null || value == "") {
+                                      return "Please enter your last name";
+                                    }
+                                    return null;
+                                  },
                                   onChanged: (value) {
                                     controller.lastName = value;
                                   },

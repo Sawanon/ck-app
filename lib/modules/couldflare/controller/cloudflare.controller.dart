@@ -1,12 +1,21 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 
 class CloudFlareController extends GetxController {
+  static CloudFlareController get to => Get.find();
+  Function? callback;
   final argument = Get.arguments;
+
   WebViewController controllerWebview = WebViewController()
     ..setJavaScriptMode(JavaScriptMode.unrestricted)
     ..setBackgroundColor(const Color(0x00000000))
@@ -20,10 +29,6 @@ class CloudFlareController extends GetxController {
         onPageFinished: (String url) {},
         onHttpError: (HttpResponseError error) {
           logger.d("error onHttpError");
-          Get.snackbar(
-            "Too many requests",
-            "Please try again or contact admin",
-          );
         },
         onWebResourceError: (WebResourceError error) {
           logger.d("error onWebResourceError");
@@ -38,13 +43,14 @@ class CloudFlareController extends GetxController {
         },
       ),
     )
-    ..enableZoom(false)
-    ..loadRequest(Uri.parse('http://localhost:3000'));
+    // ..enableZoom(false)
+    ..loadRequest(Uri.parse(AppConst.cloudfareUrl));
+  // ..loadRequest(Uri.parse("https://github.com"));
 
   Future<void> verifyToken(String token) async {
     final dio = Dio();
     final response = await dio.post(
-      "http://localhost:3000/verifyCloudflare",
+      "${AppConst.cloudfareUrl}/verifyCloudflare",
       data: {
         "cf-turnstile-response": token,
       },
@@ -52,12 +58,12 @@ class CloudFlareController extends GetxController {
     // logger.d(response.data);
     if (response.statusCode == 200 &&
         response.data['data']['action'] == 'signin') {
-      if (argument["whenSuccess"] is Function) {
+      if (argument != null && argument["whenSuccess"] is Function) {
         argument["whenSuccess"]();
       }
       return;
     }
-    if (argument["onFailed"] is Function) {
+    if (argument != null && argument["onFailed"] is Function) {
       argument["onFailed"]();
     }
   }
@@ -67,22 +73,33 @@ class CloudFlareController extends GetxController {
     controllerWebview.addJavaScriptChannel(
       "submitform",
       onMessageReceived: (data) {
+        if (callback != null) {
+          callback!();
+        }
         verifyToken(data.message);
       },
     );
+    // if (Platform.isAndroid) {
+    //   controllerWebview.enableZoom(true);
+    // }
     controllerWebview.setNavigationDelegate(
       NavigationDelegate(
         onProgress: (int progress) {},
         onPageStarted: (String url) {},
         onPageFinished: (String url) {},
         onHttpError: (HttpResponseError error) {
-          Get.snackbar(
-            "Too many requests",
-            "Please try again or contact admin",
-          );
+          logger.e("onHttpError: $error");
+          logger.e('onHttpError: ${error.response?.statusCode}');
+          logger.e('onHttpError: ${error.response}');
+          // Get.snackbar(
+          //   "Too many requests",
+          //   "Please try again or contact admin",
+          // );
         },
         onWebResourceError: (WebResourceError error) {
-          logger.d("error onWebResourceError");
+          logger.e("error onWebResourceError:");
+          logger.e(error.toString());
+          logger.e(error.description);
           if (argument["onWebResourceError"] is Function) {
             argument["onWebResourceError"]();
           }
@@ -98,6 +115,10 @@ class CloudFlareController extends GetxController {
       ),
     );
     super.onInit();
+  }
+
+  void setCallback(Function callback) {
+    this.callback = callback;
   }
 
   @override

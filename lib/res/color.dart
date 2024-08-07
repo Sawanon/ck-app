@@ -16,4 +16,7 @@ class AppColors {
   static const Color winContainer = Color.fromRGBO(132, 255, 144, 1);
 
   static const Color borderGray = Color.fromRGBO(219, 219, 219, 1);
+  static const Color errorBorder = Color.fromRGBO(242, 49, 55, 1);
+  static const Color disable = Color.fromRGBO(229, 229, 229, 1);
+  static const Color disableText = Color.fromRGBO(172, 172, 172, 1);
 }

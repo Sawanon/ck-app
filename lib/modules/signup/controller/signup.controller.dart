@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
+import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/login/controller/login.controller.dart';
+import 'package:lottery_ck/repository/user_repository/user.repository.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
 
@@ -31,39 +33,48 @@ class SignupController extends GetxController {
 
   Future<void> createUserAppwrite() async {
     // TODO: go to OTP when sucecess run function - sawanon:20240806
-    Get.toNamed(RouteName.otp, arguments: {
-      "whenSuccess": () async {
-        final appwriteController = AppWriteController.to;
-        final phoneNumber = argument["phoneNumber"] as String;
-        final multiplier =
-            (int.parse(phoneNumber.substring(phoneNumber.length - 1)) *
-                    int.parse(phoneNumber.substring(
-                        phoneNumber.length - 3, phoneNumber.length - 2)))
-                .toString();
-        final lastPhone = multiplier.substring(multiplier.length - 1);
-        final password =
-            '${phoneNumber.substring(0, 4)}$lastPhone${phoneNumber.substring(4)}';
-        final email = '$phoneNumber@ckmail.com';
-        final isSuccess = await appwriteController.register(
-          email,
-          password,
-          firstName,
-          lastName,
-          phoneNumber,
-        );
+    final phoneNumber = argument["phoneNumber"] as String;
+    final appwriteController = AppWriteController.to;
+    final multiplier =
+        (int.parse(phoneNumber.substring(phoneNumber.length - 1)) *
+                int.parse(phoneNumber.substring(
+                    phoneNumber.length - 3, phoneNumber.length - 2)))
+            .toString();
+    final lastPhone = multiplier.substring(multiplier.length - 1);
+    final password =
+        '${phoneNumber.substring(0, 4)}$lastPhone${phoneNumber.substring(4)}';
+    final email = '$phoneNumber@ckmail.com';
+    final user = await appwriteController.register(
+      email,
+      password,
+      firstName,
+      lastName,
+      phoneNumber,
+    );
+    final isLoginSuccess = await appwriteController.login(email, password);
+    bool isCreateUserdocumentSuccess = false;
+    if (user != null) {
+      isCreateUserdocumentSuccess = await appwriteController.createUserDocument(
+        email,
+        user.$id,
+        firstName,
+        lastName,
+        phoneNumber,
+      );
+    }
 
-        // const isSuccess = true;
-        logger.d(isSuccess);
-        if (isSuccess) {
-          logger.d("go to layout!");
-          final loginController = LoginController.to;
-          // await loginController.login();
-          return await loginController.checkExistUser();
-          // Get.offAllNamed(RouteName.layout);
-        }
-        Get.snackbar('Something went wrong', 'plaese try again');
-      }
-    });
+    logger.d("user: ${user?.$id}");
+    logger.d("isCreateUserdocumentSuccess: $isCreateUserdocumentSuccess");
+    logger.d("isLoginSuccess: $isLoginSuccess");
+    if (isCreateUserdocumentSuccess && isLoginSuccess) {
+      Get.snackbar("Login success", 'good luck have fun');
+      Get.delete<BuyLotteryController>();
+      Get.delete<UserStore>();
+    }
+    // register || login || create user document failed - sawanon:20240807
+    Get.snackbar('Something went wrong', 'plaese try again');
+    // Get.offAllNamed(RouteName.layout);
+    Get.toNamed(RouteName.pin);
   }
 
   @override

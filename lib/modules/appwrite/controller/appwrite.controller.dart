@@ -29,25 +29,36 @@ class AppWriteController extends GetxController {
     logger.d(phoneNumber);
   }
 
-  Future<void> login(String email, String password) async {
-    await account.createEmailPasswordSession(email: email, password: password);
-    final user = await account.get();
-    logger.d(user.name);
-    this.user = user;
-    // final firebaseMessage = FirebaseMessagingController.to;
-    // logger.d(firebaseMessage.token);
-    logger.d(user.targets.length);
-    for (var element in user.targets) {
-      logger.d(element.name);
-      logger.d(element.providerType);
-    }
-    final pushTarget = user.targets
-        .where((element) => element.providerType == 'push')
-        .toList();
-    logger.d(pushTarget);
-    logger.d(pushTarget.length);
-    if (pushTarget.isEmpty) {
-      createTarget();
+  Future<bool> login(String email, String password) async {
+    try {
+      await account.createEmailPasswordSession(
+          email: email, password: password);
+      final user = await account.get();
+      logger.d(user.name);
+      this.user = user;
+      // final firebaseMessage = FirebaseMessagingController.to;
+      // logger.d(firebaseMessage.token);
+      logger.d(user.targets.length);
+      for (var element in user.targets) {
+        logger.d(element.name);
+        logger.d(element.providerType);
+      }
+      final pushTarget = user.targets
+          .where((element) => element.providerType == 'push')
+          .toList();
+      logger.d(pushTarget);
+      logger.d(pushTarget.length);
+      if (pushTarget.isEmpty) {
+        await createTarget();
+      }
+      return true;
+    } on Exception catch (e) {
+      logger.e(e.toString());
+      Get.snackbar(
+        "Something went wrong",
+        "Please try again later or plaese contact admin",
+      );
+      return false;
     }
     // setState(() {
     //   loggedInUser = user;
@@ -63,7 +74,7 @@ class AppWriteController extends GetxController {
     logger.d(target);
   }
 
-  Future<bool> register(String email, String password, String firstName,
+  Future<User?> register(String email, String password, String firstName,
       String lastName, String phoneNumber) async {
     try {
       logger.d("run register appwrite");
@@ -74,13 +85,27 @@ class AppWriteController extends GetxController {
         name: '$firstName $lastName',
       );
 
+      return user;
+    } on Exception catch (e) {
+      Get.snackbar("register failed", "$e");
+      logger.e(e.toString());
+      return null;
+    }
+    // final phoneNumber =
+    // account.createPushTarget(targetId: targetId, identifier: identifier)
+    // await login(email, password);
+  }
+
+  Future<bool> createUserDocument(String email, String userId, String firstName,
+      String lastName, String phoneNumber) async {
+    try {
       final userDocument = await databases.createDocument(
         databaseId: _databaseName,
         collectionId: USER,
         documentId: ID.unique(),
         data: {
           "username": email,
-          "userId": user.$id,
+          "userId": userId,
           "firstname": firstName,
           "lastname": lastName,
           "email": email,
@@ -91,21 +116,26 @@ class AppWriteController extends GetxController {
         },
       );
       logger.d(userDocument.data);
-      return user.status;
+
+      return true;
     } on Exception catch (e) {
-      Get.snackbar("register failed", "$e");
       logger.e(e.toString());
+      Get.snackbar(
+        "Something went wrong plaese try again later",
+        'or plaese contact admin',
+      );
       return false;
     }
-    // final phoneNumber =
-    // account.createPushTarget(targetId: targetId, identifier: identifier)
-    // await login(email, password);
   }
 
   Future<void> logout() async {
-    await account.deleteSession(sessionId: 'current');
-    logger.d("logout");
-    user = null;
+    try {
+      await account.deleteSession(sessionId: 'current');
+      logger.d("logout");
+      user = null;
+    } catch (e) {
+      logger.e(e.toString());
+    }
   }
 
   Future<bool> isUserLoggedIn() async {

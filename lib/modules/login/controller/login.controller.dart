@@ -1,61 +1,71 @@
+import 'dart:io';
+
+import 'package:appwrite/models.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
+import 'package:lottery_ck/modules/couldflare/controller/cloudflare.controller.dart';
 import 'package:lottery_ck/repository/user_repository/user.repository.dart';
+import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:unique_identifier/unique_identifier.dart';
 
 class LoginController extends GetxController {
   static LoginController get to => Get.find();
   String phoneNumber = '';
   GlobalKey<FormState> keyForm = GlobalKey();
+  RxBool disableLogin = true.obs;
 
   Future<void> login() async {
-    // logger.d(phoneNumber);
-    // logger.d(keyForm.currentState?.validate());
     final valid = keyForm.currentState?.validate();
     if (valid == null || valid == false) {
       return;
     }
 
-    Get.toNamed(RouteName.cloudflare, arguments: {
-      "whenSuccess": () {
-        checkExistUser();
-      },
-      "onFailed": () {
-        Get.snackbar("Verify faield", "please contact admin");
-        navigator?.pop();
-      },
-      "onHttpError": () {
-        Get.snackbar("Something went wrong",
-            "try again later: error connection from server");
-        navigator?.pop();
-      },
-      "onWebResourceError": () {
-        Get.snackbar(
-            "Something went wrong", "try again later: error connection page");
-        navigator?.pop();
-      }
-    });
-  }
-
-  Future<void> checkExistUser() async {
     Map<String, dynamic>? token = await getToken();
+
     if (token == null) {
-      Get.offNamed(RouteName.signup, arguments: {
-        "phoneNumber": phoneNumber,
-      });
+      // TODO: go to otp for verify then go to enter user info - sawanon:20240807
+      Get.toNamed(
+        RouteName.otp,
+        arguments: {
+          "phoneNumber": phoneNumber,
+          "whenSuccess": () {
+            Get.offNamed(RouteName.signup, arguments: {
+              "phoneNumber": phoneNumber,
+            });
+          }
+        },
+      );
       return;
     }
+    gotoSignIn(token);
+  }
+
+  Future<void> gotoSignIn(Map<String, dynamic> token) async {
     Get.toNamed(
       RouteName.otp,
       arguments: {
+        "phoneNumber": phoneNumber,
         "whenSuccess": () async {
           Get.snackbar("OTP success !", "go to create session");
-          await createSession(token);
+          final session = await createSession(token);
+          if (session == null) {
+            Get.snackbar(
+              "Something went wrong",
+              "Please try again later or plaese contact admin",
+            );
+            navigator?.pop();
+            return;
+          }
+          Get.delete<BuyLotteryController>();
+          Get.delete<UserStore>();
+          Get.offAllNamed(RouteName.layout);
         }
       },
     );
@@ -63,28 +73,25 @@ class LoginController extends GetxController {
 
   Future<Map<String, dynamic>?> getToken() async {
     final dio = Dio();
-    final response = await dio.post("http://localhost:3000/sign-in", data: {
+    final response = await dio.post("${AppConst.cloudfareUrl}/sign-in", data: {
       "phoneNumber": phoneNumber,
     });
     final Map<String, dynamic>? token = response.data;
     return token;
   }
 
-  Future<void> createSession(Map<String, dynamic> token) async {
+  Future<Session?> createSession(Map<String, dynamic> token) async {
     try {
       final appwriteController = AppWriteController.to;
       final session = await appwriteController.account
           .createSession(userId: token["userId"], secret: token["secret"]);
       logger.d(session.ip);
       logger.d(session.userId);
-      final user = await appwriteController.account.get();
-      logger.d(user.name);
-      Get.delete<BuyLotteryController>();
-      Get.delete<UserStore>();
-      Get.offAllNamed(RouteName.layout);
+      return session;
     } on Exception catch (e) {
       logger.e(e);
       Get.snackbar("createSession failed", e.toString());
+      return null;
     }
   }
 
@@ -95,29 +102,53 @@ class LoginController extends GetxController {
     // setup user await - sawanon:20240802
     Get.delete<BuyLotteryController>();
     Get.delete<UserStore>();
-    // Get.put<BuyLotteryController>(BuyLotteryController());
-    // final buylotteryController = BuyLotteryController.to;
-    // buylotteryController.checkUser();
   }
-
-  // Future<void> tryLogin() async {
-  //   try {
-  //     await loginAppwrite();
-  //     Get.offAllNamed(RouteName.layout);
-  //   } catch (e) {
-  //     logger.e("login failed go to register page: $e");
-  //     Get.offNamed(
-  //       RouteName.signup,
-  //       arguments: {
-  //         "phoneNumber": phoneNumber,
-  //       },
-  //     );
-  //   }
-  // }
 
   Future<void> logout() async {
     logger.d("logout");
     final appwriteController = AppWriteController.to;
     await appwriteController.logout();
+  }
+
+  void checkDevice() async {
+    try {
+      DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      if (Platform.isAndroid) {
+        AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+        logger.f('Running on ${androidInfo.model}'); // e.g. "Moto G (4)"
+        final allInfo = await deviceInfo.deviceInfo;
+        logger.f("serialNumber: ${allInfo.data["serialNumber"]}");
+        logger.f("isPhysicalDevice: ${allInfo.data["isPhysicalDevice"]}");
+        logger.f(allInfo.data);
+        final identifier = await UniqueIdentifier.serial;
+        logger.f("identifier: $identifier");
+      } else if (Platform.isIOS) {
+        IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+        logger.f('Running on ${iosInfo.utsname.machine}'); // e.g. "iPod7,1"
+        final allInfo = await deviceInfo.deviceInfo;
+        logger.f(allInfo.data);
+      }
+    } on Exception catch (e) {
+      logger.e(e.toString());
+      Get.snackbar(
+        "Not allow this platform",
+        "please contact admin",
+        backgroundColor: Colors.red.shade700,
+        colorText: Colors.white,
+      );
+    }
+  }
+
+  void setDisableButton() {
+    logger.d("boom!");
+    disableLogin.value = false;
+  }
+
+  @override
+  void onInit() {
+    final cloudflareController = CloudFlareController.to;
+    cloudflareController.setCallback(setDisableButton);
+    checkDevice();
+    super.onInit();
   }
 }

@@ -236,7 +236,6 @@ class BuyLottery extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             logger.d("confirm");
-                            controller.test();
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -274,9 +273,7 @@ class BuyLottery extends StatelessWidget {
                   ),
                   child: GestureDetector(
                     onTap: () {
-                      logger.d("Please login");
-                      controller.test();
-                      Get.toNamed(RouteName.login);
+                      controller.gotoLoginPage();
                     },
                     child: Container(
                       decoration: BoxDecoration(

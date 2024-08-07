@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:lottery_ck/modules/couldflare/view/cloudflare.dart';
 import 'package:lottery_ck/modules/login/controller/login.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/route/route_name.dart';
@@ -242,29 +243,56 @@ class LoginPage extends StatelessWidget {
                                 ),
                               ],
                             ),
+                            const SizedBox(height: 16),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 100,
+                              child: CloudFlarePage(),
+                            ),
                             const SizedBox(height: 24),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                shadowColor: Colors.transparent,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
+                            Obx(
+                              () => (ElevatedButton(
+                                style: controller.disableLogin.value
+                                    ? ElevatedButton.styleFrom(
+                                        elevation: 0,
+                                        shadowColor: Colors.transparent,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        fixedSize: Size(
+                                            MediaQuery.of(context).size.width,
+                                            48),
+                                        backgroundColor: AppColors.disable,
+                                        foregroundColor: AppColors.disableText,
+                                      )
+                                    : ElevatedButton.styleFrom(
+                                        elevation: 0,
+                                        shadowColor: Colors.transparent,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        fixedSize: Size(
+                                            MediaQuery.of(context).size.width,
+                                            48),
+                                        backgroundColor: AppColors.primary,
+                                        foregroundColor: Colors.white,
+                                      ),
+                                onPressed: () {
+                                  if (controller.disableLogin.value) {
+                                    return;
+                                  }
+                                  controller.login();
+                                },
+                                child: Text(
+                                  'ເຂົ້າສູ່ລະບົບ',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
-                                fixedSize:
-                                    Size(MediaQuery.of(context).size.width, 48),
-                                backgroundColor: AppColors.primary,
-                                foregroundColor: Colors.white,
-                              ),
-                              onPressed: () {
-                                controller.login();
-                              },
-                              child: Text(
-                                'ເຂົ້າສູ່ລະບົບ',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
+                              )),
                             ),
                             const SizedBox(height: 8),
                             // ElevatedButton(

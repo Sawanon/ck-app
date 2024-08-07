@@ -35,6 +35,7 @@ class OtpController extends GetxController {
         "Something went wrong",
         e.toString(),
       );
+      navigator?.pop();
     }
   }
 

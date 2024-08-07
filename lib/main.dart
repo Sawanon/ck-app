@@ -20,6 +20,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // return GetMaterialApp.router(
+    //   title: 'Lotto',
+    //   theme: ThemeData(
+    //     colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
+    //     useMaterial3: true,
+    //   ),
+    //   // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    //   // home: LoginPage(),
+    //   initialBinding: InitialBinding(),
+    //   getPages: AppRoutes.appRoutes(),
+
+    //   initialRoute: RouteName.layout,
+    // );
     return GetMaterialApp(
       title: 'Lotto',
       theme: ThemeData(

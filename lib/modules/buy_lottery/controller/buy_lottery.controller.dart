@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
+import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
 
 class BuyLotteryController extends GetxController {
@@ -13,8 +14,26 @@ class BuyLotteryController extends GetxController {
     this.isUserLoggedIn.value = isUserLoggedIn;
   }
 
-  void test() {
-    logger.d("boom !");
+  void gotoLoginPage() {
+    Get.toNamed(RouteName.login);
+    // Get.toNamed(RouteName.cloudflare, arguments: {
+    //   "whenSuccess": () {
+    //   },
+    //   "onFailed": () {
+    //     Get.snackbar("Verify faield", "please contact admin");
+    //     navigator?.pop();
+    //   },
+    //   "onHttpError": () {
+    //     Get.snackbar("Something went wrong",
+    //         "try again later: error connection from server");
+    //     navigator?.pop();
+    //   },
+    //   "onWebResourceError": () {
+    //     Get.snackbar(
+    //         "Something went wrong", "try again later: error connection page");
+    //     navigator?.pop();
+    //   }
+    // });
   }
 
   @override
