@@ -14,12 +14,14 @@ import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:unique_identifier/unique_identifier.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginController extends GetxController {
   static LoginController get to => Get.find();
   String phoneNumber = '';
   GlobalKey<FormState> keyForm = GlobalKey();
   RxBool disableLogin = true.obs;
+  WebViewController? webviewController;
 
   Future<void> login() async {
     final valid = keyForm.currentState?.validate();
@@ -28,7 +30,7 @@ class LoginController extends GetxController {
     }
 
     Map<String, dynamic>? token = await getToken();
-
+    webviewController?.loadRequest(Uri.parse('about:blank'));
     if (token == null) {
       // TODO: go to otp for verify then go to enter user info - sawanon:20240807
       Get.toNamed(
@@ -148,6 +150,7 @@ class LoginController extends GetxController {
   void onInit() {
     final cloudflareController = CloudFlareController.to;
     cloudflareController.setCallback(setDisableButton);
+    webviewController = cloudflareController.controllerWebview;
     checkDevice();
     super.onInit();
   }
