@@ -118,18 +118,29 @@ class OtpPage extends StatelessWidget {
                               : Colors.white,
                         ),
                         onPressed: () {
-                          if (controller.disabledReOTP.value) {
+                          if (controller.disabledReOTP.value ||
+                              controller.loadingSendOTP.value) {
                             return;
                           }
-                          controller.startTimer();
+                          // controller.startTimer();
+                          controller.resendOTP();
                         },
-                        child: const Text(
-                          "ສົ່ງ OTP ອີກຄັ້ງ",
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
+                        child: controller.loadingSendOTP.value
+                            ? const SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Text(
+                                "ສົ່ງ OTP ອີກຄັ້ງ",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
                       );
                     }),
                     const SizedBox(height: 16),

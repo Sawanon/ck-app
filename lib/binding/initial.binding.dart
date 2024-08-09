@@ -8,13 +8,16 @@ import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/login/controller/login.controller.dart';
 import 'package:lottery_ck/modules/otp/controller/otp.controller.dart';
+import 'package:lottery_ck/modules/pin/controller/pin.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/signup/controller/signup.controller.dart';
 import 'package:lottery_ck/repository/user_repository/user.repository.dart';
+import 'package:lottery_ck/storage.dart';
 
 class InitialBinding extends Bindings {
   @override
   void dependencies() {
+    Get.put<StorageController>(StorageController());
     Get.put<FirebaseMessagingController>(FirebaseMessagingController());
     Get.put<FirebaseAuthController>(FirebaseAuthController());
     Get.put<AppWriteController>(AppWriteController());
@@ -30,5 +33,6 @@ class InitialBinding extends Bindings {
     Get.lazyPut<SettingController>(() => SettingController(), fenix: true);
     Get.lazyPut<CloudFlareController>(() => CloudFlareController(),
         fenix: true);
+    Get.put<PinController>(PinController());
   }
 }

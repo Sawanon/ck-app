@@ -22,6 +22,7 @@ class AppWriteController extends GetxController {
         .setSelfSigned(status: false);
     account = Account(client);
     databases = Databases(client);
+
     super.onInit();
   }
 
@@ -102,7 +103,7 @@ class AppWriteController extends GetxController {
       final userDocument = await databases.createDocument(
         databaseId: _databaseName,
         collectionId: USER,
-        documentId: ID.unique(),
+        documentId: userId,
         data: {
           "username": email,
           "userId": userId,

@@ -5,4 +5,5 @@ class Logo {
     'assets/ck-w1.png',
     height: 40,
   );
+  static String lotto = "assets/lotto.png";
 }

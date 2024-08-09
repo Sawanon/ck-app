@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       // home: LoginPage(),
       initialBinding: InitialBinding(),
       getPages: AppRoutes.appRoutes(),
-      initialRoute: RouteName.layout,
+      initialRoute: RouteName.splashScreen,
     );
   }
 }

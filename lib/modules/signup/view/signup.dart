@@ -435,30 +435,36 @@ class SignupPage extends StatelessWidget {
 
 class Header extends StatelessWidget {
   final void Function()? onTap;
+  final bool? disabledBackButton;
   const Header({
     super.key,
     this.onTap,
+    this.disabledBackButton,
   });
 
   @override
   Widget build(BuildContext context) {
+    final enable = (disabledBackButton == null || disabledBackButton == false);
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
         children: [
-          Material(
-            color: AppColors.backButton,
-            borderRadius: BorderRadius.circular(10),
-            clipBehavior: Clip.hardEdge,
-            child: InkWell(
-              overlayColor:
-                  WidgetStateProperty.all<Color>(AppColors.backButtonHover),
-              onTap: onTap,
-              child: Container(
-                width: 50,
-                height: 50,
-                padding: const EdgeInsets.all(12),
-                child: SvgPicture.asset(AppIcon.arrowLeft),
+          Opacity(
+            opacity: enable ? 1 : 0,
+            child: Material(
+              color: AppColors.backButton,
+              borderRadius: BorderRadius.circular(10),
+              clipBehavior: Clip.hardEdge,
+              child: InkWell(
+                overlayColor:
+                    WidgetStateProperty.all<Color>(AppColors.backButtonHover),
+                onTap: enable ? onTap : null,
+                child: Container(
+                  width: 50,
+                  height: 50,
+                  padding: const EdgeInsets.all(12),
+                  child: SvgPicture.asset(AppIcon.arrowLeft),
+                ),
               ),
             ),
           ),

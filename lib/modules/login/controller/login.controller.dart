@@ -11,6 +11,7 @@ import 'package:lottery_ck/modules/couldflare/controller/cloudflare.controller.d
 import 'package:lottery_ck/repository/user_repository/user.repository.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/route/route_name.dart';
+import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:unique_identifier/unique_identifier.dart';
@@ -30,7 +31,7 @@ class LoginController extends GetxController {
     }
 
     Map<String, dynamic>? token = await getToken();
-    webviewController?.loadRequest(Uri.parse('about:blank'));
+    Get.delete<CloudFlareController>();
     if (token == null) {
       // TODO: go to otp for verify then go to enter user info - sawanon:20240807
       Get.toNamed(
@@ -46,10 +47,10 @@ class LoginController extends GetxController {
       );
       return;
     }
-    gotoSignIn(token);
+    getOTPandCreatePin(token);
   }
 
-  Future<void> gotoSignIn(Map<String, dynamic> token) async {
+  Future<void> getOTPandCreatePin(Map<String, dynamic> token) async {
     Get.toNamed(
       RouteName.otp,
       arguments: {
@@ -65,12 +66,24 @@ class LoginController extends GetxController {
             navigator?.pop();
             return;
           }
-          Get.delete<BuyLotteryController>();
-          Get.delete<UserStore>();
-          Get.offAllNamed(RouteName.layout);
+          Get.offNamed(RouteName.pin, arguments: {
+            "whenSuccess": () async {
+              Get.delete<BuyLotteryController>();
+              Get.delete<UserStore>();
+              Get.offAllNamed(RouteName.layout);
+            }
+          });
         }
       },
     );
+  }
+
+  Future<void> createPin() async {
+    final dio = Dio();
+    final appwriteController = AppWriteController.to;
+    final account = appwriteController.account;
+
+    // final reposne = dio.
   }
 
   Future<Map<String, dynamic>?> getToken() async {
@@ -85,10 +98,12 @@ class LoginController extends GetxController {
   Future<Session?> createSession(Map<String, dynamic> token) async {
     try {
       final appwriteController = AppWriteController.to;
-      final session = await appwriteController.account
-          .createSession(userId: token["userId"], secret: token["secret"]);
-      logger.d(session.ip);
-      logger.d(session.userId);
+      final session = await appwriteController.account.createSession(
+        userId: token["userId"],
+        secret: token["secret"],
+      );
+      final storageController = StorageController.to;
+      storageController.setSessionId(session.$id);
       return session;
     } on Exception catch (e) {
       logger.e(e);
