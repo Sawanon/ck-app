@@ -31,7 +31,7 @@ class LayoutPage extends StatelessWidget {
             children: [
               Container(
                 clipBehavior: Clip.hardEdge,
-                padding: EdgeInsets.only(bottom: 74),
+                padding: EdgeInsets.only(bottom: controller.bottomPadding),
                 decoration: BoxDecoration(
                   color: Colors.transparent,
                 ),

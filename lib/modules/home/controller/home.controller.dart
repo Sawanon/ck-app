@@ -1,5 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
-import 'package:lottery_ck/utils.dart';
 
-class HomeController extends GetxController {}
+class HomeController extends GetxController {
+  static HomeController get to => Get.find();
+  Alignment lotteryAlinment = Alignment.bottomCenter;
+  void lotteryFullScreen() {
+    lotteryAlinment = Alignment.center;
+    update();
+  }
+
+  void lotteryResetScreen() {
+    lotteryAlinment = Alignment.bottomCenter;
+    update();
+  }
+}

@@ -100,7 +100,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                 BlendMode.srcIn,
               ),
             ),
-            label: 'ผลหวย',
+            label: 'ຜົນຫວຍ',
           ),
           NavigationItem(
             changeTab: changeTab,
@@ -120,7 +120,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                 BlendMode.srcIn,
               ),
             ),
-            label: 'แจ้งเตือน',
+            label: 'ແຈ້ງເຕືອນ',
           ),
           NavigationItem(
             changeTab: changeTab,
@@ -140,7 +140,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                 BlendMode.srcIn,
               ),
             ),
-            label: 'ตั้งค่า',
+            label: 'ຕັ້ງຄ່າ',
           ),
         ],
       ),

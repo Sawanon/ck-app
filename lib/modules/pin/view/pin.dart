@@ -6,21 +6,8 @@ import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 
-class PinPage extends StatefulWidget {
+class PinPage extends StatelessWidget {
   const PinPage({super.key});
-
-  @override
-  State<PinPage> createState() => _PinPageState();
-}
-
-class _PinPageState extends State<PinPage> {
-  final pinController = PinController.to;
-
-  @override
-  void dispose() {
-    logger.d("nope !");
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {

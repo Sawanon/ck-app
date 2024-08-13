@@ -74,7 +74,16 @@ class SignupController extends GetxController {
     // register || login || create user document failed - sawanon:20240807
     Get.snackbar('Something went wrong', 'plaese try again');
     // Get.offAllNamed(RouteName.layout);
-    Get.toNamed(RouteName.pin);
+    Get.toNamed(
+      RouteName.pin,
+      arguments: {
+        'whenSuccess': () {
+          Get.delete<BuyLotteryController>();
+          Get.delete<UserStore>();
+          Get.offAllNamed(RouteName.layout);
+        }
+      },
+    );
   }
 
   @override

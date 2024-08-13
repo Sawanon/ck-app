@@ -7,6 +7,8 @@ import 'package:lottery_ck/utils.dart';
 class AppWriteController extends GetxController {
   static const String _databaseName = 'lottory';
   static const String USER = 'user';
+  static const String TRANSACTION = '_transaction';
+  static const String INVOICE = '_invoice';
   static const _roleUserId = "669a2cfd00141edc45ef";
   final String _providerId = '6694bc1400115d5369eb';
   static AppWriteController get to => Get.find();
@@ -145,6 +147,43 @@ class AppWriteController extends GetxController {
       return true;
     } catch (e) {
       return false;
+    }
+  }
+
+  Future<DocumentList?> getBank() async {
+    try {
+      final bankList = await databases.listDocuments(
+          databaseId: _databaseName, collectionId: 'bank');
+      return bankList;
+    } catch (e) {
+      logger.e(e.toString());
+      Get.snackbar('Something went wrong',
+          'Bank: please try again later or contact admin');
+      return null;
+    }
+  }
+
+  Future<Document?> createInvoice(
+    String amount,
+    String bankId,
+  ) async {
+    try {
+      return await databases.createDocument(
+        databaseId: _databaseName,
+        collectionId: INVOICE,
+        documentId: ID.unique(),
+        data: {
+          "bank": bankId,
+          "totalAmount": amount,
+        },
+      );
+    } catch (e) {
+      logger.e(e.toString());
+      Get.snackbar(
+        'Something went wrong',
+        'Invoice: please try again later or contact admin',
+      );
+      return null;
     }
   }
 }

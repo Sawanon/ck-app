@@ -5,6 +5,8 @@ class RouteName {
   static const String otp = '/otp';
   static const String pin = '/pin';
   static const String splashScreen = '/splashScreen';
+  static const String buyLottery = '/buyLottery';
+  static const String payment = '/payment';
 
   static const String cloudflare = '/cloudflare';
 }

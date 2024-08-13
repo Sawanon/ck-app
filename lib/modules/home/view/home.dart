@@ -256,7 +256,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
             Align(
-              alignment: Alignment.bottomCenter,
+              alignment: controller.lotteryAlinment,
               child: BuyLottery(),
             ),
           ],

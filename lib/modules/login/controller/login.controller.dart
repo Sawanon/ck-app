@@ -66,13 +66,16 @@ class LoginController extends GetxController {
             navigator?.pop();
             return;
           }
-          Get.offNamed(RouteName.pin, arguments: {
-            "whenSuccess": () async {
-              Get.delete<BuyLotteryController>();
-              Get.delete<UserStore>();
-              Get.offAllNamed(RouteName.layout);
-            }
-          });
+          Get.offNamed(
+            RouteName.pin,
+            arguments: {
+              "whenSuccess": () {
+                Get.delete<BuyLotteryController>();
+                Get.delete<UserStore>();
+                Get.offAllNamed(RouteName.layout);
+              }
+            },
+          );
         }
       },
     );
