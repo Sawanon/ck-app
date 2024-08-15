@@ -23,7 +23,6 @@ class OtpController extends GetxController {
     final now = DateTime.now();
     DateTime targetTime = DateTime.now().add(const Duration(seconds: 60));
     final difference = targetTime.difference(now);
-    logger.d(difference);
     remainingTime.value = difference;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (!targetTime.isAtSameMomentAs(targetTime)) {

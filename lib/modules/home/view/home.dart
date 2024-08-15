@@ -49,14 +49,24 @@ class HomePage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(
-                        // height: 30,
-                        width:
-                            (MediaQuery.of(context).size.width / 2) - (16 * 2),
-                        child: Logo.ck,
+                      GestureDetector(
+                        onTap: () {
+                          controller.getLotteryDate();
+                        },
+                        child: SizedBox(
+                          // height: 30,
+                          width: (MediaQuery.of(context).size.width / 2) -
+                              (16 * 2),
+                          child: Logo.ck,
+                        ),
                       ),
                       Text(
-                        "Lottery date 08-Jul-2024",
+                        controller.lotteryDateStr != null
+                            ? "ງວດວັນທີ ${controller.lotteryDateStr}"
+                            : "",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
                     ],
                   ),
@@ -74,119 +84,121 @@ class HomePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(bottom: 4),
-                          width: 60,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Column(
-                            children: [
-                              Text(
-                                "1",
-                                style: TextStyle(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black.withOpacity(0.8),
+                    child: Obx(() {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.only(bottom: 4),
+                            width: 60,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "${controller.remainingDateTime.value.inDays}",
+                                  style: TextStyle(
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black.withOpacity(0.8),
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'Day',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black.withOpacity(0.8),
+                                Text(
+                                  'Day',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black.withOpacity(0.8),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(bottom: 4),
-                          width: 60,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Column(
-                            children: [
-                              Text(
-                                "23",
-                                style: TextStyle(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black.withOpacity(0.8),
+                          Container(
+                            padding: const EdgeInsets.only(bottom: 4),
+                            width: 60,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "${controller.remainingDateTime.value.inHours.remainder(24)}",
+                                  style: TextStyle(
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black.withOpacity(0.8),
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'Hour',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black.withOpacity(0.8),
+                                Text(
+                                  'Hour',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black.withOpacity(0.8),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(bottom: 4),
-                          width: 60,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Column(
-                            children: [
-                              Text(
-                                "59",
-                                style: TextStyle(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black.withOpacity(0.8),
+                          Container(
+                            padding: const EdgeInsets.only(bottom: 4),
+                            width: 60,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "${controller.remainingDateTime.value.inMinutes.remainder(60)}",
+                                  style: TextStyle(
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black.withOpacity(0.8),
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'Minute',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black.withOpacity(0.8),
+                                Text(
+                                  'Minute',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black.withOpacity(0.8),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.only(bottom: 4),
-                          width: 60,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Column(
-                            children: [
-                              Text(
-                                "59",
-                                style: TextStyle(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black.withOpacity(0.8),
+                          Container(
+                            padding: const EdgeInsets.only(bottom: 4),
+                            width: 60,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "${controller.remainingDateTime.value.inSeconds.remainder(60)}",
+                                  style: TextStyle(
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black.withOpacity(0.8),
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'Second',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black.withOpacity(0.8),
+                                Text(
+                                  'Second',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black.withOpacity(0.8),
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      );
+                    }),
                   ),
                   const SizedBox(height: 16),
                   Row(

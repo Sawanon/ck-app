@@ -10,7 +10,7 @@ class FirebaseMessagingController extends GetxController {
       // You may set the permission requests to "provisional" which allows the user to choose what type
       // of notifications they would like to receive once the user receives a notification.
       token = await FirebaseMessaging.instance.getToken();
-      logger.d(token);
+      // logger.d(token);
       final notificationSettings =
           await FirebaseMessaging.instance.requestPermission(
         alert: true,
@@ -21,18 +21,18 @@ class FirebaseMessagingController extends GetxController {
         provisional: false,
         sound: true,
       );
-      logger.d(notificationSettings);
+      // logger.d(notificationSettings);
 
       // For apple platforms, ensure the APNS token is available before making any FCM plugin API calls
       final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
-      logger.d(apnsToken);
+      // logger.d(apnsToken);
       if (apnsToken != null) {
         // APNS token is available, make FCM plugin API requests...
       }
 
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        logger.d("message: ${message.notification?.title}");
-        logger.d("message: ${message.notification?.body}");
+        // logger.d("message: ${message.notification?.title}");
+        // logger.d("message: ${message.notification?.body}");
         print('Got a message whilst in the foreground!');
         print('Message data: ${message.data}');
 

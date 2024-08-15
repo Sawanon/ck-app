@@ -35,6 +35,7 @@ class InitialBinding extends Bindings {
     Get.lazyPut<CloudFlareController>(() => CloudFlareController(),
         fenix: true);
     Get.lazyPut<PinController>(() => PinController(), fenix: true);
-    Get.lazyPut<SplashScreenController>(() => SplashScreenController());
+    // Get.lazyPut<SplashScreenController>(() => SplashScreenController());
+    Get.put<SplashScreenController>(SplashScreenController());
   }
 }

@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
 import 'package:lottery_ck/utils.dart';
 
@@ -9,6 +10,8 @@ class AppWriteController extends GetxController {
   static const String USER = 'user';
   static const String TRANSACTION = '_transaction';
   static const String INVOICE = '_invoice';
+  static const String LOTTERY_DATE = 'lottery_date';
+
   static const _roleUserId = "669a2cfd00141edc45ef";
   final String _providerId = '6694bc1400115d5369eb';
   static AppWriteController get to => Get.find();
@@ -153,7 +156,12 @@ class AppWriteController extends GetxController {
   Future<DocumentList?> getBank() async {
     try {
       final bankList = await databases.listDocuments(
-          databaseId: _databaseName, collectionId: 'bank');
+          databaseId: _databaseName,
+          collectionId: 'bank',
+          queries: [
+            Query.select(["name", "logo", "\$id"]),
+            Query.equal('status', true),
+          ]);
       return bankList;
     } catch (e) {
       logger.e(e.toString());
@@ -166,15 +174,18 @@ class AppWriteController extends GetxController {
   Future<Document?> createInvoice(
     String amount,
     String bankId,
+    String lotteryDate,
   ) async {
     try {
+      final user = await account.get();
       return await databases.createDocument(
         databaseId: _databaseName,
-        collectionId: INVOICE,
+        collectionId: "$lotteryDate$INVOICE",
         documentId: ID.unique(),
         data: {
-          "bank": bankId,
-          "totalAmount": amount,
+          "bankId": bankId,
+          "totalAmount": double.parse(amount),
+          "userId": user.$id,
         },
       );
     } catch (e) {
@@ -183,6 +194,78 @@ class AppWriteController extends GetxController {
         'Something went wrong',
         'Invoice: please try again later or contact admin',
       );
+      return null;
+    }
+  }
+
+  Future<Document?> updateInvoice(String documentId, String lotteryDateStr,
+      List<String> listTransactionId) async {
+    try {
+      return await databases.updateDocument(
+        databaseId: _databaseName,
+        collectionId: "$lotteryDateStr$INVOICE",
+        documentId: documentId,
+        data: {
+          "transactionId": listTransactionId,
+        },
+      );
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+      return null;
+    }
+  }
+
+  Future<Document?> createTransaction(
+    Lottery lottery,
+    String lotteryDate,
+    String bankId,
+    Map<String, String?> digitMap,
+  ) async {
+    try {
+      final user = await account.get();
+      return await databases.createDocument(
+        databaseId: _databaseName,
+        collectionId: "$lotteryDate$TRANSACTION",
+        documentId: ID.unique(),
+        data: {
+          "lottery": lottery.lottery,
+          "lotteryType": lottery.type,
+          "amount": lottery.price,
+          "bankId": bankId,
+          "userId": user.$id,
+          ...digitMap,
+        },
+      );
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(
+        title: 'Something went wrong',
+        message: "Transaction: please try again later or contact admin",
+      );
+      return null;
+    }
+  }
+
+  Future<Document?> getLotteryDate(DateTime datetime) async {
+    try {
+      final response = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: LOTTERY_DATE,
+        queries: [
+          Query.greaterThanEqual('datetime', datetime.toIso8601String()),
+          Query.orderAsc('datetime'),
+          Query.equal('active', true),
+          Query.limit(1),
+        ],
+      );
+      if (response.documents.isEmpty) {
+        throw "Lottery date is empty";
+      }
+      return response.documents[0];
+    } catch (e) {
+      Get.rawSnackbar(message: e.toString());
+      logger.e(e.toString());
       return null;
     }
   }

@@ -244,7 +244,7 @@ class LoginPage extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(height: 16),
-                            Container(
+                            SizedBox(
                               width: MediaQuery.of(context).size.width,
                               height: 100,
                               child: CloudFlarePage(),
@@ -280,9 +280,10 @@ class LoginPage extends StatelessWidget {
                                         foregroundColor: Colors.white,
                                       ),
                                 onPressed: () {
-                                  if (controller.disableLogin.value) {
-                                    return;
-                                  }
+                                  // TODO: comment for dev
+                                  // if (controller.disableLogin.value) {
+                                  //   return;
+                                  // }
                                   controller.login();
                                 },
                                 child: Text(

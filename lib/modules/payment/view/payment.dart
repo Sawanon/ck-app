@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
+import 'package:lottery_ck/res/color.dart';
+import 'package:lottery_ck/utils.dart';
 
 class PayMentPage extends StatelessWidget {
   const PayMentPage({super.key});
@@ -10,6 +12,7 @@ class PayMentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<PaymentController>(builder: (controller) {
       return Scaffold(
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: Column(
             children: [
@@ -18,23 +21,53 @@ class PayMentPage extends StatelessWidget {
                   navigator?.pop();
                 },
               ),
-              ElevatedButton(
-                onPressed: () {
-                  controller.getBank();
-                },
-                child: Text("getbank"),
-              ),
               Expanded(
                 child: ListView(
+                  physics: const BouncingScrollPhysics(),
                   children: [
-                    Column(
-                      // shrinkWrap: true,
-                      // physics: const BouncingScrollPhysics(),
-                      children: controller.lotteryList.map(
-                        (data) {
-                          return Text(data.lottery);
-                        },
-                      ).toList(),
+                    // Column(
+                    //   // shrinkWrap: true,
+                    //   // physics: const BouncingScrollPhysics(),
+                    //   children: controller.lotteryList.map(
+                    //     (data) {
+                    //       return Text(data.lottery);
+                    //     },
+                    //   ).toList(),
+                    // ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: AppColors.foregroundBorder,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "ລວມຈໍານວນເງິນທີ່ຕ້ອງຊໍາລະ",
+                                  style: TextStyle(
+                                    color: AppColors.primary,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                Text(
+                                  '${controller.totalAmount}',
+                                  style: TextStyle(
+                                    color: AppColors.primary,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -44,21 +77,36 @@ class PayMentPage extends StatelessWidget {
                           (bank) {
                             return GestureDetector(
                               onTap: () {
-                                controller.payLottery(bank);
+                                controller.selectBank(bank);
                               },
                               child: Container(
                                 padding: EdgeInsets.all(8),
                                 margin: EdgeInsets.only(bottom: 8),
                                 decoration: BoxDecoration(
-                                  color: Colors.amber,
+                                  color: Colors.white,
                                   borderRadius: BorderRadius.circular(8),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: AppColors.shadow.withOpacity(0.2),
+                                      offset: Offset(4, 4),
+                                      blurRadius: 30,
+                                    ),
+                                    if (controller.selectedBank?.$id ==
+                                        bank.$id)
+                                      const BoxShadow(
+                                        color: AppColors.primary,
+                                        // offset: Offset(4, 4),
+                                        // blurRadius: 30,
+                                        spreadRadius: 2,
+                                      ),
+                                  ],
                                 ),
                                 child: Row(
                                   children: [
                                     Image.network(
                                       bank.logo ?? '',
-                                      width: 36,
-                                      height: 36,
+                                      width: 42,
+                                      height: 42,
                                       errorBuilder:
                                           (context, error, stackTrace) {
                                         return Container(
@@ -66,8 +114,8 @@ class PayMentPage extends StatelessWidget {
                                             color: Colors.grey,
                                             shape: BoxShape.circle,
                                           ),
-                                          width: 36,
-                                          height: 36,
+                                          width: 42,
+                                          height: 42,
                                         );
                                       },
                                     ),
@@ -82,6 +130,35 @@ class PayMentPage extends StatelessWidget {
                       ),
                     ),
                   ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 0,
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    fixedSize: Size(MediaQuery.of(context).size.width, 48),
+                    backgroundColor: controller.enablePay
+                        ? AppColors.primary
+                        : AppColors.disable,
+                    foregroundColor: controller.enablePay
+                        ? Colors.white
+                        : AppColors.disableText,
+                  ),
+                  onPressed: () {
+                    controller.payLottery(controller.selectedBank!);
+                  },
+                  child: Text(
+                    "Pay",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                 ),
               ),
             ],

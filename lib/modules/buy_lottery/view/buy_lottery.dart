@@ -75,10 +75,7 @@ class BuyLottery extends StatelessWidget {
                         child: Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: 16,
-                              ),
+                              padding: const EdgeInsets.all(16),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -218,15 +215,12 @@ class BuyLottery extends StatelessWidget {
                             Expanded(
                               child: ListView(
                                 physics: const BouncingScrollPhysics(),
-                                padding: EdgeInsets.symmetric(horizontal: 8),
+                                padding: EdgeInsets.symmetric(horizontal: 16),
                                 children: controller.lotteryList.map(
                                   (data) {
                                     return Container(
                                       margin: EdgeInsets.only(bottom: 8),
-                                      padding: EdgeInsets.symmetric(
-                                        vertical: 8,
-                                        horizontal: 8,
-                                      ),
+                                      padding: EdgeInsets.all(8),
                                       decoration: BoxDecoration(
                                         color: AppColors.foreground,
                                         boxShadow: [
@@ -253,7 +247,7 @@ class BuyLottery extends StatelessWidget {
                                           Row(
                                             children: [
                                               Text(
-                                                data.price,
+                                                "${data.price}",
                                                 style: TextStyle(
                                                   color: AppColors.textPrimary,
                                                   fontSize: 16,
@@ -444,7 +438,8 @@ class BuyLottery extends StatelessWidget {
                                               ],
                                               focusNode: controller.priceNode,
                                               onChanged: (value) {
-                                                controller.price = value;
+                                                controller.price =
+                                                    int.parse(value);
                                               },
                                               decoration: InputDecoration(
                                                 errorStyle:
@@ -529,12 +524,14 @@ class BuyLottery extends StatelessWidget {
                                             fontSize: 16,
                                           ),
                                         ),
-                                        Text(
-                                          '0',
-                                          style: TextStyle(
-                                            fontSize: 24,
-                                          ),
-                                        ),
+                                        Obx(() {
+                                          return Text(
+                                            "${controller.totalAmount.value}",
+                                            style: TextStyle(
+                                              fontSize: 24,
+                                            ),
+                                          );
+                                        }),
                                       ],
                                     ),
                                   ),

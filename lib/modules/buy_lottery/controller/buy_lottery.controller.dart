@@ -10,18 +10,19 @@ import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 
 class BuyLotteryController extends GetxController {
   GlobalKey<FormState> formKey = GlobalKey();
   FocusNode priceNode = FocusNode();
   FocusNode lotteryNode = FocusNode();
   String? lottery;
-  String? price;
+  int? price;
 
   static BuyLotteryController get to => Get.find();
   RxBool isUserLoggedIn = false.obs;
-
   RxList<Lottery> lotteryList = <Lottery>[].obs;
+  final totalAmount = 0.obs;
 
   bool get lotteryIsEmpty => lotteryList.isEmpty;
   late StreamSubscription<bool> keyboardSubscription;
@@ -76,32 +77,45 @@ class BuyLotteryController extends GetxController {
     lotteryNode.addListener(onFocus);
   }
 
-  void addLottery(String lottery, String price) {
-    final findLottery = lotteryList.where(
-      (data) {
-        return data.lottery == lottery;
-      },
-    ).toList();
-    logger.d(findLottery.length);
-    if (findLottery.isNotEmpty) {
-      final currentLottery = findLottery[0];
-      final total = int.parse(currentLottery.price) + int.parse(price);
-      currentLottery.price = total.toString();
-      update();
-      return;
+  void addLottery(String lottery, int price) {
+    try {
+      final findLottery = lotteryList.where(
+        (data) {
+          return data.lottery == lottery;
+        },
+      ).toList();
+      logger.d(findLottery.length);
+      if (findLottery.isNotEmpty) {
+        final currentLottery = findLottery[0];
+        final total = currentLottery.price + price;
+        currentLottery.price = total;
+        update();
+      } else {
+        lotteryList.add(Lottery(lottery: lottery, price: price));
+      }
+      calculateTotalAmount();
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: '$e');
     }
-    lotteryList.add(Lottery(lottery: lottery, price: price));
+  }
+
+  void calculateTotalAmount() {
+    final total = CommonFn.calculateTotalPrice(lotteryList);
+    totalAmount.value = total;
   }
 
   void removeLottery(String lottery) {
     lotteryList.removeWhere((data) => data.lottery == lottery);
+    calculateTotalAmount();
   }
 
   void removeAllLottery() {
     lotteryList.clear();
+    calculateTotalAmount();
   }
 
-  void submitAddLottery(String? lottery, String? price) {
+  void submitAddLottery(String? lottery, int? price) {
     if (formKey.currentState != null && formKey.currentState!.validate()) {
       if (lottery == null || price == null) {
         alertLotteryEmpty();
@@ -116,9 +130,9 @@ class BuyLotteryController extends GetxController {
     }
   }
 
-  bool validateLottery(String lottery, String price) {
+  bool validateLottery(String lottery, int price) {
     try {
-      if (int.parse(price) < 1000) {
+      if (price < 1000) {
         throw "ໃສ່ລາຄາຕໍ່າສຸດ 1000";
       }
       if (lottery.length < 2 || lottery.length > 3) {
@@ -165,9 +179,9 @@ class BuyLotteryController extends GetxController {
   }
 
   void confirmLottery() {
-    for (var data in lotteryList) {
-      logger.d(data.lottery);
-      logger.d(data.price);
+    if (lotteryList.isEmpty) {
+      Get.rawSnackbar(message: "Please add lottery");
+      return;
     }
     Get.toNamed(RouteName.payment);
   }
