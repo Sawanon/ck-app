@@ -70,10 +70,11 @@ class HomeController extends GetxController {
       final lotteryEndTimeLocal = lotteryEndTime.toLocal();
       logger.d(lotteryEndTimeLocal);
       this.lotteryDate = lotteryDate.toLocal();
+      logger.f("$lotteryDate");
       lotteryDateStr = CommonFn.parseDMY(lotteryDate.toLocal());
-      // logger.d(lotteryDateLocal);
       // final nowLocal = now.toLocal();
       startCountdown(lotteryEndTime, now);
+      update();
     } catch (e) {
       Get.rawSnackbar(
         title: 'getLotteryDate error',

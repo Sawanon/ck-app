@@ -14,6 +14,8 @@ class SplashScreenController extends GetxController {
     //   overlays: SystemUiOverlay.values,
     // );
     // logger.d("gogogo");
+
+    // TODO: uncomment for production
     Get.offNamed(RouteName.layout);
   }
 

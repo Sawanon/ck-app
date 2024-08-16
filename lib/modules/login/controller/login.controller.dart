@@ -21,7 +21,9 @@ class LoginController extends GetxController {
   static LoginController get to => Get.find();
   String phoneNumber = '';
   GlobalKey<FormState> keyForm = GlobalKey();
-  RxBool disableLogin = true.obs;
+  // RxBool disableLogin = true.obs;
+  // TODO: for test only !! - sawanon:20240816
+  RxBool disableLogin = false.obs;
   WebViewController? webviewController;
 
   Future<void> login() async {
@@ -105,6 +107,7 @@ class LoginController extends GetxController {
         userId: token["userId"],
         secret: token["secret"],
       );
+      await appwriteController.clearOtherSession(session.$id);
       final storageController = StorageController.to;
       storageController.setSessionId(session.$id);
       return session;
@@ -115,14 +118,14 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<void> loginAppwrite() async {
-    final appwriteController = AppWriteController.to;
-    final email = '$phoneNumber@ckmail.com';
-    await appwriteController.login(email, phoneNumber);
-    // setup user await - sawanon:20240802
-    Get.delete<BuyLotteryController>();
-    Get.delete<UserStore>();
-  }
+  // Future<void> loginAppwrite() async {
+  //   final appwriteController = AppWriteController.to;
+  //   final email = '$phoneNumber@ckmail.com';
+  //   await appwriteController.login(email, phoneNumber);
+  //   // setup user await - sawanon:20240802
+  //   Get.delete<BuyLotteryController>();
+  //   Get.delete<UserStore>();
+  // }
 
   Future<void> logout() async {
     logger.d("logout");

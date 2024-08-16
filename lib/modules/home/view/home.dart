@@ -57,7 +57,10 @@ class HomePage extends StatelessWidget {
                           // height: 30,
                           width: (MediaQuery.of(context).size.width / 2) -
                               (16 * 2),
-                          child: Logo.ck,
+                          child: Image.asset(
+                            Logo.ck,
+                            height: 40,
+                          ),
                         ),
                       ),
                       Text(

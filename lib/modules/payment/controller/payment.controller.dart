@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import 'package:lottery_ck/model/bank.dart';
+import 'package:lottery_ck/model/bill.dart';
 import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
+import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 
@@ -14,6 +16,7 @@ class PaymentController extends GetxController {
   String? lotteryDateStrYMD;
   int? totalAmount;
   Bank? selectedBank;
+  bool isLoading = false;
 
   Future<void> getBank() async {
     final appwriteController = AppWriteController.to;
@@ -46,27 +49,33 @@ class PaymentController extends GetxController {
     totalAmount = buyLotteryController.totalAmount.value;
   }
 
-  void payLottery(Bank bank) async {
+  void payLottery(Bank bank, int totalAmount) async {
     try {
+      isLoading = true;
+      update();
       final appwriteController = AppWriteController.to;
       final invoiceDocument = await appwriteController.createInvoice(
-        '1000',
+        totalAmount,
         bank.$id,
         lotteryDateStrYMD!,
       );
       List<String> listTransactionId = [];
-      if (invoiceDocument!.data.isEmpty) {
-        for (var data in lotteryList) {
-          logger.d(data.type);
-          logger.d(data.toDigit());
+      if (invoiceDocument!.data.isNotEmpty) {
+        for (var lottery in lotteryList) {
           final transactionDocument =
               await appwriteController.createTransaction(
-            data,
+            lottery,
             lotteryDateStrYMD!,
             bank.$id,
-            data.toDigit(),
+            lottery.toDigit(),
           );
           listTransactionId.add(transactionDocument!.$id);
+
+          await appwriteController.addAccumulate(
+            lotteryDateStrYMD!,
+            lottery,
+            transactionDocument.$id,
+          );
         }
       }
       final invoiceDocumentUpdate = await appwriteController.updateInvoice(
@@ -75,11 +84,33 @@ class PaymentController extends GetxController {
         listTransactionId,
       );
       logger.d(invoiceDocumentUpdate!.$id);
+      isLoading = false;
+      update();
+      final user = await appwriteController.user;
+      final bill = Bill(
+        firstName: user.name.split(" ").first,
+        lastName: user.name.split(" ")[1],
+        phoneNumber: user.phone,
+        dateTime: DateTime.parse(invoiceDocumentUpdate.$createdAt),
+        lotteryDateStr: lotteryDateStrYMD!,
+        lotteryList: lotteryList,
+        totalAmount: totalAmount.toString(),
+        invoiceId: invoiceDocumentUpdate.$id,
+        bankName: bank.name,
+      );
+      Get.offNamed(
+        RouteName.bill,
+        arguments: {
+          "bill": bill,
+        },
+      );
     } catch (e) {
       logger.e("$e");
       Get.rawSnackbar(
         message: "$e",
       );
+      isLoading = false;
+      update();
     }
   }
 

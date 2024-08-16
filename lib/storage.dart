@@ -5,12 +5,12 @@ class StorageController extends GetxController {
   static StorageController get to => Get.find();
   FlutterSecureStorage? storage;
 
-  void test() async {
-    final options = IOSOptions(
-      accessibility: KeychainAccessibility.passcode,
-    );
-    await storage?.write(key: 'key', value: 'value', iOptions: options);
-  }
+  AndroidOptions _getAndroidOptions() => const AndroidOptions(
+        encryptedSharedPreferences: true,
+      );
+  IOSOptions _getIOSOptions() => const IOSOptions(
+        accessibility: KeychainAccessibility.passcode,
+      );
 
   Future<void> setValue(String key, String value) async {
     await storage?.write(
@@ -43,12 +43,13 @@ class StorageController extends GetxController {
     return value;
   }
 
-  AndroidOptions _getAndroidOptions() => const AndroidOptions(
-        encryptedSharedPreferences: true,
-      );
-  IOSOptions _getIOSOptions() => const IOSOptions(
-        accessibility: KeychainAccessibility.passcode,
-      );
+  Future<void> setUserId(String userId) async {
+    await setValue("userId", userId);
+  }
+
+  Future<String?> getUserId() async {
+    return await getValue("userId");
+  }
 
   @override
   void onInit() {

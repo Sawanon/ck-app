@@ -18,7 +18,10 @@ class SplashScreenPage extends StatelessWidget {
               children: [
                 Image.asset(Logo.lotto),
                 const SizedBox(height: 16),
-                Logo.ck,
+                Image.asset(
+                  Logo.ck,
+                  height: 40,
+                ),
                 const SizedBox(height: 16),
               ],
             ),

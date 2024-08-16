@@ -10,13 +10,13 @@ class AppWriteController extends GetxController {
   static const String USER = 'user';
   static const String TRANSACTION = '_transaction';
   static const String INVOICE = '_invoice';
+  static const String ACCUMULATE = '_accumulate';
   static const String LOTTERY_DATE = 'lottery_date';
 
   static const _roleUserId = "669a2cfd00141edc45ef";
   final String _providerId = '6694bc1400115d5369eb';
   static AppWriteController get to => Get.find();
   late Account account;
-  late User? user;
   late Databases databases;
   Client client = Client();
   @override
@@ -31,6 +31,8 @@ class AppWriteController extends GetxController {
     super.onInit();
   }
 
+  Future<User> get user async => await account.get();
+
   Future<void> loginWithPhoneNumber(String phoneNumber) async {
     logger.d(phoneNumber);
   }
@@ -41,7 +43,6 @@ class AppWriteController extends GetxController {
           email: email, password: password);
       final user = await account.get();
       logger.d(user.name);
-      this.user = user;
       // final firebaseMessage = FirebaseMessagingController.to;
       // logger.d(firebaseMessage.token);
       logger.d(user.targets.length);
@@ -138,7 +139,6 @@ class AppWriteController extends GetxController {
     try {
       await account.deleteSession(sessionId: 'current');
       logger.d("logout");
-      user = null;
     } catch (e) {
       logger.e(e.toString());
     }
@@ -172,7 +172,7 @@ class AppWriteController extends GetxController {
   }
 
   Future<Document?> createInvoice(
-    String amount,
+    int amount,
     String bankId,
     String lotteryDate,
   ) async {
@@ -184,7 +184,7 @@ class AppWriteController extends GetxController {
         documentId: ID.unique(),
         data: {
           "bankId": bankId,
-          "totalAmount": double.parse(amount),
+          "totalAmount": amount,
           "userId": user.$id,
         },
       );
@@ -264,9 +264,76 @@ class AppWriteController extends GetxController {
       }
       return response.documents[0];
     } catch (e) {
-      Get.rawSnackbar(message: e.toString());
+      Get.rawSnackbar(message: "$e");
       logger.e(e.toString());
       return null;
+    }
+  }
+
+  Future<Document?> addAccumulate(
+    String lotteryStr,
+    Lottery lottery,
+    String transactionId,
+  ) async {
+    try {
+      final accumulateDocumentList = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: "$lotteryStr$ACCUMULATE",
+        queries: [
+          Query.equal("lottery", lottery.lottery),
+        ],
+      );
+      if (accumulateDocumentList.documents.isEmpty) {
+        return await databases.createDocument(
+          databaseId: _databaseName,
+          collectionId: "$lotteryStr$ACCUMULATE",
+          documentId: ID.unique(),
+          data: {
+            "lottery": lottery.lottery,
+            "amount": lottery.price,
+            "lotteryType": lottery.type,
+            "lastFiveTransactions": [transactionId],
+            // "updateBy": "?"
+          },
+        );
+      }
+      final accumulateDocument = accumulateDocumentList.documents.first;
+      final lastFiveTransactions =
+          (accumulateDocument.data["lastFiveTransactions"] as List);
+      lastFiveTransactions.add(transactionId);
+      return await databases.updateDocument(
+        databaseId: _databaseName,
+        collectionId: "$lotteryStr$ACCUMULATE",
+        documentId: accumulateDocumentList.documents.first.$id,
+        data: {
+          "amount": lottery.price + accumulateDocument.data['amount'],
+          "lastFiveTransactions":
+              lastFiveTransactions, //TODO: Should be reverse ?
+        },
+      );
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+      return null;
+    }
+  }
+
+  Future<void> clearOtherSession(String currentSessionId) async {
+    try {
+      final sessions = await account.listSessions();
+      // List<String> sessionIds = [];
+      for (var sesssion in sessions.sessions) {
+        if (currentSessionId == sesssion.$id) {
+          logger.f("skip!");
+          continue;
+        }
+        logger.d("delete session");
+        await account.deleteSession(sessionId: sesssion.$id);
+      }
+      // account.deleteSession(sessionId: )
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
     }
   }
 }

@@ -469,7 +469,10 @@ class Header extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 16),
-          Logo.ck,
+          Image.asset(
+            Logo.ck,
+            height: 40,
+          ),
         ],
       ),
     );

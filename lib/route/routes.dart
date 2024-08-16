@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:lottery_ck/middleware/turnstile.dart';
+import 'package:lottery_ck/modules/bill/view/bill.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery_page.dart';
 import 'package:lottery_ck/modules/couldflare/controller/cloudflare.controller.dart';
@@ -63,16 +64,22 @@ class AppRoutes {
           transition: Transition.rightToLeft,
         ),
         GetPage(
-            name: RouteName.payment,
-            page: () => PayMentPage(),
-            transition: Transition.rightToLeft,
-            binding: BindingsBuilder(
-              () {
-                Get.lazyPut<PaymentController>(
-                  () => PaymentController(),
-                  fenix: true,
-                );
-              },
-            )),
+          name: RouteName.payment,
+          page: () => PayMentPage(),
+          transition: Transition.rightToLeft,
+          binding: BindingsBuilder(
+            () {
+              Get.lazyPut<PaymentController>(
+                () => PaymentController(),
+                fenix: true,
+              );
+            },
+          ),
+        ),
+        GetPage(
+          name: RouteName.bill,
+          page: () => BillPage(),
+          transition: Transition.rightToLeft,
+        ),
       ];
 }

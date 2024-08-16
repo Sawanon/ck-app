@@ -19,6 +19,9 @@ class AppColors {
   static const Color errorBorder = Color.fromRGBO(242, 49, 55, 1);
   static const Color disable = Color.fromRGBO(229, 229, 229, 1);
   static const Color disableText = Color.fromRGBO(172, 172, 172, 1);
+  static const Color secodaryText = Color.fromRGBO(135, 135, 135, 1);
+  static const Color secodaryBorder = Color.fromRGBO(217, 217, 217, 1);
+  static const Color secondary = Color.fromRGBO(0, 117, 255, 1);
 
   static const Color foreground = Color.fromRGBO(243, 243, 243, 1);
   static const Color foregroundBorder = Color.fromRGBO(241, 240, 240, 1);
