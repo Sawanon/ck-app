@@ -16,6 +16,9 @@ class BuyLotteryController extends GetxController {
   GlobalKey<FormState> formKey = GlobalKey();
   FocusNode priceNode = FocusNode();
   FocusNode lotteryNode = FocusNode();
+  TextEditingController priceTextController = TextEditingController();
+  TextEditingController lotteryTextController = TextEditingController();
+
   String? lottery;
   int? price;
 
@@ -184,6 +187,16 @@ class BuyLotteryController extends GetxController {
       return;
     }
     Get.toNamed(RouteName.payment);
+  }
+
+  void clearLottery() {
+    priceTextController.clear();
+    lotteryTextController.clear();
+    priceNode.unfocus();
+    lotteryNode.unfocus();
+    removeAllLottery();
+    // totalAmount.value = 0;
+    // lotteryList.clear();
   }
 
   @override

@@ -1,8 +1,11 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/model/bank.dart';
 import 'package:lottery_ck/model/lottery.dart';
+import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
+import 'package:lottery_ck/modules/history/controller/history_buy.controller.dart';
 import 'package:lottery_ck/utils.dart';
 
 class AppWriteController extends GetxController {
@@ -12,6 +15,7 @@ class AppWriteController extends GetxController {
   static const String INVOICE = '_invoice';
   static const String ACCUMULATE = '_accumulate';
   static const String LOTTERY_DATE = 'lottery_date';
+  static const String BANK = 'bank';
 
   static const _roleUserId = "669a2cfd00141edc45ef";
   final String _providerId = '6694bc1400115d5369eb';
@@ -153,11 +157,11 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<DocumentList?> getBank() async {
+  Future<DocumentList?> listBank() async {
     try {
       final bankList = await databases.listDocuments(
           databaseId: _databaseName,
-          collectionId: 'bank',
+          collectionId: BANK,
           queries: [
             Query.select(["name", "logo", "\$id"]),
             Query.equal('status', true),
@@ -167,6 +171,21 @@ class AppWriteController extends GetxController {
       logger.e(e.toString());
       Get.snackbar('Something went wrong',
           'Bank: please try again later or contact admin');
+      return null;
+    }
+  }
+
+  Future<Bank?> getBankById(String bankId) async {
+    try {
+      final bankDocument = await databases.getDocument(
+        databaseId: _databaseName,
+        collectionId: BANK,
+        documentId: bankId,
+      );
+      return Bank.fromJson(bankDocument.data);
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
       return null;
     }
   }
@@ -256,6 +275,7 @@ class AppWriteController extends GetxController {
           Query.greaterThanEqual('datetime', datetime.toIso8601String()),
           Query.orderAsc('datetime'),
           Query.equal('active', true),
+          Query.equal('is_emergency', false),
           Query.limit(1),
         ],
       );
@@ -334,6 +354,86 @@ class AppWriteController extends GetxController {
     } catch (e) {
       logger.e("$e");
       Get.rawSnackbar(message: "$e");
+    }
+  }
+
+  Future<List<LotteryDate>?> listLotteryDate() async {
+    try {
+      final listLotteryDate = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: LOTTERY_DATE,
+        queries: [
+          Query.equal('active', true),
+          Query.equal('is_emergency', false),
+        ],
+      );
+      logger.d(listLotteryDate.total);
+      return listLotteryDate.documents.map((lotteryDate) {
+        return LotteryDate.fromJson(lotteryDate.data);
+      }).toList();
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+      return null;
+    }
+  }
+
+  Future<DocumentList?> getHistoryBuy(String lotteryStr) async {
+    try {
+      final user = await account.get();
+      final historyBuy = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: "$lotteryStr$INVOICE",
+        queries: [
+          Query.equal(
+            "userId",
+            user.$id,
+          ),
+          Query.orderDesc('\$createdAt'),
+        ],
+      );
+      logger.d(historyBuy.total);
+      return historyBuy;
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+      return null;
+    }
+  }
+
+  Future<Document?> getTransactionById(
+      String transactionId, String lotteryDateStr) async {
+    try {
+      return databases.getDocument(
+        databaseId: _databaseName,
+        collectionId: "$lotteryDateStr$TRANSACTION",
+        documentId: transactionId,
+      );
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+      return null;
+    }
+  }
+
+  Future<UserApp?> getUserApp() async {
+    try {
+      final user = await account.get();
+      final userFromDatabase = await databases.getDocument(
+        databaseId: _databaseName,
+        collectionId: USER,
+        documentId: user.$id,
+      );
+      final userMap = userFromDatabase.data;
+      return UserApp(
+        firstName: userMap['firstname'],
+        lastName: userMap['lastname'],
+        phoneNumber: userMap['phone'],
+      );
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+      return null;
     }
   }
 }

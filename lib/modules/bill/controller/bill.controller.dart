@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:lottery_ck/model/bill.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
+import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
+import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
 
 class BillController extends GetxController {
@@ -25,6 +27,11 @@ class BillController extends GetxController {
       logger.d(session);
       logger.f(session.$id);
     }
+  }
+
+  void backToHome() {
+    navigator?.pop();
+    BuyLotteryController.to.clearLottery();
   }
 
   @override

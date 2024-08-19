@@ -31,4 +31,11 @@ class Lottery {
     }
     return digitMap;
   }
+
+  static Lottery fromJson(Map json) {
+    return Lottery(
+      lottery: json['lottery'],
+      price: json['amount'],
+    );
+  }
 }

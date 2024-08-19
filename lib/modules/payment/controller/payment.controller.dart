@@ -20,7 +20,7 @@ class PaymentController extends GetxController {
 
   Future<void> getBank() async {
     final appwriteController = AppWriteController.to;
-    final bankDocuments = await appwriteController.getBank();
+    final bankDocuments = await appwriteController.listBank();
     logger.d(bankDocuments?.documents);
 
     final bankList = bankDocuments?.documents.map(

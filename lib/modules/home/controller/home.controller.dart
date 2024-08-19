@@ -87,7 +87,9 @@ class HomeController extends GetxController {
   Future<DateTime?> getCurrentDatetime() async {
     try {
       final dio = Dio();
-      final response = await dio.get("${AppConst.cloudfareUrl}/currentTime");
+      const url = "${AppConst.cloudfareUrl}/currentTime";
+      logger.d(url);
+      final response = await dio.get(url);
       final dateServer = response.headers['dateISO'];
       if (dateServer?.isEmpty == true) {
         throw "date is not found";

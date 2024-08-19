@@ -15,4 +15,5 @@ class AppIcon {
   static const String shuffle = "assets/svg/vuesax/linear/shuffle.svg";
   static const String animal = "assets/svg/animal.svg";
   static const String add = "assets/svg/vuesax/linear/add.svg";
+  static const String translate = "assets/svg/vuesax/linear/translate.svg";
 }

@@ -387,6 +387,8 @@ class BuyLottery extends StatelessWidget {
                                           width: 80,
                                           child: TextFormField(
                                             focusNode: controller.lotteryNode,
+                                            controller: controller
+                                                .lotteryTextController,
                                             keyboardType: TextInputType.number,
                                             inputFormatters: [
                                               FilteringTextInputFormatter
@@ -437,6 +439,8 @@ class BuyLottery extends StatelessWidget {
                                                     .digitsOnly,
                                               ],
                                               focusNode: controller.priceNode,
+                                              controller: controller
+                                                  .priceTextController,
                                               onChanged: (value) {
                                                 controller.price =
                                                     int.parse(value);

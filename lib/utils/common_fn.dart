@@ -1,4 +1,5 @@
 import 'package:lottery_ck/model/lottery.dart';
+import 'package:intl/intl.dart';
 
 class CommonFn {
   static String parseDMY(DateTime datetime) {
@@ -16,5 +17,14 @@ class CommonFn {
   static int calculateTotalPrice(List<Lottery> lotteryList) {
     return lotteryList.fold(
         0, (previousValue, element) => previousValue + element.price);
+  }
+
+  static String parseMoney(int money) {
+    try {
+      final formatter = NumberFormat('#,###,000');
+      return formatter.format(money);
+    } catch (e) {
+      return "invalid type (int)";
+    }
   }
 }

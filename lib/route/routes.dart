@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:lottery_ck/binding/initial.binding.dart';
 import 'package:lottery_ck/middleware/turnstile.dart';
 import 'package:lottery_ck/modules/bill/view/bill.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
@@ -22,12 +23,7 @@ class AppRoutes {
         GetPage(
           name: RouteName.layout,
           page: () => LayoutPage(),
-          binding: BindingsBuilder(
-            () {
-              Get.put<BuyLotteryController>(BuyLotteryController());
-              Get.put<UserStore>(UserStore());
-            },
-          ),
+          binding: LoggedInBinding(),
         ),
         GetPage(
           name: RouteName.login,

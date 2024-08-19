@@ -5,6 +5,8 @@ import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller
 import 'package:lottery_ck/modules/couldflare/controller/cloudflare.controller.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_auth.controller.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
+import 'package:lottery_ck/modules/history/controller/history.controller.dart';
+import 'package:lottery_ck/modules/history/controller/history_buy.controller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/login/controller/login.controller.dart';
@@ -39,5 +41,17 @@ class InitialBinding extends Bindings {
     // Get.lazyPut<SplashScreenController>(() => SplashScreenController());
     Get.put<SplashScreenController>(SplashScreenController());
     Get.lazyPut<BillController>(() => BillController(), fenix: true);
+  }
+}
+
+class LoggedInBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut<HistoryController>(() => HistoryController(), fenix: true);
+    Get.put<BuyLotteryController>(BuyLotteryController());
+    Get.put<UserStore>(UserStore());
+    // Get.lazyPut<HistoryBuyController>(() => HistoryBuyController(),
+    //     fenix: true);
+    Get.put<HistoryBuyController>(HistoryBuyController());
   }
 }
