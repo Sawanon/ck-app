@@ -5,45 +5,21 @@ import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/model/bill.dart';
 import 'package:lottery_ck/model/history.dart';
 import 'package:lottery_ck/model/lottery.dart';
+import 'package:lottery_ck/model/lottery_date.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/bill/view/bill_component.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 
-class LotteryDate {
-  late DateTime dateTime;
-  late DateTime startTime;
-  late DateTime endTime;
-
-  LotteryDate({
-    required DateTime dateTime,
-    required DateTime startTime,
-    required DateTime endTime,
-  }) {
-    this.dateTime = dateTime.toLocal();
-    this.startTime = startTime.toLocal();
-    this.endTime = endTime.toLocal();
-  }
-
-  static LotteryDate fromJson(Map json) => LotteryDate(
-        dateTime: DateTime.parse(json['datetime']),
-        startTime: DateTime.parse(json['start_time']),
-        endTime: DateTime.parse(json['end_time']),
-      );
-
-  @override
-  String toString() {
-    return dateTime.toString();
-  }
-}
-
 class HistoryBuyController extends GetxController {
   static HistoryBuyController get to => Get.find();
   DateTime? selectedLotteryDate;
   List<LotteryDate> lotteryDateList = [];
   RxList<History> historyList = <History>[].obs;
-  RxList invoiceDetail = [].obs;
+  RxBool loadingHistoryList = true.obs;
+  RxBool loadingTransactionId = true.obs;
+  RxBool loadingBill = false.obs;
 
   void listLotteryDate() async {
     try {
@@ -88,9 +64,12 @@ class HistoryBuyController extends GetxController {
 
   Future<void> onChangeLotteryDate(DateTime lotteryDate) async {
     logger.d("fetch API !");
+    loadingHistoryList.value = true;
     await getHistoryBuy(lotteryDate);
+    loadingHistoryList.value = false;
     selectedLotteryDate = lotteryDate;
     update();
+    loadingTransactionId.value = true;
     for (var history in historyList) {
       final lotteryList = [];
       for (var transactionId in history.transactionIdList) {
@@ -99,6 +78,7 @@ class HistoryBuyController extends GetxController {
       }
       history.lotteryList = lotteryList;
     }
+    loadingTransactionId.value = false;
     update();
   }
 
@@ -117,6 +97,17 @@ class HistoryBuyController extends GetxController {
   }
 
   void makeBillDialog(BuildContext context, History history) async {
+    // TODO: creaet loading
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => Center(
+        child: CircularProgressIndicator(
+          color: AppColors.primary,
+          backgroundColor: Colors.white,
+        ),
+      ),
+    );
     final appwriteController = AppWriteController.to;
     final user = await appwriteController.account.get();
     final bank = await appwriteController.getBankById(history.bankId);
@@ -130,6 +121,7 @@ class HistoryBuyController extends GetxController {
       );
       transactionList.add(Lottery.fromJson(transactionDocument!.data));
     }
+    navigator?.pop();
     final bill = Bill(
       firstName: user.name.split(" ").first,
       lastName: user.name.split(" ")[1],

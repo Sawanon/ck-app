@@ -23,7 +23,7 @@ class LoginController extends GetxController {
   GlobalKey<FormState> keyForm = GlobalKey();
   // RxBool disableLogin = true.obs;
   // TODO: for test only !! - sawanon:20240816
-  RxBool disableLogin = false.obs;
+  RxBool disableLogin = true.obs;
   WebViewController? webviewController;
 
   Future<void> login() async {
@@ -83,14 +83,6 @@ class LoginController extends GetxController {
     );
   }
 
-  Future<void> createPin() async {
-    final dio = Dio();
-    final appwriteController = AppWriteController.to;
-    final account = appwriteController.account;
-
-    // final reposne = dio.
-  }
-
   Future<Map<String, dynamic>?> getToken() async {
     final dio = Dio();
     final response = await dio.post("${AppConst.cloudfareUrl}/sign-in", data: {
@@ -108,6 +100,7 @@ class LoginController extends GetxController {
         secret: token["secret"],
       );
       await appwriteController.clearOtherSession(session.$id);
+      await appwriteController.createTarget();
       final storageController = StorageController.to;
       storageController.setSessionId(session.$id);
       return session;

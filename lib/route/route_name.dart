@@ -8,6 +8,7 @@ class RouteName {
   static const String buyLottery = '/buyLottery';
   static const String payment = '/payment';
   static const String bill = '/bill';
+  static const String point = '/point';
 
   static const String cloudflare = '/cloudflare';
 }

@@ -3,6 +3,7 @@ import 'package:appwrite/models.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/model/bank.dart';
 import 'package:lottery_ck/model/lottery.dart';
+import 'package:lottery_ck/model/lottery_date.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
 import 'package:lottery_ck/modules/history/controller/history_buy.controller.dart';
@@ -18,7 +19,7 @@ class AppWriteController extends GetxController {
   static const String BANK = 'bank';
 
   static const _roleUserId = "669a2cfd00141edc45ef";
-  final String _providerId = '6694bc1400115d5369eb';
+  final String _providerId = '66c40a34002ba3fd94f5';
   static AppWriteController get to => Get.find();
   late Account account;
   late Databases databases;
@@ -82,7 +83,7 @@ class AppWriteController extends GetxController {
       identifier: 'push',
       providerId: _providerId,
     );
-    logger.d(target);
+    logger.d(target.providerType);
   }
 
   Future<User?> register(String email, String password, String firstName,
