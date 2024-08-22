@@ -33,7 +33,8 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="https" android:host="lotterylao.net" android:pathPrefix="/foo" />
+                <data android:scheme="http" android:host="lottobkk.net" android:pathPrefix="/foo" />
+                <data android:scheme="https" android:host="lottobkk.net" android:pathPrefix="/foo" />
             </intent-filter>
 
             <!-- Deep Link sample -->
@@ -42,8 +43,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Add optional android:host to distinguish your app
-                    from others in case of conflicting scheme name -->
-                <data android:scheme="lottery" android:host="lotterylao.net" />
+                     from others in case of conflicting scheme name -->
+                <data android:scheme="https" android:host="lottobkk.net" />
                 <!-- <data android:scheme="sample" /> -->
             </intent-filter>
             

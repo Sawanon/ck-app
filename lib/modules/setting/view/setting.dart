@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
@@ -10,7 +8,6 @@ import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/route/route_name.dart';
-import 'package:lottery_ck/utils.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});

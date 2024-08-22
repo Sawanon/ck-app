@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/model/bank.dart';
 import 'package:lottery_ck/model/bill.dart';
@@ -5,9 +6,11 @@ import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
+import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PaymentController extends GetxController {
   List<Lottery> lotteryList = <Lottery>[];
@@ -50,6 +53,45 @@ class PaymentController extends GetxController {
   }
 
   void payLottery(Bank bank, int totalAmount) async {
+    final dio = Dio();
+    final response = await dio.post(
+      "${AppConst.cloudfareUrl}/bank/ldbpay/v1/authService/token",
+      options: Options(
+        headers: {
+          "Authorization": "Basic c2F3YW5vbjoxMjM0NTY=",
+        },
+      ),
+    );
+    final accessToken = response.data['access_token'];
+    logger.d("access_token: $accessToken");
+    final responseDeeplink = await dio.post(
+      "${AppConst.cloudfareUrl}/bank/ldbpay/v1/payment/generateLink.service",
+      options: Options(
+        headers: {
+          "Authorization": "Basic $accessToken",
+        },
+      ),
+      data: {
+        "merchantId": "LDB0302000002",
+        "merchantAcct": "4404FE0FDEA841C04BB68A35B0392F68",
+        "customerId": "123",
+        "referentId": "12321352",
+        "amount": "$totalAmount",
+        "remark": "ldbpay",
+        "urlBack": "https://lottobkk.net",
+        "urlCallBack": "${AppConst.cloudfareUrl}/payment",
+        "additional1": "EWRWR",
+        "additional2": "33432",
+        "additional3": "ASAA",
+        "additional4": "QQQQQQQ"
+      },
+    );
+    final link = responseDeeplink.data['link'];
+    logger.d(link);
+    await launchUrl(Uri.parse('$link'));
+  }
+
+  void createInvoice(Bank bank, int totalAmount) async {
     try {
       isLoading = true;
       update();

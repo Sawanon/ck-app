@@ -23,36 +23,16 @@ void main() async {
 }
 
 Future checkDeeplink() async {
-  StreamSubscription _sub;
+  // StreamSubscription _sub;
   try {
-    print("checkDeeplink");
+    logger.d("checkDeeplink");
     // await getInitialLink();
     final _appLinks = AppLinks();
-    final link = await _appLinks.getInitialLinkString();
-    logger.d("link: $link");
     _appLinks.uriLinkStream.listen(
-      (event) {
-        logger.d(event);
+      (uri) {
+        logger.w(uri);
       },
     );
-    // _appLinks.
-    // _sub = uriLinkStream.listen((event) {
-    //   // print('path: ${event?.path} , ${event?.pathSegments}');
-    //   // print('event 42: ${event}');
-    //   if (event != null) {
-    //     // TODO: get.name to home page with some param
-    //     // print('gogo');
-    //     Get.toNamed(RouteName.callback, arguments: [event]);
-    //     // print('gogo2');
-    //   }
-    // }, onError: (error) {
-    //   print('error 44 $error');
-    // });
-    // _sub = linkStream.listen((event) {
-    //   print('uri: $event');
-    // }, onError: (err) {
-    //   print('error 43 checkDeeplink: $err');
-    // });
   } on PlatformException {
     logger.d("PlatformException");
   } catch (e) {
