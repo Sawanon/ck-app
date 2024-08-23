@@ -38,4 +38,11 @@ class Lottery {
       price: json['amount'],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        "lottery": lottery,
+        ...toDigit(),
+        "lotteryType": type,
+        "amount": price,
+      };
 }

@@ -164,7 +164,7 @@ class AppWriteController extends GetxController {
           databaseId: _databaseName,
           collectionId: BANK,
           queries: [
-            Query.select(["name", "logo", "\$id"]),
+            Query.select(["name", "logo", "\$id", "full_name"]),
             Query.equal('status', true),
           ]);
       return bankList;

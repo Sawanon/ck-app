@@ -30,6 +30,9 @@ Future checkDeeplink() async {
     final _appLinks = AppLinks();
     _appLinks.uriLinkStream.listen(
       (uri) {
+        logger.w(uri.data);
+        logger.w(uri.origin);
+        logger.w(uri.userInfo);
         logger.w(uri);
       },
     );

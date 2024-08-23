@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/model/bank.dart';
@@ -8,6 +10,7 @@ import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/route/route_name.dart';
+import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -53,7 +56,35 @@ class PaymentController extends GetxController {
   }
 
   void payLottery(Bank bank, int totalAmount) async {
+    logger.d("boom !");
+    final storage = StorageController.to;
+    final sessionId = await storage.getSessionId();
+    final user = await AppWriteController.to.user;
+    final credential = "$sessionId:${user.$id}";
+    final bearer = base64Encode(utf8.encode(credential));
+    final transactions = lotteryList
+        .map(
+          (lottery) => lottery.toJson(),
+        )
+        .toList();
     final dio = Dio();
+    final responseTransaction = await dio.post(
+      "${AppConst.cloudfareUrl}/createTransaction",
+      data: {
+        "totalAmount": totalAmount,
+        "bankId": bank.$id,
+        "lotteryDateStr": lotteryDateStrYMD!,
+        "transactions": transactions,
+      },
+      options: Options(
+        headers: {
+          "Authorization": "Bearer $bearer",
+        },
+      ),
+    );
+    logger.w(responseTransaction.data);
+    return;
+    //TODO: should be move this to back-end
     final response = await dio.post(
       "${AppConst.cloudfareUrl}/bank/ldbpay/v1/authService/token",
       options: Options(

@@ -125,7 +125,7 @@ class PayMentPage extends StatelessWidget {
                                           },
                                         ),
                                         const SizedBox(width: 8),
-                                        Text(bank.name),
+                                        Text(bank.fullName),
                                       ],
                                     ),
                                   ),
