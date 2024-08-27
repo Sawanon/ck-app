@@ -68,17 +68,17 @@ class SignupController extends GetxController {
     logger.d("isLoginSuccess: $isLoginSuccess");
     if (isCreateUserdocumentSuccess && isLoginSuccess) {
       Get.snackbar("Login success", 'good luck have fun');
-      Get.delete<BuyLotteryController>();
+      // Get.delete<BuyLotteryController>();
       Get.delete<UserStore>();
     }
     // register || login || create user document failed - sawanon:20240807
-    Get.snackbar('Something went wrong', 'plaese try again');
+    // Get.snackbar('Something went wrong signup:75', 'plaese try again');
     // Get.offAllNamed(RouteName.layout);
     Get.toNamed(
       RouteName.pin,
       arguments: {
         'whenSuccess': () {
-          Get.delete<BuyLotteryController>();
+          // Get.delete<BuyLotteryController>();
           Get.delete<UserStore>();
           Get.offAllNamed(RouteName.layout);
         }

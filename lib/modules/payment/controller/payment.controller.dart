@@ -16,6 +16,7 @@ import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PaymentController extends GetxController {
+  static PaymentController get to => Get.find();
   List<Lottery> lotteryList = <Lottery>[];
   List<Bank> bankList = [];
   DateTime? lotteryDate;
@@ -56,7 +57,9 @@ class PaymentController extends GetxController {
   }
 
   void payLottery(Bank bank, int totalAmount) async {
-    logger.d("boom !");
+    // logger.d("boom !");
+    isLoading = true;
+    update();
     final storage = StorageController.to;
     final sessionId = await storage.getSessionId();
     final user = await AppWriteController.to.user;
@@ -82,44 +85,46 @@ class PaymentController extends GetxController {
         },
       ),
     );
-    logger.w(responseTransaction.data);
-    return;
-    //TODO: should be move this to back-end
-    final response = await dio.post(
-      "${AppConst.cloudfareUrl}/bank/ldbpay/v1/authService/token",
-      options: Options(
-        headers: {
-          "Authorization": "Basic c2F3YW5vbjoxMjM0NTY=",
+    final result = responseTransaction.data;
+    final deeplink = result['deeplink'];
+    final invoiceDocument = result['invoice'];
+    logger.w(invoiceDocument);
+    await launchUrl(Uri.parse('${deeplink['link']}'));
+    isLoading = false;
+    update();
+  }
+
+  void showBill(String invoiceId) async {
+    try {
+      final appwriteController = AppWriteController.to;
+      final user = await appwriteController.user;
+      final invoiceDocuments = await appwriteController.getInvoice(
+        invoiceId,
+        lotteryDateStrYMD!,
+      );
+      logger.d(invoiceDocuments?.data);
+
+      final bill = Bill(
+        firstName: user.name.split(" ").first,
+        lastName: user.name.split(" ")[1],
+        phoneNumber: user.phone,
+        dateTime: DateTime.parse(invoiceDocuments!.$createdAt),
+        lotteryDateStr: lotteryDateStrYMD!,
+        lotteryList: lotteryList,
+        totalAmount: totalAmount.toString(),
+        invoiceId: invoiceDocuments.$id,
+        bankName: selectedBank!.name,
+      );
+      Get.offNamed(
+        RouteName.bill,
+        arguments: {
+          "bill": bill,
         },
-      ),
-    );
-    final accessToken = response.data['access_token'];
-    logger.d("access_token: $accessToken");
-    final responseDeeplink = await dio.post(
-      "${AppConst.cloudfareUrl}/bank/ldbpay/v1/payment/generateLink.service",
-      options: Options(
-        headers: {
-          "Authorization": "Basic $accessToken",
-        },
-      ),
-      data: {
-        "merchantId": "LDB0302000002",
-        "merchantAcct": "4404FE0FDEA841C04BB68A35B0392F68",
-        "customerId": "123",
-        "referentId": "12321352",
-        "amount": "$totalAmount",
-        "remark": "ldbpay",
-        "urlBack": "https://lottobkk.net",
-        "urlCallBack": "${AppConst.cloudfareUrl}/payment",
-        "additional1": "EWRWR",
-        "additional2": "33432",
-        "additional3": "ASAA",
-        "additional4": "QQQQQQQ"
-      },
-    );
-    final link = responseDeeplink.data['link'];
-    logger.d(link);
-    await launchUrl(Uri.parse('$link'));
+      );
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+    }
   }
 
   void createInvoice(Bank bank, int totalAmount) async {

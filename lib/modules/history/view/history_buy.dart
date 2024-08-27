@@ -19,7 +19,6 @@ class HistoryBuyPage extends StatelessWidget {
       },
       builder: (controller) {
         return Column(
-          // shrinkWrap: true,
           children: [
             Align(
               alignment: Alignment.centerRight,

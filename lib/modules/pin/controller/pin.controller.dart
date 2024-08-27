@@ -25,7 +25,7 @@ class PinController extends GetxController {
       whenSuccess();
     } on Exception catch (e) {
       logger.e(e.toString());
-      Get.snackbar('Something went wrong', 'Plaese try again later');
+      Get.snackbar('Something went wrong pin:28', 'Plaese try again later');
     }
   }
 

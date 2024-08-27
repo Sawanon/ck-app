@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
 import 'package:lottery_ck/binding/initial.binding.dart';
+import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/route/routes.dart';
@@ -30,10 +31,10 @@ Future checkDeeplink() async {
     final _appLinks = AppLinks();
     _appLinks.uriLinkStream.listen(
       (uri) {
-        logger.w(uri.data);
-        logger.w(uri.origin);
-        logger.w(uri.userInfo);
-        logger.w(uri);
+        if (uri.path == "/payment") {
+          final invoiceId = uri.queryParameters['invoiceId'];
+          PaymentController.to.showBill(invoiceId!);
+        }
       },
     );
   } on PlatformException {

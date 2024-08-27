@@ -30,6 +30,14 @@ class StorageController extends GetxController {
     return value;
   }
 
+  Future<void> clearValue(String key) async {
+    await storage?.delete(
+      key: key,
+      iOptions: _getIOSOptions(),
+      aOptions: _getAndroidOptions(),
+    );
+  }
+
   Future<void> removeAll() async {
     await storage?.deleteAll();
   }
@@ -41,6 +49,10 @@ class StorageController extends GetxController {
   Future<String?> getSessionId() async {
     final value = await getValue('sessionId');
     return value;
+  }
+
+  Future<void> clearSessionId() async {
+    await clearValue("sessionId");
   }
 
   Future<void> setUserId(String userId) async {

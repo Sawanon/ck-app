@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
@@ -30,33 +31,8 @@ class BuyLotteryController extends GetxController {
   bool get lotteryIsEmpty => lotteryList.isEmpty;
   late StreamSubscription<bool> keyboardSubscription;
 
-  Future<void> checkUser() async {
-    final appwriteController = AppWriteController.to;
-    final isUserLoggedIn = await appwriteController.isUserLoggedIn();
-    logger.d(isUserLoggedIn);
-    this.isUserLoggedIn.value = isUserLoggedIn;
-  }
-
   void gotoLoginPage() {
     Get.toNamed(RouteName.login);
-    // Get.toNamed(RouteName.cloudflare, arguments: {
-    //   "whenSuccess": () {
-    //   },
-    //   "onFailed": () {
-    //     Get.snackbar("Verify faield", "please contact admin");
-    //     navigator?.pop();
-    //   },
-    //   "onHttpError": () {
-    //     Get.snackbar("Something went wrong",
-    //         "try again later: error connection from server");
-    //     navigator?.pop();
-    //   },
-    //   "onWebResourceError": () {
-    //     Get.snackbar(
-    //         "Something went wrong", "try again later: error connection page");
-    //     navigator?.pop();
-    //   }
-    // });
   }
 
   void onFucusTextInput(bool isFocus) {
@@ -171,19 +147,77 @@ class BuyLotteryController extends GetxController {
 
   void alertLotteryEmpty([String? title]) {
     if (!Get.isSnackbarOpen) {
-      Get.snackbar(
-        title ?? "Please enter lottery",
-        "",
-        messageText: Container(),
-        backgroundColor: AppColors.primary.withOpacity(0.7),
-        colorText: Colors.white,
+      Get.rawSnackbar(
+        messageText: Text(
+          "Please enter lottery",
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        backgroundColor: AppColors.errorBorder,
+        overlayColor: Colors.white,
       );
     }
   }
 
-  void confirmLottery() {
+  void confirmLottery(BuildContext context) async {
     if (lotteryList.isEmpty) {
       Get.rawSnackbar(message: "Please add lottery");
+      return;
+    }
+    try {
+      await AppWriteController.to.user;
+    } on Exception catch (e) {
+      logger.e("$e");
+      if (context.mounted) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return Center(
+              child: Container(
+                margin: EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "ກະລຸນາເຂົ້າສູ່ລະບົບ",
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    Text(
+                      "ກະລຸນາເຂົ້າສູ່ລະບົບກ່ອນທີ່ຈະຊື້ຫວຍ.",
+                      style: TextStyle(
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    LongButton(
+                      onPressed: () {
+                        navigator?.pop();
+                        gotoLoginPage();
+                      },
+                      child: Text(
+                        "LOG IN",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      }
+      Get.rawSnackbar(message: "Please sign in");
       return;
     }
     Get.toNamed(RouteName.payment);
@@ -199,9 +233,17 @@ class BuyLotteryController extends GetxController {
     // lotteryList.clear();
   }
 
+  void onChangePrice(String price) {
+    if (price.isEmpty) {
+      this.price = null;
+      return;
+    }
+    this.price = int.parse(price);
+  }
+
   @override
   void onInit() {
-    checkUser();
+    // checkUser();
     setupNode();
     keyboardSubscription = KeyboardVisibilityController().onChange.listen(
       (event) {

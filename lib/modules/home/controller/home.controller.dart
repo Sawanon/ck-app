@@ -96,8 +96,8 @@ class HomeController extends GetxController {
       }
       final nowStr = dateServer![0];
       // TODO: fake date time for test - sawanon
-      // final now = DateTime.parse(nowStr);
-      final now = DateTime.now().add(const Duration(days: -7));
+      final now = DateTime.parse(nowStr);
+      // final now = DateTime.now().add(const Duration(days: -7));
       return now;
     } catch (e) {
       logger.e(e.toString());

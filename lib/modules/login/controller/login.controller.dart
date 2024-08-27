@@ -62,8 +62,8 @@ class LoginController extends GetxController {
           final session = await createSession(token);
           if (session == null) {
             Get.snackbar(
-              "Something went wrong",
-              "Please try again later or plaese contact admin",
+              "Something went wrong login:65",
+              "session is null Please try again later or plaese contact admin",
             );
             navigator?.pop();
             return;
@@ -72,9 +72,12 @@ class LoginController extends GetxController {
             RouteName.pin,
             arguments: {
               "whenSuccess": () {
-                Get.delete<BuyLotteryController>();
-                Get.delete<UserStore>();
-                Get.offAllNamed(RouteName.layout);
+                // Get.delete<BuyLotteryController>();
+                // Get.delete<UserStore>();
+                navigator?.pop();
+                navigator?.pop();
+                // navigator?.pop();
+                // Get.offAllNamed(RouteName.layout);
               }
             },
           );

@@ -1,3 +1,4 @@
+import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,7 +32,7 @@ class HistoryBuyController extends GetxController {
       this.lotteryDateList = lotteryDateList.reversed.toList();
       selectedLotteryDate = this.lotteryDateList.first.dateTime;
       update();
-    } on Exception catch (e) {
+    } catch (e) {
       logger.e("$e");
       Get.rawSnackbar(message: "$e");
     }
@@ -90,10 +91,16 @@ class HistoryBuyController extends GetxController {
   }
 
   void visitPage() async {
-    if (selectedLotteryDate == null || historyList.isNotEmpty) return;
+    try {
+      await AppWriteController.to.user;
+      if (selectedLotteryDate == null || historyList.isNotEmpty) return;
 
-    await onChangeLotteryDate(selectedLotteryDate!);
-    logger.w("visitPage");
+      await onChangeLotteryDate(selectedLotteryDate!);
+      logger.w("visitPage");
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+    }
   }
 
   void makeBillDialog(BuildContext context, History history) async {

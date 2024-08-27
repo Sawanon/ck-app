@@ -7,6 +7,7 @@ import 'package:lottery_ck/model/lottery_date.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
 import 'package:lottery_ck/modules/history/controller/history_buy.controller.dart';
+import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 
 class AppWriteController extends GetxController {
@@ -44,8 +45,11 @@ class AppWriteController extends GetxController {
 
   Future<bool> login(String email, String password) async {
     try {
-      await account.createEmailPasswordSession(
-          email: email, password: password);
+      final session = await account.createEmailPasswordSession(
+        email: email,
+        password: password,
+      );
+      await StorageController.to.setSessionId(session.$id);
       final user = await account.get();
       logger.d(user.name);
       // final firebaseMessage = FirebaseMessagingController.to;
@@ -67,7 +71,7 @@ class AppWriteController extends GetxController {
     } on Exception catch (e) {
       logger.e(e.toString());
       Get.snackbar(
-        "Something went wrong",
+        "Something went wrong appwrite:74",
         "Please try again later or plaese contact admin",
       );
       return false;
@@ -79,8 +83,8 @@ class AppWriteController extends GetxController {
 
   Future<void> createTarget() async {
     final target = await account.createPushTarget(
-      targetId: 'pushna',
-      identifier: 'push',
+      targetId: ID.unique(),
+      identifier: 'phone',
       providerId: _providerId,
     );
     logger.d(target.providerType);
@@ -103,9 +107,6 @@ class AppWriteController extends GetxController {
       logger.e(e.toString());
       return null;
     }
-    // final phoneNumber =
-    // account.createPushTarget(targetId: targetId, identifier: identifier)
-    // await login(email, password);
   }
 
   Future<bool> createUserDocument(String email, String userId, String firstName,
@@ -133,7 +134,7 @@ class AppWriteController extends GetxController {
     } on Exception catch (e) {
       logger.e(e.toString());
       Get.snackbar(
-        "Something went wrong plaese try again later",
+        "Something went wrong plaese try again later appwrite:137",
         'or plaese contact admin',
       );
       return false;
@@ -170,7 +171,7 @@ class AppWriteController extends GetxController {
       return bankList;
     } catch (e) {
       logger.e(e.toString());
-      Get.snackbar('Something went wrong',
+      Get.snackbar('Something went wrong appwrite:174',
           'Bank: please try again later or contact admin');
       return null;
     }
@@ -211,7 +212,7 @@ class AppWriteController extends GetxController {
     } catch (e) {
       logger.e(e.toString());
       Get.snackbar(
-        'Something went wrong',
+        'Something went wrong appwrite:215',
         'Invoice: please try again later or contact admin',
       );
       return null;
@@ -260,7 +261,7 @@ class AppWriteController extends GetxController {
     } catch (e) {
       logger.e("$e");
       Get.rawSnackbar(
-        title: 'Something went wrong',
+        title: 'Something went wrong appwrite:264',
         message: "Transaction: please try again later or contact admin",
       );
       return null;
@@ -430,6 +431,20 @@ class AppWriteController extends GetxController {
         firstName: userMap['firstname'],
         lastName: userMap['lastname'],
         phoneNumber: userMap['phone'],
+      );
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+      return null;
+    }
+  }
+
+  Future<Document?> getInvoice(String invoiceId, String lotteryStr) async {
+    try {
+      return await databases.getDocument(
+        databaseId: _databaseName,
+        collectionId: "$lotteryStr$INVOICE",
+        documentId: invoiceId,
       );
     } catch (e) {
       logger.e("$e");

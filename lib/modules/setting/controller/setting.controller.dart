@@ -3,12 +3,18 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/route/route_name.dart';
+import 'package:lottery_ck/storage.dart';
+import 'package:lottery_ck/utils.dart';
 import 'package:share_plus/share_plus.dart';
 
 class SettingController extends GetxController {
   UserApp? user;
+  bool isLogin = false;
+  bool loading = true;
 
   Future<void> logout() async {
+    final storage = StorageController.to;
+    await storage.clearSessionId();
     final appwriteController = AppWriteController.to;
     await appwriteController.logout();
     Get.offAllNamed(RouteName.login);
@@ -56,9 +62,22 @@ class SettingController extends GetxController {
     // }
   }
 
+  void checkPermission() async {
+    try {
+      await AppWriteController.to.user;
+      isLogin = true;
+      setup();
+    } catch (e) {
+      logger.e("$e");
+    } finally {
+      loading = false;
+      update();
+    }
+  }
+
   @override
-  void onInit() {
-    setup();
+  void onInit() async {
+    checkPermission();
     super.onInit();
   }
 }

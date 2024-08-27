@@ -67,7 +67,7 @@ class OtpController extends GetxController {
     } catch (e) {
       logger.e(e.toString());
       Get.snackbar(
-        "Something went wrong",
+        "Something went wrong otp:70",
         e.toString(),
       );
       navigator?.pop();

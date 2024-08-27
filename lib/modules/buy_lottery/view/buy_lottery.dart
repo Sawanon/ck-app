@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
+import 'package:lottery_ck/utils.dart';
 
 class BuyLottery extends StatelessWidget {
   const BuyLottery({
@@ -17,38 +18,6 @@ class BuyLottery extends StatelessWidget {
       builder: (controller) {
         return Obx(
           () {
-            if (!controller.isUserLoggedIn.value) {
-              return Container(
-                height: 144,
-                width: double.infinity,
-                // color: Colors.amber,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 8,
-                ),
-                child: GestureDetector(
-                  onTap: () {
-                    controller.gotoLoginPage();
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Log in",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              );
-            }
             return SafeArea(
               child: Column(
                 mainAxisAlignment: controller.lotteryIsEmpty
@@ -441,10 +410,8 @@ class BuyLottery extends StatelessWidget {
                                               focusNode: controller.priceNode,
                                               controller: controller
                                                   .priceTextController,
-                                              onChanged: (value) {
-                                                controller.price =
-                                                    int.parse(value);
-                                              },
+                                              onChanged:
+                                                  controller.onChangePrice,
                                               decoration: InputDecoration(
                                                 errorStyle:
                                                     TextStyle(height: 0),
@@ -543,12 +510,13 @@ class BuyLottery extends StatelessWidget {
                                 const SizedBox(width: 4),
                                 GestureDetector(
                                   onTap: () {
-                                    controller.confirmLottery();
+                                    controller.confirmLottery(
+                                        context); // lottery confirm
                                   },
                                   child: Container(
                                     alignment: Alignment.center,
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 24),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 24),
                                     height: 50,
                                     decoration: BoxDecoration(
                                       color: AppColors.primary,
