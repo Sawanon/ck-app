@@ -20,6 +20,7 @@ class AppIcon {
   static const String feedback = "assets/svg/vuesax/linear/like-shapes.svg";
   static const String shareFriend = "assets/svg/vuesax/linear/people.svg";
   static const String point = "assets/svg/vuesax/linear/medal-star.svg";
+  static const String fingerScan = "assets/svg/vuesax/bulk/finger-scan.svg";
 
   static const String lo = "assets/laos1.png";
   static const String th = "assets/Th1.png";

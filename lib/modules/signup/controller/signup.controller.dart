@@ -7,6 +7,7 @@ import 'package:lottery_ck/modules/login/controller/login.controller.dart';
 import 'package:lottery_ck/repository/user_repository/user.repository.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 
 class SignupController extends GetxController {
   String firstName = '';
@@ -77,7 +78,11 @@ class SignupController extends GetxController {
     Get.toNamed(
       RouteName.pin,
       arguments: {
-        'whenSuccess': () {
+        'whenSuccess': () async {
+          // await CommonFn.requestBiometrics();
+          final availableBiometrics = await CommonFn.availableBiometrics();
+          logger.d("availableBiometrics: $availableBiometrics");
+          if (availableBiometrics) {}
           // Get.delete<BuyLotteryController>();
           Get.delete<UserStore>();
           Get.offAllNamed(RouteName.layout);

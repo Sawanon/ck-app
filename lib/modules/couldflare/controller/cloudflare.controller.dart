@@ -82,9 +82,9 @@ class CloudFlareController extends GetxController {
         onPageStarted: (String url) {},
         onPageFinished: (String url) {},
         onHttpError: (HttpResponseError error) {
-          logger.e("onHttpError: $error");
-          logger.e('onHttpError: ${error.response?.statusCode}');
-          logger.e('onHttpError: ${error.response}');
+          // logger.e("onHttpError: $error");
+          // logger.e('onHttpError: ${error.response?.statusCode}');
+          // logger.e('onHttpError: ${error.response}');
           // Get.snackbar(
           //   "Too many requests",
           //   "Please try again or contact admin",

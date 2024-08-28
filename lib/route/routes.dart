@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:lottery_ck/binding/initial.binding.dart';
 import 'package:lottery_ck/modules/bill/view/bill.dart';
+import 'package:lottery_ck/modules/biometrics/view/enable_biometrics.dart';
 import 'package:lottery_ck/modules/couldflare/view/cloudflare.dart';
 import 'package:lottery_ck/modules/layout/view/layout.dart';
 import 'package:lottery_ck/modules/login/view/login.dart';
@@ -70,6 +71,11 @@ class AppRoutes {
         GetPage(
           name: RouteName.point,
           page: () => PointPage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.enableBiometrics,
+          page: () => EnableBiometricsPage(),
           transition: Transition.rightToLeft,
         ),
       ];

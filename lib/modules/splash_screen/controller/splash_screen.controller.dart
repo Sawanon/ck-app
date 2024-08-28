@@ -9,12 +9,6 @@ import 'package:lottery_ck/utils.dart';
 
 class SplashScreenController extends GetxController {
   void gotoLayout() {
-    // SystemChrome.setEnabledSystemUIMode(
-    //   SystemUiMode.manual,
-    //   overlays: SystemUiOverlay.values,
-    // );
-    // logger.d("gogogo");
-
     // TODO: uncomment for production
     Get.offNamed(RouteName.layout);
   }
@@ -68,7 +62,7 @@ class SplashScreenController extends GetxController {
 
   @override
   void onInit() {
-    setup();
+    // setup();
     super.onInit();
   }
 }

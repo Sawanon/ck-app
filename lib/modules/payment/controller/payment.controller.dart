@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:lottery_ck/model/bank.dart';
 import 'package:lottery_ck/model/bill.dart';
 import 'package:lottery_ck/model/lottery.dart';
@@ -56,13 +57,62 @@ class PaymentController extends GetxController {
     totalAmount = buyLotteryController.totalAmount.value;
   }
 
+  Future<void> checkType() async {
+    final LocalAuthentication auth = LocalAuthentication();
+    final bool canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
+    logger.d("canAuthenticateWithBiometrics: $canAuthenticateWithBiometrics");
+    final bool canAuthenticate =
+        canAuthenticateWithBiometrics || await auth.isDeviceSupported();
+    logger.d("canAuthenticate: $canAuthenticate");
+    final List<BiometricType> availableBiometrics =
+        await auth.getAvailableBiometrics();
+    logger
+        .w("availableBiometrics.isNotEmpty: ${availableBiometrics.isNotEmpty}");
+    if (availableBiometrics.isNotEmpty) {
+      // Some biometrics are enrolled.
+      logger.w("exists biometrics");
+    }
+    logger.d("availableBiometrics: $availableBiometrics");
+    if (availableBiometrics.contains(BiometricType.weak) &&
+        availableBiometrics.contains(BiometricType.strong)) {
+      logger.w("weak and strong biometrics");
+      await _authencated();
+    }
+
+    if (availableBiometrics.contains(BiometricType.fingerprint) ||
+        availableBiometrics.contains(BiometricType.face)) {
+      logger.w("fingerprint: ${BiometricType.fingerprint}");
+      logger.w("face: ${BiometricType.face}");
+      await _authencated();
+    }
+  }
+
+  Future<void> _authencated() async {
+    try {
+      final LocalAuthentication auth = LocalAuthentication();
+      bool authencated = await auth.authenticate(
+        localizedReason: 'test',
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+          biometricOnly: true,
+        ),
+      );
+      logger.d("authencated: $authencated");
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+    }
+  }
+
   void payLottery(Bank bank, int totalAmount) async {
     // logger.d("boom !");
+    await checkType();
+    return;
     isLoading = true;
     update();
+    final user = await AppWriteController.to.user;
     final storage = StorageController.to;
     final sessionId = await storage.getSessionId();
-    final user = await AppWriteController.to.user;
     final credential = "$sessionId:${user.$id}";
     final bearer = base64Encode(utf8.encode(credential));
     final transactions = lotteryList

@@ -1,3 +1,4 @@
+import 'package:local_auth/local_auth.dart';
 import 'package:lottery_ck/model/lottery.dart';
 import 'package:intl/intl.dart';
 
@@ -26,5 +27,44 @@ class CommonFn {
     } catch (e) {
       return "invalid type (int)";
     }
+  }
+
+  static Future<bool> _canAuthenticate() async {
+    final auth = LocalAuthentication();
+    final canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
+    final canAuthenticate =
+        canAuthenticateWithBiometrics || await auth.isDeviceSupported();
+    return canAuthenticate;
+  }
+
+  static Future<bool> requestBiometrics() async {
+    final canAuthenticate = await _canAuthenticate();
+    if (canAuthenticate) {
+      final authenticated = await LocalAuthentication().authenticate(
+        localizedReason:
+            'Scan your fingerprint (or face or whatever) to authenticate',
+        options: const AuthenticationOptions(
+          stickyAuth: true,
+          biometricOnly: true,
+        ),
+      );
+      return authenticated;
+    }
+    return false;
+  }
+
+  static Future<bool> availableBiometrics() async {
+    final LocalAuthentication auth = LocalAuthentication();
+    final List<BiometricType> availableBiometrics =
+        await auth.getAvailableBiometrics();
+    if (availableBiometrics.contains(BiometricType.weak) &&
+        availableBiometrics.contains(BiometricType.strong)) {
+      return true;
+    }
+    if (availableBiometrics.contains(BiometricType.fingerprint) ||
+        availableBiometrics.contains(BiometricType.face)) {
+      return true;
+    }
+    return false;
   }
 }

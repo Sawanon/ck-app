@@ -9,6 +9,7 @@ class PinController extends GetxController {
   final argument = Get.arguments;
 
   void createPasscode(String passcode) async {
+    // TODO: move create pin function to backend - sawanon:20240828
     try {
       final dio = Dio();
       final appwriteController = AppWriteController.to;

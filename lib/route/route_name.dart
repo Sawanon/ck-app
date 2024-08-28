@@ -9,6 +9,7 @@ class RouteName {
   static const String payment = '/payment';
   static const String bill = '/bill';
   static const String point = '/point';
+  static const String enableBiometrics = '/enableBiometrics';
 
   static const String cloudflare = '/cloudflare';
 }

@@ -84,6 +84,7 @@ flutter:
     - assets/svg/
     - assets/svg/vuesax/bold/
     - assets/svg/vuesax/linear/
+    - assets/svg/vuesax/bulk/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

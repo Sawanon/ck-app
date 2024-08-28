@@ -68,11 +68,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
         useMaterial3: true,
       ),
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      // home: LoginPage(),
       initialBinding: InitialBinding(),
       getPages: AppRoutes.appRoutes(),
-      initialRoute: RouteName.splashScreen,
+      // initialRoute: RouteName.splashScreen,
+      initialRoute: RouteName.enableBiometrics,
     );
   }
 }
