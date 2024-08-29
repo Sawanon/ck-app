@@ -6,6 +6,7 @@ import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller
 import 'package:lottery_ck/modules/login/controller/login.controller.dart';
 import 'package:lottery_ck/repository/user_repository/user.repository.dart';
 import 'package:lottery_ck/route/route_name.dart';
+import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 
@@ -34,6 +35,7 @@ class SignupController extends GetxController {
 
   Future<void> createUserAppwrite() async {
     // TODO: go to OTP when sucecess run function - sawanon:20240806
+    await StorageController.to.clear();
     final phoneNumber = argument["phoneNumber"] as String;
     final appwriteController = AppWriteController.to;
     final multiplier =
@@ -82,7 +84,15 @@ class SignupController extends GetxController {
           // await CommonFn.requestBiometrics();
           final availableBiometrics = await CommonFn.availableBiometrics();
           logger.d("availableBiometrics: $availableBiometrics");
-          if (availableBiometrics) {}
+          if (availableBiometrics) {
+            Get.toNamed(RouteName.enableBiometrics, arguments: {
+              "whenSuccess": () async {
+                Get.delete<UserStore>();
+                Get.offAllNamed(RouteName.layout);
+              }
+            });
+            return;
+          }
           // Get.delete<BuyLotteryController>();
           Get.delete<UserStore>();
           Get.offAllNamed(RouteName.layout);

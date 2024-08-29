@@ -452,4 +452,20 @@ class AppWriteController extends GetxController {
       return null;
     }
   }
+
+  Future<String?> getPasscode() async {
+    try {
+      final user = await account.get();
+      final userDocument = await databases.getDocument(
+        databaseId: _databaseName,
+        collectionId: USER,
+        documentId: user.$id,
+      );
+      return userDocument.data["passcode"];
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+      return null;
+    }
+  }
 }

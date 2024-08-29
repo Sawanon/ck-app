@@ -62,7 +62,7 @@ class SplashScreenController extends GetxController {
 
   @override
   void onInit() {
-    // setup();
+    setup();
     super.onInit();
   }
 }

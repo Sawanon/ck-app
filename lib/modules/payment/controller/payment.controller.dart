@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:lottery_ck/model/bank.dart';
@@ -9,6 +10,7 @@ import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
+import 'package:lottery_ck/modules/pin/view/verify_pin.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/storage.dart';
@@ -104,44 +106,15 @@ class PaymentController extends GetxController {
     }
   }
 
-  void payLottery(Bank bank, int totalAmount) async {
-    // logger.d("boom !");
-    await checkType();
-    return;
-    isLoading = true;
-    update();
-    final user = await AppWriteController.to.user;
-    final storage = StorageController.to;
-    final sessionId = await storage.getSessionId();
-    final credential = "$sessionId:${user.$id}";
-    final bearer = base64Encode(utf8.encode(credential));
-    final transactions = lotteryList
-        .map(
-          (lottery) => lottery.toJson(),
-        )
-        .toList();
-    final dio = Dio();
-    final responseTransaction = await dio.post(
-      "${AppConst.cloudfareUrl}/createTransaction",
-      data: {
-        "totalAmount": totalAmount,
-        "bankId": bank.$id,
-        "lotteryDateStr": lotteryDateStrYMD!,
-        "transactions": transactions,
+  void payLottery(Bank bank, int totalAmount, BuildContext context) async {
+    await Pin.verifyPin(
+      context,
+      () {
+        logger.d("boom !");
+        navigator?.pop();
+        createInvoice(bank, totalAmount);
       },
-      options: Options(
-        headers: {
-          "Authorization": "Bearer $bearer",
-        },
-      ),
     );
-    final result = responseTransaction.data;
-    final deeplink = result['deeplink'];
-    final invoiceDocument = result['invoice'];
-    logger.w(invoiceDocument);
-    await launchUrl(Uri.parse('${deeplink['link']}'));
-    isLoading = false;
-    update();
   }
 
   void showBill(String invoiceId) async {
@@ -181,63 +154,44 @@ class PaymentController extends GetxController {
     try {
       isLoading = true;
       update();
-      final appwriteController = AppWriteController.to;
-      final invoiceDocument = await appwriteController.createInvoice(
-        totalAmount,
-        bank.$id,
-        lotteryDateStrYMD!,
-      );
-      List<String> listTransactionId = [];
-      if (invoiceDocument!.data.isNotEmpty) {
-        for (var lottery in lotteryList) {
-          final transactionDocument =
-              await appwriteController.createTransaction(
-            lottery,
-            lotteryDateStrYMD!,
-            bank.$id,
-            lottery.toDigit(),
-          );
-          listTransactionId.add(transactionDocument!.$id);
-
-          await appwriteController.addAccumulate(
-            lotteryDateStrYMD!,
-            lottery,
-            transactionDocument.$id,
-          );
-        }
-      }
-      final invoiceDocumentUpdate = await appwriteController.updateInvoice(
-        invoiceDocument.$id,
-        lotteryDateStrYMD!,
-        listTransactionId,
-      );
-      logger.d(invoiceDocumentUpdate!.$id);
-      isLoading = false;
-      update();
-      final user = await appwriteController.user;
-      final bill = Bill(
-        firstName: user.name.split(" ").first,
-        lastName: user.name.split(" ")[1],
-        phoneNumber: user.phone,
-        dateTime: DateTime.parse(invoiceDocumentUpdate.$createdAt),
-        lotteryDateStr: lotteryDateStrYMD!,
-        lotteryList: lotteryList,
-        totalAmount: totalAmount.toString(),
-        invoiceId: invoiceDocumentUpdate.$id,
-        bankName: bank.name,
-      );
-      Get.offNamed(
-        RouteName.bill,
-        arguments: {
-          "bill": bill,
+      final user = await AppWriteController.to.user;
+      final storage = StorageController.to;
+      final sessionId = await storage.getSessionId();
+      final credential = "$sessionId:${user.$id}";
+      final bearer = base64Encode(utf8.encode(credential));
+      final transactions = lotteryList
+          .map(
+            (lottery) => lottery.toJson(),
+          )
+          .toList();
+      final dio = Dio();
+      final responseTransaction = await dio.post(
+        "${AppConst.cloudfareUrl}/createTransaction",
+        data: {
+          "totalAmount": totalAmount,
+          "bankId": bank.$id,
+          "lotteryDateStr": lotteryDateStrYMD!,
+          "transactions": transactions,
         },
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $bearer",
+          },
+        ),
       );
+      final result = responseTransaction.data;
+      final deeplink = result['deeplink'];
+      final invoiceDocument = result['invoice'];
+      logger.w(invoiceDocument);
+      await launchUrl(Uri.parse('${deeplink['link']}'));
+      isLoading = false;
     } catch (e) {
       logger.e("$e");
       Get.rawSnackbar(
         message: "$e",
       );
       isLoading = false;
+    } finally {
       update();
     }
   }

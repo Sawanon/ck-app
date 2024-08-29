@@ -163,6 +163,7 @@ class PayMentPage extends StatelessWidget {
                         controller.payLottery(
                           controller.selectedBank!,
                           controller.totalAmount!,
+                          context,
                         );
                       },
                       child: Text(

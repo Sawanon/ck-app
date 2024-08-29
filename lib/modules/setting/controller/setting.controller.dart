@@ -14,7 +14,7 @@ class SettingController extends GetxController {
 
   Future<void> logout() async {
     final storage = StorageController.to;
-    await storage.clearSessionId();
+    await storage.clear();
     final appwriteController = AppWriteController.to;
     await appwriteController.logout();
     Get.offAllNamed(RouteName.login);

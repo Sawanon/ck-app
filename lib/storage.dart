@@ -63,6 +63,10 @@ class StorageController extends GetxController {
     return await getValue("userId");
   }
 
+  Future<void> clear() async {
+    await storage?.deleteAll();
+  }
+
   @override
   void onInit() {
     storage = FlutterSecureStorage(

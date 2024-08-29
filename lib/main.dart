@@ -15,6 +15,9 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -70,8 +73,8 @@ class MyApp extends StatelessWidget {
       ),
       initialBinding: InitialBinding(),
       getPages: AppRoutes.appRoutes(),
-      // initialRoute: RouteName.splashScreen,
-      initialRoute: RouteName.enableBiometrics,
+      initialRoute: RouteName.splashScreen,
+      // initialRoute: RouteName.enableBiometrics,
     );
   }
 }
