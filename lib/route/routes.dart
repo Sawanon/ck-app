@@ -3,8 +3,11 @@ import 'package:lottery_ck/binding/initial.binding.dart';
 import 'package:lottery_ck/modules/bill/view/bill.dart';
 import 'package:lottery_ck/modules/biometrics/view/enable_biometrics.dart';
 import 'package:lottery_ck/modules/couldflare/view/cloudflare.dart';
+import 'package:lottery_ck/modules/history/view/win_bill.dart';
 import 'package:lottery_ck/modules/layout/view/layout.dart';
 import 'package:lottery_ck/modules/login/view/login.dart';
+import 'package:lottery_ck/modules/notification/view/news.dart';
+import 'package:lottery_ck/modules/notification/view/promotion.dart';
 import 'package:lottery_ck/modules/otp/view/otp.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/modules/payment/view/payment.dart';
@@ -76,6 +79,21 @@ class AppRoutes {
         GetPage(
           name: RouteName.enableBiometrics,
           page: () => EnableBiometricsPage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.news,
+          page: () => NewsDetailPage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.promotion,
+          page: () => PromotionDetailPage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.winbill,
+          page: () => WinBillPage(),
           transition: Transition.rightToLeft,
         ),
       ];

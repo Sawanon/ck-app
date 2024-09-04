@@ -10,6 +10,9 @@ class RouteName {
   static const String bill = '/bill';
   static const String point = '/point';
   static const String enableBiometrics = '/enableBiometrics';
+  static const String news = '/news';
+  static const String promotion = '/promotion';
+  static const String winbill = '/winbill';
 
   static const String cloudflare = '/cloudflare';
 }

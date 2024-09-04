@@ -7,6 +7,7 @@ import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart'
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:video_player/video_player.dart';
 
 class HomeController extends GetxController {
   static HomeController get to => Get.find();
@@ -16,6 +17,7 @@ class HomeController extends GetxController {
   String? lotteryDateStr;
   Rx<Duration> remainingDateTime = Duration.zero.obs;
   Alignment lotteryAlinment = Alignment.bottomCenter;
+
   void lotteryFullScreen() {
     lotteryAlinment = Alignment.center;
     update();

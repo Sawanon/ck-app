@@ -8,12 +8,16 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/couldflare/controller/cloudflare.controller.dart';
+import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
+import 'package:lottery_ck/modules/history/controller/history.controller.dart';
+import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/repository/user_repository/user.repository.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:unique_identifier/unique_identifier.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -27,13 +31,13 @@ class LoginController extends GetxController {
   WebViewController? webviewController;
 
   Future<void> login() async {
+    logger.d("message");
     final valid = keyForm.currentState?.validate();
     if (valid == null || valid == false) {
       return;
     }
 
     Map<String, dynamic>? token = await getToken();
-    Get.delete<CloudFlareController>();
     if (token == null) {
       // TODO: go to otp for verify then go to enter user info - sawanon:20240807
       Get.toNamed(
@@ -47,8 +51,20 @@ class LoginController extends GetxController {
           }
         },
       );
+      Get.delete<CloudFlareController>();
       return;
     }
+    final isActive = await AppWriteController.to.isActiveUser(phoneNumber);
+    if (!isActive) {
+      Get.rawSnackbar(
+        icon: const Icon(Icons.block, color: Colors.red),
+        title: "You have been blocked from accessing this service",
+        message:
+            "Unfortunately, your account has been temporarily suspended. Please contact our support team for assistance.",
+      );
+      return;
+    }
+    Get.delete<CloudFlareController>();
     getOTPandCreatePin(token);
   }
 
@@ -68,16 +84,48 @@ class LoginController extends GetxController {
             navigator?.pop();
             return;
           }
+          AppWriteController.to.detaulGroupUser(session.userId);
           Get.offNamed(
             RouteName.pin,
             arguments: {
-              "whenSuccess": () {
+              "whenSuccess": () async {
                 // Get.delete<BuyLotteryController>();
                 // Get.delete<UserStore>();
+                final availableBiometrics =
+                    await CommonFn.availableBiometrics();
+                if (availableBiometrics) {
+                  Get.toNamed(RouteName.enableBiometrics, arguments: {
+                    "whenSuccess": () async {
+                      try {
+                        HistoryController.to.setup();
+                      } catch (e) {
+                        logger.e("$e");
+                      }
+                      try {
+                        SettingController.to.beforeSetup();
+                      } catch (e) {
+                        logger.e("$e");
+                      }
+                      navigator?.pop();
+                      navigator?.pop();
+                      navigator?.pop();
+                      return;
+                    }
+                  });
+                  return;
+                }
+                try {
+                  HistoryController.to.checkPermission();
+                } catch (e) {
+                  logger.e("$e");
+                }
+                try {
+                  SettingController.to.checkPermission();
+                } catch (e) {
+                  logger.e("$e");
+                }
                 navigator?.pop();
                 navigator?.pop();
-                // navigator?.pop();
-                // Get.offAllNamed(RouteName.layout);
               }
             },
           );
@@ -106,6 +154,7 @@ class LoginController extends GetxController {
       await appwriteController.createTarget();
       final storageController = StorageController.to;
       storageController.setSessionId(session.$id);
+      await FirebaseMessagingController.to.getToken();
       return session;
     } on Exception catch (e) {
       logger.e(e);

@@ -103,8 +103,8 @@ class BuyLotteryController extends GetxController {
       }
       final valid = validateLottery(lottery, price);
       if (valid) {
-        logger.d("good");
         addLottery(lottery, price);
+        lotteryNode.requestFocus();
       }
     }
   }

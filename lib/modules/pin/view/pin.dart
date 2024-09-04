@@ -27,7 +27,6 @@ class PinPage extends StatelessWidget {
                 Expanded(
                   child: ScreenLock.create(
                     onConfirmed: (value) {
-                      logger.d("confirm: $value");
                       controller.createPasscode(value);
                     },
                     confirmTitle: Text(

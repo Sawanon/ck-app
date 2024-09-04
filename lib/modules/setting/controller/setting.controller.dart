@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
+import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:share_plus/share_plus.dart';
 
 class SettingController extends GetxController {
+  static SettingController get to => Get.find();
   UserApp? user;
   bool isLogin = false;
   bool loading = true;
 
   Future<void> logout() async {
-    final storage = StorageController.to;
-    await storage.clear();
-    final appwriteController = AppWriteController.to;
-    await appwriteController.logout();
+    await AppWriteController.to.logout();
     Get.offAllNamed(RouteName.login);
   }
 
@@ -62,22 +62,40 @@ class SettingController extends GetxController {
     // }
   }
 
-  void checkPermission() async {
+  Future<bool> checkPermission() async {
     try {
       await AppWriteController.to.user;
       isLogin = true;
       setup();
+      return true;
     } catch (e) {
       logger.e("$e");
-    } finally {
-      loading = false;
-      update();
+      return false;
     }
+  }
+
+  Future<bool> requestBioMetrics() async {
+    if (LayoutController.to.isUsedBiometrics) {
+      return true;
+    }
+    final isEnable = await CommonFn.requestBiometrics();
+    LayoutController.to.isUsedBiometrics = isEnable;
+    return isEnable;
+  }
+
+  void beforeSetup() async {
+    final isLogin = await checkPermission();
+    logger.w("isLogin: $isLogin");
+    if (isLogin) {
+      await requestBioMetrics();
+    }
+    loading = false;
+    update();
   }
 
   @override
   void onInit() async {
-    checkPermission();
+    beforeSetup();
     super.onInit();
   }
 }

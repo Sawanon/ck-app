@@ -1,14 +1,20 @@
+import 'dart:convert';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/model/bank.dart';
 import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/model/lottery_date.dart';
+import 'package:lottery_ck/model/news.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
-import 'package:lottery_ck/modules/history/controller/history_buy.controller.dart';
+import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
+import "package:collection/collection.dart";
+import 'package:lottery_ck/utils/common_fn.dart';
 
 class AppWriteController extends GetxController {
   static const String _databaseName = 'lottory';
@@ -18,9 +24,11 @@ class AppWriteController extends GetxController {
   static const String ACCUMULATE = '_accumulate';
   static const String LOTTERY_DATE = 'lottery_date';
   static const String BANK = 'bank';
+  static const String NEWS = 'news';
+  static const String PROMOTION = 'promotions';
 
   static const _roleUserId = "669a2cfd00141edc45ef";
-  final String _providerId = '66c40a34002ba3fd94f5';
+  final String _providerId = '66d28d4000300a1e7dc1';
   static AppWriteController get to => Get.find();
   late Account account;
   late Databases databases;
@@ -28,9 +36,9 @@ class AppWriteController extends GetxController {
   @override
   void onInit() {
     client
-        .setEndpoint("https://baas.moevedigital.com/v1")
-        .setProject("667afb24000fbd66b4df")
-        .setSelfSigned(status: false);
+        .setEndpoint('https://baas.moevedigital.com/v1')
+        .setProject('667afb24000fbd66b4df')
+        .setSelfSigned(status: true);
     account = Account(client);
     databases = Databases(client);
 
@@ -65,6 +73,7 @@ class AppWriteController extends GetxController {
       logger.d(pushTarget);
       logger.d(pushTarget.length);
       if (pushTarget.isEmpty) {
+        logger.w("create target is empty");
         await createTarget();
       }
       return true;
@@ -82,9 +91,10 @@ class AppWriteController extends GetxController {
   }
 
   Future<void> createTarget() async {
+    final tokenFirebase = await FirebaseMessagingController.to.getToken();
     final target = await account.createPushTarget(
       targetId: ID.unique(),
-      identifier: 'phone',
+      identifier: tokenFirebase!,
       providerId: _providerId,
     );
     logger.d(target.providerType);
@@ -144,7 +154,7 @@ class AppWriteController extends GetxController {
   Future<void> logout() async {
     try {
       await account.deleteSession(sessionId: 'current');
-      logger.d("logout");
+      await StorageController.to.clear();
     } catch (e) {
       logger.e(e.toString());
     }
@@ -268,6 +278,14 @@ class AppWriteController extends GetxController {
     }
   }
 
+  Future<Document> getLotteryDateById(String lotteryDateId) async {
+    return databases.getDocument(
+      databaseId: _databaseName,
+      collectionId: LOTTERY_DATE,
+      documentId: lotteryDateId,
+    );
+  }
+
   Future<Document?> getLotteryDate(DateTime datetime) async {
     try {
       final response = await databases.listDocuments(
@@ -367,10 +385,11 @@ class AppWriteController extends GetxController {
         queries: [
           Query.equal('active', true),
           Query.equal('is_emergency', false),
+          Query.orderDesc("datetime"),
         ],
       );
-      logger.d(listLotteryDate.total);
       return listLotteryDate.documents.map((lotteryDate) {
+        logger.d(lotteryDate.data);
         return LotteryDate.fromJson(lotteryDate.data);
       }).toList();
     } catch (e) {
@@ -427,11 +446,12 @@ class AppWriteController extends GetxController {
         documentId: user.$id,
       );
       final userMap = userFromDatabase.data;
-      return UserApp(
-        firstName: userMap['firstname'],
-        lastName: userMap['lastname'],
-        phoneNumber: userMap['phone'],
-      );
+      return UserApp.fromJson(userMap);
+      // return UserApp(
+      //   firstName: userMap['firstname'],
+      //   lastName: userMap['lastname'],
+      //   phoneNumber: userMap['phone'],
+      // );
     } catch (e) {
       logger.e("$e");
       Get.rawSnackbar(message: "$e");
@@ -466,6 +486,265 @@ class AppWriteController extends GetxController {
       logger.e("$e");
       Get.rawSnackbar(message: "$e");
       return null;
+    }
+  }
+
+  Future<List<News>?> listNews() async {
+    try {
+      final newsDocumentList = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: NEWS,
+        queries: [
+          Query.equal("is_active", true),
+          Query.equal("is_approve", "1"),
+          Query.orderDesc('start_date'),
+          Query.limit(25),
+        ],
+      );
+      final newsList = newsDocumentList.documents.map(
+        (document) {
+          return News.fromJson(document.data);
+        },
+      ).toList();
+      return newsList;
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+      return null;
+    }
+  }
+
+  Future<List<Map>?> listPromotions() async {
+    try {
+      final promotionsDocumentList = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: PROMOTION,
+        queries: [
+          Query.equal("is_active", true),
+          Query.equal("is_approve", "1"),
+          Query.orderDesc('start_date'),
+          Query.limit(25),
+        ],
+      );
+      final promotionList = promotionsDocumentList.documents.map(
+        (document) {
+          return document.data;
+        },
+      ).toList();
+      return promotionList;
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+      return null;
+    }
+  }
+
+  Future<News?> getNews(String newsId) async {
+    try {
+      final newsDocument = await databases.getDocument(
+        databaseId: _databaseName,
+        collectionId: NEWS,
+        documentId: newsId,
+      );
+      return News.fromJson(newsDocument.data);
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+      return null;
+    }
+  }
+
+  Future<Map?> getPromotion(String promotionId) async {
+    try {
+      final newsDocument = await databases.getDocument(
+        databaseId: _databaseName,
+        collectionId: PROMOTION,
+        documentId: promotionId,
+      );
+      return newsDocument.data;
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+      return null;
+    }
+  }
+
+  Future<List?> listLotteryCollection(String lotteryMonth) async {
+    try {
+      final token = await sessionToken();
+      final dio = Dio();
+      final response = await dio.post(
+        "${AppConst.cloudfareUrl}/listLotteryCollections",
+        data: {
+          "lotteryMonth": lotteryMonth,
+        },
+        options: Options(
+          headers: {"Authorization": "Bearer $token"},
+        ),
+      );
+      return response.data["collectionList"];
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+      return null;
+    }
+  }
+
+  Future<Map?> getLotteryHistory(String lotteryHistoryId) async {
+    try {
+      final lotteryHistory = await databases.getDocument(
+        databaseId: _databaseName,
+        collectionId: "lottery_historys",
+        documentId: lotteryHistoryId,
+      );
+      logger.d(lotteryHistory.data);
+      return lotteryHistory.data;
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+      return null;
+    }
+  }
+
+  Future<List?> listWinInvoices(String collectionId) async {
+    try {
+      final userId = await user.then((value) => value.$id);
+      final invoiceList = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: collectionId,
+        queries: [
+          Query.equal("is_win", true),
+          Query.equal("userId", userId),
+          Query.orderDesc('\$createdAt'),
+        ],
+      );
+      final lotteryDateStr = collectionId.split("_").first;
+      for (var invoice in invoiceList.documents) {
+        List transactionList = [];
+        for (var transactionId in invoice.data["transactionId"]) {
+          final transaction =
+              await getTransactionById(transactionId, lotteryDateStr);
+          if (transaction!.data["lottery_history_id"] != null) {
+            logger.w(transaction.data["lottery_history_id"]);
+            final lotteryHistory =
+                await getLotteryHistory(transaction.data["lottery_history_id"]);
+            logger.w("lotteryHistory: $lotteryHistory");
+            transaction.data["lotteryHistory"] = lotteryHistory;
+          }
+          transactionList.add(transaction.data);
+        }
+        invoice.data["transactionList"] = transactionList;
+      }
+      return invoiceList.documents.map((invoice) {
+        return invoice.data;
+      }).toList();
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+      return null;
+    }
+  }
+
+  Future<String> sessionToken() async {
+    final userId = await user.then((value) => value.$id);
+    final sessionId = await StorageController.to.getSessionId();
+    final credential = "$sessionId:$userId";
+    final bearer = base64Encode(utf8.encode(credential));
+    return bearer;
+  }
+
+  Future<void> detaulGroupUser(String userId) async {
+    final allUser = await databases.listDocuments(
+      databaseId: _databaseName,
+      collectionId: "group_users",
+      queries: [
+        Query.equal("name", "All User"),
+        Query.limit(1),
+      ],
+    );
+    final usersIdList = allUser.documents.first.data["userId"] as List;
+    if (usersIdList.where((_userId) => _userId == userId).isNotEmpty) {
+      logger.w("has in group");
+      return;
+    }
+    logger.w("not has in group");
+    final allUserGroup = await databases.getDocument(
+      databaseId: _databaseName,
+      collectionId: "group_users",
+      documentId: allUser.documents.first.$id,
+    );
+    final oldArray = allUserGroup.data["userId"];
+    await databases.updateDocument(
+      databaseId: _databaseName,
+      collectionId: "group_users",
+      documentId: "66b0369b001651b9cbff",
+      data: {
+        "userId": [
+          ...oldArray,
+        ],
+      },
+    );
+  }
+
+  Future<List?> listLotteryHistory() async {
+    try {
+      final lotteryHistoryDocumentList = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: "lottery_historys",
+        queries: [
+          Query.select(["lottery_date_id", "lottery"]),
+          Query.orderDesc('\$createdAt'),
+          Query.limit(25),
+        ],
+      );
+      List lotteryHistoryList = [];
+      final lotteryHistoryListData =
+          lotteryHistoryDocumentList.documents.map((document) => document.data);
+      var newMap =
+          groupBy(lotteryHistoryListData, (Map obj) => obj['lottery_date_id']);
+      for (var lotteryByDate in newMap.entries) {
+        final lotteryDateDocument = await getLotteryDateById(
+            lotteryByDate.value.first["lottery_date_id"]);
+        final lotteryDate = CommonFn.parseDMY(
+            DateTime.parse(lotteryDateDocument.data["datetime"]).toLocal());
+        lotteryHistoryList.add({
+          "lottery": lotteryByDate.value.first["lottery"].first,
+          "lotteryDate": lotteryDate,
+        });
+      }
+      return lotteryHistoryList;
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+      return null;
+    }
+  }
+
+  Future<bool> isActiveUser([String? phoneNumber]) async {
+    try {
+      if (phoneNumber != null) {
+        final userDocumentList = await databases.listDocuments(
+          databaseId: _databaseName,
+          collectionId: USER,
+          queries: [
+            Query.equal("phone", phoneNumber),
+            Query.select(["active"]),
+            Query.limit(1),
+          ],
+        );
+        final userDocument = userDocumentList.documents.first;
+        return userDocument.data["active"];
+      }
+      final userId = await user.then((user) => user.$id);
+      final userDocument = await databases.getDocument(
+        databaseId: _databaseName,
+        collectionId: USER,
+        documentId: userId,
+      );
+      return userDocument.data["active"];
+    } catch (e) {
+      logger.e("$e");
+      return false;
     }
   }
 }

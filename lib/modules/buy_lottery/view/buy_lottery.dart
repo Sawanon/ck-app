@@ -26,235 +26,248 @@ class BuyLottery extends StatelessWidget {
                 children: [
                   if (!controller.lotteryIsEmpty)
                     Expanded(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10),
-                            topRight: Radius.circular(10),
+                      child: GestureDetector(
+                        onTap: () {
+                          controller.lotteryNode.unfocus();
+                          controller.priceNode.unfocus();
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
+                            ),
+                            // boxShadow: [
+                            //   BoxShadow(
+                            //     color: AppColors.shadow,
+                            //     offset: Offset(4, 4),
+                            //     blurRadius: 30,
+                            //   )
+                            // ],
                           ),
-                          // boxShadow: [
-                          //   BoxShadow(
-                          //     color: AppColors.shadow,
-                          //     offset: Offset(4, 4),
-                          //     blurRadius: 30,
-                          //   )
-                          // ],
-                        ),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    "ເລກທີ່ເລືອກ",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "ຈໍານວນເງິນ",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                        ),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "ເລກທີ່ເລືອກ",
+                                      style: TextStyle(
+                                        fontSize: 16,
                                       ),
-                                      const SizedBox(width: 8),
-                                      GestureDetector(
-                                        onTap: () {
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return Center(
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(16),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10),
-                                                  ),
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      Text(
-                                                        'ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບລາຍການຫວຍທັງໝົດ?',
-                                                        style: TextStyle(
-                                                          fontSize: 16,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "ຈໍານວນເງິນ",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        GestureDetector(
+                                          onTap: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return Center(
+                                                  child: Container(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            16),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      children: [
+                                                        Text(
+                                                          'ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບລາຍການຫວຍທັງໝົດ?',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          ElevatedButton(
-                                                            style:
-                                                                ElevatedButton
-                                                                    .styleFrom(
-                                                              elevation: 0,
-                                                              backgroundColor:
-                                                                  AppColors
-                                                                      .primary,
-                                                              foregroundColor:
-                                                                  Colors.white,
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
-                                                              ),
-                                                            ),
-                                                            onPressed: () {
-                                                              navigator?.pop();
-                                                            },
-                                                            child:
-                                                                Text("Cancel"),
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 8),
-                                                          ElevatedButton(
-                                                            style:
-                                                                ElevatedButton
-                                                                    .styleFrom(
-                                                              elevation: 0,
-                                                              backgroundColor:
-                                                                  Colors.white,
-                                                              foregroundColor:
-                                                                  AppColors
-                                                                      .errorBorder,
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                side:
-                                                                    BorderSide(
-                                                                  color: AppColors
-                                                                      .errorBorder,
-                                                                  width: 1,
+                                                        Row(
+                                                          mainAxisSize:
+                                                              MainAxisSize.min,
+                                                          children: [
+                                                            ElevatedButton(
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                elevation: 0,
+                                                                backgroundColor:
+                                                                    AppColors
+                                                                        .primary,
+                                                                foregroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
                                                                 ),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
+                                                              ),
+                                                              onPressed: () {
+                                                                navigator
+                                                                    ?.pop();
+                                                              },
+                                                              child: Text(
+                                                                  "Cancel"),
+                                                            ),
+                                                            const SizedBox(
+                                                                width: 8),
+                                                            ElevatedButton(
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                elevation: 0,
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .white,
+                                                                foregroundColor:
+                                                                    AppColors
+                                                                        .errorBorder,
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  side:
+                                                                      BorderSide(
+                                                                    color: AppColors
+                                                                        .errorBorder,
+                                                                    width: 1,
+                                                                  ),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                ),
+                                                              ),
+                                                              onPressed: () {
+                                                                controller
+                                                                    .removeAllLottery();
+                                                                navigator
+                                                                    ?.pop();
+                                                              },
+                                                              child: Text(
+                                                                "Delete all",
                                                               ),
                                                             ),
-                                                            onPressed: () {
-                                                              controller
-                                                                  .removeAllLottery();
-                                                              navigator?.pop();
-                                                            },
-                                                            child: Text(
-                                                              "Delete all",
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            },
-                                          );
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              width: 1,
+                                                );
+                                              },
+                                            );
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                width: 1,
+                                                color: AppColors.errorBorder,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                            ),
+                                            child: Icon(
+                                              Icons.close,
                                               color: AppColors.errorBorder,
                                             ),
-                                            borderRadius:
-                                                BorderRadius.circular(4),
-                                          ),
-                                          child: Icon(
-                                            Icons.close,
-                                            color: AppColors.errorBorder,
                                           ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: ListView(
-                                physics: const BouncingScrollPhysics(),
-                                padding: EdgeInsets.symmetric(horizontal: 16),
-                                children: controller.lotteryList.map(
-                                  (data) {
-                                    return Container(
-                                      margin: EdgeInsets.only(bottom: 8),
-                                      padding: EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.foreground,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: AppColors.foregroundBorder,
-                                            offset: Offset(0, 0),
-                                            spreadRadius: 1,
-                                          )
-                                        ],
-                                        borderRadius: BorderRadius.circular(5),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            data.lottery,
-                                            style: TextStyle(
-                                              color: AppColors.textPrimary,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w500,
+                              Expanded(
+                                child: ListView(
+                                  physics: const BouncingScrollPhysics(),
+                                  padding: EdgeInsets.symmetric(horizontal: 16),
+                                  children: controller.lotteryList.map(
+                                    (data) {
+                                      return Container(
+                                        margin: EdgeInsets.only(bottom: 8),
+                                        padding: EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.foreground,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: AppColors.foregroundBorder,
+                                              offset: Offset(0, 0),
+                                              spreadRadius: 1,
+                                            )
+                                          ],
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              data.lottery,
+                                              style: TextStyle(
+                                                color: AppColors.textPrimary,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "${data.price}",
-                                                style: TextStyle(
-                                                  color: AppColors.textPrimary,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                              const SizedBox(width: 8),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  controller.removeLottery(
-                                                      data.lottery);
-                                                },
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(2),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            4),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "${data.price}",
+                                                  style: TextStyle(
                                                     color:
-                                                        AppColors.errorBorder,
-                                                  ),
-                                                  child: Icon(
-                                                    Icons.close,
-                                                    color: Colors.white,
+                                                        AppColors.textPrimary,
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                ).toList(),
+                                                const SizedBox(width: 8),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    controller.removeLottery(
+                                                        data.lottery);
+                                                  },
+                                                  child: Container(
+                                                    padding:
+                                                        const EdgeInsets.all(2),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4),
+                                                      color:
+                                                          AppColors.errorBorder,
+                                                    ),
+                                                    child: Icon(
+                                                      Icons.close,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ).toList(),
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),

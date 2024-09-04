@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1f1ed293-1839-463a-acb1-734d121a79cb" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/appwrite/controller/appwrite.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/appwrite/controller/appwrite.controller.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/firebase/controller/firebase_messaging.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/firebase/controller/firebase_messaging.controller.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/login/controller/login.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/login/controller/login.controller.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/modules/signup/controller/signup.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/signup/controller/signup.controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/signup/view/signup.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/signup/view/signup.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/res/constant.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/res/constant.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

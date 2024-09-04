@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
+import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
 import 'package:lottery_ck/modules/login/controller/login.controller.dart';
 import 'package:lottery_ck/repository/user_repository/user.repository.dart';
 import 'package:lottery_ck/route/route_name.dart';
@@ -55,8 +56,10 @@ class SignupController extends GetxController {
       phoneNumber,
     );
     final isLoginSuccess = await appwriteController.login(email, password);
+    await FirebaseMessagingController.to.getToken();
     bool isCreateUserdocumentSuccess = false;
     if (user != null) {
+      await appwriteController.detaulGroupUser(user.$id);
       isCreateUserdocumentSuccess = await appwriteController.createUserDocument(
         email,
         user.$id,

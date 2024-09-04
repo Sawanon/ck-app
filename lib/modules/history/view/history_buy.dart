@@ -78,10 +78,10 @@ class HistoryBuyPage extends StatelessWidget {
                   return Skeletonizer(
                     enabled: controller.loadingHistoryList.value,
                     child: ListView(
-                      physics: const BouncingScrollPhysics(),
+                      // physics: RangeMaintainingScrollPhysics(),
                       padding: const EdgeInsets.only(bottom: 8),
                       // clipBehavior: Clip.none,
-                      shrinkWrap: true,
+                      // shrinkWrap: true,
                       children: (controller.loadingHistoryList.value
                               ? [History.empty, History.empty, History.empty]
                               : controller.historyList)
@@ -127,16 +127,25 @@ class HistoryBuyPage extends StatelessWidget {
                                                 children: [
                                                   Text(
                                                     'ວັນທີ ${history.date}',
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                    ),
                                                   ),
                                                   const SizedBox(width: 8),
                                                   Text(
                                                     'ເວລາຂອງການຊື້ ${history.time}',
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                    ),
                                                   ),
                                                 ],
                                               ),
                                               const SizedBox(height: 4),
                                               Text(
                                                 'ລະຫັດໃບເກັບເງິນຫວຍ: ${history.invoiceId}',
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -159,7 +168,12 @@ class HistoryBuyPage extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          const Text('ເລກທີ່ເຈົ້າຊື້'),
+                                          const Text(
+                                            'ເລກທີ່ເຈົ້າຊື້',
+                                            style: const TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          ),
                                           Expanded(
                                             child: Row(
                                               mainAxisAlignment:

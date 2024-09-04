@@ -29,6 +29,8 @@ class HistoryBuyController extends GetxController {
       if (lotteryDateList == null) {
         return;
       }
+      logger.w("lotteryDateList: ${lotteryDateList.length}");
+      // cuuretn datetime and when found after current date keep 1 and remove all
       this.lotteryDateList = lotteryDateList.reversed.toList();
       selectedLotteryDate = this.lotteryDateList.first.dateTime;
       update();
@@ -93,7 +95,8 @@ class HistoryBuyController extends GetxController {
   void visitPage() async {
     try {
       await AppWriteController.to.user;
-      if (selectedLotteryDate == null || historyList.isNotEmpty) return;
+      // if (selectedLotteryDate == null || historyList.isNotEmpty) return;
+      if (selectedLotteryDate == null) return;
 
       await onChangeLotteryDate(selectedLotteryDate!);
       logger.w("visitPage");

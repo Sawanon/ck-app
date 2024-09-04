@@ -7,6 +7,9 @@ import 'package:lottery_ck/utils.dart';
 class PinController extends GetxController {
   static PinController get to => Get.find();
   final argument = Get.arguments;
+  bool isHasPin = false;
+
+  Future<void> checkHasPin() async {}
 
   void createPasscode(String passcode) async {
     // TODO: move create pin function to backend - sawanon:20240828

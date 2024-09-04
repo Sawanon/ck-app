@@ -10,6 +10,9 @@ class SplashScreenPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SplashScreenController>(
+      initState: (state) {
+        SplashScreenController.to.setupInteractedMessage(context);
+      },
       builder: (controller) {
         return Scaffold(
           body: Center(

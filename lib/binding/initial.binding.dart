@@ -8,9 +8,15 @@ import 'package:lottery_ck/modules/firebase/controller/firebase_auth.controller.
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
 import 'package:lottery_ck/modules/history/controller/history.controller.dart';
 import 'package:lottery_ck/modules/history/controller/history_buy.controller.dart';
+import 'package:lottery_ck/modules/history/controller/history_win.controller.dart';
+import 'package:lottery_ck/modules/history/controller/win_bill.contoller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/login/controller/login.controller.dart';
+import 'package:lottery_ck/modules/lottery_history/controller/lottery_history.controller.dart';
+import 'package:lottery_ck/modules/notification/controller/news.controller.dart';
+import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
+import 'package:lottery_ck/modules/notification/controller/promotion.controller.dart';
 import 'package:lottery_ck/modules/otp/controller/otp.controller.dart';
 import 'package:lottery_ck/modules/pin/controller/pin.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
@@ -40,7 +46,15 @@ class InitialBinding extends Bindings {
     // Get.lazyPut<SplashScreenController>(() => SplashScreenController());
     Get.put<SplashScreenController>(SplashScreenController());
     Get.lazyPut<BillController>(() => BillController(), fenix: true);
-    Get.lazyPut<EnableBiometricsController>(() => EnableBiometricsController());
+    Get.lazyPut<EnableBiometricsController>(() => EnableBiometricsController(),
+        fenix: true);
+    // Get.lazyPut<NotificationController>(() => NotificationController(),
+    //     fenix: true);
+    Get.put<NotificationController>(NotificationController());
+    Get.lazyPut<NewsController>(() => NewsController(), fenix: true);
+    Get.lazyPut<PromotionController>(() => PromotionController(), fenix: true);
+    Get.lazyPut<WinBillContoller>(() => WinBillContoller(), fenix: true);
+    Get.put<LotteryHistoryController>(LotteryHistoryController());
   }
 }
 
@@ -50,5 +64,6 @@ class LoggedInBinding extends Bindings {
     Get.lazyPut<HistoryController>(() => HistoryController(), fenix: true);
     Get.put<UserStore>(UserStore());
     Get.put<HistoryBuyController>(HistoryBuyController());
+    Get.put<HistoryWinController>(HistoryWinController());
   }
 }

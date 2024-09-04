@@ -49,6 +49,7 @@ class CommonFn {
           options: const AuthenticationOptions(
             stickyAuth: true,
             biometricOnly: true,
+            sensitiveTransaction: false,
           ),
         );
         return authenticated;
@@ -64,7 +65,11 @@ class CommonFn {
     final LocalAuthentication auth = LocalAuthentication();
     final List<BiometricType> availableBiometrics =
         await auth.getAvailableBiometrics();
-    if (availableBiometrics.contains(BiometricType.weak) &&
+    logger.d(
+        "availableBiometrics.contains(BiometricType.weak); ${availableBiometrics.contains(BiometricType.weak)}");
+    logger.d(
+        "availableBiometrics.contains(BiometricType.strong) ${availableBiometrics.contains(BiometricType.strong)}");
+    if (availableBiometrics.contains(BiometricType.weak) ||
         availableBiometrics.contains(BiometricType.strong)) {
       return true;
     }
@@ -73,5 +78,12 @@ class CommonFn {
       return true;
     }
     return false;
+  }
+
+  static parseCollectionToDate(String ymd) {
+    final dateStrYMD = ymd.split("_").first;
+    final dateStr =
+        "${dateStrYMD.substring(6, 8)}-${dateStrYMD.substring(4, 6)}-${dateStrYMD.substring(0, 4)}";
+    return dateStr;
   }
 }
