@@ -32,41 +32,18 @@ class SettingController extends GetxController {
   }
 
   void onShare(BuildContext context) async {
-    // A builder is used to retrieve the context immediately
-    // surrounding the ElevatedButton.
-    //
-    // The context's `findRenderObject` returns the first
-    // RenderObject in its descendent tree when it's not
-    // a RenderObjectWidget. The ElevatedButton's RenderObject
-    // has its position and size after it's built.
     final box = context.findRenderObject() as RenderBox?;
-
-    // if (uri.isNotEmpty) {
-    //   await Share.shareUri(Uri.parse(uri));
-    // } else if (imagePaths.isNotEmpty) {
-    //   final files = <XFile>[];
-    //   for (var i = 0; i < imagePaths.length; i++) {
-    //     files.add(XFile(imagePaths[i], name: imageNames[i]));
-    //   }
-    //   await Share.shareXFiles(files,
-    //       text: text,
-    //       subject: subject,
-    //       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size);
-    // } else {
-    // await Share.share('test na');
     await Share.share(
       "test",
       subject: "test sub",
       sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
     );
-    // }
   }
 
   Future<bool> checkPermission() async {
     try {
       await AppWriteController.to.user;
       isLogin = true;
-      setup();
       return true;
     } catch (e) {
       logger.e("$e");
@@ -84,18 +61,30 @@ class SettingController extends GetxController {
   }
 
   void beforeSetup() async {
-    final isLogin = await checkPermission();
-    logger.w("isLogin: $isLogin");
-    if (isLogin) {
-      await requestBioMetrics();
+    try {
+      loading = true;
+      update();
+      final isLogin = await checkPermission();
+      logger.w("isLogin: $isLogin");
+      if (isLogin) {
+        final isPassBio = await requestBioMetrics();
+        if (!isPassBio) {
+          return;
+        }
+      }
+      setup();
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+    } finally {
+      loading = false;
+      update();
     }
-    loading = false;
-    update();
   }
 
   @override
   void onInit() async {
-    beforeSetup();
+    // beforeSetup();
     super.onInit();
   }
 }

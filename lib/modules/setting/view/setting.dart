@@ -15,6 +15,9 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SettingController>(
+      initState: (state) {
+        SettingController.to.beforeSetup();
+      },
       builder: (controller) {
         if (controller.loading) {
           return Center(child: CircularProgressIndicator());

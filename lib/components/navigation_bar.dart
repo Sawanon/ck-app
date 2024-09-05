@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottery_ck/components/navigation_item.dart';
+import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 
 class CustomNavigationBar extends StatefulWidget {
-  void Function(int index)? onChangeTab;
-  int menuIndex;
+  void Function(TabApp tab)? onChangeTab;
+  TabApp currentTab;
   CustomNavigationBar({
     super.key,
     this.onChangeTab,
-    required this.menuIndex,
+    required this.currentTab,
   });
 
   @override
@@ -18,13 +19,10 @@ class CustomNavigationBar extends StatefulWidget {
 }
 
 class _CustomNavigationBarState extends State<CustomNavigationBar> {
-  void changeTab(int index) {
+  void changeTab(TabApp tab) {
     if (widget.onChangeTab != null) {
-      widget.onChangeTab!(index);
+      widget.onChangeTab!(tab);
     }
-    setState(() {
-      widget.menuIndex = index;
-    });
   }
 
   @override
@@ -42,9 +40,10 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           NavigationItem(
+            tab: TabApp.home,
+            currentTab: widget.currentTab,
             changeTab: changeTab,
             index: 0,
-            currentIndex: widget.menuIndex,
             icon: SvgPicture.asset(
               AppIcon.home,
               colorFilter: const ColorFilter.mode(
@@ -63,9 +62,10 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             label: 'ໜ້າຫຼັກ',
           ),
           NavigationItem(
+            tab: TabApp.history,
+            currentTab: widget.currentTab,
             changeTab: changeTab,
             index: 1,
-            currentIndex: widget.menuIndex,
             icon: SvgPicture.asset(
               AppIcon.history,
               colorFilter: ColorFilter.mode(
@@ -83,9 +83,10 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             label: 'ປະຫວັດ',
           ),
           NavigationItem(
+            tab: TabApp.lottery,
+            currentTab: widget.currentTab,
             changeTab: changeTab,
             index: 2,
-            currentIndex: widget.menuIndex,
             icon: SvgPicture.asset(
               AppIcon.lottery,
               colorFilter: ColorFilter.mode(
@@ -103,9 +104,10 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             label: 'ຜົນຫວຍ',
           ),
           NavigationItem(
+            tab: TabApp.notifications,
+            currentTab: widget.currentTab,
             changeTab: changeTab,
             index: 3,
-            currentIndex: widget.menuIndex,
             icon: SvgPicture.asset(
               AppIcon.notification,
               colorFilter: ColorFilter.mode(
@@ -123,9 +125,10 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
             label: 'ແຈ້ງເຕືອນ',
           ),
           NavigationItem(
+            tab: TabApp.settings,
+            currentTab: widget.currentTab,
             changeTab: changeTab,
             index: 4,
-            currentIndex: widget.menuIndex,
             icon: SvgPicture.asset(
               AppIcon.setting,
               colorFilter: ColorFilter.mode(

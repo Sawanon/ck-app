@@ -39,7 +39,8 @@ class InitialBinding extends Bindings {
     Get.lazyPut<OtpController>(() => OtpController(), fenix: true);
     Get.put<HomeController>(HomeController());
     Get.put<BuyLotteryController>(BuyLotteryController());
-    Get.lazyPut<SettingController>(() => SettingController(), fenix: true);
+    // Get.lazyPut<SettingController>(() => SettingController(), fenix: true);
+    Get.put<SettingController>(SettingController());
     Get.lazyPut<CloudFlareController>(() => CloudFlareController(),
         fenix: true);
     Get.lazyPut<PinController>(() => PinController(), fenix: true);
@@ -55,15 +56,7 @@ class InitialBinding extends Bindings {
     Get.lazyPut<PromotionController>(() => PromotionController(), fenix: true);
     Get.lazyPut<WinBillContoller>(() => WinBillContoller(), fenix: true);
     Get.put<LotteryHistoryController>(LotteryHistoryController());
-  }
-}
-
-class LoggedInBinding extends Bindings {
-  @override
-  void dependencies() {
     Get.lazyPut<HistoryController>(() => HistoryController(), fenix: true);
-    Get.put<UserStore>(UserStore());
-    Get.put<HistoryBuyController>(HistoryBuyController());
     Get.put<HistoryWinController>(HistoryWinController());
   }
 }

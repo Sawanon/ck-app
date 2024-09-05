@@ -454,7 +454,7 @@ class AppWriteController extends GetxController {
       // );
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(message: "$e");
+      // Get.rawSnackbar(message: "$e");
       return null;
     }
   }

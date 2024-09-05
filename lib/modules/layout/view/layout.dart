@@ -35,14 +35,15 @@ class LayoutPage extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.transparent,
                 ),
-                child: pages[controller.tabIndex],
+                child: controller.currentPage(controller.currentTab),
+                // child: pages[controller.tabIndex],
                 // child: Text('${controller.tabIndex}'),
               ),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: CustomNavigationBar(
-                  menuIndex: controller.tabIndex,
-                  onChangeTab: controller.onChangeTabIndex,
+                  currentTab: controller.currentTab,
+                  onChangeTab: controller.changeTab,
                 ),
               ),
             ],

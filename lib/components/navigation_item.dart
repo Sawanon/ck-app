@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 
 class NavigationItem extends StatelessWidget {
-  final void Function(int index) changeTab;
+  final void Function(TabApp tab) changeTab;
   final int index;
-  final int currentIndex;
+
   final Widget icon;
   final Widget activeIcon;
   final String label;
+  final TabApp tab;
+  final TabApp currentTab;
   const NavigationItem({
     super.key,
     required this.changeTab,
     required this.index,
-    required this.currentIndex,
     required this.icon,
     required this.activeIcon,
     required this.label,
+    required this.tab,
+    required this.currentTab,
   });
 
   @override
@@ -25,7 +29,7 @@ class NavigationItem extends StatelessWidget {
       height: 62,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        color: currentIndex == index ? Colors.white : Colors.transparent,
+        color: currentTab == tab ? Colors.white : Colors.transparent,
         shape: BoxShape.circle,
       ),
       child: Material(
@@ -33,13 +37,13 @@ class NavigationItem extends StatelessWidget {
         child: InkWell(
           overlayColor: WidgetStateProperty.all(Colors.white.withOpacity(0.2)),
           onTap: () {
-            changeTab(index);
+            changeTab(tab);
           },
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               renderIcon(
-                  active: currentIndex == index,
+                  active: currentTab == tab,
                   icon: icon,
                   activeIcon: activeIcon),
               Text(
@@ -48,9 +52,8 @@ class NavigationItem extends StatelessWidget {
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   // fontWeight:
-                  //     currentIndex == index ? FontWeight.w700 : FontWeight.w500,
-                  color:
-                      currentIndex == index ? AppColors.primary : Colors.white,
+                  //     currentTab == tab ? FontWeight.w700 : FontWeight.w500,
+                  color: currentTab == tab ? AppColors.primary : Colors.white,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

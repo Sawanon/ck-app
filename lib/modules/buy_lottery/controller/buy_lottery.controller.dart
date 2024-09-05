@@ -14,7 +14,8 @@ import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 
 class BuyLotteryController extends GetxController {
-  GlobalKey<FormState> formKey = GlobalKey();
+  static BuyLotteryController get to => Get.find();
+  GlobalKey<FormState>? formKey = GlobalKey();
   FocusNode priceNode = FocusNode();
   FocusNode lotteryNode = FocusNode();
   TextEditingController priceTextController = TextEditingController();
@@ -23,7 +24,6 @@ class BuyLotteryController extends GetxController {
   String? lottery;
   int? price;
 
-  static BuyLotteryController get to => Get.find();
   RxBool isUserLoggedIn = false.obs;
   RxList<Lottery> lotteryList = <Lottery>[].obs;
   final totalAmount = 0.obs;
@@ -95,7 +95,7 @@ class BuyLotteryController extends GetxController {
   }
 
   void submitAddLottery(String? lottery, int? price) {
-    if (formKey.currentState != null && formKey.currentState!.validate()) {
+    if (formKey?.currentState != null && formKey!.currentState!.validate()) {
       if (lottery == null || price == null) {
         alertLotteryEmpty();
         alertPrice();
@@ -202,6 +202,7 @@ class BuyLotteryController extends GetxController {
                       onPressed: () {
                         navigator?.pop();
                         gotoLoginPage();
+                        formKey = null;
                       },
                       child: Text(
                         "LOG IN",

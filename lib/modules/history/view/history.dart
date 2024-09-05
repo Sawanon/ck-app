@@ -14,6 +14,9 @@ class HistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HistoryController>(
+      initState: (state) {
+        HistoryController.to.setup();
+      },
       builder: (controller) {
         if (controller.loading) {
           return Center(child: CircularProgressIndicator());

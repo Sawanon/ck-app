@@ -10,6 +10,7 @@ import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller
 import 'package:lottery_ck/modules/couldflare/controller/cloudflare.controller.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
 import 'package:lottery_ck/modules/history/controller/history.controller.dart';
+import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/repository/user_repository/user.repository.dart';
 import 'package:lottery_ck/res/constant.dart';
@@ -96,36 +97,15 @@ class LoginController extends GetxController {
                 if (availableBiometrics) {
                   Get.toNamed(RouteName.enableBiometrics, arguments: {
                     "whenSuccess": () async {
-                      try {
-                        HistoryController.to.setup();
-                      } catch (e) {
-                        logger.e("$e");
-                      }
-                      try {
-                        SettingController.to.beforeSetup();
-                      } catch (e) {
-                        logger.e("$e");
-                      }
-                      navigator?.pop();
-                      navigator?.pop();
-                      navigator?.pop();
+                      LayoutController.to.intialApp();
+                      Get.offAllNamed(RouteName.layout);
                       return;
                     }
                   });
                   return;
                 }
-                try {
-                  HistoryController.to.checkPermission();
-                } catch (e) {
-                  logger.e("$e");
-                }
-                try {
-                  SettingController.to.checkPermission();
-                } catch (e) {
-                  logger.e("$e");
-                }
-                navigator?.pop();
-                navigator?.pop();
+                LayoutController.to.intialApp();
+                Get.offAllNamed(RouteName.layout);
               }
             },
           );

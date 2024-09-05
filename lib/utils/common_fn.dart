@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:lottery_ck/model/lottery.dart';
 import 'package:intl/intl.dart';

@@ -22,7 +22,6 @@ class AppRoutes {
         GetPage(
           name: RouteName.layout,
           page: () => LayoutPage(),
-          binding: LoggedInBinding(),
         ),
         GetPage(
           name: RouteName.login,

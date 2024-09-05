@@ -15,6 +15,10 @@ class BuyLottery extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<BuyLotteryController>(
+      initState: (state) {
+        logger.w("initState: BuyLotteryController");
+        BuyLotteryController.to.formKey = GlobalKey();
+      },
       builder: (controller) {
         return Obx(
           () {

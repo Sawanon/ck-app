@@ -162,7 +162,7 @@ class FirebaseMessagingController extends GetxController {
   @override
   void onInit() {
     initialFirebase();
-    listenOpenNotifications();
+    // listenOpenNotifications();
     // listenBackgroundNotifications();
     super.onInit();
   }
