@@ -8,6 +8,7 @@ import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/route/route_name.dart';
+import 'package:lottery_ck/utils.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -229,8 +230,11 @@ class SettingPage extends StatelessWidget {
                           onTap: () {
                             showModalBottomSheet(
                               context: context,
+                              isScrollControlled: true,
                               builder: (context) {
-                                return RatingComponent();
+                                return RatingComponent(
+                                  onSubmit: controller.submitRating,
+                                );
                               },
                             );
                           },

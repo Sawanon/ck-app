@@ -26,6 +26,7 @@ class AppWriteController extends GetxController {
   static const String BANK = 'bank';
   static const String NEWS = 'news';
   static const String PROMOTION = 'promotions';
+  static const String FEEDBACK = 'feedbacks';
 
   static const _roleUserId = "669a2cfd00141edc45ef";
   final String _providerId = '66d28d4000300a1e7dc1';
@@ -745,6 +746,23 @@ class AppWriteController extends GetxController {
     } catch (e) {
       logger.e("$e");
       return false;
+    }
+  }
+
+  Future<void> feedBackApp(double rate, String? comment) async {
+    try {
+      final userId = await user.then((value) => value.$id);
+      await databases.createDocument(
+          databaseId: _databaseName,
+          collectionId: FEEDBACK,
+          documentId: ID.unique(),
+          data: {
+            "users": userId,
+            "rate": rate,
+            "comment": comment,
+          });
+    } catch (e) {
+      logger.e("$e");
     }
   }
 }

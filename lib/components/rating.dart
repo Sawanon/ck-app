@@ -4,9 +4,20 @@ import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
 
-class RatingComponent extends StatelessWidget {
-  const RatingComponent({super.key});
+class RatingComponent extends StatefulWidget {
+  final Function(double rating, String? comment) onSubmit;
+  const RatingComponent({
+    super.key,
+    required this.onSubmit,
+  });
 
+  @override
+  State<RatingComponent> createState() => _RatingComponentState();
+}
+
+class _RatingComponentState extends State<RatingComponent> {
+  double _rating = 5;
+  String? _comment;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -50,7 +61,7 @@ class RatingComponent extends StatelessWidget {
             child: Center(
               child: RatingBar(
                 glowColor: Colors.amber,
-                initialRating: 5,
+                initialRating: _rating,
                 direction: Axis.horizontal,
                 allowHalfRating: true,
                 itemCount: 5,
@@ -62,6 +73,7 @@ class RatingComponent extends StatelessWidget {
                 itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                 onRatingUpdate: (rating) {
                   logger.d(rating);
+                  _rating = rating;
                   // _settingViewModel.onChangeRating(rating.toString());
                 },
               ),
@@ -88,8 +100,8 @@ class RatingComponent extends StatelessWidget {
                 fillColor: Colors.white,
               ),
               onChanged: (value) {
-                logger.d("comment: $value");
-                // _settingViewModel.onChangeComment(value);
+                logger.d("value: $value");
+                _comment = value;
               },
             ),
           ),
@@ -102,6 +114,7 @@ class RatingComponent extends StatelessWidget {
                 onTap: () {
                   // _settingViewModel.submitFeedback(context);
                   logger.d("submit ");
+                  widget.onSubmit(_rating, _comment);
                 },
                 child: Container(
                   alignment: Alignment.center,

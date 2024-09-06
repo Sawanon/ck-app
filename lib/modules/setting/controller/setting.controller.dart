@@ -27,7 +27,7 @@ class SettingController extends GetxController {
     update();
   }
 
-  void setup() async {
+  Future<void> setup() async {
     await getUser();
   }
 
@@ -65,14 +65,14 @@ class SettingController extends GetxController {
       loading = true;
       update();
       final isLogin = await checkPermission();
-      logger.w("isLogin: $isLogin");
-      if (isLogin) {
-        final isPassBio = await requestBioMetrics();
-        if (!isPassBio) {
-          return;
-        }
-      }
-      setup();
+      // logger.w("isLogin: $isLogin");
+      // if (isLogin) {
+      //   final isPassBio = await requestBioMetrics();
+      //   if (!isPassBio) {
+      //     return;
+      //   }
+      // }
+      await setup();
     } catch (e) {
       logger.e("$e");
       Get.rawSnackbar(message: "$e");
@@ -80,6 +80,11 @@ class SettingController extends GetxController {
       loading = false;
       update();
     }
+  }
+
+  void submitRating(double rating, String? comment) async {
+    await AppWriteController.to.feedBackApp(rating, comment);
+    Get.back();
   }
 
   @override

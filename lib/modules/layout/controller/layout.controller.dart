@@ -55,6 +55,56 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
     }
   }
 
+  void showDialogLogin() {
+    Get.dialog(
+      Center(
+        child: Material(
+          color: Colors.transparent,
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 16),
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "ກະລຸນາເຂົ້າສູ່ລະບົບ",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Text(
+                  "ກະລຸນາເຂົ້າສູ່ລະບົບກ່ອນທີ່ຈະຊື້ຫວຍ.",
+                  style: TextStyle(
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                LongButton(
+                  onPressed: () {
+                    navigator?.pop();
+                    Get.toNamed(RouteName.login);
+                  },
+                  child: Text(
+                    "LOG IN",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      useSafeArea: true,
+    );
+  }
+
   void changeTab(TabApp tab) async {
     switch (tab) {
       case TabApp.home:
@@ -62,53 +112,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
         break;
       case TabApp.history:
         if (!isUserLogined) {
-          Get.dialog(
-            Center(
-              child: Material(
-                color: Colors.transparent,
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16),
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "ກະລຸນາເຂົ້າສູ່ລະບົບ",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Text(
-                        "ກະລຸນາເຂົ້າສູ່ລະບົບກ່ອນທີ່ຈະຊື້ຫວຍ.",
-                        style: TextStyle(
-                          color: AppColors.textPrimary,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      LongButton(
-                        onPressed: () {
-                          navigator?.pop();
-                          Get.toNamed(RouteName.login);
-                        },
-                        child: Text(
-                          "LOG IN",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            useSafeArea: true,
-          );
+          showDialogLogin();
           return;
         }
         final isPass = await requestBioMetrics();
@@ -123,7 +127,14 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
         onChangeTabIndex(tab);
         break;
       case TabApp.settings:
-        onChangeTabIndex(tab);
+        if (!isUserLogined) {
+          showDialogLogin();
+          return;
+        }
+        final isPass = await requestBioMetrics();
+        if (isPass) {
+          onChangeTabIndex(tab);
+        }
         break;
     }
   }
