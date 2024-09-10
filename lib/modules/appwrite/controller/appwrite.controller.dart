@@ -5,6 +5,7 @@ import 'package:appwrite/models.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/model/bank.dart';
+import 'package:lottery_ck/model/buy_lottery_configs.dart';
 import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/model/lottery_date.dart';
 import 'package:lottery_ck/model/news.dart';
@@ -749,10 +750,10 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<void> feedBackApp(double rate, String? comment) async {
+  Future<Document?> feedBackApp(double rate, String? comment) async {
     try {
       final userId = await user.then((value) => value.$id);
-      await databases.createDocument(
+      return await databases.createDocument(
           databaseId: _databaseName,
           collectionId: FEEDBACK,
           documentId: ID.unique(),
@@ -763,6 +764,25 @@ class AppWriteController extends GetxController {
           });
     } catch (e) {
       logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<List<BuyLotteryConfigs>?> listBuyLotteryConfigs() async {
+    try {
+      final buyLotteryConfigDocumentList = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: "buy_lottery_configs",
+      );
+      List<BuyLotteryConfigs> buyLotteryConfigList = [];
+      for (var buyLotteryConfig in buyLotteryConfigDocumentList.documents) {
+        buyLotteryConfigList
+            .add(BuyLotteryConfigs.fromJson(buyLotteryConfig.data));
+      }
+      return buyLotteryConfigList;
+    } catch (e) {
+      logger.e("$e");
+      return null;
     }
   }
 }

@@ -13,6 +13,8 @@ class RouteName {
   static const String news = '/news';
   static const String promotion = '/promotion';
   static const String winbill = '/winbill';
+  static const String pinVerify = '/pinVerify';
+  static const String animal = '/animal';
 
   static const String cloudflare = '/cloudflare';
 }

@@ -55,16 +55,25 @@ class StorageController extends GetxController {
     await clearValue("sessionId");
   }
 
-  Future<void> setUserId(String userId) async {
-    await setValue("userId", userId);
-  }
+  // Future<void> setUserId(String userId) async {
+  //   await setValue("userId", userId);
+  // }
 
-  Future<String?> getUserId() async {
-    return await getValue("userId");
-  }
+  // Future<String?> getUserId() async {
+  //   return await getValue("userId");
+  // }
 
   Future<void> clear() async {
     await storage?.deleteAll();
+  }
+
+  Future<void> setEnableBio() async {
+    await setValue("enableBio", "true");
+  }
+
+  Future<bool> getEnableBio() async {
+    final value = await getValue("enableBio");
+    return value == "true";
   }
 
   @override

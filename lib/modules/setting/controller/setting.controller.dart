@@ -83,8 +83,33 @@ class SettingController extends GetxController {
   }
 
   void submitRating(double rating, String? comment) async {
-    await AppWriteController.to.feedBackApp(rating, comment);
+    Get.dialog(Center(
+      child: CircularProgressIndicator(),
+    ));
+    final feedbackDocument =
+        await AppWriteController.to.feedBackApp(rating, comment);
     Get.back();
+    if (feedbackDocument != null) {
+      Get.back();
+      Get.snackbar(
+        "",
+        "",
+        titleText: Text(
+          "ຂອບໃຈຫຼາຍ",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        messageText: Text(
+          "ຂອບໃຈສໍາລັບຄໍາແນະນໍາຂອງທ່ານ",
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      );
+      return;
+    }
+    Get.snackbar("ມີບາງຢ່າງຜິດພາດ", "ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ");
   }
 
   @override

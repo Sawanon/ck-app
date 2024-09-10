@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:lottery_ck/modules/video/view/video.dart';
 import 'package:lottery_ck/res/constant.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
 /// Stateful widget to fetch and then display video content.
-class VideoApp1 extends StatefulWidget {
-  const VideoApp1({super.key});
+class VideoList extends StatefulWidget {
+  const VideoList({super.key});
 
   @override
-  _VideoApp1State createState() => _VideoApp1State();
+  _VideoListState createState() => _VideoListState();
 }
 
-class _VideoApp1State extends State<VideoApp1> {
+class _VideoListState extends State<VideoList> {
   @override
   void initState() {
     super.initState();

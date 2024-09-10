@@ -3,10 +3,12 @@ import 'package:lottery_ck/utils.dart';
 class Lottery {
   String lottery;
   int price;
+  int lotteryType;
 
   Lottery({
     required this.lottery,
     required this.price,
+    required this.lotteryType,
   }) {
     if (lottery.isEmpty || lottery.length > 6) {
       throw "invalid lottery format";
@@ -36,6 +38,7 @@ class Lottery {
     return Lottery(
       lottery: json['lottery'],
       price: json['amount'],
+      lotteryType: json['lotteryType'],
     );
   }
 

@@ -32,15 +32,14 @@ class LoginController extends GetxController {
   WebViewController? webviewController;
 
   Future<void> login() async {
-    logger.d("message");
     final valid = keyForm.currentState?.validate();
     if (valid == null || valid == false) {
       return;
     }
 
     Map<String, dynamic>? token = await getToken();
+    // go to otp for verify then go to enter user info - sawanon:20240807
     if (token == null) {
-      // TODO: go to otp for verify then go to enter user info - sawanon:20240807
       Get.toNamed(
         RouteName.otp,
         arguments: {
@@ -75,7 +74,7 @@ class LoginController extends GetxController {
       arguments: {
         "phoneNumber": phoneNumber,
         "whenSuccess": () async {
-          Get.snackbar("OTP success !", "go to create session");
+          Get.snackbar("OTP verify successfully !", "");
           final session = await createSession(token);
           if (session == null) {
             Get.snackbar(
@@ -86,8 +85,10 @@ class LoginController extends GetxController {
             return;
           }
           AppWriteController.to.detaulGroupUser(session.userId);
+          // TODO: check has pin ? - sawanon:202409
           Get.offNamed(
-            RouteName.pin,
+            // RouteName.pin,
+            RouteName.pinVerify,
             arguments: {
               "whenSuccess": () async {
                 // Get.delete<BuyLotteryController>();

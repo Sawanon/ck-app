@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/model/buy_lottery_configs.dart';
 import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
@@ -20,6 +21,7 @@ class BuyLotteryController extends GetxController {
   FocusNode lotteryNode = FocusNode();
   TextEditingController priceTextController = TextEditingController();
   TextEditingController lotteryTextController = TextEditingController();
+  List<BuyLotteryConfigs> buyLotteryConfigs = [];
 
   String? lottery;
   int? price;
@@ -63,14 +65,40 @@ class BuyLotteryController extends GetxController {
           return data.lottery == lottery;
         },
       ).toList();
-      logger.d(findLottery.length);
       if (findLottery.isNotEmpty) {
-        final currentLottery = findLottery[0];
+        final lottery = findLottery[0];
+        final buyLotteryConfig = buyLotteryConfigs
+            .where(
+              (buyLotteryConfig) =>
+                  buyLotteryConfig.lotteryType == lottery.lotteryType,
+            )
+            .toList();
+        logger.d("buyLotteryConfig: $buyLotteryConfig");
+        final currentLottery = lottery;
         final total = currentLottery.price + price;
+        if (buyLotteryConfig.isNotEmpty) {
+          final config = buyLotteryConfig.first;
+          if (config.max != null) {
+            if (config.max! < total) {
+              Get.snackbar("more than quota",
+                  "please buy maximum ${config.max} per lottery");
+              return;
+            }
+            if (config.min! > lottery.price) {
+              Get.snackbar("less than quota",
+                  "please buy minumum ${config.max} per lottery");
+              return;
+            }
+          }
+        }
         currentLottery.price = total;
         update();
       } else {
-        lotteryList.add(Lottery(lottery: lottery, price: price));
+        lotteryList.add(Lottery(
+          lottery: lottery,
+          price: price,
+          lotteryType: lottery.length,
+        ));
       }
       calculateTotalAmount();
     } catch (e) {
@@ -205,7 +233,7 @@ class BuyLotteryController extends GetxController {
                         formKey = null;
                       },
                       child: Text(
-                        "LOG IN",
+                        "ເຂົ້າສູ່ລະບົບ",
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                         ),
@@ -242,9 +270,35 @@ class BuyLotteryController extends GetxController {
     this.price = int.parse(price);
   }
 
+  void gotoAnimalPage() {
+    Get.toNamed(
+      RouteName.animal,
+      arguments: [onClickAnimalBuy],
+    );
+  }
+
+  void onClickAnimalBuy(List<Map<String, dynamic>> lotteryList) {
+    logger.d(lotteryList);
+    for (var lottery in lotteryList) {
+      addLottery(lottery["lottery"], int.parse(lottery["price"]));
+    }
+  }
+
+  void listBuyLotteryConfigs() async {
+    final buyLotteryConfigsList =
+        await AppWriteController.to.listBuyLotteryConfigs();
+    if (buyLotteryConfigsList == null) {
+      return;
+    }
+    logger.d("buyLotteryConfigsList: $buyLotteryConfigsList");
+    buyLotteryConfigs = buyLotteryConfigsList;
+    update();
+  }
+
   @override
   void onInit() {
     // checkUser();
+    listBuyLotteryConfigs();
     setupNode();
     keyboardSubscription = KeyboardVisibilityController().onChange.listen(
       (event) {

@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
+import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
 
 class BuyLottery extends StatelessWidget {
@@ -307,31 +308,36 @@ class BuyLottery extends StatelessWidget {
                                     // color: Colors.blue.shade200,
                                     child: Row(
                                       children: [
-                                        Container(
-                                          width: 52,
-                                          height: 52,
-                                          decoration: BoxDecoration(
-                                            color: AppColors.primary,
-                                            shape: BoxShape.circle,
-                                          ),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              SvgPicture.asset(
-                                                AppIcon.animal,
-                                                width: 24,
-                                                height: 24,
-                                              ),
-                                              Text(
-                                                "ตำรา",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w700,
-                                                  height: 0.8,
+                                        GestureDetector(
+                                          onTap: () {
+                                            controller.gotoAnimalPage();
+                                          },
+                                          child: Container(
+                                            width: 52,
+                                            height: 52,
+                                            decoration: BoxDecoration(
+                                              color: AppColors.primary,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                SvgPicture.asset(
+                                                  AppIcon.animal,
+                                                  width: 24,
+                                                  height: 24,
                                                 ),
-                                              ),
-                                            ],
+                                                Text(
+                                                  "ตำรา",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w700,
+                                                    height: 0.8,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                         const SizedBox(width: 6),

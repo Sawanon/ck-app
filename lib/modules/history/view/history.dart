@@ -49,7 +49,7 @@ class HistoryPage extends StatelessWidget {
                         Get.toNamed(RouteName.login);
                       },
                       child: Text(
-                        "LOG IN",
+                        "ເຂົ້າສູ່ລະບົບ",
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
                         ),

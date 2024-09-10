@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/constant.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
@@ -30,9 +32,7 @@ class _VideComponentsState extends State<VideComponents> {
     _controller.initialize().then(
       (_) {
         _controller.setLooping(true);
-        // _controller.setVolume(0.1);
         _controller.play();
-        // _controller.setVolume(0.1);
         setState(() {});
       },
     );
@@ -60,7 +60,22 @@ class _VideComponentsState extends State<VideComponents> {
         ),
       );
     }
-    return Container();
+    return Skeletonizer(
+      enabled: true,
+      child: Material(
+        color: Colors.grey,
+        borderRadius: BorderRadius.circular(8),
+        clipBehavior: Clip.hardEdge,
+        child: Container(
+          color: Colors.red,
+          // decoration: BoxDecoration(
+          //   borderRadius: BorderRadius.circular(8),
+          // ),
+          width: heightVideo * (9 / 16),
+          height: heightVideo,
+        ),
+      ),
+    );
   }
 
   @override

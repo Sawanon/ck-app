@@ -19,6 +19,7 @@ import 'package:lottery_ck/modules/notification/controller/notification.controll
 import 'package:lottery_ck/modules/notification/controller/promotion.controller.dart';
 import 'package:lottery_ck/modules/otp/controller/otp.controller.dart';
 import 'package:lottery_ck/modules/pin/controller/pin.controller.dart';
+import 'package:lottery_ck/modules/pin/controller/pin_verify.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/signup/controller/signup.controller.dart';
 import 'package:lottery_ck/modules/splash_screen/controller/splash_screen.controller.dart';
@@ -44,6 +45,7 @@ class InitialBinding extends Bindings {
     Get.lazyPut<CloudFlareController>(() => CloudFlareController(),
         fenix: true);
     Get.lazyPut<PinController>(() => PinController(), fenix: true);
+    Get.lazyPut<PinVerifyController>(() => PinVerifyController(), fenix: true);
     // Get.lazyPut<SplashScreenController>(() => SplashScreenController());
     Get.put<SplashScreenController>(SplashScreenController());
     Get.lazyPut<BillController>(() => BillController(), fenix: true);

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:lottery_ck/binding/initial.binding.dart';
+import 'package:lottery_ck/modules/animal/view/animal.dart';
 import 'package:lottery_ck/modules/bill/view/bill.dart';
 import 'package:lottery_ck/modules/biometrics/view/enable_biometrics.dart';
 import 'package:lottery_ck/modules/couldflare/view/cloudflare.dart';
@@ -12,6 +13,7 @@ import 'package:lottery_ck/modules/otp/view/otp.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/modules/payment/view/payment.dart';
 import 'package:lottery_ck/modules/pin/view/pin.dart';
+import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
 import 'package:lottery_ck/modules/point/view/point.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/modules/splash_screen/view/splash_screen.dart';
@@ -93,6 +95,16 @@ class AppRoutes {
         GetPage(
           name: RouteName.winbill,
           page: () => WinBillPage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.pinVerify,
+          page: () => PinVerifyPage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.animal,
+          page: () => AnimalPage(),
           transition: Transition.rightToLeft,
         ),
       ];

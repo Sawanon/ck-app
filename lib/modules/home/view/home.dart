@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
-import 'package:lottery_ck/modules/video/view/video1.dart';
+import 'package:lottery_ck/modules/video/view/video_list.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/res/logo.dart';
@@ -262,7 +262,7 @@ class HomePage extends StatelessWidget {
                       }),
                     ),
                     const SizedBox(height: 16),
-                    VideoApp1(),
+                    VideoList(),
                     const SizedBox(height: 16),
                     Row(
                       children: [
