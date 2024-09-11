@@ -14,6 +14,7 @@ import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/login/controller/login.controller.dart';
 import 'package:lottery_ck/modules/lottery_history/controller/lottery_history.controller.dart';
+import 'package:lottery_ck/modules/network/controller/network.controller.dart';
 import 'package:lottery_ck/modules/notification/controller/news.controller.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
 import 'package:lottery_ck/modules/notification/controller/promotion.controller.dart';
@@ -27,6 +28,14 @@ import 'package:lottery_ck/repository/user_repository/user.repository.dart';
 import 'package:lottery_ck/storage.dart';
 
 class InitialBinding extends Bindings {
+  @override
+  void dependencies() {
+    // Get.lazyPut<SplashScreenController>(() => SplashScreenController());
+    Get.put<SplashScreenController>(SplashScreenController());
+  }
+}
+
+class LayoutBindings extends Bindings {
   @override
   void dependencies() {
     Get.put<StorageController>(StorageController());
@@ -46,8 +55,6 @@ class InitialBinding extends Bindings {
         fenix: true);
     Get.lazyPut<PinController>(() => PinController(), fenix: true);
     Get.lazyPut<PinVerifyController>(() => PinVerifyController(), fenix: true);
-    // Get.lazyPut<SplashScreenController>(() => SplashScreenController());
-    Get.put<SplashScreenController>(SplashScreenController());
     Get.lazyPut<BillController>(() => BillController(), fenix: true);
     Get.lazyPut<EnableBiometricsController>(() => EnableBiometricsController(),
         fenix: true);
@@ -60,5 +67,6 @@ class InitialBinding extends Bindings {
     Get.put<LotteryHistoryController>(LotteryHistoryController());
     Get.lazyPut<HistoryController>(() => HistoryController(), fenix: true);
     Get.put<HistoryWinController>(HistoryWinController());
+    Get.put<NetworkController>(NetworkController());
   }
 }

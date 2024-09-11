@@ -15,202 +15,203 @@ class _AnimalPageState extends State<AnimalPage> {
     {
       "name": "ตัวนิ่ม",
       "image": "armadillo.png",
-      "lotteries": ["43", "54", "15"],
+      "lotteries": ["37", "77"],
     },
     {
       "name": "ผึ้ง",
       "image": "bee.png",
-      "lotteries": ["43", "54", "15"],
+      "lotteries": ["16", "56", "96"],
     },
     {
       "name": "ปลาใหญ่",
       "image": "bigfish.png",
-      "lotteries": ["93", "51", "25"],
+      "lotteries": ["30", "70"],
     },
     {
       "name": "งูใหญ่",
       "image": "bigsnake.png",
-      "lotteries": ["93", "51", "25"],
+      "lotteries": ["00", "00", "00"],
     },
     {
       "name": "นกแกนแก",
       "image": "birdgangare.png",
-      "lotteries": ["92", "51", "21"],
+      // "lotteries": ["92", "51", "21"],
+      "lotteries": ["00", "00", "00"],
     },
     {
       "name": "ควาย",
       "image": "buffalo.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["09", "49", "89"],
     },
     {
       "name": "ผีเสื้อ",
       "image": "butterfly.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["19", "59", "99"],
     },
     {
       "name": "แมว",
       "image": "cat.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["14", "54", "94"],
     },
     {
       "name": "แมวป่า",
       "image": "catforest.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["18", "58", "98"],
     },
     {
       "name": "ตะขาบ",
       "image": "centipede.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["00", "20", "60"],
     },
     {
       "name": "ไก่",
       "image": "chicken.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["28", "68"],
     },
     {
       "name": "ปู",
       "image": "crab.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["39", "79"],
     },
     {
       "name": "กวาง",
       "image": "deer.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["34", "74"],
     },
     {
       "name": "หมา",
       "image": "dog.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["11", "51", "91"],
     },
     {
       "name": "อินทรีย์",
       "image": "eagle.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["40", "80"],
     },
     {
       "name": "นกกระยาง",
       "image": "egret.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["17", "57", "97"],
     },
     {
       "name": "ช้าง",
       "image": "elephant.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["13", "53", "93"],
     },
     {
       "name": "ปลา",
       "image": "fish.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["01", "41", "81"],
     },
     {
       "name": "กบ",
       "image": "fog.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["24", "64"],
     },
     {
       "name": "แพะ",
       "image": "goat.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["35", "75"],
     },
     {
       "name": "ห่าน",
       "image": "goose.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["03", "43", "83"],
     },
     {
       "name": "เหยี่ยว",
       "image": "hawk.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["25", "65"],
     },
     {
       "name": "ม้า",
       "image": "horse.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["12", "52", "92"],
     },
     {
       "name": "สิงโต",
       "image": "lion.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["05", "45", "85"],
     },
     {
       "name": "ลิง",
       "image": "monkey.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["23", "63"],
     },
     {
       "name": "นาก",
       "image": "otter.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["10", "50", "90"],
     },
     {
       "name": "นกยู",
       "image": "peacock.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["04", "44", "84"],
     },
     {
       "name": "หมู",
       "image": "pig.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["07", "47", "87"],
     },
     {
       "name": "เม่น",
       "image": "porcupine.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["38", "78"],
     },
     {
       "name": "กระต่าย",
       "image": "rabbit.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["08", "48", "88"],
     },
     {
       "name": "หนู",
       "image": "rat.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["15", "55", "95"],
     },
     {
       "name": "แมวน้ำ",
       "image": "seal.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["10", "50", "90"],
     },
     {
       "name": "หอย",
       "image": "shell.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["02", "42", "82"],
     },
     {
       "name": "กุ้ง",
       "image": "shrimp.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["31", "71"],
     },
     {
       "name": "งู",
       "image": "snake.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["32", "72"],
     },
     {
       "name": "แมงมุม",
       "image": "spiderman.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["33", "73"],
     },
     {
       "name": "นกนางแอ่น",
       "image": "swallow.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["00", "00", "00"],
     },
     {
       "name": "เสือ",
       "image": "tiger.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["06", "46", "86"],
     },
     {
       "name": "เต่า",
       "image": "turtle.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["27", "67"],
     },
     {
       "name": "อีเห็น",
       "image": "weasel.png",
-      "lotteries": ["92", "51", "21"],
+      "lotteries": ["00", "00", "00"],
     },
   ];
   void Function(List<Map<String, dynamic>> lotterise) onClickBuy =
@@ -369,7 +370,14 @@ class _AnimalPageState extends State<AnimalPage> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             SizedBox(),
-                                            Text('กรุณาระบุราคา'),
+                                            Text(
+                                              'กรุณาระบุราคา',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
                                             Container(
                                               width: 30,
                                               height: 30,
@@ -555,12 +563,12 @@ class _AnimalPageState extends State<AnimalPage> {
                                                       as List<String>;
                                               List<Map<String, dynamic>>
                                                   lotteryWithPrice = [];
-                                              listPrice
+                                              listLottery
                                                   .asMap()
                                                   .forEach((index, element) {
                                                 lotteryWithPrice.add({
-                                                  "lottery": listLottery[index],
-                                                  "price": element,
+                                                  "lottery": element,
+                                                  "price": listPrice[index],
                                                 });
                                               });
 

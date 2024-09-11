@@ -7,10 +7,12 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/binding/initial.binding.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/components/no_network_dialog.dart';
 import 'package:lottery_ck/main.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/history/controller/history_win.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
+import 'package:lottery_ck/modules/layout/view/layout.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
 import 'package:lottery_ck/modules/restart/view/restart.dart';
 import 'package:lottery_ck/modules/splash_screen/view/splash_screen.dart';
@@ -44,6 +46,7 @@ class SplashScreenController extends GetxController {
 
   void setup() async {
     try {
+      Get.put<AppWriteController>(AppWriteController());
       await Future.delayed(
         const Duration(seconds: 1),
         () async {
@@ -133,17 +136,7 @@ class SplashScreenController extends GetxController {
     );
   }
 
-  void listenNetworkEvents() {
-    subscription = Connectivity()
-        .onConnectivityChanged
-        .listen((List<ConnectivityResult> result) {
-      // Received changes in available connectivity types!
-      logger.w(result);
-    });
-  }
-
   void checkNetWork() async {
-    // listenNetworkEvents();
     final List<ConnectivityResult> connectivityResult =
         await (Connectivity().checkConnectivity());
 
@@ -177,51 +170,7 @@ class SplashScreenController extends GetxController {
       // No available network types
       logger.w("No available network");
       Get.dialog(
-        Center(
-          child: Material(
-            color: Colors.transparent,
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 16),
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    "ບໍ່ພົບການເຊື່ອມຕໍ່ອິນເຕີເນັດ",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  Text(
-                    "ກະລຸນາກວດສອບການເຊື່ອມຕໍ່ອິນເຕີເນັດ/Wifi ໃນອຸປະກອນມືຖືຂອງເຈົ້າ ແລະລອງເຂົ້າສູ່ລະບົບອີກຄັ້ງ",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  LongButton(
-                    onPressed: () async {
-                      // await Get.to(() => RestartPage());
-                      // await Get.deleteAll(force: true);
-                      // await Get.to(
-                      //   SplashScreenPage(),
-                      //   binding: InitialBinding(),
-                      // );
-                      SystemNavigator.pop();
-                    },
-                    child: Text("OK"),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ),
+        NoNetworkDialog(identifier: 'noNetwork'),
         barrierDismissible: false,
         useSafeArea: true,
       );

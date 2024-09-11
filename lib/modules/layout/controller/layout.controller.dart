@@ -1,7 +1,12 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/blur_app.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/components/no_network_dialog.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/history/controller/history.controller.dart';
 import 'package:lottery_ck/modules/history/view/history.dart';
@@ -11,6 +16,7 @@ import 'package:lottery_ck/modules/notification/view/notification.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/setting/view/setting.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:lottery_ck/res/logo.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
@@ -24,6 +30,9 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   TabApp currentTab = TabApp.home;
   double bottomPadding = 74;
   bool isUserLogined = false;
+  StreamSubscription<List<ConnectivityResult>>? subscriptionNetwork;
+  bool noNetwork = false;
+  bool isBlur = false;
 
   void onChangeTabIndex(TabApp tab) {
     currentTab = tab;
@@ -172,9 +181,25 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
     }
   }
 
+  void listenNetworkEvents() {
+    subscriptionNetwork = Connectivity()
+        .onConnectivityChanged
+        .listen((List<ConnectivityResult> result) {
+      if (result.contains(ConnectivityResult.none)) {
+        noNetwork = true;
+        update();
+      } else if (result.contains(ConnectivityResult.wifi) ||
+          result.contains(ConnectivityResult.mobile)) {
+        noNetwork = false;
+        update();
+      }
+    });
+  }
+
   @override
   void onInit() {
     super.onInit();
+    listenNetworkEvents();
     WidgetsBinding.instance.addObserver(this);
     checkUserLogin();
   }
@@ -182,8 +207,23 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   @override
   void onClose() {
     WidgetsBinding.instance.removeObserver(this);
+    subscriptionNetwork?.cancel();
     super.onClose();
   }
+
+  // void openBlur() async {
+  //   final id = await Get.dialog(
+  //     BlurApp(identifier: 'blurapp'),
+  //     useSafeArea: false,
+  //     barrierDismissible: false,
+  //   );
+  //   logger.d("id: $id");
+  //   blurId = id;
+  // }
+
+  // void closeBlur() {
+  //   Get.close(1, blurId);
+  // }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -192,12 +232,17 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.inactive:
         // change background to other image
+        isBlur = true;
+        update();
         break;
       case AppLifecycleState.paused:
         // stop something
         break;
       case AppLifecycleState.resumed:
         // do something when back to app
+        logger.w("in delay !");
+        isBlur = false;
+        update();
         break;
       default:
         break;

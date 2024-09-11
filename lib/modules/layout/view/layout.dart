@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/blur_app.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/navigation_bar.dart';
+import 'package:lottery_ck/components/no_network_dialog.dart';
 import 'package:lottery_ck/modules/history/view/history.dart';
 import 'package:lottery_ck/modules/home/view/home.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
@@ -25,6 +27,12 @@ class LayoutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<LayoutController>(builder: (controller) {
+      if (controller.noNetwork) {
+        return NoNetworkDialog(identifier: 'identifier');
+      }
+      if (controller.isBlur) {
+        return BlurApp(identifier: 'identifier');
+      }
       return PopScope(
         canPop: false,
         onPopInvoked: (didPop) {
