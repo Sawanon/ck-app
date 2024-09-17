@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
+import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
@@ -14,6 +15,7 @@ class SettingController extends GetxController {
   UserApp? user;
   bool isLogin = false;
   bool loading = true;
+  RxBool enabledBiometrics = false.obs;
 
   Future<void> logout() async {
     await AppWriteController.to.logout();
@@ -29,6 +31,7 @@ class SettingController extends GetxController {
 
   Future<void> setup() async {
     await getUser();
+    enabledBiometrics.value = await StorageController.to.getEnableBio();
   }
 
   void onShare(BuildContext context) async {
@@ -49,15 +52,6 @@ class SettingController extends GetxController {
       logger.e("$e");
       return false;
     }
-  }
-
-  Future<bool> requestBioMetrics() async {
-    if (LayoutController.to.isUsedBiometrics) {
-      return true;
-    }
-    final isEnable = await CommonFn.requestBiometrics();
-    LayoutController.to.isUsedBiometrics = isEnable;
-    return isEnable;
   }
 
   void beforeSetup() async {
@@ -83,9 +77,11 @@ class SettingController extends GetxController {
   }
 
   void submitRating(double rating, String? comment) async {
-    Get.dialog(Center(
-      child: CircularProgressIndicator(),
-    ));
+    Get.dialog(
+      Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
     final feedbackDocument =
         await AppWriteController.to.feedBackApp(rating, comment);
     Get.back();
@@ -112,9 +108,56 @@ class SettingController extends GetxController {
     Get.snackbar("ມີບາງຢ່າງຜິດພາດ", "ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ");
   }
 
+  void enableBioMetrics(bool enableBioMetrics) async {
+    logger.d("enableBioMetrics: $enableBioMetrics");
+    if (enableBioMetrics) {
+      await StorageController.to.setEnableBio();
+      enabledBiometrics.value = true;
+      return;
+    }
+    await StorageController.to.setDisableBio();
+    enabledBiometrics.value = false;
+  }
+
+  void initSettings() async {
+    final setting = await AppWriteController.to.listSettings();
+    logger.d("setting: $setting");
+  }
+
+  void changePasscode() async {
+    try {
+      Get.to(PinVerifyPage(disabledBackButton: false), arguments: {
+        "whenSuccess": () {
+          logger.d("pin verify successful");
+          Get.offNamed(RouteName.otp, arguments: {
+            "phoneNumber": user!.phoneNumber,
+            "whenSuccess": () {
+              logger.d("otp verify successful");
+              Get.offNamed(RouteName.pin, arguments: {
+                "whenSuccess": () {
+                  Get.back();
+                  logger.d("change passcode successful");
+                  Get.snackbar(
+                    "Change passcode success",
+                    "message",
+                    backgroundColor: Colors.green.shade700,
+                    colorText: Colors.white,
+                  );
+                }
+              });
+            }
+          });
+        }
+      });
+    } catch (e) {
+      logger.e("$e");
+      Get.rawSnackbar(message: "$e");
+    }
+  }
+
   @override
-  void onInit() async {
-    // beforeSetup();
+  void onInit() {
+    initSettings();
     super.onInit();
   }
 }

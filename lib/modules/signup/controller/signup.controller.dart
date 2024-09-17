@@ -14,9 +14,11 @@ import 'package:lottery_ck/utils/common_fn.dart';
 class SignupController extends GetxController {
   String firstName = '';
   String lastName = '';
-  String phone = '';
-  String password = '';
-  String confirmPassword = '';
+  String address = '';
+  DateTime? birthDate;
+  // String phone = '';
+  // String password = '';
+  // String confirmPassword = '';
   GlobalKey<FormState> keyForm = GlobalKey<FormState>();
   final argument = Get.arguments;
 
@@ -24,84 +26,85 @@ class SignupController extends GetxController {
     logger.d("phoneNumber: ${argument["phoneNumber"]}");
     if (keyForm.currentState != null && keyForm.currentState!.validate()) {
       createUserAppwrite();
-      // Get.toNamed(RouteName.otp, arguments: {
-      //   "whenSuccess": () {
-      //     logger.d("otp success !");
-      //     createUserAppwrite();
-      //   },
-      //   "phoneNumber": phone,
-      // });
     }
   }
 
   Future<void> createUserAppwrite() async {
     // TODO: go to OTP when sucecess run function - sawanon:20240806
+    logger.d("birthDate: $birthDate");
+    if (birthDate == null) {
+      // Get.rawSnackbar(
+      //   message: "Please select your birth date",
+      // );
+      return;
+    }
     await StorageController.to.clear();
     final phoneNumber = argument["phoneNumber"] as String;
     final appwriteController = AppWriteController.to;
-    final multiplier =
-        (int.parse(phoneNumber.substring(phoneNumber.length - 1)) *
-                int.parse(phoneNumber.substring(
-                    phoneNumber.length - 3, phoneNumber.length - 2)))
-            .toString();
-    final lastPhone = multiplier.substring(multiplier.length - 1);
-    final password =
-        '${phoneNumber.substring(0, 4)}$lastPhone${phoneNumber.substring(4)}';
     final email = '$phoneNumber@ckmail.com';
-    final user = await appwriteController.register(
+    final user = await appwriteController.signUp(
       email,
-      password,
       firstName,
       lastName,
+      email,
       phoneNumber,
+      address,
+      birthDate!,
     );
-    final isLoginSuccess = await appwriteController.login(email, password);
+    if (user == null) {
+      Get.rawSnackbar(message: "sign up failed");
+      return;
+    }
+    final token = await appwriteController.getToken(phoneNumber);
+    logger.d("token: $token");
+    if (token == null) {
+      Get.rawSnackbar(message: "get token failed");
+      return;
+    }
+    final session = await appwriteController.createSession(token);
+    if (session == null) {
+      Get.rawSnackbar(message: "create session failed");
+      return;
+    }
     await FirebaseMessagingController.to.getToken();
-    bool isCreateUserdocumentSuccess = false;
-    if (user != null) {
-      await appwriteController.detaulGroupUser(user.$id);
-      isCreateUserdocumentSuccess = await appwriteController.createUserDocument(
-        email,
-        user.$id,
-        firstName,
-        lastName,
-        phoneNumber,
-      );
-    }
-
     logger.d("user: ${user?.$id}");
-    logger.d("isCreateUserdocumentSuccess: $isCreateUserdocumentSuccess");
-    logger.d("isLoginSuccess: $isLoginSuccess");
-    if (isCreateUserdocumentSuccess && isLoginSuccess) {
-      Get.snackbar("Login success", 'good luck have fun');
-      // Get.delete<BuyLotteryController>();
+    if (user != null) {
+      await appwriteController.detaulGroupUser(session.userId);
       Get.delete<UserStore>();
-    }
-    // register || login || create user document failed - sawanon:20240807
-    // Get.snackbar('Something went wrong signup:75', 'plaese try again');
-    // Get.offAllNamed(RouteName.layout);
-    Get.toNamed(
-      RouteName.pin,
-      arguments: {
-        'whenSuccess': () async {
-          // await CommonFn.requestBiometrics();
-          final availableBiometrics = await CommonFn.availableBiometrics();
-          logger.d("availableBiometrics: $availableBiometrics");
-          if (availableBiometrics) {
-            Get.toNamed(RouteName.enableBiometrics, arguments: {
-              "whenSuccess": () async {
-                Get.delete<UserStore>();
-                Get.offAllNamed(RouteName.layout);
-              }
-            });
-            return;
+      Get.toNamed(
+        RouteName.pin,
+        arguments: {
+          'whenSuccess': () async {
+            // await CommonFn.requestBiometrics();
+            final availableBiometrics = await CommonFn.availableBiometrics();
+            logger.d("availableBiometrics: $availableBiometrics");
+            if (availableBiometrics) {
+              Get.toNamed(RouteName.enableBiometrics, arguments: {
+                "whenSuccess": () async {
+                  Get.delete<UserStore>();
+                  Get.offAllNamed(RouteName.layout);
+                }
+              });
+              return;
+            }
+            // Get.delete<BuyLotteryController>();
+            Get.delete<UserStore>();
+            Get.offAllNamed(RouteName.layout);
           }
-          // Get.delete<BuyLotteryController>();
-          Get.delete<UserStore>();
-          Get.offAllNamed(RouteName.layout);
-        }
-      },
+        },
+      );
+      return;
+    }
+    Get.rawSnackbar(
+      title: "sign up failed",
+      message: "please try again later",
     );
+  }
+
+  void changeBirthDate(DateTime? datetime) {
+    if (datetime == null) return;
+    birthDate = datetime;
+    update();
   }
 
   @override

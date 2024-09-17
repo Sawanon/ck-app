@@ -7,6 +7,7 @@ import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:intl/intl.dart';
 
 class BuyLottery extends StatelessWidget {
   const BuyLottery({

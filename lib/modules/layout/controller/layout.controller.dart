@@ -13,8 +13,10 @@ import 'package:lottery_ck/modules/history/view/history.dart';
 import 'package:lottery_ck/modules/home/view/home.dart';
 import 'package:lottery_ck/modules/lottery_history/view/lottery_history.dart';
 import 'package:lottery_ck/modules/notification/view/notification.dart';
+import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/setting/view/setting.dart';
+import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/logo.dart';
 import 'package:lottery_ck/route/route_name.dart';
@@ -33,6 +35,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   StreamSubscription<List<ConnectivityResult>>? subscriptionNetwork;
   bool noNetwork = false;
   bool isBlur = false;
+  StreamSubscription? useBiometricsTimeout;
 
   void onChangeTabIndex(TabApp tab) {
     currentTab = tab;
@@ -43,7 +46,22 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
     if (isUsedBiometrics) {
       return true;
     }
-    final isEnable = await CommonFn.requestBiometrics();
+    bool isEnable = await CommonFn.requestBiometrics();
+    if (!isEnable) {
+      await Get.dialog(
+        PinVerifyPage(),
+        arguments: {
+          "whenSuccess": () {
+            logger.d("success");
+            Get.back();
+            isEnable = true;
+          },
+          "enableBiometrics": true,
+        },
+        useSafeArea: false,
+        // transitionDuration: Duration(milliseconds: 100),
+      );
+    }
     isUsedBiometrics = isEnable;
     logger.w("isUsedBiometrics: $isUsedBiometrics");
     return isEnable;
@@ -125,6 +143,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
           return;
         }
         final isPass = await requestBioMetrics();
+        logger.w("isPass: $isPass");
         if (isPass) {
           onChangeTabIndex(tab);
         }
@@ -225,13 +244,35 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   //   Get.close(1, blurId);
   // }
 
+  void startCountdownBiometrics() {
+    var future = Future.delayed(const Duration(seconds: 10));
+    logger.d("useBiometricsTimeout: $useBiometricsTimeout");
+    if (useBiometricsTimeout != null) return;
+    logger.d("startCountdownBiometrics");
+    useBiometricsTimeout = future.asStream().listen(
+      (event) {
+        logger.w("biometrics timeout");
+        isUsedBiometrics = false;
+        useBiometricsTimeout = null;
+        changeTab(TabApp.home);
+      },
+    );
+    update();
+  }
+
+  void cancelCountdownBiometrics() {
+    useBiometricsTimeout?.cancel();
+    useBiometricsTimeout = null;
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    logger.d(state);
+    logger.w(state);
     // TODO: priority high - sawanon:20240814
     switch (state) {
       case AppLifecycleState.inactive:
         // change background to other image
+        startCountdownBiometrics();
         isBlur = true;
         update();
         break;
@@ -240,7 +281,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
         break;
       case AppLifecycleState.resumed:
         // do something when back to app
-        logger.w("in delay !");
+        cancelCountdownBiometrics();
         isBlur = false;
         update();
         break;

@@ -71,6 +71,10 @@ class StorageController extends GetxController {
     await setValue("enableBio", "true");
   }
 
+  Future<void> setDisableBio() async {
+    await setValue("enableBio", "false");
+  }
+
   Future<bool> getEnableBio() async {
     final value = await getValue("enableBio");
     return value == "true";

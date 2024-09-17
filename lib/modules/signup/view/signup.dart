@@ -7,6 +7,7 @@ import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/res/logo.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({super.key});
@@ -77,15 +78,17 @@ class SignupPage extends StatelessWidget {
                                   child: Text(
                                     'ຊື່',
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.textPrimary,
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 8),
+                                const SizedBox(height: 4),
                                 TextFormField(
                                   decoration: InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.symmetric(horizontal: 8),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(
@@ -130,15 +133,17 @@ class SignupPage extends StatelessWidget {
                                   child: Text(
                                     'ນາມສະກຸນ',
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.textPrimary,
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 8),
+                                const SizedBox(height: 4),
                                 TextFormField(
                                   decoration: InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.symmetric(horizontal: 8),
                                     enabledBorder: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(10),
                                       borderSide: const BorderSide(
@@ -175,6 +180,106 @@ class SignupPage extends StatelessWidget {
                                   },
                                   onChanged: (value) {
                                     controller.lastName = value;
+                                  },
+                                ),
+                                const SizedBox(height: 16),
+                                const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'ວັນເດືອນປີເກີດ',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                GestureDetector(
+                                  onTap: () async {
+                                    final datetime = await showDatePicker(
+                                      context: context,
+                                      firstDate: DateTime(1970),
+                                      lastDate: DateTime.now(),
+                                      initialDate: controller.birthDate,
+                                    );
+                                    logger.d("datetime: $datetime");
+                                    controller.changeBirthDate(datetime);
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 48,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                        width: 1,
+                                        color: AppColors.primary,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      controller.birthDate == null
+                                          ? "--/--/----"
+                                          : CommonFn.parseDMY(
+                                              controller.birthDate!),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'ທີ່ຢູ່',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                TextFormField(
+                                  minLines: 4,
+                                  maxLines: 6,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(8),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                      ),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.primary,
+                                        width: 2,
+                                      ),
+                                    ),
+                                    errorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.errorBorder,
+                                        width: 4,
+                                      ),
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                        color: AppColors.errorBorder,
+                                        width: 4,
+                                      ),
+                                    ),
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value == "") {
+                                      return "Please enter your last name";
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    controller.address = value;
                                   },
                                 ),
                                 const SizedBox(height: 24),

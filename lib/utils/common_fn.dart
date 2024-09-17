@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:lottery_ck/model/lottery.dart';
 import 'package:intl/intl.dart';
+import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 
 class CommonFn {
@@ -25,7 +26,7 @@ class CommonFn {
 
   static String parseMoney(int money) {
     try {
-      final formatter = NumberFormat('#,###,000');
+      final formatter = NumberFormat('#,###,###');
       return formatter.format(money);
     } catch (e) {
       return "invalid type (int)";
@@ -36,15 +37,43 @@ class CommonFn {
     final auth = LocalAuthentication();
     final canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
     logger.d("canAuthenticateWithBiometrics: $canAuthenticateWithBiometrics");
+
     final canAuthenticate =
         canAuthenticateWithBiometrics || await auth.isDeviceSupported();
     return canAuthenticate;
   }
 
-  static Future<bool> requestBiometrics() async {
+  static Future<bool> enableBiometrics() async {
     try {
       final canAuthenticate = await _canAuthenticate();
       if (canAuthenticate) {
+        final authenticated = await LocalAuthentication().authenticate(
+          localizedReason:
+              'Scan your fingerprint (or face or whatever) to authenticate',
+          options: const AuthenticationOptions(
+            stickyAuth: true,
+            biometricOnly: true,
+            sensitiveTransaction: false,
+          ),
+        );
+        if (authenticated) {
+          await StorageController.to.setEnableBio();
+        }
+        return authenticated;
+      }
+      return false;
+    } catch (e) {
+      logger.e("$e");
+      return false;
+    }
+  }
+
+  static Future<bool> requestBiometrics() async {
+    try {
+      final canAuthenticate = await _canAuthenticate();
+      final enableBiometrics = await StorageController.to.getEnableBio();
+      logger.d("enableBiometrics: $enableBiometrics");
+      if (canAuthenticate && enableBiometrics) {
         final authenticated = await LocalAuthentication().authenticate(
           localizedReason:
               'Scan your fingerprint (or face or whatever) to authenticate',

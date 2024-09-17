@@ -265,9 +265,13 @@ class BuyLotteryController extends GetxController {
   void onChangePrice(String price) {
     if (price.isEmpty) {
       this.price = null;
+      priceTextController.text = "";
       return;
     }
-    this.price = int.parse(price);
+    final priceInt = int.parse(price);
+    logger.d("price: $price");
+    priceTextController.text = CommonFn.parseMoney(priceInt);
+    this.price = priceInt;
   }
 
   void gotoAnimalPage() {

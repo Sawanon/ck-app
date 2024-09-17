@@ -5,7 +5,7 @@ import 'package:lottery_ck/utils/common_fn.dart';
 class EnableBiometricsController extends GetxController {
   final arguments = Get.arguments;
   void enableBiometrics() async {
-    final enable = await CommonFn.requestBiometrics();
+    final enable = await CommonFn.enableBiometrics();
     logger.d("enable: $enable");
     whenSuccess();
   }

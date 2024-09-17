@@ -15,6 +15,7 @@ class RouteName {
   static const String winbill = '/winbill';
   static const String pinVerify = '/pinVerify';
   static const String animal = '/animal';
+  static const String security = '/security';
 
   static const String cloudflare = '/cloudflare';
 }

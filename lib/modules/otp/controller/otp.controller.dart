@@ -1,7 +1,9 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/utils.dart';
 
 class OtpController extends GetxController {
@@ -51,7 +53,7 @@ class OtpController extends GetxController {
         verificationFailed: (error) {
           logger.d("verificationFailed $error");
         },
-        codeSent: (verificationId, forceResendingToken) {
+        codeSent: (verificationId, forceResendingToken) async {
           enableOTP.value = true;
           loadingSendOTP.value = false;
           startTimer();

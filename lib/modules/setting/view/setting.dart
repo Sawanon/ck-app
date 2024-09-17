@@ -441,11 +441,7 @@ class SettingPage extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             // request scan face
-                            Get.toNamed(RouteName.enableBiometrics, arguments: {
-                              "whenSuccess": () {
-                                Get.back();
-                              }
-                            });
+                            Get.toNamed(RouteName.security);
                           },
                           child: Container(
                             padding: EdgeInsets.all(8),
@@ -483,7 +479,7 @@ class SettingPage extends StatelessWidget {
                                           width: 24,
                                           height: 24,
                                           child: SvgPicture.asset(
-                                            AppIcon.fingerScan,
+                                            AppIcon.lock,
                                             colorFilter: const ColorFilter.mode(
                                               AppColors.primary,
                                               BlendMode.srcIn,
@@ -494,7 +490,7 @@ class SettingPage extends StatelessWidget {
                                     ),
                                     const SizedBox(width: 16),
                                     Text(
-                                      "Enable Biometrics",
+                                      "ຄວາມປອດໄພ",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                       ),

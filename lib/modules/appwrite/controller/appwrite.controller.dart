@@ -656,36 +656,40 @@ class AppWriteController extends GetxController {
   }
 
   Future<void> detaulGroupUser(String userId) async {
-    final allUser = await databases.listDocuments(
-      databaseId: _databaseName,
-      collectionId: "group_users",
-      queries: [
-        Query.equal("name", "All User"),
-        Query.limit(1),
-      ],
-    );
-    final usersIdList = allUser.documents.first.data["userId"] as List;
-    if (usersIdList.where((_userId) => _userId == userId).isNotEmpty) {
-      logger.w("has in group");
-      return;
-    }
-    logger.w("not has in group");
-    final allUserGroup = await databases.getDocument(
-      databaseId: _databaseName,
-      collectionId: "group_users",
-      documentId: allUser.documents.first.$id,
-    );
-    final oldArray = allUserGroup.data["userId"];
-    await databases.updateDocument(
-      databaseId: _databaseName,
-      collectionId: "group_users",
-      documentId: "66b0369b001651b9cbff",
-      data: {
-        "userId": [
-          ...oldArray,
+    try {
+      final allUser = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: "group_users",
+        queries: [
+          Query.equal("name", "All User"),
+          Query.limit(1),
         ],
-      },
-    );
+      );
+      final usersIdList = allUser.documents.first.data["userId"] as List;
+      if (usersIdList.where((_userId) => _userId == userId).isNotEmpty) {
+        logger.w("has in group");
+        return;
+      }
+      logger.w("not has in group");
+      final allUserGroup = await databases.getDocument(
+        databaseId: _databaseName,
+        collectionId: "group_users",
+        documentId: allUser.documents.first.$id,
+      );
+      final oldArray = allUserGroup.data["userId"];
+      await databases.updateDocument(
+        databaseId: _databaseName,
+        collectionId: "group_users",
+        documentId: "66b0369b001651b9cbff",
+        data: {
+          "userId": [
+            ...oldArray,
+          ],
+        },
+      );
+    } on Exception catch (e) {
+      logger.e("$e");
+    }
   }
 
   Future<List?> listLotteryHistory() async {
@@ -782,6 +786,116 @@ class AppWriteController extends GetxController {
       return buyLotteryConfigList;
     } catch (e) {
       logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<Map?> listSettings() async {
+    try {
+      final settingList = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: "app_settings",
+        queries: [
+          Query.limit(1),
+        ],
+      );
+      return settingList.documents.first.data;
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<Map?> verifyPasscode(
+    String passcode,
+  ) async {
+    try {
+      final userId = await user.then((value) => value.$id);
+      final sessionId = await StorageController.to.getSessionId();
+      final credential = "$sessionId:$userId";
+      final bearer = base64Encode(utf8.encode(credential));
+      final dio = Dio();
+      final response = await dio.post(
+        "${AppConst.apiUrl}/user/passcode/verify",
+        data: {
+          "passcode": passcode,
+          "userId": userId,
+        },
+        options: Options(headers: {
+          "Authorization": "Bearer $bearer",
+        }),
+      );
+      return response.data;
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<User?> signUp(
+    String username,
+    String firstName,
+    String lastName,
+    String email,
+    String phone,
+    String address,
+    DateTime birthDate,
+  ) async {
+    try {
+      logger.d("signUp");
+      final dio = Dio();
+      final response = await dio.post("${AppConst.apiUrl}/user/sign-up", data: {
+        "username": username,
+        "firstName": firstName,
+        "lastName": lastName,
+        "email": email,
+        "phone": phone,
+        "address": address,
+        "birthDate": birthDate.toIso8601String(),
+      });
+      logger.d("response: ${response.data}");
+      if (response.data["status"] == false) {
+        throw "create user failed";
+      }
+      return User.fromMap(response.data["user"]);
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> getToken(String phoneNumber) async {
+    try {
+      final dio = Dio();
+      final response = await dio.post(
+        "${AppConst.cloudfareUrl}/sign-in",
+        data: {
+          "phoneNumber": phoneNumber,
+        },
+      );
+      final Map<String, dynamic>? token = response.data;
+      return token;
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<Session?> createSession(Map<String, dynamic> token) async {
+    try {
+      final session = await account.createSession(
+        userId: token["userId"],
+        secret: token["secret"],
+      );
+      await clearOtherSession(session.$id);
+      await createTarget();
+      final storageController = StorageController.to;
+      storageController.setSessionId(session.$id);
+      await FirebaseMessagingController.to.getToken();
+      return session;
+    } on Exception catch (e) {
+      logger.e(e);
+      Get.snackbar("createSession failed", e.toString());
       return null;
     }
   }
