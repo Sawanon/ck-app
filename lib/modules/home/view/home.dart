@@ -12,6 +12,7 @@ import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/res/logo.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/theme.dart';
 import 'package:video_player/video_player.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -114,9 +115,18 @@ class HomePage extends StatelessWidget {
                             Container(
                               width: 52,
                               height: 52,
+                              alignment: Alignment.center,
                               decoration: BoxDecoration(
-                                color: Colors.grey,
+                                color: Colors.white,
                                 borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  AppTheme.softShadow,
+                                ],
+                              ),
+                              child: SizedBox(
+                                height: 32,
+                                width: 32,
+                                child: SvgPicture.asset(AppIcon.horoscope),
                               ),
                             ),
                             Text(
@@ -130,15 +140,24 @@ class HomePage extends StatelessWidget {
                         Column(
                           children: [
                             Container(
+                              alignment: Alignment.center,
                               width: 52,
                               height: 52,
                               decoration: BoxDecoration(
-                                color: Colors.grey,
+                                color: Colors.white,
                                 borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  AppTheme.softShadow,
+                                ],
+                              ),
+                              child: SizedBox(
+                                height: 32,
+                                width: 32,
+                                child: SvgPicture.asset(AppIcon.wallpaper),
                               ),
                             ),
                             Text(
-                              "Wallpaper",
+                              "ຮູບວໍເປເປີ",
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                               ),
@@ -148,15 +167,24 @@ class HomePage extends StatelessWidget {
                         Column(
                           children: [
                             Container(
+                              alignment: Alignment.center,
                               width: 52,
                               height: 52,
                               decoration: BoxDecoration(
-                                color: Colors.grey,
+                                color: Colors.white,
                                 borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  AppTheme.softShadow,
+                                ],
+                              ),
+                              child: SizedBox(
+                                height: 32,
+                                width: 32,
+                                child: SvgPicture.asset(AppIcon.lotteryResult),
                               ),
                             ),
                             Text(
-                              "ผลหวย",
+                              "ຜົນຫວຍ",
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                               ),
@@ -166,15 +194,24 @@ class HomePage extends StatelessWidget {
                         Column(
                           children: [
                             Container(
+                              alignment: Alignment.center,
                               width: 52,
                               height: 52,
                               decoration: BoxDecoration(
-                                color: Colors.grey,
+                                color: Colors.white,
                                 borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  AppTheme.softShadow,
+                                ],
+                              ),
+                              child: SizedBox(
+                                height: 32,
+                                width: 32,
+                                child: SvgPicture.asset(AppIcon.animalMenu),
                               ),
                             ),
                             Text(
-                              "ตำราสัตว์",
+                              "ຕໍາຣາ",
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                               ),
