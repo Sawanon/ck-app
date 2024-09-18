@@ -2,10 +2,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/video/view/video_list.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/res/logo.dart';
 import 'package:lottery_ck/route/route_name.dart';
@@ -107,17 +109,222 @@ class HomePage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        Column(
+                          children: [
+                            Container(
+                              width: 52,
+                              height: 52,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            Text(
+                              "ດູດວງ",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              width: 52,
+                              height: 52,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            Text(
+                              "Wallpaper",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              width: 52,
+                              height: 52,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            Text(
+                              "ผลหวย",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              width: 52,
+                              height: 52,
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            Text(
+                              "ตำราสัตว์",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
                         GestureDetector(
-                          onTap: () {
-                            controller.getLotteryDate();
+                          onDoubleTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Builder(builder: (context) {
+                                  GlobalKey<FormState> makey = GlobalKey();
+                                  return Center(
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: Form(
+                                        key: makey,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8, horizontal: 16),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            color: Colors.white,
+                                          ),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                "Enter host name api back-end",
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              Text(
+                                                "Ex. https://5356-2405-9800-b920-d13f-5d5e-8048-dbf9-abd9.ngrok-free.app/api",
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 48,
+                                                width: 200,
+                                                child: TextFormField(
+                                                  initialValue: AppConst.apiUrl,
+                                                  decoration: InputDecoration(
+                                                    contentPadding:
+                                                        EdgeInsets.all(8),
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      borderSide:
+                                                          const BorderSide(
+                                                        color:
+                                                            AppColors.primary,
+                                                      ),
+                                                    ),
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      borderSide:
+                                                          const BorderSide(
+                                                        color:
+                                                            AppColors.primary,
+                                                        width: 2,
+                                                      ),
+                                                    ),
+                                                    errorBorder:
+                                                        OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      borderSide:
+                                                          const BorderSide(
+                                                        color: AppColors
+                                                            .errorBorder,
+                                                        width: 4,
+                                                      ),
+                                                    ),
+                                                    focusedErrorBorder:
+                                                        OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      borderSide:
+                                                          const BorderSide(
+                                                        color: AppColors
+                                                            .errorBorder,
+                                                        width: 4,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  // onChanged: (value) {
+                                                  //   logger.d("onchange");
+                                                  //   if (value == "") return;
+                                                  //   AppConst.apiUrl = value;
+                                                  // },
+                                                  onSaved: (newValue) {
+                                                    logger.d(
+                                                        "on save: $newValue");
+                                                    if (newValue == "" ||
+                                                        newValue == null) {
+                                                      return;
+                                                    }
+
+                                                    AppConst.apiUrl = newValue;
+                                                    Get.back();
+                                                  },
+                                                ),
+                                              ),
+                                              LongButton(
+                                                onPressed: () {
+                                                  makey.currentState?.save();
+                                                },
+                                                child: Text("Save"),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                });
+                              },
+                            );
                           },
+                          // onTap: () {
+                          // controller.getLotteryDate();
+                          // AppConst.apiUrl = "namo";
+                          // logger.d(AppConst.apiUrl);
+                          // },
                           child: SizedBox(
                             // height: 30,
                             width: (MediaQuery.of(context).size.width / 2) -
                                 (16 * 2),
                             child: Image.asset(
                               Logo.ck,
-                              height: 40,
+                              height: 28,
                             ),
                           ),
                         ),
@@ -131,11 +338,22 @@ class HomePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 8),
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: AppColors.primary,
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.primary,
+                            AppColors.primaryEnd,
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          stops: [
+                            0.0,
+                            1.0,
+                          ],
+                        ),
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
@@ -262,73 +480,192 @@ class HomePage extends StatelessWidget {
                       }),
                     ),
                     const SizedBox(height: 16),
-                    VideoList(),
-                    const SizedBox(height: 16),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          clipBehavior: Clip.hardEdge,
-                          decoration: BoxDecoration(
-                            color: Colors.amber,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          width: ((MediaQuery.of(context).size.width / 3) * 2) -
-                              16 -
-                              8,
-                          height:
-                              ((MediaQuery.of(context).size.width / 3) * 2) -
-                                  16 -
-                                  8,
-                          // child: Text('${((MediaQuery.of(context).size.width / 3) * 2) - 16 - 8}'),
-                          child: Image.asset(
-                            "assets/image1.png",
-                            width: double.infinity,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Column(
-                          children: [
-                            Container(
-                              clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(
-                                color: Colors.purple,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              width: MediaQuery.of(context).size.width / 3 - 16,
-                              height:
-                                  MediaQuery.of(context).size.width / 3 - 16,
-                              // child: Text(
-                              //     '${MediaQuery.of(context).size.width / 3 - 16}'),
-                              child: Image.asset(
-                                "assets/image2.png",
-                                width: double.infinity,
-                              ),
+                        Text("เลขเด็ด"),
+                        GestureDetector(
+                          onTap: () {
+                            Get.rawSnackbar(message: "coming soon");
+                          },
+                          child: Text(
+                            "ดูทั้งหมด",
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              color: Colors.black.withOpacity(0.8),
+                              decorationColor: Colors.black.withOpacity(0.8),
+                              decorationThickness: 1.2,
                             ),
-                            const SizedBox(height: 8),
-                            Container(
-                              clipBehavior: Clip.hardEdge,
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              width: MediaQuery.of(context).size.width / 3 - 16,
-                              height:
-                                  MediaQuery.of(context).size.width / 3 - 16,
-                              // child: Text(
-                              //     '${MediaQuery.of(context).size.width / 3 - 16}'),
-                              child: Image.asset(
-                                "assets/image3.png",
-                                width: double.infinity,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
-                    // Container(
-                    //   color: Colors.red.shade100,
-                    //   height: 200,
-                    //   width: 200,
+                    const SizedBox(height: 8),
+                    VideoList(),
+                    const SizedBox(height: 16),
+                    Text(
+                      "ดวงวันนี้",
+                      style: TextStyle(
+                        color: Colors.black.withOpacity(0.8),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    SizedBox(
+                      height: 120,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
+                        children: [
+                          SizedBox(
+                            width: 120,
+                            height: 120,
+                            child: Image.asset(
+                              "assets/image1.png",
+                              width: double.infinity,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          SizedBox(
+                            width: 120,
+                            height: 120,
+                            child: Image.asset(
+                              "assets/image2.png",
+                              width: double.infinity,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          SizedBox(
+                            width: 120,
+                            height: 120,
+                            child: Image.asset(
+                              "assets/image3.png",
+                              width: double.infinity,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          SizedBox(
+                            width: 120,
+                            height: 120,
+                            child: Image.asset(
+                              "assets/image1.png",
+                              width: double.infinity,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Container(
+                            width: 120,
+                            height: 120,
+                            decoration: BoxDecoration(
+                              // color: Colors.grey.shade300,
+                              border: Border.all(
+                                  width: 1, color: Colors.grey.shade300),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  height: 48,
+                                  width: 48,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        AppColors.primary,
+                                        AppColors.primaryEnd,
+                                      ],
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                    ),
+                                  ),
+                                  child: SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: SvgPicture.asset(
+                                      AppIcon.arrowRight,
+                                      colorFilter: ColorFilter.mode(
+                                        Colors.white,
+                                        BlendMode.srcIn,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  "More",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black.withOpacity(0.8),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                    // Row(
+                    //   children: [
+                    //     Container(
+                    //       clipBehavior: Clip.hardEdge,
+                    //       decoration: BoxDecoration(
+                    //         color: Colors.amber,
+                    //         borderRadius: BorderRadius.circular(10),
+                    //       ),
+                    //       width: ((MediaQuery.of(context).size.width / 3) * 2) -
+                    //           16 -
+                    //           8,
+                    //       height:
+                    //           ((MediaQuery.of(context).size.width / 3) * 2) -
+                    //               16 -
+                    //               8,
+                    //       // child: Text('${((MediaQuery.of(context).size.width / 3) * 2) - 16 - 8}'),
+                    //       child: Image.asset(
+                    //         "assets/image1.png",
+                    //         width: double.infinity,
+                    //       ),
+                    //     ),
+                    //     const SizedBox(width: 8),
+                    //     Column(
+                    //       children: [
+                    //         Container(
+                    //           clipBehavior: Clip.hardEdge,
+                    //           decoration: BoxDecoration(
+                    //             color: Colors.purple,
+                    //             borderRadius: BorderRadius.circular(10),
+                    //           ),
+                    //           width: MediaQuery.of(context).size.width / 3 - 16,
+                    //           height:
+                    //               MediaQuery.of(context).size.width / 3 - 16,
+                    //           // child: Text(
+                    //           //     '${MediaQuery.of(context).size.width / 3 - 16}'),
+                    //           child: Image.asset(
+                    //             "assets/image2.png",
+                    //             width: double.infinity,
+                    //           ),
+                    //         ),
+                    //         const SizedBox(height: 8),
+                    //         Container(
+                    //           clipBehavior: Clip.hardEdge,
+                    //           decoration: BoxDecoration(
+                    //             color: Colors.blue,
+                    //             borderRadius: BorderRadius.circular(10),
+                    //           ),
+                    //           width: MediaQuery.of(context).size.width / 3 - 16,
+                    //           height:
+                    //               MediaQuery.of(context).size.width / 3 - 16,
+                    //           // child: Text(
+                    //           //     '${MediaQuery.of(context).size.width / 3 - 16}'),
+                    //           child: Image.asset(
+                    //             "assets/image3.png",
+                    //             width: double.infinity,
+                    //           ),
+                    //         ),
+                    //       ],
+                    //     ),
+                    //   ],
                     // ),
                   ],
                 ),

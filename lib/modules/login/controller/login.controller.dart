@@ -195,6 +195,7 @@ class LoginController extends GetxController {
 
   @override
   void onInit() {
+    Get.put<AppWriteController>(AppWriteController());
     final cloudflareController = CloudFlareController.to;
     cloudflareController.setCallback(setDisableButton);
     webviewController = cloudflareController.controllerWebview;

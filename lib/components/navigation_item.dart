@@ -29,7 +29,8 @@ class NavigationItem extends StatelessWidget {
       height: 62,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        color: currentTab == tab ? Colors.white : Colors.transparent,
+        // color: currentTab == tab ? Colors.white : Colors.transparent,
+        color: Colors.transparent,
         shape: BoxShape.circle,
       ),
       child: Material(
@@ -50,10 +51,12 @@ class NavigationItem extends StatelessWidget {
                 label,
                 style: TextStyle(
                   fontSize: 12,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w700,
                   // fontWeight:
                   //     currentTab == tab ? FontWeight.w700 : FontWeight.w500,
-                  color: currentTab == tab ? AppColors.primary : Colors.white,
+                  color: currentTab == tab
+                      ? AppColors.primary
+                      : AppColors.textPrimary,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

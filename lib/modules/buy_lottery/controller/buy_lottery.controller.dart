@@ -315,6 +315,8 @@ class BuyLotteryController extends GetxController {
   @override
   void onClose() {
     keyboardSubscription.cancel();
+    priceNode.removeListener(onFocus);
+    lotteryNode.removeListener(onFocus);
     super.onClose();
   }
 }

@@ -19,7 +19,8 @@ class SettingController extends GetxController {
 
   Future<void> logout() async {
     await AppWriteController.to.logout();
-    Get.offAllNamed(RouteName.login);
+    // Get.offAllNamed(RouteName.login);
+    Get.offNamed(RouteName.login);
   }
 
   Future<void> getUser() async {
@@ -111,8 +112,13 @@ class SettingController extends GetxController {
   void enableBioMetrics(bool enableBioMetrics) async {
     logger.d("enableBioMetrics: $enableBioMetrics");
     if (enableBioMetrics) {
-      await StorageController.to.setEnableBio();
-      enabledBiometrics.value = true;
+      Get.to(PinVerifyPage(disabledBackButton: false), arguments: {
+        "whenSuccess": () async {
+          await StorageController.to.setEnableBio();
+          enabledBiometrics.value = true;
+          Get.back();
+        }
+      });
       return;
     }
     await StorageController.to.setDisableBio();

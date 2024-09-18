@@ -48,7 +48,7 @@ class _VideComponentsState extends State<VideComponents> {
 
   @override
   Widget build(BuildContext context) {
-    double heightVideo = 180;
+    double heightVideo = 160;
     if (_controller.value.isInitialized) {
       return GestureDetector(
         onTap: () async {

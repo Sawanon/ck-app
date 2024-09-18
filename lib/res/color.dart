@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 class AppColors {
   // static const Color primary = Color.fromRGBO(0, 209, 255, 1);
   static const Color primary = Color.fromRGBO(242, 49, 55, 1);
+  static const Color primaryEnd = Color.fromRGBO(253, 150, 153, 1);
   static const Color backgroundGradientEnd = Color.fromRGBO(232, 242, 255, 1);
   static const Color backgroundGradientStart = Color.fromRGBO(255, 255, 255, 1);
-  static const Color textPrimary = Color.fromRGBO(73, 73, 73, 1);
+  static const Color textPrimary = Color.fromRGBO(70, 76, 89, 1);
   static const Color backButton = Color.fromRGBO(237, 237, 237, 1);
   static const Color backButtonHover = Color.fromRGBO(203, 203, 203, 1);
 
