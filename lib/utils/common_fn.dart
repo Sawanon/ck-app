@@ -33,7 +33,7 @@ class CommonFn {
     }
   }
 
-  static Future<bool> _canAuthenticate() async {
+  static Future<bool> canAuthenticate() async {
     final auth = LocalAuthentication();
     final canAuthenticateWithBiometrics = await auth.canCheckBiometrics;
     logger.d("canAuthenticateWithBiometrics: $canAuthenticateWithBiometrics");
@@ -45,8 +45,8 @@ class CommonFn {
 
   static Future<bool> enableBiometrics() async {
     try {
-      final canAuthenticate = await _canAuthenticate();
-      if (canAuthenticate) {
+      final isSupport = await canAuthenticate();
+      if (isSupport) {
         final authenticated = await LocalAuthentication().authenticate(
           localizedReason:
               'Scan your fingerprint (or face or whatever) to authenticate',
@@ -70,10 +70,10 @@ class CommonFn {
 
   static Future<bool> requestBiometrics() async {
     try {
-      final canAuthenticate = await _canAuthenticate();
+      final isSupport = await canAuthenticate();
       final enableBiometrics = await StorageController.to.getEnableBio();
       logger.d("enableBiometrics: $enableBiometrics");
-      if (canAuthenticate && enableBiometrics) {
+      if (isSupport && enableBiometrics) {
         final authenticated = await LocalAuthentication().authenticate(
           localizedReason:
               'Scan your fingerprint (or face or whatever) to authenticate',

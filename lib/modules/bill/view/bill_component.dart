@@ -196,7 +196,7 @@ class BillComponent extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(lottery.lottery),
-                      Text(lottery.price.toString()),
+                      Text(CommonFn.parseMoney(lottery.price)),
                     ],
                   ),
                 );
@@ -223,7 +223,7 @@ class BillComponent extends StatelessWidget {
               children: [
                 Text("ລວມເງິນ"),
                 Text(
-                  bill.totalAmount,
+                  CommonFn.parseMoney(int.parse(bill.totalAmount)),
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     color: AppColors.primary,

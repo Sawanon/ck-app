@@ -5,6 +5,7 @@ import 'package:lottery_ck/components/blur_app.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/navigation_bar.dart';
 import 'package:lottery_ck/components/no_network_dialog.dart';
+import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.page.dart';
 import 'package:lottery_ck/modules/history/view/history.dart';
 import 'package:lottery_ck/modules/home/view/home.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
@@ -20,6 +21,7 @@ class LayoutPage extends StatelessWidget {
     HomePage(),
     HistoryPage(),
     LotteryHistoryPage(),
+    // BuyLotteryPage(),
     NotificationPage(),
     SettingPage(),
   ];

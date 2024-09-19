@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/main.dart';
 import 'package:lottery_ck/modules/lottery_history/controller/lottery_history.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/theme.dart';
 
 class LotteryHistoryPage extends StatelessWidget {
   const LotteryHistoryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final winNumber = [
-      '988493',
-      '343555',
-      '394232',
-      '343555',
-      '988493',
-      '394232'
-    ];
     return GetBuilder<LotteryHistoryController>(builder: (controller) {
       return Scaffold(
         body: SafeArea(
@@ -25,6 +20,86 @@ class LotteryHistoryPage extends StatelessWidget {
               controller.listLotteryHistory();
             },
             child: Obx(() {
+              if (controller.isLoading.value) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (controller.lotteryHistoryList.isEmpty) {
+                return ListView(
+                  physics: const BouncingScrollPhysics(),
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height - 100,
+                      child: Center(
+                        child: Container(
+                          margin: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(8),
+                          height: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: List.generate(
+                                  6,
+                                  (index) {
+                                    return Container(
+                                      alignment: Alignment.center,
+                                      width: MediaQuery.of(context).size.width /
+                                              6 -
+                                          8,
+                                      height:
+                                          MediaQuery.of(context).size.width /
+                                                  6 -
+                                              8,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            width: 2, color: Colors.grey),
+                                      ),
+                                      child: Text(
+                                        "1",
+                                        style: TextStyle(fontSize: 32),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              Container(
+                                alignment: Alignment.center,
+                                // padding: EdgeInsets.only(top: 16),
+                                height: double.infinity,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.white,
+                                      Colors.white.withOpacity(0.9),
+                                      Colors.white.withOpacity(0.9),
+                                      Colors.white,
+                                    ],
+                                  ),
+                                ),
+                                child: Text(
+                                  "ບໍ່ພົບປະຫວັດການຫວຍ",
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }
               return ListView.separated(
                 itemBuilder: (context, index) {
                   return Container(

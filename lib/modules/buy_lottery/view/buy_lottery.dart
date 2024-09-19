@@ -8,6 +8,7 @@ import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:intl/intl.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 
 class BuyLottery extends StatelessWidget {
   const BuyLottery({
@@ -233,7 +234,8 @@ class BuyLottery extends StatelessWidget {
                                             Row(
                                               children: [
                                                 Text(
-                                                  "${data.price}",
+                                                  CommonFn.parseMoney(
+                                                      data.price),
                                                   style: TextStyle(
                                                     color:
                                                         AppColors.textPrimary,
@@ -521,7 +523,8 @@ class BuyLottery extends StatelessWidget {
                                         ),
                                         Obx(() {
                                           return Text(
-                                            "${controller.totalAmount.value}",
+                                            CommonFn.parseMoney(
+                                                controller.totalAmount.value),
                                             style: TextStyle(
                                               fontSize: 24,
                                             ),

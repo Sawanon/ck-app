@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/main.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/video/view/video_list.dart';
@@ -130,9 +132,10 @@ class HomePage extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "ດູດວງ",
+                              AppLocale.horoscope.getString(context),
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
+                                fontSize: 12,
                               ),
                             ),
                           ],
@@ -157,9 +160,10 @@ class HomePage extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "ຮູບວໍເປເປີ",
+                              AppLocale.wallpaper.getString(context),
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
+                                fontSize: 12,
                               ),
                             ),
                           ],
@@ -184,9 +188,10 @@ class HomePage extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "ຜົນຫວຍ",
+                              AppLocale.lotteryResult.getString(context),
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
+                                fontSize: 12,
                               ),
                             ),
                           ],
@@ -211,9 +216,38 @@ class HomePage extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "ຕໍາຣາ",
+                              AppLocale.animal.getString(context),
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              width: 52,
+                              height: 52,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  AppTheme.softShadow,
+                                ],
+                              ),
+                              child: SizedBox(
+                                height: 32,
+                                width: 32,
+                                child: SvgPicture.asset(AppIcon.animalMenu),
+                              ),
+                            ),
+                            Text(
+                              AppLocale.animal.getString(context),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
                               ),
                             ),
                           ],
@@ -367,7 +401,7 @@ class HomePage extends StatelessWidget {
                         ),
                         Text(
                           controller.lotteryDateStr != null
-                              ? "ງວດວັນທີ ${controller.lotteryDateStr}"
+                              ? "${AppLocale.lotteryDateAt.getString(context)} ${controller.lotteryDateStr}"
                               : "",
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
@@ -540,109 +574,132 @@ class HomePage extends StatelessWidget {
                     const SizedBox(height: 8),
                     VideoList(),
                     const SizedBox(height: 16),
-                    Text(
-                      "ดวงวันนี้",
-                      style: TextStyle(
-                        color: Colors.black.withOpacity(0.8),
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "ดวงวันนี้",
+                          style: TextStyle(
+                            color: Colors.black.withOpacity(0.8),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.rawSnackbar(message: "coming soon");
+                          },
+                          child: Text(
+                            "ดูทั้งหมด",
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              color: Colors.black.withOpacity(0.8),
+                              decorationColor: Colors.black.withOpacity(0.8),
+                              decorationThickness: 1.2,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 8),
-                    SizedBox(
-                      height: 120,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        physics: const BouncingScrollPhysics(),
-                        children: [
-                          SizedBox(
-                            width: 120,
-                            height: 120,
-                            child: Image.asset(
-                              "assets/image1.png",
-                              width: double.infinity,
+                    Builder(builder: (context) {
+                      final screenWidth = MediaQuery.of(context).size.width;
+                      logger.d("screenWidth: $screenWidth");
+                      return SizedBox(
+                        height: screenWidth / 3,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          physics: const BouncingScrollPhysics(),
+                          children: [
+                            SizedBox(
+                              width: screenWidth / 3,
+                              height: screenWidth / 3,
+                              child: Image.asset(
+                                "assets/image1.png",
+                                width: double.infinity,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 16),
-                          SizedBox(
-                            width: 120,
-                            height: 120,
-                            child: Image.asset(
-                              "assets/image2.png",
-                              width: double.infinity,
+                            const SizedBox(width: 16),
+                            SizedBox(
+                              width: screenWidth / 3,
+                              height: screenWidth / 3,
+                              child: Image.asset(
+                                "assets/image2.png",
+                                width: double.infinity,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 16),
-                          SizedBox(
-                            width: 120,
-                            height: 120,
-                            child: Image.asset(
-                              "assets/image3.png",
-                              width: double.infinity,
+                            const SizedBox(width: 16),
+                            SizedBox(
+                              width: screenWidth / 3,
+                              height: screenWidth / 3,
+                              child: Image.asset(
+                                "assets/image3.png",
+                                width: double.infinity,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 16),
-                          SizedBox(
-                            width: 120,
-                            height: 120,
-                            child: Image.asset(
-                              "assets/image1.png",
-                              width: double.infinity,
+                            const SizedBox(width: 16),
+                            SizedBox(
+                              width: screenWidth / 3,
+                              height: screenWidth / 3,
+                              child: Image.asset(
+                                "assets/image1.png",
+                                width: double.infinity,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 16),
-                          Container(
-                            width: 120,
-                            height: 120,
-                            decoration: BoxDecoration(
-                              // color: Colors.grey.shade300,
-                              border: Border.all(
-                                  width: 1, color: Colors.grey.shade300),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  height: 48,
-                                  width: 48,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        AppColors.primary,
-                                        AppColors.primaryEnd,
-                                      ],
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
+                            const SizedBox(width: 16),
+                            Container(
+                              width: screenWidth / 3,
+                              height: screenWidth / 3,
+                              decoration: BoxDecoration(
+                                // color: Colors.grey.shade300,
+                                border: Border.all(
+                                    width: 1, color: Colors.grey.shade300),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 48,
+                                    width: 48,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          AppColors.primary,
+                                          AppColors.primaryEnd,
+                                        ],
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                      ),
                                     ),
-                                  ),
-                                  child: SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: SvgPicture.asset(
-                                      AppIcon.arrowRight,
-                                      colorFilter: ColorFilter.mode(
-                                        Colors.white,
-                                        BlendMode.srcIn,
+                                    child: SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: SvgPicture.asset(
+                                        AppIcon.arrowRight,
+                                        colorFilter: ColorFilter.mode(
+                                          Colors.white,
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  "More",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black.withOpacity(0.8),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    "More",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black.withOpacity(0.8),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    )
+                          ],
+                        ),
+                      );
+                    })
                     // Row(
                     //   children: [
                     //     Container(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lottery_ck/components/navigation_item.dart';
+import 'package:lottery_ck/main.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
@@ -75,7 +77,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                     BlendMode.srcIn,
                   ),
                 ),
-                label: 'ໜ້າຫຼັກ',
+                label: AppLocale.home.getString(context),
               ),
               NavigationItem(
                 tab: TabApp.history,
@@ -96,7 +98,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                     BlendMode.srcIn,
                   ),
                 ),
-                label: 'ປະຫວັດ',
+                label: AppLocale.history.getString(context),
               ),
               // NavigationItem(
               //   tab: TabApp.lottery,
@@ -122,7 +124,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
               // ),
               const SizedBox(
                 height: 62,
-                width: 62,
+                width: 68,
               ),
               NavigationItem(
                 tab: TabApp.notifications,
@@ -143,7 +145,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                     BlendMode.srcIn,
                   ),
                 ),
-                label: 'ແຈ້ງເຕືອນ',
+                label: AppLocale.notification.getString(context),
               ),
               NavigationItem(
                 tab: TabApp.settings,
@@ -164,7 +166,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                     BlendMode.srcIn,
                   ),
                 ),
-                label: 'ຕັ້ງຄ່າ',
+                label: AppLocale.setting.getString(context),
               ),
             ],
           ),
@@ -206,7 +208,8 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                   ),
                 ),
                 Text(
-                  "ຊື້ຫວຍ",
+                  // "ຊື້ຫວຍ",
+                  AppLocale.buyLottery.getString(context),
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     fontSize: 12,

@@ -25,13 +25,12 @@ class NavigationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 62,
+      width: 68,
       height: 62,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         // color: currentTab == tab ? Colors.white : Colors.transparent,
         color: Colors.transparent,
-        shape: BoxShape.circle,
       ),
       child: Material(
         color: Colors.transparent,

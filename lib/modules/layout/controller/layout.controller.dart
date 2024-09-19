@@ -74,6 +74,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
       case TabApp.history:
         return const HistoryPage();
       case TabApp.lottery:
+        // return const LotteryHistoryPage();
         return const LotteryHistoryPage();
       case TabApp.notifications:
         return const NotificationPage();

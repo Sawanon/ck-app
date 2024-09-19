@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/main.dart';
 import 'package:lottery_ck/res/icon.dart';
 
 class TranslateComponent extends StatelessWidget {
@@ -43,7 +44,8 @@ class TranslateComponent extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        Get.rawSnackbar(message: 'lo');
+                        localization.translate('lo');
+                        Get.back();
                         // MyApp.setLocale(
                         //   context,
                         //   Locale('lo'),
@@ -61,7 +63,8 @@ class TranslateComponent extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        Get.rawSnackbar(message: 'th');
+                        localization.translate('th');
+                        Get.back();
                         // MyApp.setLocale(
                         //   context,
                         //   Locale('th'),
@@ -79,7 +82,8 @@ class TranslateComponent extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        Get.rawSnackbar(message: 'en');
+                        localization.translate('en');
+                        Get.back();
                         // MyApp.setLocale(
                         //   context,
                         //   Locale('en'),

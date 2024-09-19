@@ -4,6 +4,7 @@ import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 
 class PayMentPage extends StatelessWidget {
   const PayMentPage({super.key});
@@ -60,7 +61,10 @@ class PayMentPage extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      '${controller.totalAmount}',
+                                      controller.totalAmount == null
+                                          ? "-"
+                                          : CommonFn.parseMoney(
+                                              controller.totalAmount!),
                                       style: TextStyle(
                                         color: AppColors.primary,
                                         fontSize: 16,

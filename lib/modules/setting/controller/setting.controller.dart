@@ -110,13 +110,26 @@ class SettingController extends GetxController {
   }
 
   void enableBioMetrics(bool enableBioMetrics) async {
+    final deviceIsSupport = await CommonFn.canAuthenticate();
+    if (deviceIsSupport == false) {
+      Get.rawSnackbar(message: "Your device is not supported");
+      return;
+    }
+    final availableBiosMetrics = await CommonFn.availableBiometrics();
+    logger.d("availableBiosMetrics: $availableBiosMetrics");
+    if (availableBiosMetrics == false) {
+      Get.rawSnackbar(
+          message: "Please enable BioMetrics in Your device Settings");
+    }
+    return;
     logger.d("enableBioMetrics: $enableBioMetrics");
     if (enableBioMetrics) {
       Get.to(PinVerifyPage(disabledBackButton: false), arguments: {
         "whenSuccess": () async {
+          final result = await CommonFn.requestBiometrics();
+          logger.d("result: $result");
           await StorageController.to.setEnableBio();
           enabledBiometrics.value = true;
-          Get.back();
         }
       });
       return;
