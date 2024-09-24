@@ -16,6 +16,7 @@ class RouteName {
   static const String pinVerify = '/pinVerify';
   static const String animal = '/animal';
   static const String security = '/security';
+  static const String profile = '/profile';
 
   static const String cloudflare = '/cloudflare';
 }

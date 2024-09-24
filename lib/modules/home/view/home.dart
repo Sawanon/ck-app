@@ -8,6 +8,7 @@ import 'package:lottery_ck/main.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/video/view/video_list.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/res/icon.dart';
@@ -29,8 +30,9 @@ class HomePage extends StatelessWidget {
           body: Stack(
             children: [
               Padding(
-                padding: const EdgeInsets.only(
-                    top: 16, left: 16, right: 16, bottom: 144),
+                // padding: const EdgeInsets.only(
+                //     top: 16, left: 16, right: 16, bottom: 144),
+                padding: EdgeInsets.all(16),
                 child: ListView(
                   clipBehavior: Clip.none,
                   physics: BouncingScrollPhysics(),
@@ -356,8 +358,6 @@ class HomePage extends StatelessWidget {
                                                   //   AppConst.apiUrl = value;
                                                   // },
                                                   onSaved: (newValue) {
-                                                    logger.d(
-                                                        "on save: $newValue");
                                                     if (newValue == "" ||
                                                         newValue == null) {
                                                       return;
@@ -456,7 +456,7 @@ class HomePage extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    'Day',
+                                    AppLocale.day.getString(context),
                                     style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       color: Colors.black.withOpacity(0.8),
@@ -483,7 +483,7 @@ class HomePage extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    'Hour',
+                                    AppLocale.hour.getString(context),
                                     style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       color: Colors.black.withOpacity(0.8),
@@ -510,7 +510,7 @@ class HomePage extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    'Minute',
+                                    AppLocale.minute.getString(context),
                                     style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       color: Colors.black.withOpacity(0.8),
@@ -537,7 +537,7 @@ class HomePage extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    'Second',
+                                    AppLocale.second.getString(context),
                                     style: TextStyle(
                                       fontWeight: FontWeight.w700,
                                       color: Colors.black.withOpacity(0.8),
@@ -554,13 +554,13 @@ class HomePage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("เลขเด็ด"),
+                        Text(AppLocale.lotteryPredict.getString(context)),
                         GestureDetector(
                           onTap: () {
                             Get.rawSnackbar(message: "coming soon");
                           },
                           child: Text(
-                            "ดูทั้งหมด",
+                            AppLocale.viewAll.getString(context),
                             style: TextStyle(
                               decoration: TextDecoration.underline,
                               color: Colors.black.withOpacity(0.8),
@@ -578,7 +578,7 @@ class HomePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "ดวงวันนี้",
+                          AppLocale.horoscopeToday.getString(context),
                           style: TextStyle(
                             color: Colors.black.withOpacity(0.8),
                           ),
@@ -588,7 +588,7 @@ class HomePage extends StatelessWidget {
                             Get.rawSnackbar(message: "coming soon");
                           },
                           child: Text(
-                            "ดูทั้งหมด",
+                            AppLocale.viewAll.getString(context),
                             style: TextStyle(
                               decoration: TextDecoration.underline,
                               color: Colors.black.withOpacity(0.8),
@@ -764,10 +764,10 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               ),
-              Align(
-                alignment: controller.lotteryAlinment,
-                child: BuyLottery(),
-              ),
+              // Align(
+              //   alignment: controller.lotteryAlinment,
+              //   child: BuyLottery(),
+              // ),
             ],
           ),
         );

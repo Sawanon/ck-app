@@ -8,6 +8,7 @@ import 'package:lottery_ck/components/blur_app.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/no_network_dialog.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
+import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.page.dart';
 import 'package:lottery_ck/modules/history/controller/history.controller.dart';
 import 'package:lottery_ck/modules/history/view/history.dart';
 import 'package:lottery_ck/modules/home/view/home.dart';
@@ -36,6 +37,11 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   bool noNetwork = false;
   bool isBlur = false;
   StreamSubscription? useBiometricsTimeout;
+
+  void clearState() {
+    isUsedBiometrics = false;
+    isUserLogined = false;
+  }
 
   void onChangeTabIndex(TabApp tab) {
     currentTab = tab;
@@ -75,7 +81,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
         return const HistoryPage();
       case TabApp.lottery:
         // return const LotteryHistoryPage();
-        return const LotteryHistoryPage();
+        return const BuyLotteryPage();
       case TabApp.notifications:
         return const NotificationPage();
       case TabApp.settings:
@@ -180,12 +186,14 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
     update();
   }
 
-  void checkUserLogin() async {
+  Future<void> checkUserLogin() async {
     try {
+      logger.d("start");
       await AppWriteController.to.user;
+      logger.d("end");
       isUserLogined = true;
     } catch (e) {
-      logger.e("$e");
+      isUserLogined = false;
     }
   }
 

@@ -78,10 +78,6 @@ class HomeController extends GetxController {
       startCountdown(lotteryEndTime, now);
       update();
     } catch (e) {
-      Get.rawSnackbar(
-        title: 'getLotteryDate error',
-        message: e.toString(),
-      );
       logger.e(e.toString());
     }
   }

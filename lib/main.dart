@@ -8,6 +8,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/route_manager.dart';
 import 'package:lottery_ck/binding/initial.binding.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/route/routes.dart';
@@ -64,56 +65,6 @@ Future checkDeeplink() async {
   } catch (e) {
     logger.d("error checkDeeplink $e");
   }
-}
-
-mixin AppLocale {
-  static const String home = 'ໜ້າຫຼັກ';
-  static const String history = 'ປະຫວັດ';
-  static const String buyLottery = 'ຊື້ຫວຍ';
-  static const String notification = 'ແຈ້ງເຕືອນ';
-  static const String setting = 'ຕັ້ງຄ່າ';
-  static const String horoscope = 'ດູດວງ';
-  static const String wallpaper = 'ຮູບວໍເປເປີ';
-  static const String lotteryResult = 'ຜົນຫວຍ';
-  static const String animal = 'ຕໍາຣາ';
-  static const String lotteryDateAt = 'ງວດວັນທີ';
-
-  static const Map<String, dynamic> LO = {
-    home: 'ໜ້າຫຼັກ',
-    history: 'ປະຫວັດ',
-    buyLottery: 'ຊື້ຫວຍ',
-    notification: 'ແຈ້ງເຕືອນ',
-    setting: 'ຕັ້ງຄ່າ',
-    horoscope: 'ດູດວງ',
-    wallpaper: 'ຮູບວໍເປເປີ',
-    lotteryResult: 'ຜົນຫວຍ',
-    animal: 'ຕໍາຣາ',
-    lotteryDateAt: 'ງວດວັນທີ',
-  };
-  static const Map<String, dynamic> TH = {
-    home: 'หน้าแรก',
-    history: 'ประวัติ',
-    buyLottery: 'ซื้อหวย',
-    notification: 'แจ้งเตือน',
-    setting: 'ตั้งค่า',
-    horoscope: 'ดูดวง',
-    wallpaper: 'วอลเปเปอร์',
-    lotteryResult: 'ผลหวย',
-    animal: 'ตำรา',
-    lotteryDateAt: 'งวดวันที่',
-  };
-  static const Map<String, dynamic> EN = {
-    home: 'Home',
-    history: 'History',
-    buyLottery: 'Lottery',
-    notification: 'Notification',
-    setting: 'Setting',
-    horoscope: 'Horoscope',
-    wallpaper: 'Wallpaper',
-    lotteryResult: 'Lottery result',
-    animal: 'Animal',
-    lotteryDateAt: 'lottery date',
-  };
 }
 
 final FlutterLocalization localization = FlutterLocalization.instance;
@@ -191,12 +142,6 @@ class _MyAppState extends State<MyApp> {
       initialRoute: RouteName.splashScreen,
       supportedLocales: localization.supportedLocales,
       localizationsDelegates: localization.localizationsDelegates,
-      // localizationsDelegates: [
-      //   // AppLocalizations.delegate,
-      //   GlobalMaterialLocalizations.delegate,
-      //   GlobalWidgetsLocalizations.delegate,
-      //   GlobalCupertinoLocalizations.delegate,
-      // ],
     );
   }
 }

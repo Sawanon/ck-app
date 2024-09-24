@@ -11,6 +11,7 @@ import 'package:lottery_ck/model/lottery_date.dart';
 import 'package:lottery_ck/model/news.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
+import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
@@ -157,6 +158,7 @@ class AppWriteController extends GetxController {
     try {
       await account.deleteSession(sessionId: 'current');
       await StorageController.to.clear();
+      LayoutController.to.clearState();
     } catch (e) {
       logger.e(e.toString());
     }
@@ -306,7 +308,6 @@ class AppWriteController extends GetxController {
       }
       return response.documents[0];
     } catch (e) {
-      Get.rawSnackbar(message: "$e");
       logger.e(e.toString());
       return null;
     }
@@ -573,7 +574,7 @@ class AppWriteController extends GetxController {
 
   Future<List?> listLotteryCollection(String lotteryMonth) async {
     try {
-      final token = await sessionToken();
+      final token = await getCredential();
       final dio = Dio();
       final response = await dio.post(
         "${AppConst.cloudfareUrl}/listLotteryCollections",
@@ -647,9 +648,15 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<String> sessionToken() async {
+  Future<String> getCredential() async {
     final userId = await user.then((value) => value.$id);
     final sessionId = await StorageController.to.getSessionId();
+    logger.d("userId: $userId");
+    logger.d("sessionId: $sessionId");
+    if (sessionId == null) {
+      logger.e("sessionId is null");
+      await logout();
+    }
     final credential = "$sessionId:$userId";
     final bearer = base64Encode(utf8.encode(credential));
     return bearer;
@@ -680,7 +687,7 @@ class AppWriteController extends GetxController {
       await databases.updateDocument(
         databaseId: _databaseName,
         collectionId: "group_users",
-        documentId: "66b0369b001651b9cbff",
+        documentId: allUser.documents.first.$id,
         data: {
           "userId": [
             ...oldArray,
@@ -811,9 +818,8 @@ class AppWriteController extends GetxController {
   ) async {
     try {
       final userId = await user.then((value) => value.$id);
-      final sessionId = await StorageController.to.getSessionId();
-      final credential = "$sessionId:$userId";
-      final bearer = base64Encode(utf8.encode(credential));
+      final token = await getCredential();
+      logger.d("token: $token");
       final dio = Dio();
       final response = await dio.post(
         "${AppConst.apiUrl}/user/passcode/verify",
@@ -822,7 +828,7 @@ class AppWriteController extends GetxController {
           "userId": userId,
         },
         options: Options(headers: {
-          "Authorization": "Bearer $bearer",
+          "Authorization": "Bearer $token",
         }),
       );
       return response.data;
@@ -896,6 +902,26 @@ class AppWriteController extends GetxController {
     } on Exception catch (e) {
       logger.e(e);
       Get.snackbar("createSession failed", e.toString());
+      return null;
+    }
+  }
+
+  Future<void> listCurrentActivePromotions() async {
+    try {
+      final dio = Dio();
+      final token = await getCredential();
+      final response = await dio.get(
+        "${AppConst.apiUrl}/api/promotion",
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+      logger.d(response.data);
+      // final promotions = Promotion.fromMapList(response.data["promotions"]);
+    } catch (e) {
+      logger.e("$e");
       return null;
     }
   }

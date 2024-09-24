@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/route/route_name.dart';
@@ -516,7 +518,8 @@ class BuyLottery extends StatelessWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          'ລວມທັງໝົດ',
+                                          AppLocale.totalAmount
+                                              .getString(context),
                                           style: TextStyle(
                                             fontSize: 16,
                                           ),
@@ -550,7 +553,7 @@ class BuyLottery extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Text(
-                                      "ຢືນຢັນ",
+                                      AppLocale.confirm.getString(context),
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w700,

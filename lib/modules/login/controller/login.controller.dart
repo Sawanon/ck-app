@@ -135,7 +135,6 @@ class LoginController extends GetxController {
       await appwriteController.createTarget();
       final storageController = StorageController.to;
       storageController.setSessionId(session.$id);
-      await FirebaseMessagingController.to.getToken();
       return session;
     } on Exception catch (e) {
       logger.e(e);

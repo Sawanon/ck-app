@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/history/controller/history.controller.dart';
 import 'package:lottery_ck/modules/history/view/history_buy.dart';
 import 'package:lottery_ck/modules/history/view/history_win.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/route/route_name.dart';
 
@@ -71,16 +73,16 @@ class HistoryPage extends StatelessWidget {
               automaticallyImplyLeading: false,
               titleSpacing: 0,
               toolbarHeight: 48,
-              title: const TabBar(
+              title: TabBar(
                 unselectedLabelColor: Colors.grey,
                 dividerColor: Colors.transparent,
                 labelColor: Colors.white,
-                labelStyle: TextStyle(
+                labelStyle: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
                 indicatorSize: TabBarIndicatorSize.tab,
-                indicator: BoxDecoration(
+                indicator: const BoxDecoration(
                   color: AppColors.primary,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(24),
@@ -90,11 +92,11 @@ class HistoryPage extends StatelessWidget {
                 tabs: [
                   Tab(
                     child: Text(
-                      'ປະຫວັດການຊື້',
+                      AppLocale.buyHistory.getString(context),
                     ),
                   ),
                   Tab(
-                    child: Text('ປະຫວັດຖືກ'),
+                    child: Text(AppLocale.winHistory.getString(context)),
                   ),
                 ],
               ),

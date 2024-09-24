@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/utils.dart';
 
@@ -52,6 +54,25 @@ class OtpController extends GetxController {
         },
         verificationFailed: (error) {
           logger.d("verificationFailed $error");
+          final invalidPhoneNumber = error.code == "invalid-phone-number";
+          Get.dialog(
+            DialogApp(
+              title: Text("${error.message}"),
+              disableConfirm: invalidPhoneNumber,
+              confirmText: Text(
+                "Try again",
+              ),
+              onConfirm: () async {
+                if (!invalidPhoneNumber) {
+                  await sendVerifyOTP();
+                }
+                Get.back();
+              },
+              onCancel: () {
+                Get.back();
+              },
+            ),
+          );
         },
         codeSent: (verificationId, forceResendingToken) async {
           enableOTP.value = true;

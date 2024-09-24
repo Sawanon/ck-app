@@ -66,91 +66,101 @@ class SettingPage extends StatelessWidget {
         return Scaffold(
           body: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.only(
+                top: 16.0,
+                left: 16,
+                right: 16,
+                bottom: 16 + 8,
+              ),
               child: Column(
                 children: [
                   Expanded(
                     child: ListView(
                       physics: const BouncingScrollPhysics(),
                       children: [
-                        Stack(
-                          alignment: Alignment.topCenter,
-                          children: [
-                            Column(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(top: 50),
-                                  padding: EdgeInsets.all(2),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        AppColors.redGradient,
-                                        AppColors.yellowGradient,
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                  ),
-                                  child: Container(
+                        GestureDetector(
+                          onTap: () {
+                            Get.toNamed(RouteName.profile);
+                          },
+                          child: Stack(
+                            alignment: Alignment.topCenter,
+                            children: [
+                              Column(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(top: 50),
+                                    padding: EdgeInsets.all(2),
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(6),
-                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          AppColors.redGradient,
+                                          AppColors.yellowGradient,
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
                                     ),
-                                    alignment: Alignment.center,
-                                    padding: EdgeInsets.only(
-                                      top: 50 + 8,
-                                      bottom: 8,
-                                    ),
-                                    width: double.infinity,
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          controller.user?.fullName ?? "-",
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(6),
+                                        color: Colors.white,
+                                      ),
+                                      alignment: Alignment.center,
+                                      padding: EdgeInsets.only(
+                                        top: 50 + 8,
+                                        bottom: 8,
+                                      ),
+                                      width: double.infinity,
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            controller.user?.fullName ?? "-",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          controller.user?.phoneNumber ?? "-",
-                                          style: TextStyle(
-                                            fontSize: 12,
+                                          Text(
+                                            controller.user?.phoneNumber ?? "-",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            Container(
-                              width: 100,
-                              height: 100,
-                              padding: const EdgeInsets.all(2),
-                              decoration: const BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    AppColors.redGradient,
-                                    AppColors.yellowGradient,
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                                shape: BoxShape.circle,
+                                ],
                               ),
-                              child: Container(
-                                clipBehavior: Clip.hardEdge,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
+                              Container(
+                                width: 100,
+                                height: 100,
+                                padding: const EdgeInsets.all(2),
+                                decoration: const BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      AppColors.redGradient,
+                                      AppColors.yellowGradient,
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
                                   shape: BoxShape.circle,
                                 ),
-                                child: Icon(
-                                  Icons.person_2,
-                                  size: 40,
+                                child: Container(
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    Icons.person_2,
+                                    size: 40,
+                                  ),
                                 ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
                         const SizedBox(height: 16),
                         GestureDetector(

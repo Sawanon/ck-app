@@ -26,6 +26,8 @@ class AppIcon {
   static const String wallpaper = "assets/svg/wallpaper.svg";
   static const String lotteryResult = "assets/svg/award.svg";
   static const String animalMenu = "assets/svg/animal_menu.svg";
+  static const String phone = "assets/svg/vuesax/linear/call.svg";
+  static const String location = "assets/svg/vuesax/linear/location.svg";
 
   static const String lo = "assets/laos1.png";
   static const String th = "assets/Th1.png";

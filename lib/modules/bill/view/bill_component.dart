@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:lottery_ck/model/bill.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/logo.dart';
 import 'package:lottery_ck/utils.dart';
@@ -32,7 +34,7 @@ class BillComponent extends StatelessWidget {
               ),
             ),
             child: Text(
-              'ກະຊວງການເງິນ ຫວຍພັດທະນາ ຈັດຈໍາໜ່າຍໂດຍ CK GROUP',
+              '${AppLocale.titleBill.getString(context)} CK GROUP',
               style: TextStyle(
                 fontSize: 14,
                 color: AppColors.secodaryText,
@@ -46,14 +48,9 @@ class BillComponent extends StatelessWidget {
             height: MediaQuery.of(context).size.width / 4,
           ),
           const SizedBox(height: 8),
-          GestureDetector(
-            onTap: () {
-              logger.d("message");
-            },
-            child: Image.asset(
-              Logo.ck,
-              height: 40,
-            ),
+          Image.asset(
+            Logo.ck,
+            height: 40,
           ),
           const SizedBox(height: 16),
           Column(
@@ -64,7 +61,7 @@ class BillComponent extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        "ຊື່ຜູ້ຊື້",
+                        AppLocale.buyerName.getString(context),
                         style: TextStyle(
                           fontSize: 14,
                           color: AppColors.secondary,

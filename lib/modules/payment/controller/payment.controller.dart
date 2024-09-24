@@ -175,6 +175,7 @@ class PaymentController extends GetxController {
       final dio = Dio();
       final responseTransaction = await dio.post(
         "${AppConst.cloudfareUrl}/createTransaction",
+        // "${AppConst.apiUrl}/transaction/",
         data: {
           "totalAmount": totalAmount,
           "bankId": bank.$id,

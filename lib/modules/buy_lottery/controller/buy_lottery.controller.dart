@@ -123,6 +123,7 @@ class BuyLotteryController extends GetxController {
   }
 
   void submitAddLottery(String? lottery, int? price) {
+    logger.d("formKey?.currentState: ${formKey?.currentState}");
     if (formKey?.currentState != null && formKey!.currentState!.validate()) {
       if (lottery == null || price == null) {
         alertLotteryEmpty();
@@ -249,6 +250,11 @@ class BuyLotteryController extends GetxController {
       Get.rawSnackbar(message: "Please sign in");
       return;
     }
+
+    if (HomeController.to.lotteryDateStr == null) {
+      Get.rawSnackbar(message: "ขณะนี้ยังไม่เปิดบริการให้ซือในขณะนี้");
+      return;
+    }
     Get.toNamed(RouteName.payment);
   }
 
@@ -268,8 +274,9 @@ class BuyLotteryController extends GetxController {
       priceTextController.text = "";
       return;
     }
-    final priceInt = int.parse(price);
-    logger.d("price: $price");
+    final onlyNumber = price.replaceAll(",", "");
+    logger.d("onlyNumber: $onlyNumber");
+    final priceInt = int.parse(onlyNumber);
     priceTextController.text = CommonFn.parseMoney(priceInt);
     this.price = priceInt;
   }
@@ -297,6 +304,10 @@ class BuyLotteryController extends GetxController {
     logger.d("buyLotteryConfigsList: $buyLotteryConfigsList");
     buyLotteryConfigs = buyLotteryConfigsList;
     update();
+  }
+
+  void listPromotions() async {
+    await AppWriteController.to.listCurrentActivePromotions();
   }
 
   @override

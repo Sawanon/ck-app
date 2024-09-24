@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:lottery_ck/components/navigation_item.dart';
 import 'package:lottery_ck/main.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 
@@ -36,7 +37,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
           width: double.infinity,
           padding: EdgeInsets.symmetric(vertical: 6, horizontal: 6),
           height: 74,
-          // height: 89,
+          // height: 92,
           decoration: BoxDecoration(
             // color: AppColors.primary,
             // borderRadius: BorderRadius.circular(50),

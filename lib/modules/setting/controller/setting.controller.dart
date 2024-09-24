@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
@@ -16,11 +19,12 @@ class SettingController extends GetxController {
   bool isLogin = false;
   bool loading = true;
   RxBool enabledBiometrics = false.obs;
+  File? profileImaeg;
 
   Future<void> logout() async {
     await AppWriteController.to.logout();
     // Get.offAllNamed(RouteName.login);
-    Get.offNamed(RouteName.login);
+    LayoutController.to.changeTab(TabApp.home);
   }
 
   Future<void> getUser() async {
@@ -116,20 +120,19 @@ class SettingController extends GetxController {
       return;
     }
     final availableBiosMetrics = await CommonFn.availableBiometrics();
-    logger.d("availableBiosMetrics: $availableBiosMetrics");
     if (availableBiosMetrics == false) {
       Get.rawSnackbar(
           message: "Please enable BioMetrics in Your device Settings");
+      return;
     }
-    return;
-    logger.d("enableBioMetrics: $enableBioMetrics");
     if (enableBioMetrics) {
       Get.to(PinVerifyPage(disabledBackButton: false), arguments: {
         "whenSuccess": () async {
-          final result = await CommonFn.requestBiometrics();
+          final result = await CommonFn.enableBiometrics();
           logger.d("result: $result");
           await StorageController.to.setEnableBio();
           enabledBiometrics.value = true;
+          Get.back();
         }
       });
       return;
@@ -171,6 +174,38 @@ class SettingController extends GetxController {
     } catch (e) {
       logger.e("$e");
       Get.rawSnackbar(message: "$e");
+    }
+  }
+
+  Future<void> pickImage() async {
+    final pickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+    );
+
+    if (pickedFile != null) {
+      logger.d("pickedFile: $pickedFile");
+      profileImaeg = File(pickedFile.path);
+//       setState(() {
+//         _image
+//  = File(pickedFile.path);
+//       });
+      update();
+      getLostData();
+    }
+  }
+
+  Future<void> getLostData() async {
+    final ImagePicker picker = ImagePicker();
+    final LostDataResponse response = await picker.retrieveLostData();
+    if (response.isEmpty) {
+      return;
+    }
+    final List<XFile>? files = response.files;
+    if (files != null) {
+      profileImaeg = null;
+      // _handleLostFiles(files);
+    } else {
+      // _handleError(response.exception);
     }
   }
 

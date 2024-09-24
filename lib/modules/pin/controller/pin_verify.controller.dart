@@ -27,35 +27,6 @@ class PinVerifyController extends GetxController {
 
   Future<bool> verifyPasscode(String passcode) async {
     try {
-      // var password = passcode;
-      // var salt = 'namo'.toBytesLatin1();
-
-      // var parameters = Argon2Parameters(
-      //   Argon2Parameters.ARGON2_id,
-      //   salt,
-      //   version: Argon2Parameters.ARGON2_VERSION_13,
-      //   iterations: 2,
-      //   memoryPowerOf2: 16,
-      //   converter: CharToByteConverterUTF8(),
-      // );
-
-      // print('Parameters: $parameters');
-
-      // var argon2 = Argon2BytesGenerator();
-
-      // argon2.init(parameters);
-
-      // var passwordBytes = parameters.converter.convert(password);
-
-      // print('Generating key from password...');
-
-      // var result = Uint8List(32);
-      // // argon2.generateBytes(passwordBytes, result, 0, result.length);
-      // argon2.generateBytes(passwordBytes, result);
-      // // argon2.generateBytesFromString(password, result);
-      // var resultHex = result.toHexString();
-
-      // print('Result: $resultHex');
       pendingVerify.value = true;
       final response = await AppWriteController.to.verifyPasscode(passcode);
       logger.d("response?[pass] : ${response?["pass"]}");

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
@@ -53,7 +55,8 @@ class PayMentPage extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      "ລວມຈໍານວນເງິນທີ່ຕ້ອງຊໍາລະ",
+                                      AppLocale.totalAmountForPay
+                                          .getString(context),
                                       style: TextStyle(
                                         color: AppColors.primary,
                                         fontSize: 16,
@@ -171,7 +174,7 @@ class PayMentPage extends StatelessWidget {
                         );
                       },
                       child: Text(
-                        "Pay",
+                        AppLocale.pay.getString(context),
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,

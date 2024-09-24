@@ -15,6 +15,7 @@ import 'package:lottery_ck/modules/payment/view/payment.dart';
 import 'package:lottery_ck/modules/pin/view/pin.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
 import 'package:lottery_ck/modules/point/view/point.dart';
+import 'package:lottery_ck/modules/setting/view/profile.dart';
 import 'package:lottery_ck/modules/setting/view/security.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/modules/splash_screen/view/splash_screen.dart';
@@ -112,6 +113,11 @@ class AppRoutes {
         GetPage(
           name: RouteName.security,
           page: () => SecurityPage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.profile,
+          page: () => ProfilePage(),
           transition: Transition.rightToLeft,
         ),
       ];

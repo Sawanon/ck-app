@@ -17,14 +17,14 @@ import 'package:lottery_ck/utils.dart';
 
 class LayoutPage extends StatelessWidget {
   LayoutPage({super.key});
-  final pages = [
-    HomePage(),
-    HistoryPage(),
-    LotteryHistoryPage(),
-    // BuyLotteryPage(),
-    NotificationPage(),
-    SettingPage(),
-  ];
+  // final pages = [
+  //   HomePage(),
+  //   HistoryPage(),
+  //   LotteryHistoryPage(),
+  //   // BuyLotteryPage(),
+  //   NotificationPage(),
+  //   SettingPage(),
+  // ];
 
   @override
   Widget build(BuildContext context) {

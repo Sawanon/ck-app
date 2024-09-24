@@ -3,12 +3,14 @@ class UserApp {
   String lastName;
   String phoneNumber;
   String? passcode;
+  String? address;
 
   UserApp({
     required this.firstName,
     required this.lastName,
     required this.phoneNumber,
     this.passcode,
+    this.address,
   });
 
   static UserApp fromJson(Map json) {
@@ -17,6 +19,7 @@ class UserApp {
       lastName: json['lastname'] as String,
       phoneNumber: json['phone'] as String,
       passcode: json['passcode'] as String?,
+      address: json['address'] as String?,
     );
   }
 
