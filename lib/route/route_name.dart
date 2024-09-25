@@ -17,6 +17,8 @@ class RouteName {
   static const String animal = '/animal';
   static const String security = '/security';
   static const String profile = '/profile';
+  static const String changePhone = '/changePhone';
+  static const String changeAddress = '/changeAddress';
 
   static const String cloudflare = '/cloudflare';
 }

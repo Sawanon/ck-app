@@ -29,7 +29,7 @@ class OtpPage extends StatelessWidget {
         body: SafeArea(
           child: Column(
             children: [
-              Header(
+              HeaderCK(
                 onTap: () {
                   navigator?.pop();
                 },

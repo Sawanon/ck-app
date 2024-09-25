@@ -37,8 +37,10 @@ class LoginController extends GetxController {
       return;
     }
 
-    Map<String, dynamic>? token = await getToken();
+    Map<String, dynamic>? token =
+        await AppWriteController.to.getToken(phoneNumber);
     // go to otp for verify then go to enter user info - sawanon:20240807
+    logger.d("toke login: $token");
     if (token == null) {
       Get.toNamed(
         RouteName.otp,
@@ -113,15 +115,6 @@ class LoginController extends GetxController {
         }
       },
     );
-  }
-
-  Future<Map<String, dynamic>?> getToken() async {
-    final dio = Dio();
-    final response = await dio.post("${AppConst.cloudfareUrl}/sign-in", data: {
-      "phoneNumber": phoneNumber,
-    });
-    final Map<String, dynamic>? token = response.data;
-    return token;
   }
 
   Future<Session?> createSession(Map<String, dynamic> token) async {

@@ -22,7 +22,7 @@ class PayMentPage extends StatelessWidget {
             children: [
               Column(
                 children: [
-                  Header(
+                  HeaderCK(
                     onTap: () {
                       navigator?.pop();
                     },

@@ -17,7 +17,7 @@ class PromotionDetailPage extends StatelessWidget {
         body: SafeArea(
           child: Column(
             children: [
-              Header(
+              HeaderCK(
                 onTap: () {
                   navigator?.pop();
                 },

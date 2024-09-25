@@ -80,6 +80,22 @@ class StorageController extends GetxController {
     return value == "true";
   }
 
+  Future<void> setSecretKey(String secret) async {
+    await setValue("secretKey", secret);
+  }
+
+  Future<String?> getSecretKey() async {
+    return await getValue("secretKey");
+  }
+
+  Future<void> setAppToken(String token) async {
+    await setValue("appToken", token);
+  }
+
+  Future<String?> getAppToken() async {
+    return await getValue("appToken");
+  }
+
   @override
   void onInit() {
     storage = FlutterSecureStorage(

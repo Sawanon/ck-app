@@ -8,6 +8,7 @@ class LongButton extends StatelessWidget {
   final Size? maximumSize;
   final Color? backgroundColor;
   final BorderSide borderSide;
+  final bool disabled;
   const LongButton({
     super.key,
     required this.onPressed,
@@ -16,6 +17,7 @@ class LongButton extends StatelessWidget {
     this.maximumSize,
     this.backgroundColor = AppColors.primary,
     this.borderSide = BorderSide.none,
+    this.disabled = false,
   });
 
   @override
@@ -34,7 +36,7 @@ class LongButton extends StatelessWidget {
         backgroundColor: backgroundColor,
         foregroundColor: Colors.white,
       ),
-      onPressed: onPressed,
+      onPressed: disabled ? null : onPressed,
       child: child,
     );
   }

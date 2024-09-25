@@ -18,7 +18,7 @@ class SecurityPage extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Header(
+            HeaderCK(
               onTap: () => Get.back(),
             ),
             Expanded(

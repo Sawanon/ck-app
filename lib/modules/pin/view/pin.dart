@@ -18,7 +18,7 @@ class PinPage extends StatelessWidget {
           body: SafeArea(
             child: Column(
               children: [
-                Header(
+                HeaderCK(
                   disabledBackButton: true,
                   onTap: () {
                     logger.d("message");

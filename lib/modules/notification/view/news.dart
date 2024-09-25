@@ -34,7 +34,7 @@ class NewsDetailPage extends StatelessWidget {
         body: SafeArea(
           child: Column(
             children: [
-              Header(
+              HeaderCK(
                 onTap: () {
                   // navigator?.pop();
                   Get.back();

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:lottery_ck/binding/initial.binding.dart';
+import 'package:lottery_ck/modules/address/view/change_address.dart';
 import 'package:lottery_ck/modules/animal/view/animal.dart';
 import 'package:lottery_ck/modules/bill/view/bill.dart';
 import 'package:lottery_ck/modules/biometrics/view/enable_biometrics.dart';
@@ -12,6 +13,7 @@ import 'package:lottery_ck/modules/notification/view/promotion.dart';
 import 'package:lottery_ck/modules/otp/view/otp.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/modules/payment/view/payment.dart';
+import 'package:lottery_ck/modules/phone/view/change_phone.dart';
 import 'package:lottery_ck/modules/pin/view/pin.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
 import 'package:lottery_ck/modules/point/view/point.dart';
@@ -118,6 +120,16 @@ class AppRoutes {
         GetPage(
           name: RouteName.profile,
           page: () => ProfilePage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.changePhone,
+          page: () => ChangePhonePage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.changeAddress,
+          page: () => ChangeAddressPage(),
           transition: Transition.rightToLeft,
         ),
       ];

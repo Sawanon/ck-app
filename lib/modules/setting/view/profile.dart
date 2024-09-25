@@ -9,6 +9,8 @@ import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
+import 'package:lottery_ck/route/route_name.dart';
+import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/theme.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -25,16 +27,6 @@ class ProfilePage extends StatelessWidget {
               Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
-                // decoration: BoxDecoration(
-                //   color: Colors.white,
-                //   boxShadow: [
-                //     BoxShadow(
-                //       offset: Offset(0, 0),
-                //       blurRadius: 4,
-                //       color: AppColors.shadow,
-                //     )
-                //   ],
-                // ),
                 child: Row(
                   children: [
                     Expanded(
@@ -164,36 +156,66 @@ class ProfilePage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 16,
-                                height: 16,
-                                child: SvgPicture.asset(
-                                  AppIcon.phone,
+                          InkWell(
+                            onTap: () {
+                              controller.changePhoneNumber();
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: SvgPicture.asset(
+                                        AppIcon.phone,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      "${controller.user?.phoneNumber}",
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                "${controller.user?.phoneNumber}",
-                              ),
-                            ],
+                                SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: SvgPicture.asset(AppIcon.arrowRight),
+                                ),
+                              ],
+                            ),
                           ),
                           const SizedBox(height: 16),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 16,
-                                height: 16,
-                                child: SvgPicture.asset(
-                                  AppIcon.location,
+                          InkWell(
+                            onTap: () {
+                              Get.toNamed(RouteName.changeAddress);
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: SvgPicture.asset(
+                                        AppIcon.location,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      "${controller.user?.address}",
+                                    ),
+                                  ],
                                 ),
-                              ),
-                              const SizedBox(width: 8),
-                              Text(
-                                "${controller.user?.address}",
-                              ),
-                            ],
+                                SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: SvgPicture.asset(AppIcon.arrowRight),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),

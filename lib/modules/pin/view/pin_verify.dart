@@ -21,7 +21,7 @@ class PinVerifyPage extends StatelessWidget {
         body: SafeArea(
           child: Column(
             children: [
-              Header(
+              HeaderCK(
                 disabledBackButton: disabledBackButton,
                 onTap: () {
                   Get.back();

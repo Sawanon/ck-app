@@ -36,7 +36,7 @@ class SignupPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Header(
+                  HeaderCK(
                     onTap: () {
                       navigator?.pop();
                     },
@@ -323,10 +323,10 @@ class SignupPage extends StatelessWidget {
   }
 }
 
-class Header extends StatelessWidget {
+class HeaderCK extends StatelessWidget {
   final void Function()? onTap;
   final bool? disabledBackButton;
-  const Header({
+  const HeaderCK({
     super.key,
     this.onTap,
     this.disabledBackButton,

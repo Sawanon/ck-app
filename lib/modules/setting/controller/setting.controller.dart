@@ -20,6 +20,10 @@ class SettingController extends GetxController {
   bool loading = true;
   RxBool enabledBiometrics = false.obs;
   File? profileImaeg;
+  GlobalKey<FormState> keyFormPhone = GlobalKey();
+  GlobalKey<FormState> keyFormAddress = GlobalKey();
+  String? newPhoneNumber;
+  String? newAddress;
 
   Future<void> logout() async {
     await AppWriteController.to.logout();
@@ -206,6 +210,100 @@ class SettingController extends GetxController {
       // _handleLostFiles(files);
     } else {
       // _handleError(response.exception);
+    }
+  }
+
+  void changePhoneNumber() async {
+    Get.toNamed(RouteName.pinVerify, arguments: {
+      "whenSuccess": () {
+        logger.d("success");
+        Get.offNamed(RouteName.changePhone, arguments: {
+          "whenSuccess": () {
+            logger.d("message: changePhone");
+            logger.d("keyFormPhone.currentState: ${keyFormPhone.currentState}");
+            if (keyFormPhone.currentState != null) {
+              if (keyFormPhone.currentState!.validate() == false ||
+                  newPhoneNumber == null) {
+                return;
+              }
+            }
+            Get.toNamed(RouteName.otp, arguments: {
+              "phoneNumber": newPhoneNumber,
+              "whenSuccess": () async {
+                logger.d("message: otp");
+                final response = await AppWriteController.to
+                    .updateUserPhone(newPhoneNumber!);
+                if (response == null) {
+                  Get.snackbar(
+                    "Update phone number failed",
+                    "please try again later",
+                    margin: const EdgeInsets.all(8),
+                    backgroundColor: Colors.red,
+                    colorText: Colors.white,
+                  );
+                  Get.back();
+                  Get.back();
+                  return;
+                }
+                Get.back();
+                Get.back();
+                Get.snackbar(
+                  "Change phone number success",
+                  "message",
+                  margin: const EdgeInsets.all(8),
+                  backgroundColor: Colors.green.shade700,
+                  colorText: Colors.white,
+                );
+                getUser();
+              }
+            });
+          }
+        });
+      }
+    });
+    return;
+  }
+
+  void onChangeNewAddress(String newAddress) {
+    if (this.newAddress == null || this.newAddress == "") {
+      logger.w("update !");
+      update();
+    }
+    this.newAddress = newAddress;
+  }
+
+  void _loading(bool isLoading) {
+    loading = isLoading;
+    update();
+  }
+
+  void updateUserAddress() async {
+    try {
+      if (keyFormAddress.currentState?.validate() == false ||
+          newAddress == null ||
+          newAddress == "") {
+        return;
+      }
+      _loading(true);
+      final response =
+          await AppWriteController.to.updateUserAddress(newAddress!);
+      if (response == null) {
+        Get.rawSnackbar(message: "something went wrong");
+        return;
+      }
+      Get.back();
+      Get.snackbar(
+        "Update address success",
+        "",
+        margin: const EdgeInsets.all(8),
+        backgroundColor: Colors.green.shade700,
+        colorText: Colors.white,
+      );
+      getUser();
+    } catch (e) {
+      logger.d("$e");
+    } finally {
+      _loading(false);
     }
   }
 

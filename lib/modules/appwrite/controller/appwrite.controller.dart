@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/model/bank.dart';
 import 'package:lottery_ck/model/buy_lottery_configs.dart';
@@ -36,22 +38,40 @@ class AppWriteController extends GetxController {
   late Account account;
   late Databases databases;
   Client client = Client();
-  @override
-  void onInit() {
-    client
-        .setEndpoint('https://baas.moevedigital.com/v1')
-        .setProject('667afb24000fbd66b4df')
-        .setSelfSigned(status: true);
-    account = Account(client);
-    databases = Databases(client);
-
-    super.onInit();
-  }
 
   Future<User> get user async => await account.get();
 
-  Future<void> loginWithPhoneNumber(String phoneNumber) async {
-    logger.d(phoneNumber);
+  Future<void> getAuthToken() async {
+    try {
+      final dio = Dio();
+      final jwt = JWT({
+        "token": AppConst.publicToken,
+      });
+      final secretKey = await StorageController.to.getSecretKey();
+      final token =
+          jwt.sign(SecretKey('$secretKey'), algorithm: JWTAlgorithm.HS384);
+      final response = await dio.post(
+        "${AppConst.apiUrl}/auth",
+        data: {
+          "appVersion": AppConst.appVersion,
+        },
+        options: Options(headers: {
+          "Authorization": "Bearer $token",
+        }),
+      );
+      if (response.data["jwt"] == null) {
+        throw "jwt not found";
+      }
+      StorageController.to.setAppToken(response.data["jwt"]);
+    } catch (e) {
+      logger.e("$e");
+      Get.snackbar(
+        "Something went wrong appwrite:66 getAuthToken",
+        "Please try again later or plaese contact admin",
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
   }
 
   Future<bool> login(String email, String password) async {
@@ -873,13 +893,20 @@ class AppWriteController extends GetxController {
   Future<Map<String, dynamic>?> getToken(String phoneNumber) async {
     try {
       final dio = Dio();
+      final appToken = await StorageController.to.getAppToken();
+      logger.d("appToken: $appToken");
       final response = await dio.post(
-        "${AppConst.cloudfareUrl}/sign-in",
+        // "${AppConst.cloudfareUrl}/sign-in",
+        "${AppConst.apiUrl}/user/sign-in",
         data: {
           "phoneNumber": phoneNumber,
         },
+        options: Options(headers: {
+          "Authorization": "Bearer $appToken",
+        }),
       );
       final Map<String, dynamic>? token = response.data;
+      logger.d("token: $token");
       return token;
     } catch (e) {
       logger.e("$e");
@@ -924,5 +951,77 @@ class AppWriteController extends GetxController {
       logger.e("$e");
       return null;
     }
+  }
+
+  Future<String?> updateUserAddress(String address) async {
+    try {
+      final dio = Dio();
+      final token = await getCredential();
+      final response = await dio.post(
+        "${AppConst.apiUrl}/user/address",
+        data: {
+          "address": address,
+        },
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+      logger.d(response.data);
+      return response.data["address"];
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<String?> updateUserPhone(String phone) async {
+    try {
+      final dio = Dio();
+      final token = await getCredential();
+      final response = await dio.post(
+        "${AppConst.apiUrl}/user/phone",
+        data: {
+          "phone": phone,
+        },
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+      logger.d(response.data);
+      return response.data["phone"];
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<void> intialTokenToStorage() async {
+    try {
+      Get.put<StorageController>(StorageController());
+      await StorageController.to.setSecretKey(AppConst.secret);
+      getAuthToken();
+    } catch (e) {
+      logger.e("$e");
+    }
+  }
+
+  void setUp() async {
+    client
+        .setEndpoint(AppConst.endPoint)
+        .setProject(AppConst.appwriteProjectId)
+        .setSelfSigned(status: true);
+    account = Account(client);
+    databases = Databases(client);
+    await intialTokenToStorage();
+  }
+
+  @override
+  void onInit() {
+    setUp();
+    super.onInit();
   }
 }
