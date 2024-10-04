@@ -40,8 +40,20 @@ class LoginController extends GetxController {
     Map<String, dynamic>? token =
         await AppWriteController.to.getToken(phoneNumber);
     // go to otp for verify then go to enter user info - sawanon:20240807
-    logger.d("toke login: $token");
+    logger.w("toke login");
+    logger.w(token);
     if (token == null) {
+      Get.snackbar("Something went wrong", "please try again later");
+      return;
+    }
+    if (token['ratelimit'] == true) {
+      Get.snackbar("Toomany request", "please try again later");
+      return;
+    }
+    // if (token['status'] == false) {
+    //   Get.snackbar("${token['status']}", "");
+    // }
+    if (token['code'] == "user_notfound") {
       Get.toNamed(
         RouteName.otp,
         arguments: {
@@ -77,24 +89,62 @@ class LoginController extends GetxController {
         "phoneNumber": phoneNumber,
         "whenSuccess": () async {
           Get.snackbar("OTP verify successfully !", "");
-          final session = await createSession(token);
-          if (session == null) {
-            Get.snackbar(
-              "Something went wrong login:65",
-              "session is null Please try again later or plaese contact admin",
-            );
-            navigator?.pop();
-            return;
-          }
-          AppWriteController.to.detaulGroupUser(session.userId);
+
           // TODO: check has pin ? - sawanon:202409
           Get.offNamed(
             // RouteName.pin,
             RouteName.pinVerify,
             arguments: {
+              "userId": token["userId"],
+              "enableForgetPasscode": true,
+              "whenForgetPasscode": () async {
+                Get.rawSnackbar(message: "verify otp");
+                final appToken = await StorageController.to.getAppToken();
+                logger.d("appToken: $appToken");
+                Get.toNamed(RouteName.otp, arguments: {
+                  "phoneNumber": phoneNumber,
+                  "whenSuccess": () async {
+                    Get.toNamed(RouteName.changePasscode, arguments: {
+                      "userId": token['userId'],
+                      "whenSuccess": () async {
+                        final session = await createSession(token);
+                        if (session == null) {
+                          Get.snackbar(
+                            "Something went wrong login:65",
+                            "session is null Please try again later or plaese contact admin",
+                          );
+                          navigator?.pop();
+                          return;
+                        }
+                        final availableBiometrics =
+                            await CommonFn.availableBiometrics();
+                        if (availableBiometrics) {
+                          Get.toNamed(RouteName.enableBiometrics, arguments: {
+                            "whenSuccess": () async {
+                              LayoutController.to.intialApp();
+                              Get.offAllNamed(RouteName.layout);
+                              return;
+                            }
+                          });
+                          return;
+                        }
+                        LayoutController.to.intialApp();
+                        Get.offAllNamed(RouteName.layout);
+                      }
+                    });
+                  }
+                });
+              },
               "whenSuccess": () async {
-                // Get.delete<BuyLotteryController>();
-                // Get.delete<UserStore>();
+                final session = await createSession(token);
+                if (session == null) {
+                  Get.snackbar(
+                    "Something went wrong login:65",
+                    "session is null Please try again later or plaese contact admin",
+                  );
+                  navigator?.pop();
+                  return;
+                }
                 final availableBiometrics =
                     await CommonFn.availableBiometrics();
                 if (availableBiometrics) {

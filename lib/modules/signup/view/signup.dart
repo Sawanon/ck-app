@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:lottery_ck/modules/signup/controller/signup.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/res/logo.dart';
@@ -230,6 +232,81 @@ class SignupPage extends StatelessWidget {
                                 const Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
+                                    'ວັນເດືອນປີເກີດ',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                GestureDetector(
+                                  onTap: () async {
+                                    if (controller.unknowBirthTime) {
+                                      return;
+                                    }
+                                    final time = await showTimePicker(
+                                      context: context,
+                                      initialTime: TimeOfDay.now(),
+                                      initialEntryMode:
+                                          TimePickerEntryMode.input,
+                                    );
+                                    controller.changeBirthTime(time);
+                                  },
+                                  child: Container(
+                                    width: double.infinity,
+                                    height: 48,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                        width: 1,
+                                        color: controller.unknowBirthTime
+                                            ? AppColors.disable
+                                            : AppColors.primary,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      controller.birthTime == null
+                                          ? "--:--"
+                                          : CommonFn.parseTimeOfDayToHMS(
+                                              controller.birthTime!),
+                                      // "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}",
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: Checkbox(
+                                        value: controller.unknowBirthTime,
+                                        onChanged: (value) {
+                                          if (value == null) return;
+                                          controller
+                                              .changeUnknownBirthTime(value);
+                                        },
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      AppLocale.unknownTimeOfBirth
+                                          .getString(context),
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: AppColors.textPrimary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 16),
+                                const Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
                                     'ທີ່ຢູ່',
                                     style: TextStyle(
                                       fontSize: 14,
@@ -296,7 +373,7 @@ class SignupPage extends StatelessWidget {
                                     foregroundColor: Colors.white,
                                   ),
                                   onPressed: () {
-                                    controller.register();
+                                    controller.register(context);
                                   },
                                   child: Text(
                                     'ລົງທະບຽນ',

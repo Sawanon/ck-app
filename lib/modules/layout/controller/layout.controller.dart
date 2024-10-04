@@ -224,9 +224,21 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
     });
   }
 
+  void checkUser() async {
+    try {
+      logger.d("checkUser");
+      final user = await AppWriteController.to.user;
+      logger.d("user.phone: ${user.phone}");
+    } catch (e) {
+      logger.d("log out auto");
+      SettingController.to.logout();
+    }
+  }
+
   @override
   void onInit() {
     super.onInit();
+    checkUser();
     listenNetworkEvents();
     WidgetsBinding.instance.addObserver(this);
     checkUserLogin();

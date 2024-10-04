@@ -10,6 +10,7 @@ class Bill {
   String totalAmount;
   String invoiceId;
   String bankName;
+  String customerId;
 
   Bill({
     required this.firstName,
@@ -21,5 +22,6 @@ class Bill {
     required this.totalAmount,
     required this.invoiceId,
     required this.bankName,
+    required this.customerId,
   });
 }

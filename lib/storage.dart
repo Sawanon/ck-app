@@ -55,16 +55,10 @@ class StorageController extends GetxController {
     await clearValue("sessionId");
   }
 
-  // Future<void> setUserId(String userId) async {
-  //   await setValue("userId", userId);
-  // }
-
-  // Future<String?> getUserId() async {
-  //   return await getValue("userId");
-  // }
-
   Future<void> clear() async {
-    await storage?.deleteAll();
+    await storage?.delete(key: "sessionId");
+    await storage?.delete(key: "enableBio");
+    // await storage?.deleteAll();
   }
 
   Future<void> setEnableBio() async {
@@ -94,6 +88,14 @@ class StorageController extends GetxController {
 
   Future<String?> getAppToken() async {
     return await getValue("appToken");
+  }
+
+  Future<void> setInvoiceMetaId(String invoiceMetaId) async {
+    await setValue("invoiceMetaId", invoiceMetaId);
+  }
+
+  Future<String?> getInvoiceMetaId() async {
+    return await getValue("invoiceMetaId");
   }
 
   @override

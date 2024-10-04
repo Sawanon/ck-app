@@ -19,6 +19,8 @@ class RouteName {
   static const String profile = '/profile';
   static const String changePhone = '/changePhone';
   static const String changeAddress = '/changeAddress';
+  static const String confirmPaymentOTP = '/confirmPaymentOTP';
+  static const String changePasscode = '/changePasscode';
 
   static const String cloudflare = '/cloudflare';
 }

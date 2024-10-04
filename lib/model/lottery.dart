@@ -4,16 +4,31 @@ class Lottery {
   String lottery;
   int price;
   int lotteryType;
+  String? id;
+  int? bonus;
+  int? totalAmount;
 
   Lottery({
     required this.lottery,
     required this.price,
     required this.lotteryType,
+    this.id,
+    this.bonus,
+    this.totalAmount,
   }) {
     if (lottery.isEmpty || lottery.length > 6) {
       throw "invalid lottery format";
     }
   }
+
+  Lottery copyWith() => Lottery(
+        lottery: lottery,
+        price: price,
+        lotteryType: lotteryType,
+        id: id,
+        bonus: bonus,
+        totalAmount: totalAmount,
+      );
 
   int get type => lottery.length;
 
@@ -39,13 +54,19 @@ class Lottery {
       lottery: json['lottery'],
       price: json['amount'],
       lotteryType: json['lotteryType'],
+      id: json['\$id'],
+      bonus: json['bonus'],
+      totalAmount: json['totalAmount'],
     );
   }
 
   Map<String, dynamic> toJson() => {
+        "\$id": id,
         "lottery": lottery,
         ...toDigit(),
         "lotteryType": type,
         "amount": price,
+        "bonus": bonus,
+        "totalAmount": totalAmount,
       };
 }

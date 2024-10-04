@@ -248,8 +248,8 @@ class BuyLottery extends StatelessWidget {
                                                 const SizedBox(width: 8),
                                                 GestureDetector(
                                                   onTap: () {
-                                                    controller.removeLottery(
-                                                        data.lottery);
+                                                    controller
+                                                        .removeLottery(data);
                                                   },
                                                   child: Container(
                                                     padding:

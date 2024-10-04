@@ -50,6 +50,7 @@ class HistoryBuyController extends GetxController {
     }
     List<History> historyList = [];
     for (var invoice in response.documents) {
+      logger.d("invoice.data: ${invoice.data}");
       historyList.add(History.fromJson(invoice.data));
     }
     this.historyList.value = historyList;
@@ -93,17 +94,17 @@ class HistoryBuyController extends GetxController {
   }
 
   void visitPage() async {
-    try {
-      await AppWriteController.to.user;
-      // if (selectedLotteryDate == null || historyList.isNotEmpty) return;
-      if (selectedLotteryDate == null) return;
+    // try {
+    await AppWriteController.to.user;
+    // if (selectedLotteryDate == null || historyList.isNotEmpty) return;
+    if (selectedLotteryDate == null) return;
 
-      await onChangeLotteryDate(selectedLotteryDate!);
-      logger.w("visitPage");
-    } catch (e) {
-      logger.e("$e");
-      Get.rawSnackbar(message: "$e");
-    }
+    await onChangeLotteryDate(selectedLotteryDate!);
+    logger.w("visitPage");
+    // } catch (e) {
+    //   logger.e("$e");
+    //   Get.rawSnackbar(message: "$e");
+    // }
   }
 
   void makeBillDialog(BuildContext context, History history) async {
@@ -120,6 +121,7 @@ class HistoryBuyController extends GetxController {
     );
     final appwriteController = AppWriteController.to;
     final user = await appwriteController.account.get();
+    final userApp = await appwriteController.getUserApp();
     final bank = await appwriteController.getBankById(history.bankId);
     List<Lottery> transactionList = [];
     final lotteryStr =
@@ -142,6 +144,7 @@ class HistoryBuyController extends GetxController {
       totalAmount: history.totalAmount.toString(),
       invoiceId: history.invoiceId,
       bankName: bank?.name ?? "-",
+      customerId: userApp!.customerId!,
     );
     if (context.mounted) {
       showDialog(

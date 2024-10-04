@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/res/app_locale.dart';
@@ -64,10 +65,8 @@ class PayMentPage extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      controller.totalAmount == null
-                                          ? "-"
-                                          : CommonFn.parseMoney(
-                                              controller.totalAmount!),
+                                      CommonFn.parseMoney(BuyLotteryController
+                                          .to.invoiceMeta.value.amount),
                                       style: TextStyle(
                                         color: AppColors.primary,
                                         fontSize: 16,

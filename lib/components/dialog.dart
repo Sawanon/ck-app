@@ -9,6 +9,7 @@ class DialogApp extends StatelessWidget {
   final Widget confirmText;
   final Widget cancelText;
   final Widget title;
+  final Widget? details;
   final bool disableConfirm;
   const DialogApp({
     super.key,
@@ -22,6 +23,7 @@ class DialogApp extends StatelessWidget {
       ),
     ),
     this.title = const Text("Title"),
+    this.details,
     this.disableConfirm = false,
   });
 
@@ -48,6 +50,7 @@ class DialogApp extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               title,
+              if (details != null) ...[const SizedBox(height: 8), details!],
               const SizedBox(height: 16),
               Row(
                 children: [

@@ -224,23 +224,23 @@ class LoginPage extends StatelessWidget {
                                 //     ),
                                 //   ],
                                 // ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Get.snackbar(
-                                        'Forget password', "Coming soon");
-                                  },
-                                  child: const Text(
-                                    'ລືມລະຫັດຜ່ານ',
-                                    style: TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      decorationThickness: 2,
-                                      decorationColor: AppColors.textPrimary,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.textPrimary,
-                                    ),
-                                  ),
-                                ),
+                                // GestureDetector(
+                                //   onTap: () {
+                                //     Get.snackbar(
+                                //         'Forget password', "Coming soon");
+                                //   },
+                                //   child: const Text(
+                                //     'ລືມລະຫັດຜ່ານ',
+                                //     style: TextStyle(
+                                //       decoration: TextDecoration.underline,
+                                //       decorationThickness: 2,
+                                //       decorationColor: AppColors.textPrimary,
+                                //       fontSize: 16,
+                                //       fontWeight: FontWeight.w700,
+                                //       color: AppColors.textPrimary,
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                             const SizedBox(height: 16),

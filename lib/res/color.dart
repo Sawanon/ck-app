@@ -26,4 +26,6 @@ class AppColors {
 
   static const Color foreground = Color.fromRGBO(243, 243, 243, 1);
   static const Color foregroundBorder = Color.fromRGBO(241, 240, 240, 1);
+
+  static const Color menuIcon = Color.fromRGBO(248, 96, 100, 1);
 }

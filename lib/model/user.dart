@@ -4,6 +4,8 @@ class UserApp {
   String phoneNumber;
   String? passcode;
   String? address;
+  String? customerId;
+  String userId;
 
   UserApp({
     required this.firstName,
@@ -11,6 +13,8 @@ class UserApp {
     required this.phoneNumber,
     this.passcode,
     this.address,
+    this.customerId,
+    required this.userId,
   });
 
   static UserApp fromJson(Map json) {
@@ -20,6 +24,8 @@ class UserApp {
       phoneNumber: json['phone'] as String,
       passcode: json['passcode'] as String?,
       address: json['address'] as String?,
+      customerId: json['customerId'] as String?,
+      userId: json['userId'] as String,
     );
   }
 

@@ -15,7 +15,7 @@ class FirebaseMessagingController extends GetxController {
       // You may set the permission requests to "provisional" which allows the user to choose what type
       // of notifications they would like to receive once the user receives a notification.
       token = await FirebaseMessaging.instance.getToken();
-      logger.w("token firebase: $token");
+      // logger.w("token firebase: $token");
       final notificationSettings =
           await FirebaseMessaging.instance.requestPermission(
         alert: true,
@@ -30,7 +30,7 @@ class FirebaseMessagingController extends GetxController {
 
       // For apple platforms, ensure the APNS token is available before making any FCM plugin API calls
       final apnsToken = await FirebaseMessaging.instance.getAPNSToken();
-      logger.d("apnsToken: $apnsToken");
+      // logger.d("apnsToken: $apnsToken");
       if (apnsToken != null) {
         // APNS token is available, make FCM plugin API requests...
       }

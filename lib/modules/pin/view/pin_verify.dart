@@ -119,6 +119,27 @@ class PinVerifyPage extends StatelessWidget {
                   ),
                 ),
               ),
+              if (controller.enableForgetPasscode)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 24),
+                  child: GestureDetector(
+                    onTap: () {
+                      logger.d("message received");
+                      controller.forgetPasscode();
+                    },
+                    child: Text(
+                      "forget passcode?",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.textPrimary,
+                        decoration: TextDecoration.underline,
+                        decorationThickness: 2,
+                        decorationColor: AppColors.textPrimary,
+                      ),
+                    ),
+                  ),
+                )
             ],
           ),
         ),

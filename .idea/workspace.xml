@@ -5,9 +5,41 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1f1ed293-1839-463a-acb1-734d121a79cb" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/binding/initial.binding.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/binding/initial.binding.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/components/dialog.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/dialog.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/bill.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/bill.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/lottery.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/lottery.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/model/user.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/user.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/appwrite/controller/appwrite.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/appwrite/controller/appwrite.controller.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/bill/view/bill_component.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/bill/view/bill_component.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/buy_lottery/controller/buy_lottery.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/buy_lottery/controller/buy_lottery.controller.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/buy_lottery/view/buy_lottery.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/buy_lottery/view/buy_lottery.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/buy_lottery/view/buy_lottery_fullscreen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/buy_lottery/view/buy_lottery_fullscreen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/firebase/controller/firebase_messaging.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/firebase/controller/firebase_messaging.controller.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/history/controller/history_buy.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/history/controller/history_buy.controller.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/history/controller/win_bill.contoller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/history/controller/win_bill.contoller.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/home/controller/home.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/home/controller/home.controller.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/home/view/home.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/home/view/home.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/modules/layout/controller/layout.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/layout/controller/layout.controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/otp/controller/otp.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/otp/controller/otp.controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/pin/view/pin_verify.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/pin/view/pin_verify.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/login/controller/login.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/login/controller/login.controller.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/payment/controller/payment.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/payment/controller/payment.controller.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/payment/view/payment.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/payment/view/payment.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/setting/view/setting.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/setting/view/setting.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/signup/controller/signup.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/signup/controller/signup.controller.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/signup/view/signup.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/signup/view/signup.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/video/view/video.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/video/view/video.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/video/view/video_list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/video/view/video_list.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/res/app_locale.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/res/app_locale.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/res/color.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/res/color.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/res/constant.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/res/constant.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/res/icon.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/res/icon.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/route/route_name.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/route/route_name.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/route/routes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/route/routes.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/storage.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/storage.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils/common_fn.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/common_fn.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +82,7 @@
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/sawanonwattanasit/Project/flutter/ck-app",
-    "settings.editor.selected.configurable": "AndroidSdkUpdater",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "show.migrate.to.gradle.popup": "false"
   }
 }]]></component>

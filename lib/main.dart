@@ -140,6 +140,7 @@ class _MyAppState extends State<MyApp> {
       initialBinding: InitialBinding(),
       getPages: AppRoutes.appRoutes(),
       initialRoute: RouteName.splashScreen,
+      // initialRoute: '/test',
       supportedLocales: localization.supportedLocales,
       localizationsDelegates: localization.localizationsDelegates,
     );

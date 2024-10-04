@@ -28,6 +28,20 @@ mixin AppLocale {
   static const String reportAccountDeletion = 'ແຈ້ງ​ການ​ລຶບ​ບັນ​ຊີ​';
   static const String information = 'ຂໍ້ມູນ';
   static const String profile = 'ໂປຣໄຟລ໌';
+  static const String unknownTimeOfBirth = 'ບໍ່ຮູ້ເວລາເກີດ';
+  static const String pleaseEnterBirthTime = 'ກະລຸນາລະບຸເວລາເກີດ';
+  static const String pleaseAddNumberWantToBuy =
+      'ກະລຸນາເພີ່ມຕົວເລກທີ່ທ່ານຕ້ອງການຊື້';
+  static const String somethingWentWrong = 'ມີບາງຢ່າງຜິດພາດ';
+  static const String close = 'ປິດ';
+  static const String quotaExceeded = 'ໂຄຕ້າເລກ {lottery} ເຕັມແລ້ວ';
+  static const String promotionExpire = 'ໝົດອາຍຸ';
+  static const String random = 'ສຸ່ມ';
+  static const String someLotteryQuotaExceeded = 'ເກີນໂຄຕ້າຫວຍຈຳນວນໜຶ່ງ';
+  static const String pleaseBuyLessOrAnotherLottery =
+      'ກະລຸນາຊື້ໜ້ອຍລົງ ຫຼືຊື້ເລກຫວຍອື່ນ.';
+  static const String translate = 'ປ່ຽນພາສາ';
+  static const String amountNotCorrect = 'ຈຳນວນບໍ່ຖືກຕ້ອງ';
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -59,6 +73,18 @@ mixin AppLocale {
     reportAccountDeletion: 'ແຈ້ງ​ການ​ລຶບ​ບັນ​ຊີ​',
     information: 'ຂໍ້ມູນ',
     profile: 'ໂປຣໄຟລ໌',
+    unknownTimeOfBirth: 'ບໍ່ຮູ້ເວລາເກີດ',
+    pleaseEnterBirthTime: 'ກະລຸນາລະບຸເວລາເກີດ',
+    pleaseAddNumberWantToBuy: 'ກະລຸນາເພີ່ມຕົວເລກທີ່ທ່ານຕ້ອງການຊື້',
+    somethingWentWrong: 'ມີບາງຢ່າງຜິດພາດ',
+    close: 'ປິດ',
+    quotaExceeded: 'ໂຄຕ້າເລກ {lottery} ເຕັມແລ້ວ',
+    promotionExpire: 'ໝົດອາຍຸ',
+    random: 'ສຸ່ມ',
+    someLotteryQuotaExceeded: 'ເກີນໂຄຕ້າຫວຍຈຳນວນໜຶ່ງ',
+    pleaseBuyLessOrAnotherLottery: 'ກະລຸນາຊື້ໜ້ອຍລົງ ຫຼືຊື້ເລກຫວຍອື່ນ.',
+    translate: 'ປ່ຽນພາສາ',
+    amountNotCorrect :'ຈຳນວນບໍ່ຖືກຕ້ອງ',
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -90,6 +116,18 @@ mixin AppLocale {
     reportAccountDeletion: 'แจ้งลบบัญชี',
     information: 'ข้อมูล',
     profile: 'โปรไฟล์',
+    unknownTimeOfBirth: 'ไม่ทราบเวลาเกิด',
+    pleaseEnterBirthTime: 'กรุณาระบุเวลาเกิด',
+    pleaseAddNumberWantToBuy: 'กรุณาเพิ่มเลขที่ต้องการซื้อ',
+    somethingWentWrong: 'มีบางอย่างผิดพลาดเกิดขึ้น',
+    close: 'ปิด',
+    quotaExceeded: 'โควต้าหมายเลข {lottery} เต็มแล้ว',
+    promotionExpire: 'หมดเขต',
+    random: 'สุ่ม',
+    someLotteryQuotaExceeded: 'ลอตเตอรี่บางรายการเกินโควตา',
+    pleaseBuyLessOrAnotherLottery: 'กรุณาซื้อน้อยกว่าหรือซื้อเลขลอตเตอรี่อื่น',
+    translate: 'ภาษา',
+    amountNotCorrect :'จำนวนเงินไม่ถูกต้อง',
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -121,5 +159,18 @@ mixin AppLocale {
     reportAccountDeletion: 'Report account deletion',
     information: 'Information',
     profile: 'Profile',
+    unknownTimeOfBirth: 'Unknown time of birth',
+    pleaseEnterBirthTime: 'Please enter a birth time',
+    pleaseAddNumberWantToBuy: 'Please add the number you want to buy',
+    somethingWentWrong: 'Something went wrong',
+    close: 'Close',
+    quotaExceeded: 'Quota lottery number {lottery} is full.',
+    promotionExpire: 'Expire',
+    random: 'Random',
+    someLotteryQuotaExceeded: 'Some lottery Quota exceeded',
+    pleaseBuyLessOrAnotherLottery:
+        'Please buy less or buy another lottery number',
+    translate: 'Language',
+    amountNotCorrect :'Amount not correct',
   };
 }

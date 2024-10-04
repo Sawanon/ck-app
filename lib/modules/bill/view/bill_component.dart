@@ -103,12 +103,19 @@ class BillComponent extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        "ໂທລະສັບ",
+                        "849549394058694",
                         style: TextStyle(
                           fontSize: 14,
                           color: AppColors.secondary,
                         ),
                       ),
+                      // Text(
+                      //   "ໂທລະສັບ",
+                      //   style: TextStyle(
+                      //     fontSize: 14,
+                      //     color: AppColors.secondary,
+                      //   ),
+                      // ),
                       const SizedBox(width: 8),
                       Text(
                         bill.phoneNumber,
@@ -238,7 +245,7 @@ class BillComponent extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            "ຊໍາລະໂດຍ: LDB Trust",
+            "ຊໍາລະໂດຍ: ${bill.bankName}",
             style: TextStyle(
               fontSize: 12,
             ),

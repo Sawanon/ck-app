@@ -14,6 +14,7 @@ class WinBillContoller extends GetxController {
     final appwriteController = AppWriteController.to;
     final invoice = await appwriteController.getInvoice(invoiceId, lotteryStr);
     final user = await appwriteController.user;
+    final userApp = await appwriteController.getUserApp();
     if (invoice == null) return;
     logger.w("invoice: ${invoice.data}");
     this.invoice = invoice.data;
@@ -36,6 +37,7 @@ class WinBillContoller extends GetxController {
       totalAmount: invoice.data["totalAmount"].toString(),
       invoiceId: invoice.$id,
       bankName: bank?.name ?? "-",
+      customerId: userApp!.customerId!,
     );
     logger.d(bill);
     update();

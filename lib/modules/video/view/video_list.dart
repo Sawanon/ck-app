@@ -32,30 +32,37 @@ class _VideoListState extends State<VideoList> {
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         children: [
-          VideComponents(
-            videoName: "video1.mp4",
-            link:
-                "https://www.tiktok.com/@peternakhin/video/7273785555383635205",
-          ),
+          // VideComponents(
+          //   url:
+          //       "${AppConst.videoUrl}/upload/video/811e64693eac2a91-1727773426351-ScreenRecording2567-10-01at15.06.49.mov",
+          //   link:
+          //       "https://www.tiktok.com/@peternakhin/video/7273785555383635205",
+          // ),
           const SizedBox(width: 16),
-          VideComponents(
-            videoName: "video2.mp4",
-            link:
-                "https://www.tiktok.com/@jotahovygt8/video/7410042369090800914",
-          ),
-          const SizedBox(width: 16),
-          VideComponents(
-            videoName: "video3.mp4",
-            link:
-                "https://www.tiktok.com/@phattraporn000/video/7094624978439507226",
-          ),
-          const SizedBox(width: 16),
-          VideComponents(
-            videoName: "video4.mp4",
-            link:
-                "https://www.tiktok.com/@boybigboss2/video/7210759082750332161?is_from_webapp=1&sender_device=pc&web_id=7410385762262205970",
-          ),
-          const SizedBox(width: 16),
+          // VideComponents(
+          //   url: "${AppConst.cloudfareUrl}/video1.mp4",
+          //   link:
+          //       "https://www.tiktok.com/@peternakhin/video/7273785555383635205",
+          // ),
+          // const SizedBox(width: 16),
+          // VideComponents(
+          //   url: "${AppConst.cloudfareUrl}/video2.mp4",
+          //   link:
+          //       "https://www.tiktok.com/@jotahovygt8/video/7410042369090800914",
+          // ),
+          // const SizedBox(width: 16),
+          // VideComponents(
+          //   url: "${AppConst.cloudfareUrl}/video3.mp4",
+          //   link:
+          //       "https://www.tiktok.com/@phattraporn000/video/7094624978439507226",
+          // ),
+          // const SizedBox(width: 16),
+          // VideComponents(
+          //   url: "${AppConst.cloudfareUrl}/video4.mp4",
+          //   link:
+          //       "https://www.tiktok.com/@boybigboss2/video/7210759082750332161?is_from_webapp=1&sender_device=pc&web_id=7410385762262205970",
+          // ),
+          // const SizedBox(width: 16),
           Container(
             width: heightVideo * (9 / 16),
             height: heightVideo,

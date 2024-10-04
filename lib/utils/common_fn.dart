@@ -19,6 +19,10 @@ class CommonFn {
     return "${datetime.hour.toString().padLeft(2, "0")}:${datetime.minute.toString().padLeft(2, "0")}:${datetime.second.toString().padLeft(2, "0")}";
   }
 
+  static String parseTimeOfDayToHMS(TimeOfDay timeOfDay) {
+    return '${timeOfDay.hour}:${timeOfDay.minute}';
+  }
+
   static int calculateTotalPrice(List<Lottery> lotteryList) {
     return lotteryList.fold(
         0, (previousValue, element) => previousValue + element.price);
@@ -116,5 +120,9 @@ class CommonFn {
     final dateStr =
         "${dateStrYMD.substring(6, 8)}-${dateStrYMD.substring(4, 6)}-${dateStrYMD.substring(0, 4)}";
     return dateStr;
+  }
+
+  static String parseLotteryDateCollection(DateTime datetime) {
+    return parseYMD(datetime).split("-").join("");
   }
 }

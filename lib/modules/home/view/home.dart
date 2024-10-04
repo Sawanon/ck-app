@@ -14,6 +14,7 @@ import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/res/logo.dart';
 import 'package:lottery_ck/route/route_name.dart';
+import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/theme.dart';
 import 'package:video_player/video_player.dart';
@@ -111,9 +112,11 @@ class HomePage extends StatelessWidget {
                         // ),
                         ),
                     const SizedBox(height: 16),
+                    // horoscope
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        // horoscope
                         Column(
                           children: [
                             Container(
@@ -142,6 +145,105 @@ class HomePage extends StatelessWidget {
                             ),
                           ],
                         ),
+                        // random
+                        Column(
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              width: 52,
+                              height: 52,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
+                                boxShadow: [
+                                  AppTheme.softShadow,
+                                ],
+                              ),
+                              child: SizedBox(
+                                height: 32,
+                                width: 32,
+                                child: SvgPicture.asset(
+                                  AppIcon.lotteryBold,
+                                  colorFilter: const ColorFilter.mode(
+                                      AppColors.menuIcon, BlendMode.srcIn),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              AppLocale.random.getString(context),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                        // animalMenu
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: controller.gotoAnimal,
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 52,
+                                height: 52,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8),
+                                  boxShadow: [
+                                    AppTheme.softShadow,
+                                  ],
+                                ),
+                                child: SizedBox(
+                                  height: 32,
+                                  width: 32,
+                                  child: SvgPicture.asset(AppIcon.animalMenu),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              AppLocale.animal.getString(context),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                        // lotteryResult
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: controller.gotoLotteryResult,
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: 52,
+                                height: 52,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8),
+                                  boxShadow: [
+                                    AppTheme.softShadow,
+                                  ],
+                                ),
+                                child: SizedBox(
+                                  height: 32,
+                                  width: 32,
+                                  child:
+                                      SvgPicture.asset(AppIcon.lotteryResult),
+                                ),
+                              ),
+                            ),
+                            Text(
+                              AppLocale.lotteryResult.getString(context),
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                        // wallpaper
                         Column(
                           children: [
                             Container(
@@ -163,90 +265,6 @@ class HomePage extends StatelessWidget {
                             ),
                             Text(
                               AppLocale.wallpaper.getString(context),
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              width: 52,
-                              height: 52,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                                boxShadow: [
-                                  AppTheme.softShadow,
-                                ],
-                              ),
-                              child: SizedBox(
-                                height: 32,
-                                width: 32,
-                                child: SvgPicture.asset(AppIcon.lotteryResult),
-                              ),
-                            ),
-                            Text(
-                              AppLocale.lotteryResult.getString(context),
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              width: 52,
-                              height: 52,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                                boxShadow: [
-                                  AppTheme.softShadow,
-                                ],
-                              ),
-                              child: SizedBox(
-                                height: 32,
-                                width: 32,
-                                child: SvgPicture.asset(AppIcon.animalMenu),
-                              ),
-                            ),
-                            Text(
-                              AppLocale.animal.getString(context),
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              width: 52,
-                              height: 52,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                                boxShadow: [
-                                  AppTheme.softShadow,
-                                ],
-                              ),
-                              child: SizedBox(
-                                height: 32,
-                                width: 32,
-                                child: SvgPicture.asset(AppIcon.animalMenu),
-                              ),
-                            ),
-                            Text(
-                              AppLocale.animal.getString(context),
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 12,
@@ -389,13 +407,20 @@ class HomePage extends StatelessWidget {
                           // AppConst.apiUrl = "namo";
                           // logger.d(AppConst.apiUrl);
                           // },
-                          child: SizedBox(
-                            // height: 30,
-                            width: (MediaQuery.of(context).size.width / 2) -
-                                (16 * 2),
-                            child: Image.asset(
-                              Logo.ck,
-                              height: 28,
+                          child: GestureDetector(
+                            onTap: () async {
+                              final token =
+                                  await StorageController.to.getAppToken();
+                              logger.d("token: $token");
+                            },
+                            child: SizedBox(
+                              // height: 30,
+                              width: (MediaQuery.of(context).size.width / 2) -
+                                  (16 * 2),
+                              child: Image.asset(
+                                Logo.ck,
+                                height: 28,
+                              ),
                             ),
                           ),
                         ),
@@ -605,99 +630,245 @@ class HomePage extends StatelessWidget {
                       logger.d("screenWidth: $screenWidth");
                       return SizedBox(
                         height: screenWidth / 3,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          physics: const BouncingScrollPhysics(),
-                          children: [
-                            SizedBox(
-                              width: screenWidth / 3,
-                              height: screenWidth / 3,
-                              child: Image.asset(
-                                "assets/image1.png",
-                                width: double.infinity,
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            SizedBox(
-                              width: screenWidth / 3,
-                              height: screenWidth / 3,
-                              child: Image.asset(
-                                "assets/image2.png",
-                                width: double.infinity,
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            SizedBox(
-                              width: screenWidth / 3,
-                              height: screenWidth / 3,
-                              child: Image.asset(
-                                "assets/image3.png",
-                                width: double.infinity,
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            SizedBox(
-                              width: screenWidth / 3,
-                              height: screenWidth / 3,
-                              child: Image.asset(
-                                "assets/image1.png",
-                                width: double.infinity,
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            Container(
-                              width: screenWidth / 3,
-                              height: screenWidth / 3,
-                              decoration: BoxDecoration(
-                                // color: Colors.grey.shade300,
-                                border: Border.all(
-                                    width: 1, color: Colors.grey.shade300),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 48,
-                                    width: 48,
-                                    alignment: Alignment.center,
+                        child: Obx(() {
+                          return ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                if (controller.artworksList.length - 1 <
+                                    index) {
+                                  return Container(
+                                    width: screenWidth / 3,
+                                    height: screenWidth / 3,
                                     decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          AppColors.primary,
-                                          AppColors.primaryEnd,
-                                        ],
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                      ),
+                                      // color: Colors.grey.shade300,
+                                      border: Border.all(
+                                          width: 1,
+                                          color: Colors.grey.shade300),
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
-                                    child: SizedBox(
-                                      width: 24,
-                                      height: 24,
-                                      child: SvgPicture.asset(
-                                        AppIcon.arrowRight,
-                                        colorFilter: ColorFilter.mode(
-                                          Colors.white,
-                                          BlendMode.srcIn,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          height: 48,
+                                          width: 48,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                AppColors.primary,
+                                                AppColors.primaryEnd,
+                                              ],
+                                              begin: Alignment.topCenter,
+                                              end: Alignment.bottomCenter,
+                                            ),
+                                          ),
+                                          child: SizedBox(
+                                            width: 24,
+                                            height: 24,
+                                            child: SvgPicture.asset(
+                                              AppIcon.arrowRight,
+                                              colorFilter: ColorFilter.mode(
+                                                Colors.white,
+                                                BlendMode.srcIn,
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                      ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          "More",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            color:
+                                                Colors.black.withOpacity(0.8),
+                                          ),
+                                        ),
+                                      ],
                                     ),
+                                  );
+                                }
+                                return SizedBox(
+                                  width: screenWidth / 3,
+                                  height: screenWidth / 3,
+                                  child: Image.network(
+                                    controller.artworksList.value[index]["url"],
+                                    width: double.infinity,
                                   ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    "More",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.black.withOpacity(0.8),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
+                                );
+                              },
+                              separatorBuilder: (context, index) =>
+                                  const SizedBox(width: 16),
+                              itemCount:
+                                  controller.artworksList.value.length + 1);
+                        }),
+                        // child: Obx(() {
+                        //   return ListView(
+                        //     scrollDirection: Axis.horizontal,
+                        //     physics: const BouncingScrollPhysics(),
+                        //     children:
+                        //         [...controller.artworksList.value, null].map(
+                        //       (artwork) {
+                        //         if (artwork == null) {
+                        //           return Container(
+                        //             width: screenWidth / 3,
+                        //             height: screenWidth / 3,
+                        //             decoration: BoxDecoration(
+                        //               // color: Colors.grey.shade300,
+                        //               border: Border.all(
+                        //                   width: 1,
+                        //                   color: Colors.grey.shade300),
+                        //               borderRadius: BorderRadius.circular(10),
+                        //             ),
+                        //             child: Column(
+                        //               mainAxisSize: MainAxisSize.min,
+                        //               mainAxisAlignment:
+                        //                   MainAxisAlignment.center,
+                        //               children: [
+                        //                 Container(
+                        //                   height: 48,
+                        //                   width: 48,
+                        //                   alignment: Alignment.center,
+                        //                   decoration: BoxDecoration(
+                        //                     shape: BoxShape.circle,
+                        //                     gradient: LinearGradient(
+                        //                       colors: [
+                        //                         AppColors.primary,
+                        //                         AppColors.primaryEnd,
+                        //                       ],
+                        //                       begin: Alignment.topCenter,
+                        //                       end: Alignment.bottomCenter,
+                        //                     ),
+                        //                   ),
+                        //                   child: SizedBox(
+                        //                     width: 24,
+                        //                     height: 24,
+                        //                     child: SvgPicture.asset(
+                        //                       AppIcon.arrowRight,
+                        //                       colorFilter: ColorFilter.mode(
+                        //                         Colors.white,
+                        //                         BlendMode.srcIn,
+                        //                       ),
+                        //                     ),
+                        //                   ),
+                        //                 ),
+                        //                 const SizedBox(height: 4),
+                        //                 Text(
+                        //                   "More",
+                        //                   style: TextStyle(
+                        //                     fontWeight: FontWeight.w600,
+                        //                     color:
+                        //                         Colors.black.withOpacity(0.8),
+                        //                   ),
+                        //                 ),
+                        //               ],
+                        //             ),
+                        //           );
+                        //         }
+                        //         return SizedBox(
+                        //           width: screenWidth / 3,
+                        //           height: screenWidth / 3,
+                        //           child: Image.network(
+                        //             artwork["url"],
+                        //             width: double.infinity,
+                        //           ),
+                        //         );
+                        //       },
+                        //     ).toList(),
+                        //     // children: [
+                        //     //   SizedBox(
+                        //     //     width: screenWidth / 3,
+                        //     //     height: screenWidth / 3,
+                        //     //     child: Image.asset(
+                        //     //       "assets/image1.png",
+                        //     //       width: double.infinity,
+                        //     //     ),
+                        //     //   ),
+                        //     //   const SizedBox(width: 16),
+                        //     //   SizedBox(
+                        //     //     width: screenWidth / 3,
+                        //     //     height: screenWidth / 3,
+                        //     //     child: Image.asset(
+                        //     //       "assets/image2.png",
+                        //     //       width: double.infinity,
+                        //     //     ),
+                        //     //   ),
+                        //     //   const SizedBox(width: 16),
+                        //     //   SizedBox(
+                        //     //     width: screenWidth / 3,
+                        //     //     height: screenWidth / 3,
+                        //     //     child: Image.asset(
+                        //     //       "assets/image3.png",
+                        //     //       width: double.infinity,
+                        //     //     ),
+                        //     //   ),
+                        //     //   const SizedBox(width: 16),
+                        //     //   SizedBox(
+                        //     //     width: screenWidth / 3,
+                        //     //     height: screenWidth / 3,
+                        //     //     child: Image.asset(
+                        //     //       "assets/image1.png",
+                        //     //       width: double.infinity,
+                        //     //     ),
+                        //     //   ),
+                        //     //   const SizedBox(width: 16),
+                        //     //   Container(
+                        //     //     width: screenWidth / 3,
+                        //     //     height: screenWidth / 3,
+                        //     //     decoration: BoxDecoration(
+                        //     //       // color: Colors.grey.shade300,
+                        //     //       border: Border.all(
+                        //     //           width: 1, color: Colors.grey.shade300),
+                        //     //       borderRadius: BorderRadius.circular(10),
+                        //     //     ),
+                        //     //     child: Column(
+                        //     //       mainAxisSize: MainAxisSize.min,
+                        //     //       mainAxisAlignment: MainAxisAlignment.center,
+                        //     //       children: [
+                        //     //         Container(
+                        //     //           height: 48,
+                        //     //           width: 48,
+                        //     //           alignment: Alignment.center,
+                        //     //           decoration: BoxDecoration(
+                        //     //             shape: BoxShape.circle,
+                        //     //             gradient: LinearGradient(
+                        //     //               colors: [
+                        //     //                 AppColors.primary,
+                        //     //                 AppColors.primaryEnd,
+                        //     //               ],
+                        //     //               begin: Alignment.topCenter,
+                        //     //               end: Alignment.bottomCenter,
+                        //     //             ),
+                        //     //           ),
+                        //     //           child: SizedBox(
+                        //     //             width: 24,
+                        //     //             height: 24,
+                        //     //             child: SvgPicture.asset(
+                        //     //               AppIcon.arrowRight,
+                        //     //               colorFilter: ColorFilter.mode(
+                        //     //                 Colors.white,
+                        //     //                 BlendMode.srcIn,
+                        //     //               ),
+                        //     //             ),
+                        //     //           ),
+                        //     //         ),
+                        //     //         const SizedBox(height: 4),
+                        //     //         Text(
+                        //     //           "More",
+                        //     //           style: TextStyle(
+                        //     //             fontWeight: FontWeight.w600,
+                        //     //             color: Colors.black.withOpacity(0.8),
+                        //     //           ),
+                        //     //         ),
+                        //     //       ],
+                        //     //     ),
+                        //     //   ),
+                        //     // ],
+                        //   );
+                        // }),
                       );
                     })
                     // Row(

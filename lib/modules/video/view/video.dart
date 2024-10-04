@@ -7,11 +7,11 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
 class VideComponents extends StatefulWidget {
-  final String videoName;
+  final String url;
   final String link;
   const VideComponents({
     super.key,
-    required this.videoName,
+    required this.url,
     required this.link,
   });
 
@@ -25,10 +25,11 @@ class _VideComponentsState extends State<VideComponents> {
   void setupVideoPlayer() async {
     try {
       _controller = VideoPlayerController.networkUrl(
-          Uri.parse("${AppConst.cloudfareUrl}/${widget.videoName}"),
-          videoPlayerOptions: VideoPlayerOptions(
-            mixWithOthers: true,
-          ));
+        Uri.parse(widget.url),
+        videoPlayerOptions: VideoPlayerOptions(
+          mixWithOthers: true,
+        ),
+      );
       _controller.setVolume(0.0);
       await _controller.initialize();
       _controller.setLooping(true);

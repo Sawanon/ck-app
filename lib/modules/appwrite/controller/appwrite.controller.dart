@@ -12,6 +12,7 @@ import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/model/lottery_date.dart';
 import 'package:lottery_ck/model/news.dart';
 import 'package:lottery_ck/model/user.dart';
+import 'package:lottery_ck/model/user_point.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/res/constant.dart';
@@ -31,6 +32,8 @@ class AppWriteController extends GetxController {
   static const String NEWS = 'news';
   static const String PROMOTION = 'promotions';
   static const String FEEDBACK = 'feedbacks';
+  static const String ARTWORKS = 'artworks';
+  static const String USER_POINT = 'user_points';
 
   static const _roleUserId = "669a2cfd00141edc45ef";
   final String _providerId = '66d28d4000300a1e7dc1';
@@ -62,7 +65,8 @@ class AppWriteController extends GetxController {
       if (response.data["jwt"] == null) {
         throw "jwt not found";
       }
-      StorageController.to.setAppToken(response.data["jwt"]);
+      logger.d(response.data["jwt"]);
+      await StorageController.to.setAppToken(response.data["jwt"]);
     } catch (e) {
       logger.e("$e");
       Get.snackbar(
@@ -714,7 +718,7 @@ class AppWriteController extends GetxController {
           ],
         },
       );
-    } on Exception catch (e) {
+    } catch (e) {
       logger.e("$e");
     }
   }
@@ -740,8 +744,13 @@ class AppWriteController extends GetxController {
             lotteryByDate.value.first["lottery_date_id"]);
         final lotteryDate = CommonFn.parseDMY(
             DateTime.parse(lotteryDateDocument.data["datetime"]).toLocal());
+        String lottery = lotteryByDate.value.first["lottery"].first as String;
+        if (lottery.length < 6) {
+          final zero = List.generate(6 - lottery.length, (index) => '0');
+          lottery = "${zero.join("")}$lottery";
+        }
         lotteryHistoryList.add({
-          "lottery": lotteryByDate.value.first["lottery"].first,
+          "lottery": lottery,
           "lotteryDate": lotteryDate,
         });
       }
@@ -833,22 +842,21 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<Map?> verifyPasscode(
-    String passcode,
-  ) async {
+  Future<Map?> verifyPasscode(String passcode, String userId) async {
     try {
-      final userId = await user.then((value) => value.$id);
-      final token = await getCredential();
-      logger.d("token: $token");
+      // final userIdInAppwriteSDK = await user.then((value) => value.$id);
+      // final token = await getCredential();
+      // logger.d("token: $token");
+      final appToken = await StorageController.to.getAppToken();
       final dio = Dio();
       final response = await dio.post(
-        "${AppConst.apiUrl}/user/passcode/verify",
+        "${AppConst.videoUrl}/user/passcode/verify",
         data: {
           "passcode": passcode,
           "userId": userId,
         },
         options: Options(headers: {
-          "Authorization": "Bearer $token",
+          "Authorization": "Bearer $appToken",
         }),
       );
       return response.data;
@@ -866,6 +874,7 @@ class AppWriteController extends GetxController {
     String phone,
     String address,
     DateTime birthDate,
+    TimeOfDay? birthTime,
   ) async {
     try {
       logger.d("signUp");
@@ -878,6 +887,8 @@ class AppWriteController extends GetxController {
         "phone": phone,
         "address": address,
         "birthDate": birthDate.toIso8601String(),
+        "birthTime":
+            birthTime == null ? null : CommonFn.parseTimeOfDayToHMS(birthTime),
       });
       logger.d("response: ${response.data}");
       if (response.data["status"] == false) {
@@ -897,7 +908,7 @@ class AppWriteController extends GetxController {
       logger.d("appToken: $appToken");
       final response = await dio.post(
         // "${AppConst.cloudfareUrl}/sign-in",
-        "${AppConst.apiUrl}/user/sign-in",
+        "${AppConst.videoUrl}/user/sign-in",
         data: {
           "phoneNumber": phoneNumber,
         },
@@ -906,11 +917,41 @@ class AppWriteController extends GetxController {
         }),
       );
       final Map<String, dynamic>? token = response.data;
+      // logger.d("token: ${token}");
+      if (token?['status'] == false) {
+        if (token?['code'] == "user_notfound") {
+          return {
+            "status": false,
+            "code": "user_notfound",
+            "message": "User not found",
+          };
+        }
+      }
       logger.d("token: $token");
       return token;
-    } catch (e) {
-      logger.e("$e");
-      return null;
+    } on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        logger.e(e.response?.headers);
+        logger.e(e.response?.requestOptions);
+        try {
+          final error = jsonDecode(e.response?.data['message']);
+          logger.e(error);
+          if (error['message'] == "jwt expired") {
+            await getAuthToken();
+          }
+        } catch (e) {
+          return null;
+        }
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        logger.e(e.requestOptions);
+        logger.e(e.message);
+      }
     }
   }
 
@@ -933,20 +974,20 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<void> listCurrentActivePromotions() async {
+  Future<List?> listCurrentActivePromotions() async {
     try {
       final dio = Dio();
       final token = await getCredential();
       final response = await dio.get(
-        "${AppConst.apiUrl}/api/promotion",
+        "${AppConst.apiUrl}/promotion",
         options: Options(
           headers: {
             "Authorization": "Bearer $token",
           },
         ),
       );
-      logger.d(response.data);
-      // final promotions = Promotion.fromMapList(response.data["promotions"]);
+      logger.d(response.data['promotionList']);
+      return response.data['promotionList'];
     } catch (e) {
       logger.e("$e");
       return null;
@@ -1017,6 +1058,75 @@ class AppWriteController extends GetxController {
     account = Account(client);
     databases = Databases(client);
     await intialTokenToStorage();
+  }
+
+  Future<List<Map>?> listArtworks(int limit) async {
+    try {
+      final artworksDocumentList = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: ARTWORKS,
+        queries: [
+          Query.limit(limit),
+          Query.equal("active", true),
+          // Query.orderDesc("createdAt"),
+        ],
+      );
+      final artworksList = artworksDocumentList.documents
+          .map((artwork) => artwork.data)
+          .toList();
+      return artworksList;
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<Map> changePasscode(String passcode, String userId) async {
+    try {
+      final dio = Dio();
+      final appToken = await StorageController.to.getAppToken();
+      final response = await dio.post(
+        '${AppConst.videoUrl}/user/passcode/change-passcode',
+        data: {
+          "passcode": passcode,
+          "userId": userId,
+        },
+        options: Options(headers: {
+          'Authorization': 'Bearer $appToken',
+        }),
+      );
+      logger.d(response.data);
+      return {
+        "status": true,
+      };
+    } on Exception catch (e) {
+      logger.e(e.toString());
+      Get.snackbar('Something went wrong pin:28', 'Plaese try again later');
+      return {
+        "status": false,
+      };
+    }
+  }
+
+  Future<List<UserPoint>?> listUserPoint() async {
+    try {
+      final userId = await user.then((user) => user.$id);
+      final userPointDocumentList = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: USER_POINT,
+        queries: [
+          Query.equal("userId", userId),
+        ],
+      );
+      logger.d(userPointDocumentList.total);
+      final userPointList = userPointDocumentList.documents
+          .map((e) => UserPoint.fromJson(e.data))
+          .toList();
+      return userPointList;
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
   }
 
   @override

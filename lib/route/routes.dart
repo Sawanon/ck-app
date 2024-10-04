@@ -8,12 +8,15 @@ import 'package:lottery_ck/modules/couldflare/view/cloudflare.dart';
 import 'package:lottery_ck/modules/history/view/win_bill.dart';
 import 'package:lottery_ck/modules/layout/view/layout.dart';
 import 'package:lottery_ck/modules/login/view/login.dart';
+import 'package:lottery_ck/modules/mmoney/view/confirm_otp.dart';
 import 'package:lottery_ck/modules/notification/view/news.dart';
 import 'package:lottery_ck/modules/notification/view/promotion.dart';
 import 'package:lottery_ck/modules/otp/view/otp.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
+import 'package:lottery_ck/modules/payment/view/confirm_payment_otp.dart';
 import 'package:lottery_ck/modules/payment/view/payment.dart';
 import 'package:lottery_ck/modules/phone/view/change_phone.dart';
+import 'package:lottery_ck/modules/pin/view/change_pin.dart';
 import 'package:lottery_ck/modules/pin/view/pin.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
 import 'package:lottery_ck/modules/point/view/point.dart';
@@ -21,6 +24,7 @@ import 'package:lottery_ck/modules/setting/view/profile.dart';
 import 'package:lottery_ck/modules/setting/view/security.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/modules/splash_screen/view/splash_screen.dart';
+import 'package:lottery_ck/modules/test/video_toomany.dart';
 import 'package:lottery_ck/route/route_name.dart';
 
 class AppRoutes {
@@ -130,6 +134,21 @@ class AppRoutes {
         GetPage(
           name: RouteName.changeAddress,
           page: () => ChangeAddressPage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.confirmPaymentOTP,
+          page: () => MonneyConfirmOTP(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: '/test',
+          page: () => VideoToomany(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.changePasscode,
+          page: () => ChangePasscode(),
           transition: Transition.rightToLeft,
         ),
       ];

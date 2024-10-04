@@ -4,6 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
+import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
+import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.page.dart';
+import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
@@ -17,6 +20,7 @@ class HomeController extends GetxController {
   String? lotteryDateStr;
   Rx<Duration> remainingDateTime = Duration.zero.obs;
   Alignment lotteryAlinment = Alignment.bottomCenter;
+  RxList<Map> artworksList = <Map>[].obs;
 
   void lotteryFullScreen() {
     lotteryAlinment = Alignment.center;
@@ -104,8 +108,32 @@ class HomeController extends GetxController {
     }
   }
 
+  Future<void> listArtworks() async {
+    final appwriteController = AppWriteController.to;
+    final artworks = await appwriteController.listArtworks(6);
+    logger.d(artworks);
+    if (artworks == null) {
+      return;
+    }
+    artworksList.value = artworks;
+  }
+
   void setup() async {
     await getLotteryDate();
+    await listArtworks();
+  }
+
+  void gotoAnimal() {
+    LayoutController.to.changeTab(TabApp.lottery);
+    BuyLotteryController.to.gotoAnimalPage();
+  }
+
+  void gotoLotteryResult() {
+    LayoutController.to.changeTab(TabApp.lottery);
+    BuyLotteryController.to.chnageParentTab(1);
+    // logger.d(BuyLotteryPage.keys.currentState);
+    // BuyLotteryPage.keys.currentState?.changeTab(1);
+    // BuyLotteryPage.key.currentState?.changeTab(1)
   }
 
   @override
