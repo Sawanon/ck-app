@@ -850,7 +850,7 @@ class AppWriteController extends GetxController {
       final appToken = await StorageController.to.getAppToken();
       final dio = Dio();
       final response = await dio.post(
-        "${AppConst.videoUrl}/user/passcode/verify",
+        "${AppConst.apiUrl}/user/passcode/verify",
         data: {
           "passcode": passcode,
           "userId": userId,
@@ -908,7 +908,7 @@ class AppWriteController extends GetxController {
       logger.d("appToken: $appToken");
       final response = await dio.post(
         // "${AppConst.cloudfareUrl}/sign-in",
-        "${AppConst.videoUrl}/user/sign-in",
+        "${AppConst.apiUrl}/user/sign-in",
         data: {
           "phoneNumber": phoneNumber,
         },
@@ -1086,7 +1086,7 @@ class AppWriteController extends GetxController {
       final dio = Dio();
       final appToken = await StorageController.to.getAppToken();
       final response = await dio.post(
-        '${AppConst.videoUrl}/user/passcode/change-passcode',
+        '${AppConst.apiUrl}/user/passcode/change-passcode',
         data: {
           "passcode": passcode,
           "userId": userId,

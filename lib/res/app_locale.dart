@@ -42,6 +42,11 @@ mixin AppLocale {
       'ກະລຸນາຊື້ໜ້ອຍລົງ ຫຼືຊື້ເລກຫວຍອື່ນ.';
   static const String translate = 'ປ່ຽນພາສາ';
   static const String amountNotCorrect = 'ຈຳນວນບໍ່ຖືກຕ້ອງ';
+  static const String logout = 'ອອກຈາກລະບົບ';
+  static const String cancel = 'ຍົກເລີກ';
+  static const String lotteryList = 'ເລກທີ່ເລືອກ';
+  static const String amount = 'ຈໍານວນເງິນ';
+  static const String areYouSureYouWantToLogout = 'ທ່ານແນ່ໃຈບໍ່ວ່າອອກຈາກລະບົບ?';
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -84,7 +89,12 @@ mixin AppLocale {
     someLotteryQuotaExceeded: 'ເກີນໂຄຕ້າຫວຍຈຳນວນໜຶ່ງ',
     pleaseBuyLessOrAnotherLottery: 'ກະລຸນາຊື້ໜ້ອຍລົງ ຫຼືຊື້ເລກຫວຍອື່ນ.',
     translate: 'ປ່ຽນພາສາ',
-    amountNotCorrect :'ຈຳນວນບໍ່ຖືກຕ້ອງ',
+    amountNotCorrect: 'ຈຳນວນບໍ່ຖືກຕ້ອງ',
+    logout: 'ອອກຈາກລະບົບ',
+    cancel: 'ຍົກເລີກ',
+    lotteryList: 'ເລກທີ່ເລືອກ',
+    amount: 'ຈໍານວນເງິນ',
+    areYouSureYouWantToLogout: 'ທ່ານແນ່ໃຈບໍ່ວ່າອອກຈາກລະບົບ?',
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -127,7 +137,12 @@ mixin AppLocale {
     someLotteryQuotaExceeded: 'ลอตเตอรี่บางรายการเกินโควตา',
     pleaseBuyLessOrAnotherLottery: 'กรุณาซื้อน้อยกว่าหรือซื้อเลขลอตเตอรี่อื่น',
     translate: 'ภาษา',
-    amountNotCorrect :'จำนวนเงินไม่ถูกต้อง',
+    amountNotCorrect: 'จำนวนเงินไม่ถูกต้อง',
+    logout: 'ออกจากระบบ',
+    cancel: 'ยกเลิก',
+    lotteryList: 'เลขที่เลือก',
+    amount: 'จำนวนเงิน',
+    areYouSureYouWantToLogout: 'คุณแน่ใจไหมว่าจะออกจากระบบ',
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -171,6 +186,11 @@ mixin AppLocale {
     pleaseBuyLessOrAnotherLottery:
         'Please buy less or buy another lottery number',
     translate: 'Language',
-    amountNotCorrect :'Amount not correct',
+    amountNotCorrect: 'Amount not correct',
+    logout: 'Logout',
+    cancel: 'Cancel',
+    lotteryList: 'Lottery list',
+    amount: 'Amount',
+    areYouSureYouWantToLogout: 'Are you sure you want to log out?'
   };
 }

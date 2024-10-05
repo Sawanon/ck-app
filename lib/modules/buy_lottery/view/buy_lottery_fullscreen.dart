@@ -37,18 +37,6 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        // if (controller.lotteryIsEmpty)
-                        //   Expanded(
-                        //       child: Container(
-                        //     alignment: Alignment.center,
-                        //     child: Text(
-                        //       "กรุณาเพิ่มเลขที่ต้องการซื้อ",
-                        //       style: TextStyle(
-                        //         color: AppColors.disableText,
-                        //       ),
-                        //     ),
-                        //   )),
-                        // if (!controller.lotteryIsEmpty)
                         Expanded(
                           child: GestureDetector(
                             onTap: () {
@@ -72,6 +60,14 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                               ),
                               child: Column(
                                 children: [
+                                  Obx(() {
+                                    if (controller
+                                            .invoiceRemainExpireStr.value ==
+                                        "") return const SizedBox();
+                                    return Text(
+                                      "this invoice expire in ${controller.invoiceRemainExpireStr.value}",
+                                    );
+                                  }),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 16, vertical: 8),
@@ -80,7 +76,8 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          "ເລກທີ່ເລືອກ",
+                                          AppLocale.lotteryList
+                                              .getString(context),
                                           style: TextStyle(
                                             fontSize: 16,
                                           ),
@@ -88,7 +85,8 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                         Row(
                                           children: [
                                             Text(
-                                              "ຈໍານວນເງິນ",
+                                              AppLocale.amount
+                                                  .getString(context),
                                               style: TextStyle(
                                                 fontSize: 16,
                                               ),

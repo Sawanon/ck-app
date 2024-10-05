@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/rating.dart';
 import 'package:lottery_ck/components/traslate.dart';
@@ -523,7 +524,30 @@ class SettingPage extends StatelessWidget {
                   ),
                   LongButton(
                     onPressed: () {
-                      controller.logout();
+                      Get.dialog(
+                        DialogApp(
+                          title: Text(
+                            AppLocale.areYouSureYouWantToLogout
+                                .getString(context),
+                          ),
+                          onConfirm: () async {
+                            controller.logout();
+                          },
+                          confirmText: Text(
+                            AppLocale.logout.getString(Get.context!),
+                            style: const TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                          onCancel: () => Get.back(),
+                          cancelText: Text(
+                            AppLocale.cancel.getString(Get.context!),
+                            style: const TextStyle(
+                              color: AppColors.primary,
+                            ),
+                          ),
+                        ),
+                      );
                     },
                     child: Text(
                       "ອອກຈາກລະບົບ",

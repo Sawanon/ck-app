@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/components/blur_app.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/no_network_dialog.dart';
+import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.page.dart';
 import 'package:lottery_ck/modules/history/controller/history.controller.dart';
@@ -37,6 +38,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   bool noNetwork = false;
   bool isBlur = false;
   StreamSubscription? useBiometricsTimeout;
+  UserApp? userApp;
 
   void clearState() {
     isUsedBiometrics = false;
@@ -57,6 +59,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
       await Get.dialog(
         PinVerifyPage(),
         arguments: {
+          "userId": userApp?.userId,
           "whenSuccess": () {
             logger.d("success");
             Get.back();
@@ -229,6 +232,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
       logger.d("checkUser");
       final user = await AppWriteController.to.user;
       logger.d("user.phone: ${user.phone}");
+      userApp = await AppWriteController.to.getUserApp();
     } catch (e) {
       logger.d("log out auto");
       SettingController.to.logout();

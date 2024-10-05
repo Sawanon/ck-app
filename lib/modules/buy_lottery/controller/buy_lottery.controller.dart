@@ -38,6 +38,9 @@ class BuyLotteryController extends GetxController {
   RxList promotionList = [].obs;
   UserApp? userApp;
   int parentTab = 0;
+  Timer? _timer;
+  Rx<Duration> invoiceRemainExpire = Duration.zero.obs;
+  RxString invoiceRemainExpireStr = "".obs;
 
   String? lottery;
   int? price;
@@ -189,6 +192,28 @@ class BuyLotteryController extends GetxController {
     return null;
   }
 
+  void startCountDownInvoiceExpire(DateTime expire) {
+    final currentDateTime = DateTime.now();
+    invoiceRemainExpire.value = expire.difference(currentDateTime);
+    if (_timer != null) {
+      _timer?.cancel();
+    }
+    _timer = Timer.periodic(
+      const Duration(seconds: 1),
+      (timer) {
+        if (invoiceRemainExpire.value.inSeconds > 0) {
+          invoiceRemainExpire.value -= const Duration(seconds: 1);
+          invoiceRemainExpireStr.value =
+              "${invoiceRemainExpire.value.inMinutes.remainder(60)}:${invoiceRemainExpire.value.inSeconds.remainder(60)}";
+          // logger.d("run ! ${remainingDateTime.value.inSeconds}");
+          return;
+        }
+        logger.e("stop !");
+        timer.cancel();
+      },
+    );
+  }
+
   Future<InvoiceMetaData?> fakeAPITransaction(InvoiceMetaData invoicePreCheck,
       InvoiceMetaData invoiceForUser, InvoiceMetaData oldInvoice) async {
     final fakeResponse = await addTransaction(invoicePreCheck);
@@ -197,9 +222,20 @@ class BuyLotteryController extends GetxController {
       Get.rawSnackbar(message: "Transaction not found");
       return null;
     }
+    if (fakeResponse['invoice']['status'] == false) {
+      Get.snackbar(
+        "create invoice failed",
+        "$fakeResponse",
+        duration: const Duration(seconds: 10),
+      );
+      return null;
+    }
     final invoiceId = (fakeResponse['invoice'] as Map)['\$id'];
     StorageController.to.setInvoiceMetaId(invoiceId);
     invoiceForUser.invoiceId = invoiceId;
+    invoiceForUser.expire = fakeResponse['invoice']['expire'];
+    final expireDateTime = DateTime.parse(invoiceForUser.expire!);
+    startCountDownInvoiceExpire(expireDateTime);
     List<String> transactionFailed = [];
     for (var transaction in invoicePreCheck.transactions) {
       final transactionData =
@@ -503,7 +539,7 @@ class BuyLotteryController extends GetxController {
     invoiceMeta.value = InvoiceMetaData.empty();
   }
 
-  void submitAddLottery(String? lottery, int? price) {
+  void submitAddLottery(String? lottery, int? price) async {
     logger.d("formKey?.currentState: ${formKey?.currentState}");
 
     if (formKey?.currentState != null && formKey!.currentState!.validate()) {
@@ -528,7 +564,7 @@ class BuyLotteryController extends GetxController {
       }
       final valid = validateLottery(lottery, price);
       if (valid) {
-        addLottery(lottery, price);
+        await addLottery(lottery, price);
         lotteryNode.requestFocus();
       }
     }
@@ -966,6 +1002,7 @@ class BuyLotteryController extends GetxController {
     keyboardSubscription.cancel();
     priceNode.removeListener(onFocus);
     lotteryNode.removeListener(onFocus);
+    _timer?.cancel();
     super.onClose();
   }
 }

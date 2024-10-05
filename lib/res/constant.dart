@@ -8,7 +8,7 @@ class AppConst {
   // static String apiUrl =
   //     "https://4568-2001-44c8-4083-787d-1423-ac0c-4581-4060.ngrok-free.app/api";
   // static String apiUrl = "http://192.168.1.138:3000/api";
-  static String videoUrl = "http://192.168.1.138:3000/api";
+  static String videoUrl = "10.101.23.10:3000/api";
 
   // authorization
   static const String publicToken =

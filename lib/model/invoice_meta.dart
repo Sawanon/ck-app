@@ -10,6 +10,7 @@ class InvoiceMetaData {
   int amount;
   int? bonus;
   String? billId;
+  String? expire;
 
   InvoiceMetaData({
     required this.lotteryDateStr,
@@ -21,6 +22,7 @@ class InvoiceMetaData {
     required this.amount,
     this.bonus,
     this.billId,
+    this.expire,
   });
 
   static InvoiceMetaData empty() => InvoiceMetaData(
@@ -42,6 +44,7 @@ class InvoiceMetaData {
         amount: amount,
         bonus: bonus,
         billId: billId,
+        expire: expire,
       );
 
   Map<String, dynamic> toJson(String userId) {

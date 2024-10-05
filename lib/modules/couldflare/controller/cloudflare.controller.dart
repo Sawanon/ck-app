@@ -38,8 +38,7 @@ class CloudFlareController extends GetxController {
       ),
     )
     // ..enableZoom(false)
-    ..loadRequest(Uri.parse(AppConst.cloudfareUrl));
-  // ..loadRequest(Uri.parse("https://github.com"));
+    ..loadRequest(Uri.parse("${AppConst.apiUrl}/verify"));
 
   Future<void> verifyToken(String token) async {
     final dio = Dio();
