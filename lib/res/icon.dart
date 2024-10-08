@@ -29,6 +29,7 @@ class AppIcon {
   static const String phone = "assets/svg/vuesax/linear/call.svg";
   static const String location = "assets/svg/vuesax/linear/location.svg";
   static const String promotion = "assets/svg/vuesax/linear/discount-shape.svg";
+  static const String download = "assets/svg/vuesax/linear/receive-square.svg";
 
   static const String lo = "assets/laos1.png";
   static const String th = "assets/Th1.png";

@@ -8,12 +8,14 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/route_manager.dart';
 import 'package:lottery_ck/binding/initial.binding.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
+import 'package:lottery_ck/modules/splash_screen/view/splash_screen.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/route/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:upgrader/upgrader.dart';
 import 'firebase_options.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -34,6 +36,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // await Upgrader.clearSavedSettings(); // REMOVE this for release builds
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
@@ -139,7 +142,10 @@ class _MyAppState extends State<MyApp> {
       ),
       initialBinding: InitialBinding(),
       getPages: AppRoutes.appRoutes(),
-      initialRoute: RouteName.splashScreen,
+      // initialRoute: RouteName.splashScreen,
+      home: UpgradeAlert(
+        child: SplashScreenPage(),
+      ),
       // initialRoute: '/test',
       supportedLocales: localization.supportedLocales,
       localizationsDelegates: localization.localizationsDelegates,

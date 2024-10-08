@@ -5,6 +5,7 @@ import 'package:appwrite/models.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/model/bank.dart';
 import 'package:lottery_ck/model/buy_lottery_configs.dart';
@@ -13,6 +14,7 @@ import 'package:lottery_ck/model/lottery_date.dart';
 import 'package:lottery_ck/model/news.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/model/user_point.dart';
+import 'package:lottery_ck/modules/appwrite/controller/savefile.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/res/constant.dart';
@@ -20,6 +22,7 @@ import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import "package:collection/collection.dart";
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'dart:typed_data';
 
 class AppWriteController extends GetxController {
   static const String _databaseName = 'lottory';
@@ -34,12 +37,14 @@ class AppWriteController extends GetxController {
   static const String FEEDBACK = 'feedbacks';
   static const String ARTWORKS = 'artworks';
   static const String USER_POINT = 'user_points';
+  static const String CONTENT_MANAGEMENT = 'content_management';
 
   static const _roleUserId = "669a2cfd00141edc45ef";
   final String _providerId = '66d28d4000300a1e7dc1';
   static AppWriteController get to => Get.find();
   late Account account;
   late Databases databases;
+  late Storage storage;
   Client client = Client();
 
   Future<User> get user async => await account.get();
@@ -412,13 +417,28 @@ class AppWriteController extends GetxController {
         queries: [
           Query.equal('active', true),
           Query.equal('is_emergency', false),
-          Query.orderDesc("datetime"),
+          Query.orderAsc("datetime"),
         ],
       );
-      return listLotteryDate.documents.map((lotteryDate) {
-        logger.d(lotteryDate.data);
-        return LotteryDate.fromJson(lotteryDate.data);
-      }).toList();
+      List<LotteryDate> lotteryDateList = [];
+      bool isGreatOne = false;
+      for (var lotteryDateDocument in listLotteryDate.documents) {
+        final lotteryDate = LotteryDate.fromJson(lotteryDateDocument.data);
+        lotteryDateList.add(lotteryDate);
+        logger.d(lotteryDate.endTime.toString());
+        if (lotteryDate.endTime.isAfter(DateTime.now())) {
+          isGreatOne = true;
+        }
+        if (isGreatOne) {
+          logger.d("break !");
+          break;
+        }
+      }
+      // listLotteryDate.documents.map((lotteryDate) {
+
+      //   return lotterDate;
+      // }).toList();
+      return lotteryDateList.reversed.toList();
     } catch (e) {
       logger.e("$e");
       Get.rawSnackbar(message: "$e");
@@ -523,7 +543,7 @@ class AppWriteController extends GetxController {
         collectionId: NEWS,
         queries: [
           Query.equal("is_active", true),
-          Query.equal("is_approve", "1"),
+          Query.equal("is_approve", "3"),
           Query.orderDesc('start_date'),
           Query.limit(25),
         ],
@@ -548,7 +568,7 @@ class AppWriteController extends GetxController {
         collectionId: PROMOTION,
         queries: [
           Query.equal("is_active", true),
-          Query.equal("is_approve", "1"),
+          Query.equal("is_approve", "3"),
           Query.orderDesc('start_date'),
           Query.limit(25),
         ],
@@ -941,7 +961,8 @@ class AppWriteController extends GetxController {
         try {
           final error = jsonDecode(e.response?.data['message']);
           logger.e(error);
-          if (error['message'] == "jwt expired") {
+          if (error['message'] == "jwt expired" ||
+              (error['message'] as String).contains("jwt expired")) {
             await getAuthToken();
           }
         } catch (e) {
@@ -1057,6 +1078,7 @@ class AppWriteController extends GetxController {
         .setSelfSigned(status: true);
     account = Account(client);
     databases = Databases(client);
+    storage = Storage(client);
     await intialTokenToStorage();
   }
 
@@ -1127,6 +1149,46 @@ class AppWriteController extends GetxController {
       logger.e("$e");
       return null;
     }
+  }
+
+  Future<List<Map>?> listContent() async {
+    try {
+      // final
+      final contentDocumentList = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: CONTENT_MANAGEMENT,
+        queries: [
+          Query.equal('is_approve', '1'),
+          Query.equal('is_active', true),
+          Query.or([
+            Query.greaterThanEqual('expire', DateTime.now().toIso8601String()),
+            Query.isNull('expire'),
+          ]),
+        ],
+      );
+      // logger.d(contentDocumentList.documents);
+      // for (var content in contentDocumentList.documents) {
+      //   logger.d(content.data);
+      // }
+      return contentDocumentList.documents.map((e) => e.data).toList();
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  void downloadFile(String bucketId, String fileId) async {
+    // Uint8List test = '';
+    // Uint8List.fromList()
+    // Uint8List.formatString('fullText', 'args');
+    Uint8List bytes = await storage.getFileDownload(
+      bucketId: bucketId,
+      fileId: fileId,
+    );
+    await saveFile(bytes);
+
+    // final file = File($id: );
+    // file.writeAsBytesSync(bytes);
   }
 
   @override

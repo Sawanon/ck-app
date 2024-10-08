@@ -18,9 +18,9 @@ class HistoryBuyController extends GetxController {
   DateTime? selectedLotteryDate;
   List<LotteryDate> lotteryDateList = [];
   RxList<History> historyList = <History>[].obs;
-  RxBool loadingHistoryList = true.obs;
-  RxBool loadingTransactionId = true.obs;
-  RxBool loadingBill = false.obs;
+  RxBool loadingHistoryList = false.obs;
+  RxBool loadingTransactionId = false.obs;
+  // RxBool loadingBill = false.obs;
 
   void listLotteryDate() async {
     try {
@@ -31,7 +31,7 @@ class HistoryBuyController extends GetxController {
       }
       logger.w("lotteryDateList: ${lotteryDateList.length}");
       // cuuretn datetime and when found after current date keep 1 and remove all
-      this.lotteryDateList = lotteryDateList.reversed.toList();
+      this.lotteryDateList = lotteryDateList;
       selectedLotteryDate = this.lotteryDateList.first.dateTime;
       update();
     } catch (e) {

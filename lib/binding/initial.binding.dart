@@ -27,6 +27,7 @@ import 'package:lottery_ck/modules/point/controller/point.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/signup/controller/signup.controller.dart';
 import 'package:lottery_ck/modules/splash_screen/controller/splash_screen.controller.dart';
+import 'package:lottery_ck/modules/webview/controller/webview.controller.dart';
 import 'package:lottery_ck/repository/user_repository/user.repository.dart';
 import 'package:lottery_ck/storage.dart';
 
@@ -79,5 +80,7 @@ class LayoutBindings extends Bindings {
     Get.lazyPut<MonneyConfirmOTPController>(() => MonneyConfirmOTPController(),
         fenix: true);
     Get.lazyPut<PointController>(() => PointController(), fenix: true);
+    Get.lazyPut<CustomWebviewController>(() => CustomWebviewController(),
+        fenix: true);
   }
 }

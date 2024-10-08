@@ -9,6 +9,7 @@ class History {
   List lotteryList = [];
   String createdAt;
   String bankId;
+  String status;
 
   History({
     required this.createdAt,
@@ -16,6 +17,7 @@ class History {
     required this.totalAmount,
     required this.transactionIdList,
     required this.bankId,
+    required this.status,
   }) {
     date = CommonFn.parseDMY(DateTime.parse(createdAt).toLocal());
     time = CommonFn.parseHMS(DateTime.parse(createdAt).toLocal());
@@ -28,6 +30,7 @@ class History {
       totalAmount: json["totalAmount"],
       transactionIdList: json["transactionId"],
       bankId: json['bankId'],
+      status: json['status'],
     );
   }
 
@@ -37,5 +40,6 @@ class History {
         totalAmount: 1000,
         transactionIdList: [],
         bankId: 'b1234',
+        status: 'pending',
       );
 }

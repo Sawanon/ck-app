@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
+import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
@@ -386,165 +387,171 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            logger.d("message");
-                            controller.calPromotion();
-                            showModalBottomSheet(
-                              context: context,
-                              builder: (context) {
-                                return Container(
-                                  width: double.infinity,
-                                  height:
-                                      MediaQuery.of(context).size.height / 2,
-                                  color: Colors.white,
-                                  child: ListView.separated(
-                                      padding: const EdgeInsets.all(16),
-                                      itemBuilder: (context, index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            final condition = jsonDecode(
-                                                controller.promotionList[index]
-                                                    ['condition'][0]);
-                                            logger.d(condition);
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  width: 1,
-                                                  color: AppColors.borderGray),
-                                              borderRadius:
-                                                  BorderRadius.circular(8),
-                                            ),
-                                            // child: Text(
-                                            //   '${controller.promotionList[index]['detail']}',
-                                            //   // softWrap: false,
-                                            //   maxLines: 2,
-                                            //   overflow: TextOverflow.ellipsis,
-                                            // ),
-                                            child: Row(
-                                              children: [
-                                                SizedBox(
-                                                  width: 24,
-                                                  height: 24,
-                                                  child: SvgPicture.asset(
-                                                      AppIcon.promotion),
-                                                ),
-                                                const SizedBox(width: 8),
-                                                Expanded(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        '${controller.promotionList[index]['name']}',
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: AppColors
-                                                              .textPrimary,
-                                                        ),
-                                                        maxLines: 2,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
-                                                      const SizedBox(height: 4),
-                                                      Text(
-                                                        '${controller.promotionList[index]['detail']}',
-                                                        style: TextStyle(
-                                                          color: AppColors
-                                                              .textPrimary,
-                                                        ),
-                                                        maxLines: 2,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                      ),
-                                                      const SizedBox(height: 4),
-                                                      Text(
-                                                          '${AppLocale.promotionExpire.getString(context)}: ${CommonFn.parseDMY(DateTime.parse(controller.promotionList[index]['end_date']))}'),
-                                                    ],
+                        if (controller.promotionList.isNotEmpty)
+                          GestureDetector(
+                            onTap: () {
+                              logger.d("message");
+                              // controller.calPromotion();
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return Container(
+                                    width: double.infinity,
+                                    height:
+                                        MediaQuery.of(context).size.height / 2,
+                                    color: Colors.white,
+                                    child: ListView.separated(
+                                        padding: const EdgeInsets.all(16),
+                                        itemBuilder: (context, index) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              final condition = jsonDecode(
+                                                  controller
+                                                          .promotionList[index]
+                                                      ['condition'][0]);
+                                              logger.d(condition);
+                                            },
+                                            child: Container(
+                                              padding: const EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    width: 1,
+                                                    color:
+                                                        AppColors.borderGray),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              // child: Text(
+                                              //   '${controller.promotionList[index]['detail']}',
+                                              //   // softWrap: false,
+                                              //   maxLines: 2,
+                                              //   overflow: TextOverflow.ellipsis,
+                                              // ),
+                                              child: Row(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 24,
+                                                    height: 24,
+                                                    child: SvgPicture.asset(
+                                                        AppIcon.promotion),
                                                   ),
-                                                ),
-                                              ],
+                                                  const SizedBox(width: 8),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          '${controller.promotionList[index]['name']}',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: AppColors
+                                                                .textPrimary,
+                                                          ),
+                                                          maxLines: 2,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 4),
+                                                        Text(
+                                                          '${controller.promotionList[index]['detail']}',
+                                                          style: TextStyle(
+                                                            color: AppColors
+                                                                .textPrimary,
+                                                          ),
+                                                          maxLines: 2,
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 4),
+                                                        Text(
+                                                            '${AppLocale.promotionExpire.getString(context)}: ${CommonFn.parseDMY(DateTime.parse(controller.promotionList[index]['end_date']))}'),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
+                                          );
+                                        },
+                                        separatorBuilder: (context, index) =>
+                                            SizedBox(height: 8),
+                                        itemCount:
+                                            controller.promotionList.length),
+                                    // child: ListView(
+                                    //   padding: const EdgeInsets.all(16),
+                                    //   children: controller.promotionList.map(
+                                    //     (promotion) {
+                                    //       return Container(
+                                    //         decoration: BoxDecoration(
+                                    //           border: Border.all(
+                                    //               width: 1,
+                                    //               color: AppColors.borderGray),
+                                    //           borderRadius:
+                                    //               BorderRadius.circular(8),
+                                    //         ),
+                                    //         child: Text('${promotion['name']}'),
+                                    //       );
+                                    //     },
+                                    //   ).toList(),
+                                    // ),
+                                  );
+                                },
+                              );
+                            },
+                            child: Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16),
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(
+                                    width: 1, color: AppColors.borderGray),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: SvgPicture.asset(AppIcon.promotion),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    "Promotions",
+                                  ),
+                                  Expanded(
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Container(
+                                        width: 24,
+                                        height: 24,
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: Colors.red,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: Text(
+                                          controller.promotionList.length
+                                              .toString(),
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
                                           ),
-                                        );
-                                      },
-                                      separatorBuilder: (context, index) =>
-                                          SizedBox(height: 8),
-                                      itemCount:
-                                          controller.promotionList.length),
-                                  // child: ListView(
-                                  //   padding: const EdgeInsets.all(16),
-                                  //   children: controller.promotionList.map(
-                                  //     (promotion) {
-                                  //       return Container(
-                                  //         decoration: BoxDecoration(
-                                  //           border: Border.all(
-                                  //               width: 1,
-                                  //               color: AppColors.borderGray),
-                                  //           borderRadius:
-                                  //               BorderRadius.circular(8),
-                                  //         ),
-                                  //         child: Text('${promotion['name']}'),
-                                  //       );
-                                  //     },
-                                  //   ).toList(),
-                                  // ),
-                                );
-                              },
-                            );
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 16),
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                  width: 1, color: AppColors.borderGray),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: SvgPicture.asset(AppIcon.promotion),
-                                ),
-                                const SizedBox(width: 8),
-                                Text(
-                                  "Promotions",
-                                ),
-                                Expanded(
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Container(
-                                      width: 24,
-                                      height: 24,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: Colors.red,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Text(
-                                        controller.promotionList.length
-                                            .toString(),
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
                         Container(
                           margin: const EdgeInsets.symmetric(
                               horizontal: 16.0, vertical: 8),
@@ -640,7 +647,12 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                               width: 24,
                                               height: 24,
                                               child: SvgPicture.asset(
-                                                  AppIcon.animal),
+                                                AppIcon.animal,
+                                                colorFilter: ColorFilter.mode(
+                                                  Colors.white,
+                                                  BlendMode.srcIn,
+                                                ),
+                                              ),
                                             ),
                                             Text(
                                               AppLocale.animal
@@ -723,6 +735,10 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                     const SizedBox(width: 4),
                                     GestureDetector(
                                       onTap: () {
+                                        if (HomeController.to.lotteryDate ==
+                                            null) {
+                                          return;
+                                        }
                                         controller.submitAddLottery(
                                           controller.lottery,
                                           controller.price,
@@ -733,14 +749,21 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                         width: 48,
                                         alignment: Alignment.center,
                                         decoration: BoxDecoration(
-                                          color: AppColors.primary,
+                                          color:
+                                              HomeController.to.lotteryDate ==
+                                                      null
+                                                  ? AppColors.disable
+                                                  : AppColors.primary,
                                           borderRadius:
                                               BorderRadius.circular(8),
                                         ),
                                         child: SvgPicture.asset(
                                           AppIcon.add,
-                                          colorFilter: const ColorFilter.mode(
-                                            Colors.white,
+                                          colorFilter: ColorFilter.mode(
+                                            HomeController.to.lotteryDate ==
+                                                    null
+                                                ? Colors.black.withOpacity(0.6)
+                                                : Colors.white,
                                             BlendMode.srcIn,
                                           ),
                                           width: 36,
@@ -756,6 +779,8 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                     controller.confirmLottery(
                                         context); // lottery confirm
                                   },
+                                  disabled:
+                                      HomeController.to.lotteryDate == null,
                                   child: Text(
                                     "สั่งซื้อหวย",
                                     style: TextStyle(

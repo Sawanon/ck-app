@@ -21,6 +21,7 @@ class RouteName {
   static const String changeAddress = '/changeAddress';
   static const String confirmPaymentOTP = '/confirmPaymentOTP';
   static const String changePasscode = '/changePasscode';
+  static const String wallpaper = '/wallpaper';
 
   static const String cloudflare = '/cloudflare';
 }

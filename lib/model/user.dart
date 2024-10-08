@@ -6,6 +6,8 @@ class UserApp {
   String? address;
   String? customerId;
   String userId;
+  DateTime birthDate;
+  String? birthTime;
 
   UserApp({
     required this.firstName,
@@ -15,6 +17,8 @@ class UserApp {
     this.address,
     this.customerId,
     required this.userId,
+    required this.birthDate,
+    this.birthTime,
   });
 
   static UserApp fromJson(Map json) {
@@ -26,6 +30,8 @@ class UserApp {
       address: json['address'] as String?,
       customerId: json['customerId'] as String?,
       userId: json['userId'] as String,
+      birthDate: DateTime.parse(json['birthDate'] as String),
+      birthTime: json['birthTime'] as String?,
     );
   }
 

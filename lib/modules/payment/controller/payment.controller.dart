@@ -12,6 +12,7 @@ import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
+import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
 import 'package:lottery_ck/modules/pin/view/verify_pin.dart';
 import 'package:lottery_ck/res/constant.dart';
@@ -67,14 +68,18 @@ class PaymentController extends GetxController {
   }
 
   void payLottery(Bank bank, int amount, BuildContext context) async {
-    Get.to(PinVerifyPage(disabledBackButton: false), arguments: {
-      "whenSuccess": () async {
-        logger.d("boom !");
-        Get.back();
-        createInvoice(bank);
-        // logger.d("should back !");
-      }
-    });
+    Get.to(
+      PinVerifyPage(disabledBackButton: false),
+      arguments: {
+        "userId": LayoutController.to.userApp!.userId,
+        "whenSuccess": () async {
+          logger.d("boom !");
+          Get.back();
+          createInvoice(bank);
+          // logger.d("should back !");
+        }
+      },
+    );
     // await Pin.verifyPin(
     //   context,
     //   () {

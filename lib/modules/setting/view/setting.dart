@@ -531,7 +531,8 @@ class SettingPage extends StatelessWidget {
                                 .getString(context),
                           ),
                           onConfirm: () async {
-                            controller.logout();
+                            await controller.logout();
+                            Get.back();
                           },
                           confirmText: Text(
                             AppLocale.logout.getString(Get.context!),

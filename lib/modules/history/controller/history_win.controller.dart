@@ -9,11 +9,13 @@ class HistoryWinController extends GetxController {
   static HistoryWinController get to => Get.find();
   String lotteryMonth = "09-2024";
   RxList winInvoice = [].obs;
+  List<String> lotteryMonthList = [];
+  String selectedMonth = "";
 
   Future<void> listWinInVoice([String? lotteryMonth]) async {
     winInvoice.clear();
     final lotteryMonthRevers =
-        (lotteryMonth ?? this.lotteryMonth).split("-").reversed.join("");
+        (lotteryMonth ?? selectedMonth).split("-").reversed.join("");
     logger.d(lotteryMonthRevers);
     final listInvoiceCollection =
         await AppWriteController.to.listLotteryCollection(lotteryMonthRevers);
@@ -60,9 +62,27 @@ class HistoryWinController extends GetxController {
     );
   }
 
+  void getLotteryMonthList() async {
+    final now = DateTime.now();
+    final releaseAppDate = DateTime(2024, 10);
+    List<String> lotteryMonthList = [];
+    for (var i = 0; i < 6; i++) {
+      final dateMonth = DateTime(now.year, now.month - i);
+      lotteryMonthList.add(
+          '${dateMonth.month.toString().padLeft(2, '0')}-${dateMonth.year}');
+      if (dateMonth.isBefore(releaseAppDate)) {
+        break;
+      }
+    }
+    logger.d(lotteryMonthList);
+    selectedMonth = lotteryMonthList.first;
+    this.lotteryMonthList = lotteryMonthList;
+    update();
+  }
+
   @override
   void onInit() {
-    logger.w("oninit history win");
+    getLotteryMonthList();
     super.onInit();
   }
 }

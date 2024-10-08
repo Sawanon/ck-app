@@ -25,6 +25,7 @@ import 'package:lottery_ck/modules/setting/view/security.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/modules/splash_screen/view/splash_screen.dart';
 import 'package:lottery_ck/modules/test/video_toomany.dart';
+import 'package:lottery_ck/modules/wallpaper/view/wallpaper.dart';
 import 'package:lottery_ck/route/route_name.dart';
 
 class AppRoutes {
@@ -149,6 +150,11 @@ class AppRoutes {
         GetPage(
           name: RouteName.changePasscode,
           page: () => ChangePasscode(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.wallpaper,
+          page: () => WallpaperPage(),
           transition: Transition.rightToLeft,
         ),
       ];

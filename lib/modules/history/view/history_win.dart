@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/history/controller/history_win.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
@@ -20,12 +21,6 @@ class HistoryWinPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final winNumber = ['988493', '343555', '394232'];
-    final arrNumber = [
-      ['2345', '35', '493', '123456', '1234', '93', '99', '12345', '4325'],
-      ['2345', '35', '456', '123456', '1234', '93', '55'],
-      ['123432', '1234', '93', '99', '12343', '4325'],
-    ];
     return GetBuilder<HistoryWinController>(
       initState: (state) {
         HistoryWinController.to.listWinInVoice();
@@ -51,12 +46,13 @@ class HistoryWinPage extends StatelessWidget {
                     padding: EdgeInsets.all(0),
                     isExpanded: true,
                     underline: Container(),
-                    value: '09-2024',
+                    value: controller.selectedMonth,
                     borderRadius: BorderRadius.all(
                       Radius.circular(20),
                     ),
                     isDense: true,
-                    items: ['09-2024'].map<DropdownMenuItem<String>>((e) {
+                    items: controller.lotteryMonthList
+                        .map<DropdownMenuItem<String>>((e) {
                       return DropdownMenuItem(
                         child: Container(
                           width: 135,
@@ -89,7 +85,7 @@ class HistoryWinPage extends StatelessWidget {
               child: RefreshIndicator(
                 onRefresh: () async {
                   logger.d("message: Refresh");
-                  await controller.listWinInVoice(controller.lotteryMonth);
+                  await controller.listWinInVoice(controller.selectedMonth);
                 },
                 child: Obx(() {
                   return ListView.separated(

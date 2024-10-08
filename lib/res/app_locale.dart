@@ -47,6 +47,10 @@ mixin AppLocale {
   static const String lotteryList = 'ເລກທີ່ເລືອກ';
   static const String amount = 'ຈໍານວນເງິນ';
   static const String areYouSureYouWantToLogout = 'ທ່ານແນ່ໃຈບໍ່ວ່າອອກຈາກລະບົບ?';
+  static const String thereIsNoNextDrawYet =
+      'ຍັງບໍ່ທັນມີການຈັບສະຫລາກເທື່ອຕໍ່ໄປ';
+  static const String unpaid = 'ບໍ່ໄດ້ຈ່າຍ';
+  static const String paid = 'ຈ່າຍແລ້ວ';
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -95,6 +99,9 @@ mixin AppLocale {
     lotteryList: 'ເລກທີ່ເລືອກ',
     amount: 'ຈໍານວນເງິນ',
     areYouSureYouWantToLogout: 'ທ່ານແນ່ໃຈບໍ່ວ່າອອກຈາກລະບົບ?',
+    thereIsNoNextDrawYet: 'ຍັງບໍ່ທັນມີການຈັບສະຫລາກເທື່ອຕໍ່ໄປ',
+    unpaid: 'ບໍ່ໄດ້ຈ່າຍ',
+    paid: 'ຈ່າຍແລ້ວ',
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -143,6 +150,9 @@ mixin AppLocale {
     lotteryList: 'เลขที่เลือก',
     amount: 'จำนวนเงิน',
     areYouSureYouWantToLogout: 'คุณแน่ใจไหมว่าจะออกจากระบบ',
+    thereIsNoNextDrawYet: 'ยังไม่มีการจับรางวัลครั้งต่อไป',
+    unpaid: 'ไม่ได้ชำระเงิน',
+    paid: 'ชำระแล้ว',
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -191,6 +201,9 @@ mixin AppLocale {
     cancel: 'Cancel',
     lotteryList: 'Lottery list',
     amount: 'Amount',
-    areYouSureYouWantToLogout: 'Are you sure you want to log out?'
+    areYouSureYouWantToLogout: 'Are you sure you want to log out?',
+    thereIsNoNextDrawYet: 'There is no next draw yet.',
+    unpaid: 'Unpaid',
+    paid: 'Paid',
   };
 }

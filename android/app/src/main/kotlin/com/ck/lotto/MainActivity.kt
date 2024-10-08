@@ -1,4 +1,4 @@
-package com.example.lottery_ck
+package com.ck.lotto
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 

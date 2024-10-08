@@ -107,7 +107,8 @@ class LoginController extends GetxController {
                     Get.toNamed(RouteName.changePasscode, arguments: {
                       "userId": token['userId'],
                       "whenSuccess": () async {
-                        final session = await createSession(token);
+                        final session =
+                            await AppWriteController.to.createSession(token);
                         if (session == null) {
                           Get.snackbar(
                             "Something went wrong login:65",
@@ -136,7 +137,8 @@ class LoginController extends GetxController {
                 });
               },
               "whenSuccess": () async {
-                final session = await createSession(token);
+                final session =
+                    await AppWriteController.to.createSession(token);
                 if (session == null) {
                   Get.snackbar(
                     "Something went wrong login:65",
@@ -167,24 +169,24 @@ class LoginController extends GetxController {
     );
   }
 
-  Future<Session?> createSession(Map<String, dynamic> token) async {
-    try {
-      final appwriteController = AppWriteController.to;
-      final session = await appwriteController.account.createSession(
-        userId: token["userId"],
-        secret: token["secret"],
-      );
-      await appwriteController.clearOtherSession(session.$id);
-      await appwriteController.createTarget();
-      final storageController = StorageController.to;
-      storageController.setSessionId(session.$id);
-      return session;
-    } on Exception catch (e) {
-      logger.e(e);
-      Get.snackbar("createSession failed", e.toString());
-      return null;
-    }
-  }
+  // Future<Session?> createSession(Map<String, dynamic> token) async {
+  //   try {
+  //     final appwriteController = AppWriteController.to;
+  //     final session = await appwriteController.account.createSession(
+  //       userId: token["userId"],
+  //       secret: token["secret"],
+  //     );
+  //     await appwriteController.clearOtherSession(session.$id);
+  //     await appwriteController.createTarget();
+  //     final storageController = StorageController.to;
+  //     storageController.setSessionId(session.$id);
+  //     return session;
+  //   } on Exception catch (e) {
+  //     logger.e(e);
+  //     Get.snackbar("createSession failed", e.toString());
+  //     return null;
+  //   }
+  // }
 
   // Future<void> loginAppwrite() async {
   //   final appwriteController = AppWriteController.to;

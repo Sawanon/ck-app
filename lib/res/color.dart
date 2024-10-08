@@ -28,4 +28,6 @@ class AppColors {
   static const Color foregroundBorder = Color.fromRGBO(241, 240, 240, 1);
 
   static const Color menuIcon = Color.fromRGBO(248, 96, 100, 1);
+
+  static const Color zinZaeBackground = Color.fromRGBO(36, 36, 68, 1);
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:lottery_ck/model/lottery.dart';
 import 'package:intl/intl.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 
@@ -124,5 +126,16 @@ class CommonFn {
 
   static String parseLotteryDateCollection(DateTime datetime) {
     return parseYMD(datetime).split("-").join("");
+  }
+
+  static String renderBillStatus(String billStatus, BuildContext context) {
+    switch (billStatus.toLowerCase()) {
+      case 'pending':
+        return AppLocale.unpaid.getString(context);
+      case 'paid':
+        return AppLocale.paid.getString(context);
+      default:
+        return '';
+    }
   }
 }

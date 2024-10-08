@@ -22,4 +22,7 @@ class AppConst {
   // appwrite
   static const String endPoint = "https://baas.moevedigital.com/v1";
   static const String appwriteProjectId = "667afb24000fbd66b4df";
+
+  // zz
+  static const String secretZZ = "sHib5ycSalFybq6dhFdmvmQSw82+fj/nhhLM0sAPVqs=";
 }

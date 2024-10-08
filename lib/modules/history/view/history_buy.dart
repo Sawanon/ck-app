@@ -31,7 +31,7 @@ class HistoryBuyPage extends StatelessWidget {
                     width: 2,
                   ),
                 ),
-                width: 135,
+                width: 160,
                 child: DropdownButton(
                   padding: const EdgeInsets.all(0),
                   isExpanded: true,
@@ -44,7 +44,7 @@ class HistoryBuyPage extends StatelessWidget {
                       return DropdownMenuItem(
                         value: lotteryDate.dateTime,
                         child: Container(
-                          width: 135,
+                          width: 160,
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                           margin: const EdgeInsets.only(left: 10),
                           decoration: const BoxDecoration(
@@ -115,6 +115,29 @@ class HistoryBuyPage extends StatelessWidget {
                                   width: MediaQuery.of(context).size.width,
                                   child: Column(
                                     children: [
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              vertical: 2, horizontal: 8),
+                                          decoration: BoxDecoration(
+                                            color: history.status == "paid"
+                                                ? Colors.green.shade200
+                                                : Colors.grey.shade300,
+                                            borderRadius:
+                                                BorderRadius.circular(24),
+                                          ),
+                                          child: Text(
+                                            CommonFn.renderBillStatus(
+                                                history.status, context),
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -152,11 +175,13 @@ class HistoryBuyPage extends StatelessWidget {
                                           Text(
                                             CommonFn.parseMoney(
                                                 history.totalAmount),
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
-                                              color: Color.fromRGBO(
-                                                  249, 49, 55, 1),
+                                              color: history.status == "paid"
+                                                  ? Color.fromRGBO(
+                                                      249, 49, 55, 1)
+                                                  : Colors.grey,
                                             ),
                                           ),
                                         ],

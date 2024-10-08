@@ -13,105 +13,14 @@ class AnimalPage extends StatefulWidget {
 class _AnimalPageState extends State<AnimalPage> {
   final animalDatas = [
     {
-      "name": "ตัวนิ่ม",
-      "image": "armadillo.png",
-      "lotteries": ["37", "77"],
-    },
-    {
-      "name": "ผึ้ง",
-      "image": "bee.png",
-      "lotteries": ["16", "56", "96"],
-    },
-    {
-      "name": "ปลาใหญ่",
-      "image": "bigfish.png",
-      "lotteries": ["30", "70"],
-    },
-    {
-      "name": "งูใหญ่",
-      "image": "bigsnake.png",
-      "lotteries": ["00", "00", "00"],
-    },
-    {
-      "name": "นกแกนแก",
-      "image": "birdgangare.png",
-      // "lotteries": ["92", "51", "21"],
-      "lotteries": ["00", "00", "00"],
-    },
-    {
-      "name": "ควาย",
-      "image": "buffalo.png",
-      "lotteries": ["09", "49", "89"],
-    },
-    {
-      "name": "ผีเสื้อ",
-      "image": "butterfly.png",
-      "lotteries": ["19", "59", "99"],
-    },
-    {
-      "name": "แมว",
-      "image": "cat.png",
-      "lotteries": ["14", "54", "94"],
-    },
-    {
-      "name": "แมวป่า",
-      "image": "catforest.png",
-      "lotteries": ["18", "58", "98"],
-    },
-    {
-      "name": "ตะขาบ",
-      "image": "centipede.png",
-      "lotteries": ["00", "20", "60"],
-    },
-    {
-      "name": "ไก่",
-      "image": "chicken.png",
-      "lotteries": ["28", "68"],
-    },
-    {
-      "name": "ปู",
-      "image": "crab.png",
-      "lotteries": ["39", "79"],
-    },
-    {
-      "name": "กวาง",
-      "image": "deer.png",
-      "lotteries": ["34", "74"],
-    },
-    {
-      "name": "หมา",
-      "image": "dog.png",
-      "lotteries": ["11", "51", "91"],
-    },
-    {
-      "name": "อินทรีย์",
-      "image": "eagle.png",
-      "lotteries": ["40", "80"],
-    },
-    {
-      "name": "นกกระยาง",
-      "image": "egret.png",
-      "lotteries": ["17", "57", "97"],
-    },
-    {
-      "name": "ช้าง",
-      "image": "elephant.png",
-      "lotteries": ["13", "53", "93"],
-    },
-    {
-      "name": "ปลา",
+      "name": "ปลาน้อย",
       "image": "fish.png",
       "lotteries": ["01", "41", "81"],
     },
     {
-      "name": "กบ",
-      "image": "fog.png",
-      "lotteries": ["24", "64"],
-    },
-    {
-      "name": "แพะ",
-      "image": "goat.png",
-      "lotteries": ["35", "75"],
+      "name": "หอยทาก",
+      "image": "shell.png",
+      "lotteries": ["02", "42", "82"],
     },
     {
       "name": "ห่าน",
@@ -119,14 +28,9 @@ class _AnimalPageState extends State<AnimalPage> {
       "lotteries": ["03", "43", "83"],
     },
     {
-      "name": "เหยี่ยว",
-      "image": "hawk.png",
-      "lotteries": ["25", "65"],
-    },
-    {
-      "name": "ม้า",
-      "image": "horse.png",
-      "lotteries": ["12", "52", "92"],
+      "name": "นกยูง",
+      "image": "peacock.png",
+      "lotteries": ["04", "44", "84"],
     },
     {
       "name": "สิงโต",
@@ -134,19 +38,9 @@ class _AnimalPageState extends State<AnimalPage> {
       "lotteries": ["05", "45", "85"],
     },
     {
-      "name": "ลิง",
-      "image": "monkey.png",
-      "lotteries": ["23", "63"],
-    },
-    {
-      "name": "นาก",
-      "image": "otter.png",
-      "lotteries": ["10", "50", "90"],
-    },
-    {
-      "name": "นกยู",
-      "image": "peacock.png",
-      "lotteries": ["04", "44", "84"],
+      "name": "เสือ",
+      "image": "tiger.png",
+      "lotteries": ["06", "46", "86"],
     },
     {
       "name": "หมู",
@@ -154,14 +48,39 @@ class _AnimalPageState extends State<AnimalPage> {
       "lotteries": ["07", "47", "87"],
     },
     {
-      "name": "เม่น",
-      "image": "porcupine.png",
-      "lotteries": ["38", "78"],
-    },
-    {
       "name": "กระต่าย",
       "image": "rabbit.png",
       "lotteries": ["08", "48", "88"],
+    },
+    {
+      "name": "ควาย",
+      "image": "buffalo.png",
+      "lotteries": ["09", "49", "89"],
+    },
+    {
+      "name": "นาก",
+      "image": "otter.png",
+      "lotteries": ["10", "50", "90"],
+    },
+    {
+      "name": "หมา",
+      "image": "dog.png",
+      "lotteries": ["11", "51", "91"],
+    },
+    {
+      "name": "ม้า",
+      "image": "horse.png",
+      "lotteries": ["12", "52", "92"],
+    },
+    {
+      "name": "ช้าง",
+      "image": "elephant.png",
+      "lotteries": ["13", "53", "93"],
+    },
+    {
+      "name": "แมวบ้าน",
+      "image": "cat.png",
+      "lotteries": ["14", "54", "94"],
     },
     {
       "name": "หนู",
@@ -169,14 +88,80 @@ class _AnimalPageState extends State<AnimalPage> {
       "lotteries": ["15", "55", "95"],
     },
     {
-      "name": "แมวน้ำ",
-      "image": "seal.png",
-      "lotteries": ["10", "50", "90"],
+      "name": "ผึ้ง",
+      "image": "bee.png",
+      "lotteries": ["16", "56", "96"],
     },
     {
-      "name": "หอย",
-      "image": "shell.png",
-      "lotteries": ["02", "42", "82"],
+      "name": "นกกระยาง",
+      "image": "egret.png",
+      "lotteries": ["17", "57", "97"],
+    },
+    {
+      "name": "แมวป่า",
+      "image": "catforest.png",
+      "lotteries": ["18", "58", "98"],
+    },
+    {
+      "name": "ผีเสื้อ",
+      "image": "butterfly.png",
+      "lotteries": ["19", "59", "99"],
+    },
+    {
+      "name": "ตะขาบ",
+      "image": "centipede.png",
+      "lotteries": ["00", "20", "60"],
+    },
+    {
+      "name": "นกนางแอ่น",
+      "image": "swallow2.png",
+      "lotteries": ["21", "61"],
+    },
+    {
+      "name": "นกแกนแก",
+      "image": "pigeon.png",
+      // "lotteries": ["92", "51", "21"],
+      "lotteries": ["22", "62"],
+    },
+    {
+      "name": "ลิง",
+      "image": "monkey.png",
+      "lotteries": ["23", "63"],
+    },
+    {
+      "name": "กบ",
+      "image": "fog.png",
+      "lotteries": ["24", "64"],
+    },
+    {
+      "name": "เหยี่ยว",
+      "image": "hawk.png",
+      "lotteries": ["25", "65"],
+    },
+    {
+      "name": "มังกร",
+      "image": "dragon.png",
+      "lotteries": ["26", "66"],
+    },
+    {
+      "name": "เต่า",
+      "image": "turtle.png",
+      "lotteries": ["27", "67"],
+    },
+    {
+      "name": "ไก่",
+      "image": "chicken.png",
+      "lotteries": ["28", "68"],
+    },
+    {
+      "name": "ปลาไหล",
+      "image": "eel.png",
+      "lotteries": ["29", "69"],
+    },
+    {
+      "name": "ปลาใหญ่",
+      "image": "bigfish.png",
+      "lotteries": ["30", "70"],
     },
     {
       "name": "กุ้ง",
@@ -194,24 +179,39 @@ class _AnimalPageState extends State<AnimalPage> {
       "lotteries": ["33", "73"],
     },
     {
-      "name": "นกนางแอ่น",
-      "image": "swallow.png",
-      "lotteries": ["00", "00", "00"],
+      "name": "กวาง",
+      "image": "deer.png",
+      "lotteries": ["34", "74"],
     },
     {
-      "name": "เสือ",
-      "image": "tiger.png",
-      "lotteries": ["06", "46", "86"],
-    },
-    {
-      "name": "เต่า",
-      "image": "turtle.png",
-      "lotteries": ["27", "67"],
+      "name": "แพะ",
+      "image": "goat.png",
+      "lotteries": ["35", "75"],
     },
     {
       "name": "อีเห็น",
       "image": "weasel.png",
-      "lotteries": ["00", "00", "00"],
+      "lotteries": ["36", "76"],
+    },
+    {
+      "name": "ตัวนิ่ม",
+      "image": "armadillo.png",
+      "lotteries": ["37", "77"],
+    },
+    {
+      "name": "เม่น",
+      "image": "porcupine.png",
+      "lotteries": ["38", "78"],
+    },
+    {
+      "name": "ปู",
+      "image": "crab.png",
+      "lotteries": ["39", "79"],
+    },
+    {
+      "name": "อินทรี",
+      "image": "eagle.png",
+      "lotteries": ["40", "80"],
     },
   ];
   void Function(List<Map<String, dynamic>> lotterise) onClickBuy =
@@ -307,6 +307,7 @@ class _AnimalPageState extends State<AnimalPage> {
                             image: AssetImage(
                                 'assets/animalphoto/${animal['image']}'),
                             height: 48,
+                            width: 48,
                           ),
                           SizedBox(width: 10),
                           Text(
@@ -319,23 +320,28 @@ class _AnimalPageState extends State<AnimalPage> {
                         ],
                       ),
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: (animal['lotteries'] as List<String>)
                             .map((lottery) {
-                          return Container(
-                            padding: EdgeInsets.symmetric(horizontal: 12),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: AppColors.primary,
-                                width: 1,
+                          return Expanded(
+                            child: Container(
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.symmetric(horizontal: 4),
+                              // padding: EdgeInsets.symmetric(horizontal: 12),
+                              // width: fullWidth - 20,
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: AppColors.primary,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(2),
                               ),
-                              borderRadius: BorderRadius.circular(2),
-                            ),
-                            child: Text(
-                              '$lottery',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                              child: Text(
+                                '$lottery',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           );
