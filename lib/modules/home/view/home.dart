@@ -1,11 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
-import 'package:lottery_ck/main.dart';
-import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.dart';
+import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/video/view/video_list.dart';
 import 'package:lottery_ck/res/app_locale.dart';
@@ -13,12 +13,9 @@ import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/res/logo.dart';
-import 'package:lottery_ck/route/route_name.dart';
-import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/theme.dart';
-import 'package:video_player/video_player.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -34,68 +31,59 @@ class HomePage extends StatelessWidget {
                 padding: EdgeInsets.all(16),
                 child: RefreshIndicator(
                   onRefresh: () async {
-                    logger.d("message");
+                    // logger.d("message");
+                    controller.setup();
                   },
                   child: ListView(
                     clipBehavior: Clip.none,
-                    physics: BouncingScrollPhysics(),
+                    // physics: BouncingScrollPhysics(),
                     shrinkWrap: true,
                     children: [
                       AspectRatio(
                           aspectRatio: 16 / 9,
-                          child: CarouselSlider(
-                            items: [
-                              "https://baas.moevedigital.com/v1/storage/buckets/news_image/files/66d532000003e376a41c/view?project=667afb24000fbd66b4df&mode=admin",
-                              "https://baas.moevedigital.com/v1/storage/buckets/news_image/files/66d54346001938c02f20/view?project=667afb24000fbd66b4df&mode=admin",
-                            ].map((element) {
-                              return Container(
-                                width: MediaQuery.of(context).size.width,
-                                child: Image.network(element),
-                                // child: CachedNetworkImage(
-                                //   imageUrl: element,
-                                //   progressIndicatorBuilder: (context, url, progress) => Center(
-                                //     child: CircularProgressIndicator(
-                                //       value: progress.progress,
-                                //     ),
-                                //   ),
-                                //   errorWidget: (context, url, error) => Icon(Icons.error),
-                                // ),
-                                // child: Image.network(
-                                //   element,
-                                //   loadingBuilder:
-                                //       (context, child, loadingProgress) {
-                                //     if (loadingProgress == null) {
-                                //       return child;
-                                //     } else {
-                                //       return Center(
-                                //         child: CircularProgressIndicator(
-                                //           value: loadingProgress
-                                //                       .expectedTotalBytes !=
-                                //                   null
-                                //               ? loadingProgress
-                                //                       .cumulativeBytesLoaded /
-                                //                   loadingProgress
-                                //                       .expectedTotalBytes!
-                                //               : null,
-                                //         ),
-                                //       );
-                                //     }
-                                //   },
-                                //   // errorBuilder:
-                                //   //     (context, error, stackTrace) =>
-                                //   //         Text('image not found'),
-                                // ),
-                              );
-                            }).toList(),
-                            options: CarouselOptions(
-                              height: 242.0,
-                              viewportFraction: 1,
-                              autoPlay: true,
-                              autoPlayInterval: Duration(
-                                seconds: 5,
+                          child: Obx(() {
+                            return CarouselSlider(
+                              // items: [
+                              //   "https://baas.moevedigital.com/v1/storage/buckets/news_image/files/66d532000003e376a41c/view?project=667afb24000fbd66b4df&mode=admin",
+                              //   "https://baas.moevedigital.com/v1/storage/buckets/news_image/files/66d54346001938c02f20/view?project=667afb24000fbd66b4df&mode=admin",
+                              // ]
+                              items:
+                                  controller.bannerContent.value.map((element) {
+                                // items: controller.bannerContent.value.map((element) {
+                                return GestureDetector(
+                                  onTap: () => controller
+                                      .onClickContent(element['getLink']),
+                                  child: Container(
+                                    clipBehavior: Clip.hardEdge,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    width: MediaQuery.of(context).size.width,
+                                    child: Image.network(
+                                      element['imageUrl'] ?? '-',
+                                      fit: BoxFit.fitHeight,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Container(
+                                          width: 100,
+                                          height: 100,
+                                          child: Text("Image not found"),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                              options: CarouselOptions(
+                                height: 242.0,
+                                viewportFraction: 1,
+                                autoPlay: true,
+                                autoPlayInterval: Duration(
+                                  seconds: 5,
+                                ),
                               ),
-                            ),
-                          )
+                            );
+                          })
                           // child: Container(
                           //   decoration: BoxDecoration(
                           //     color: Colors.red.shade100,
@@ -155,24 +143,29 @@ class HomePage extends StatelessWidget {
                           // random
                           Column(
                             children: [
-                              Container(
-                                alignment: Alignment.center,
-                                width: 52,
-                                height: 52,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(8),
-                                  boxShadow: [
-                                    AppTheme.softShadow,
-                                  ],
-                                ),
-                                child: SizedBox(
-                                  height: 32,
-                                  width: 32,
-                                  child: SvgPicture.asset(
-                                    AppIcon.lotteryBold,
-                                    colorFilter: const ColorFilter.mode(
-                                        AppColors.menuIcon, BlendMode.srcIn),
+                              GestureDetector(
+                                onTap: () {
+                                  controller.gotoRandom();
+                                },
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  width: 52,
+                                  height: 52,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8),
+                                    boxShadow: [
+                                      AppTheme.softShadow,
+                                    ],
+                                  ),
+                                  child: SizedBox(
+                                    height: 32,
+                                    width: 32,
+                                    child: SvgPicture.asset(
+                                      AppIcon.random,
+                                      colorFilter: const ColorFilter.mode(
+                                          AppColors.menuIcon, BlendMode.srcIn),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -423,7 +416,7 @@ class HomePage extends StatelessWidget {
                             // },
                             child: GestureDetector(
                               onTap: () {
-                                controller.listContent();
+                                // controller.testDeeplink();
                               },
                               child: SizedBox(
                                 // height: 30,
@@ -617,20 +610,21 @@ class HomePage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(AppLocale.lotteryPredict.getString(context)),
-                          GestureDetector(
-                            onTap: () {
-                              Get.rawSnackbar(message: "coming soon");
-                            },
-                            child: Text(
-                              AppLocale.viewAll.getString(context),
-                              style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                color: Colors.black.withOpacity(0.8),
-                                decorationColor: Colors.black.withOpacity(0.8),
-                                decorationThickness: 1.2,
-                              ),
-                            ),
-                          ),
+                          // Text("เลขโชคดี"),
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     Get.rawSnackbar(message: "coming soon");
+                          //   },
+                          //   child: Text(
+                          //     AppLocale.viewAll.getString(context),
+                          //     style: TextStyle(
+                          //       decoration: TextDecoration.underline,
+                          //       color: Colors.black.withOpacity(0.8),
+                          //       decorationColor: Colors.black.withOpacity(0.8),
+                          //       decorationThickness: 1.2,
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                       const SizedBox(height: 8),
@@ -640,25 +634,26 @@ class HomePage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            AppLocale.horoscopeToday.getString(context),
+                            // AppLocale.horoscopeToday.getString(context),
+                            AppLocale.lotteryPredict.getString(context),
                             style: TextStyle(
                               color: Colors.black.withOpacity(0.8),
                             ),
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              Get.rawSnackbar(message: "coming soon");
-                            },
-                            child: Text(
-                              AppLocale.viewAll.getString(context),
-                              style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                color: Colors.black.withOpacity(0.8),
-                                decorationColor: Colors.black.withOpacity(0.8),
-                                decorationThickness: 1.2,
-                              ),
-                            ),
-                          ),
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     Get.rawSnackbar(message: "coming soon");
+                          //   },
+                          //   child: Text(
+                          //     AppLocale.viewAll.getString(context),
+                          //     style: TextStyle(
+                          //       decoration: TextDecoration.underline,
+                          //       color: Colors.black.withOpacity(0.8),
+                          //       decorationColor: Colors.black.withOpacity(0.8),
+                          //       decorationThickness: 1.2,
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                       const SizedBox(height: 8),
@@ -675,72 +670,105 @@ class HomePage extends StatelessWidget {
                                   final artworks =
                                       controller.artWorksContent.value;
                                   if (artworks.length - 1 < index) {
-                                    return Container(
-                                      width: (screenWidth / 3) * (9 / 16),
-                                      height: screenWidth / 3,
-                                      decoration: BoxDecoration(
-                                        // color: Colors.grey.shade300,
-                                        border: Border.all(
-                                            width: 1,
-                                            color: Colors.grey.shade300),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            height: 48,
-                                            width: 48,
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              gradient: LinearGradient(
-                                                colors: [
-                                                  AppColors.primary,
-                                                  AppColors.primaryEnd,
-                                                ],
-                                                begin: Alignment.topCenter,
-                                                end: Alignment.bottomCenter,
+                                    return GestureDetector(
+                                      onTap: () async {
+                                        controller.goToNewsPage();
+                                      },
+                                      child: Container(
+                                        width: (screenWidth / 3) * (9 / 16),
+                                        height: screenWidth / 3,
+                                        decoration: BoxDecoration(
+                                          // color: Colors.grey.shade300,
+                                          border: Border.all(
+                                              width: 1,
+                                              color: Colors.grey.shade300),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              height: 48,
+                                              width: 48,
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    AppColors.primary,
+                                                    AppColors.primaryEnd,
+                                                  ],
+                                                  begin: Alignment.topCenter,
+                                                  end: Alignment.bottomCenter,
+                                                ),
                                               ),
-                                            ),
-                                            child: SizedBox(
-                                              width: 24,
-                                              height: 24,
-                                              child: SvgPicture.asset(
-                                                AppIcon.arrowRight,
-                                                colorFilter: ColorFilter.mode(
-                                                  Colors.white,
-                                                  BlendMode.srcIn,
+                                              child: SizedBox(
+                                                width: 24,
+                                                height: 24,
+                                                child: SvgPicture.asset(
+                                                  AppIcon.arrowRight,
+                                                  colorFilter: ColorFilter.mode(
+                                                    Colors.white,
+                                                    BlendMode.srcIn,
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Text(
-                                            "More",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              color:
-                                                  Colors.black.withOpacity(0.8),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              "More",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black
+                                                    .withOpacity(0.8),
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     );
                                   }
-                                  return SizedBox(
-                                    // width: screenWidth / 3,
-                                    height: screenWidth / 3,
-                                    child: Image.network(
-                                      artworks[index]["artworks"]["url"],
-                                      // width: double.infinity,
+                                  return GestureDetector(
+                                    onTap: () {
+                                      if (artworks[index]['getLink'] == null) {
+                                        controller.openImageFullscreen(
+                                            artworks[index]['imageUrl']);
+                                        return;
+                                      }
+                                      controller.onClickContent(
+                                          artworks[index]['imageUrl']);
+                                    },
+                                    child: SizedBox(
+                                      // width: screenWidth / 3,
+                                      height: screenWidth / 3,
+                                      child: CachedNetworkImage(
+                                        imageUrl: artworks[index]["imageUrl"],
+                                        fit: BoxFit.fitHeight,
+                                        progressIndicatorBuilder: (
+                                          context,
+                                          url,
+                                          downloadProgress,
+                                        ) =>
+                                            SizedBox(
+                                          width: screenWidth / 3,
+                                          height: screenWidth / 3,
+                                          child: Center(
+                                            child: CircularProgressIndicator(
+                                              value: downloadProgress.progress,
+                                            ),
+                                          ),
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(Icons.error),
+                                      ),
                                     ),
                                   );
                                 },
                                 separatorBuilder: (context, index) =>
-                                    const SizedBox(width: 16),
+                                    const SizedBox(width: 8),
                                 itemCount:
                                     controller.artWorksContent.value.length +
                                         1);

@@ -15,6 +15,7 @@ import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
 import 'package:lottery_ck/modules/pin/view/verify_pin.dart';
+import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/storage.dart';
@@ -35,6 +36,7 @@ class PaymentController extends GetxController {
   String? otpRefNo;
   String? otpRefCode;
   String? transCashOutID;
+  String? transID;
 
   Future<void> getBank() async {
     final appwriteController = AppWriteController.to;
@@ -109,8 +111,9 @@ class PaymentController extends GetxController {
         dateTime: DateTime.parse(invoiceDocuments!.$createdAt),
         lotteryDateStr: lotteryDateStrYMD!,
         lotteryList: invoiceMeta.transactions,
-        totalAmount: invoiceMeta.amount.toString(),
-        invoiceId: invoiceDocuments.data['billId'],
+        totalAmount: invoiceMeta.totalAmount.toString(),
+        amount: invoiceMeta.amount,
+        billId: invoiceDocuments.data['billId'],
         // invoiceId: invoiceMeta,
         bankName: selectedBank!.fullName,
         customerId: userApp.customerId!,
@@ -134,114 +137,156 @@ class PaymentController extends GetxController {
         // request cashout => api create invoice success
         Get.toNamed(RouteName.confirmPaymentOTP, arguments: {
           "phoneNumber": user.phone,
-          "onInit": () async {
-//             {
-//    "status": 200,
-//    "message": "Request success",
-//    "data": {
-//      "98218": "36724",
-//      "transData": [
-//        {
-//          "transCashOutID": "20241003161621980177",
-//          "transStatus": "R",
-//          "accountNo": "XXXXXX5064",
-//          "accountNameEN": "CK ",
-//          "accountRef": "2055265064",
-//          "accountType": "TC WALLET",
-//          "transExpiry": "2024-10-03 16:21:21.98"
-//        }
-//      ],
-//      "otpRefNo": "094N6GR4",
-//      "otpRefCode": "9P92",
-//      "otpLockFlag": "0",
-//      "openSMS": "Y",
-//      "responseCode": "0000",
-//      "responseMessage": "Operation success",
-//      "responseStatus": "SUCCESS",
-//      "transID": "66fe5cff001ff257203a",
-//      "processTime": 5775,
-//      "serverDatetime": "2024-10-03 16:16:27",
-//      "serverDatetimeMs": 1727946987736
-//    };
-//  }
-            logger.d("get otp");
-            final dio = Dio();
-            final token = await AppWriteController.to.getCredential();
-            final response = await dio.post(
-              "${AppConst.apiUrl}/payment",
-              data: {
-                "bankId": bank.$id,
-                "phone": user.phone,
-                "totalAmount": invoiceMeta.amount,
-                "invoiceId": invoiceMeta.invoiceId,
-                "lotteryDateStr": invoiceMeta.lotteryDateStr,
-              },
-              options: Options(
-                headers: {
-                  "Authorization": "Bearer $token",
-                },
-              ),
-            );
-            logger.d(response.data);
-            otpRefNo = response.data['data']['otpRefNo'];
-            otpRefCode = response.data['data']['otpRefCode'];
-            transCashOutID =
-                response.data['data']['transData'][0]['transCashOutID'];
-          },
-          "onConfirm": (otp) async {
-            final dio = Dio();
-            final token = await AppWriteController.to.getCredential();
-            //   {
-//     "invoiceId": "66fcd1a900023a859e9c",
-//     "otpRefNo": "LSA0PACX",
-//     "otpRefCode": "7ZBH",
-//     "otp": "287163",
-//     "transCashOutID": "20241002122325525571",
-//     "lotteryDate": "20241004"
-// }
-            final response = await dio.post(
-              "${AppConst.apiUrl}/payment/confirm",
-              data: {
-                "invoiceId": invoiceMeta.invoiceId,
-                "otpRefNo": otpRefNo,
-                "otpRefCode": otpRefCode,
-                "otp": otp,
-                "transCashOutID": transCashOutID,
-                "lotteryDate": invoiceMeta.lotteryDateStr,
-              },
-              options: Options(
-                headers: {
-                  "Authorization": "Bearer $token",
-                },
-              ),
-            );
-            logger.f("boom !!!!");
-            logger.d(response.data);
-            if (response.data['responseCode'] != '0000') {
-              Get.dialog(DialogApp(
-                title: Text(
-                  "${response.data['responseStatus']}",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                details: Text(
-                  "${response.data['responseMessage']}",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ));
-              // responseMessage
-              return;
-            }
-            Get.back();
-            showBill(invoiceMeta.invoiceId!);
+          "bankId": bank.$id,
+          "totalAmount": invoiceMeta.amount,
+          "invoiceId": invoiceMeta.invoiceId,
+          "lotteryDateStr": invoiceMeta.lotteryDateStr,
+          // "onInit": () async {
+          //   final userApp = LayoutController.to.userApp;
+          //   final dio = Dio();
+          //   final token = await AppWriteController.to.getCredential();
+          //   final payload = {
+          //     "bankId": bank.$id,
+          //     "phone": user.phone,
+          //     "totalAmount": invoiceMeta.amount,
+          //     "invoiceId": invoiceMeta.invoiceId,
+          //     "lotteryDateStr": invoiceMeta.lotteryDateStr,
+          //     "customerId": userApp!.customerId,
+          //   };
+          //   logger.w(payload);
+          //   final response = await dio.post(
+          //     "${AppConst.apiUrl}/payment",
+          //     data: payload,
+          //     options: Options(
+          //       headers: {
+          //         "Authorization": "Bearer $token",
+          //       },
+          //     ),
+          //   );
+          //   logger.d(response.data);
+          //   if (response.data['data']['payment']['responseCode'] != '0000') {
+          //     Get.dialog(
+          //       DialogApp(
+          //         disableConfirm: true,
+          //         cancelText: Text(
+          //           "Close",
+          //           style: TextStyle(
+          //             color: AppColors.primary,
+          //           ),
+          //         ),
+          //         title: Text(
+          //           "${response.data['data']['payment']['responseStatus']}",
+          //           style: TextStyle(
+          //             fontSize: 18,
+          //             fontWeight: FontWeight.bold,
+          //           ),
+          //         ),
+          //         details: Text(
+          //           "${response.data['data']['payment']['responseMessage']}",
+          //           style: TextStyle(
+          //             fontSize: 16,
+          //             fontWeight: FontWeight.bold,
+          //           ),
+          //         ),
+          //       ),
+          //     );
+          //   }
+          //   otpRefNo = response.data['data']['payment']['otpRefNo'];
+          //   otpRefCode = response.data['data']['payment']['otpRefCode'];
+          //   transCashOutID = response.data['data']['payment']['transData'][0]
+          //       ['transCashOutID'];
+          //   transID = response.data['data']['payment']['transID'];
+          //   final newExpire = DateTime.parse(response.data['data']['payment']
+          //       ['transData'][0]['transExpiry']);
+          //   BuyLotteryController.to.startCountDownInvoiceExpire(newExpire);
+          //   update();
+          // },
+          // "onConfirm": (otp) async {
+          //   try {
+          //     final dio = Dio();
+          //     final token = await AppWriteController.to.getCredential();
+          //     final payload = {
+          //       "invoiceId": invoiceMeta.invoiceId,
+          //       "transID": transID,
+          //       "otpRefNo": otpRefNo,
+          //       "otpRefCode": otpRefCode,
+          //       "otp": otp,
+          //       "transCashOutID": transCashOutID,
+          //       "lotteryDate": invoiceMeta.lotteryDateStr,
+          //     };
+          //     logger.d(payload);
+          //     final response = await dio.post(
+          //       "${AppConst.apiUrl}/payment/confirm",
+          //       data: payload,
+          //       options: Options(
+          //         headers: {
+          //           "Authorization": "Bearer $token",
+          //         },
+          //       ),
+          //     );
+          //     logger.d(response.data);
+          //     if (response.data['responseCode'] != '0000') {
+          //       Get.dialog(
+          //         DialogApp(
+          //           disableConfirm: true,
+          //           cancelText: Text(
+          //             "Close",
+          //             style: TextStyle(
+          //               color: AppColors.primary,
+          //             ),
+          //           ),
+          //           title: Text(
+          //             "${response.data['responseStatus']}",
+          //             style: TextStyle(
+          //               fontSize: 18,
+          //               fontWeight: FontWeight.bold,
+          //             ),
+          //           ),
+          //           details: Text(
+          //             "${response.data['responseMessage']}",
+          //             style: TextStyle(
+          //               fontSize: 16,
+          //               fontWeight: FontWeight.bold,
+          //             ),
+          //           ),
+          //         ),
+          //       );
+          //       // responseMessage
+          //       return;
+          //     }
+          //     Get.back();
+          //     showBill(invoiceMeta.invoiceId!);
+          //   } on DioException catch (e) {
+          //     // The request was made and the server responded with a status code
+          //     // that falls out of the range of 2xx and is also not 304.
+          //     if (e.response != null) {
+          //       logger.e(e.response?.statusCode);
+          //       logger.e(e.response?.statusMessage);
+          //       logger.e(e.response?.data);
+          //       logger.e(e.response?.headers);
+          //       logger.e(e.response?.requestOptions);
+          //       try {
+          //         final error = jsonDecode(e.response?.data['message']);
+          //         logger.e(error);
+          //         Get.dialog(
+          //           DialogApp(
+          //             disableConfirm: true,
+          //             title: Text("Error"),
+          //             details: Text("$error"),
+          //           ),
+          //         );
+          //       } catch (e) {
+          //         return null;
+          //       }
+          //     } else {
+          //       // Something happened in setting up or sending the request that triggered an Error
+          //       logger.e(e.requestOptions);
+          //       logger.e(e.message);
+          //     }
+          //   }
 
-            // goto show bill
-          }
+          //   // goto show bill
+          // }
         });
 
         // logger.
@@ -260,42 +305,6 @@ class PaymentController extends GetxController {
           )
           .toList();
       final dio = Dio();
-      // {
-      //     "lotteryDateStr": "20241004", /
-      //     // "bankId": "66f3794c00365ecfc225",
-      //     "totalAmount": 4000, /
-      //     "customerId": "testCustimerId",
-      //     "phone": "+8562054656226",
-      //     "invoiceId": "66fb89d80009543b3c00",
-      //     "transactions": [
-      //         {
-      //         //    "$id": "66fb89da000cb8af416f",
-      //             "lottery": "234",
-      //             "digit_1": null,
-      //             "digit_2": null,
-      //             "digit_3": null,
-      //             "digit_4": "2",
-      //             "digit_5": "3",
-      //             "digit_6": "4",
-      //             "lotteryType": 3,
-      //             "amount": 5000,
-      //             "userId": "66e9b066000956d5e74e"
-      //         },
-      //         {
-      //             "$id": null,
-      //             "lottery": "235",
-      //             "digit_1": null,
-      //             "digit_2": null,
-      //             "digit_3": null,
-      //             "digit_4": "2",
-      //             "digit_5": "3",
-      //             "digit_6": "5",
-      //             "lotteryType": 3,
-      //             "amount": 30000000,
-      //             "userId": "66e9b066000956d5e74e"
-      //         }
-      //     ]
-      // }
       final responseTransaction = await dio.post(
         // "${AppConst.cloudfareUrl}/createTransaction",
         // https://a6d2-2405-9800-b920-2f86-d4ea-ac87-e5a6-607c.ngrok-free.app
@@ -341,6 +350,7 @@ class PaymentController extends GetxController {
 
   @override
   void onInit() {
+    logger.d("payment on init");
     setup();
     super.onInit();
   }

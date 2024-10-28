@@ -6,10 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/binding/initial.binding.dart';
+import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/no_network_dialog.dart';
 import 'package:lottery_ck/main.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
+import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
 import 'package:lottery_ck/modules/history/controller/history_win.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/layout/view/layout.dart';
@@ -18,11 +20,13 @@ import 'package:lottery_ck/modules/restart/view/restart.dart';
 import 'package:lottery_ck/modules/splash_screen/view/splash_screen.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/route/route_name.dart';
+import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 
 class SplashScreenController extends GetxController {
   static SplashScreenController get to => Get.find();
   StreamSubscription<List<ConnectivityResult>>? subscription;
+  bool isBypass = false;
 
   void gotoLayout() {
     // TODO: uncomment for production
@@ -31,9 +35,9 @@ class SplashScreenController extends GetxController {
 
   void checkTimeZone() {
     final offset = DateTime.now().timeZoneOffset;
-    if (offset.inHours != 7) {
-      throw "Your timezone is not support";
-    }
+    // if (offset.inHours != 7) {
+    //   throw "Your timezone is not support";
+    // }
   }
 
   Future<void> checkUser() async {
@@ -44,12 +48,47 @@ class SplashScreenController extends GetxController {
     }
   }
 
+  void bypass() {
+    isBypass = true;
+    update();
+  }
+
+  void bypassLogin() async {
+    try {
+      Get.put<AppWriteController>(AppWriteController());
+      Get.put<LayoutController>(LayoutController());
+      Get.put<StorageController>(StorageController());
+      Get.put<FirebaseMessagingController>(FirebaseMessagingController());
+      Map<String, dynamic>? token =
+          await AppWriteController.to.getToken('+8562055265064');
+      if (token == null) {
+        Get.dialog(
+          const DialogApp(
+            title: Text("Token is null"),
+            details: Text("Please try again"),
+            disableConfirm: true,
+          ),
+        );
+        return;
+      }
+      final session = await AppWriteController.to.createSession(token);
+      LayoutController.to.intialApp();
+      Get.offNamed(RouteName.layout);
+    } on Exception catch (e) {
+      Get.rawSnackbar(message: "$e");
+    }
+  }
+
   void setup() async {
     try {
       Get.put<AppWriteController>(AppWriteController());
       await Future.delayed(
         const Duration(seconds: 1),
         () async {
+          if (isBypass) {
+            bypassLogin();
+            return;
+          }
           await checkUser();
           checkTimeZone();
           gotoLayout();
@@ -104,6 +143,7 @@ class SplashScreenController extends GetxController {
   }
 
   void _handleMessage(RemoteMessage event) async {
+    Get.put(LayoutController());
     await Future.delayed(
       const Duration(seconds: 1),
       () async {
@@ -130,6 +170,12 @@ class SplashScreenController extends GetxController {
             LayoutController.to.changeTab(TabApp.history);
             final invoiceId = link.split("/").last;
             HistoryWinController.to.openWinDetail(invoiceId, lotteryStr);
+          } else if (link.contains("/point")) {
+            logger.d("goto win page");
+            LayoutController.to.changeTab(TabApp.notifications);
+            final promotionPointId = link.split("/").last;
+            NotificationController.to
+                .openPromotionPointsDetail(promotionPointId);
           }
         }
       },

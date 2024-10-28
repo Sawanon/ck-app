@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -7,23 +8,6 @@ import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 
-// TODO: use on layout.dart
-// canPop: false,
-//       onPopInvoked: (didPop) async {
-//         logger.w("didPop: $didPop");
-//         if (didPop) {
-//           return;
-//         }
-//         final shouldPop = await showDialog(
-//           context: context,
-//           builder: (context) {
-//             return Center(
-//               child: Text("boom"),
-//             );
-//           },
-//         );
-//       },
-
 class NewsDetailPage extends StatelessWidget {
   const NewsDetailPage({super.key});
 
@@ -31,6 +15,7 @@ class NewsDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<NewsController>(builder: (controller) {
       return Scaffold(
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: Column(
             children: [
@@ -51,18 +36,21 @@ class NewsDetailPage extends StatelessWidget {
                               height: 100,
                               width: double.infinity,
                             )
-                          : Image.network(
-                              controller.news!.image!,
-                              loadingBuilder:
-                                  (context, child, loadingProgress) {
-                                logger.d(loadingProgress);
-                                if (loadingProgress == null) {
-                                  return child;
-                                }
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              },
+                          : CachedNetworkImage(
+                              imageUrl: controller.news!.image!,
+                              fit: BoxFit.fitHeight,
+                              progressIndicatorBuilder: (
+                                context,
+                                url,
+                                downloadProgress,
+                              ) =>
+                                  Center(
+                                child: CircularProgressIndicator(
+                                  value: downloadProgress.progress,
+                                ),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error),
                             ),
                     ),
                     const SizedBox(height: 16),

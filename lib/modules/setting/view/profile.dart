@@ -11,6 +11,7 @@ import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:lottery_ck/utils/theme.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -103,22 +104,24 @@ class ProfilePage extends StatelessWidget {
                                 ),
                                 shape: BoxShape.circle,
                               ),
-                              child: Container(
-                                clipBehavior: Clip.hardEdge,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: controller.profileImaeg != null
-                                    ? Image.file(
-                                        controller.profileImaeg!,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Icon(
-                                        Icons.person_2,
-                                        size: 40,
-                                      ),
-                              ),
+                              child: Obx(() {
+                                return Container(
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: controller.profileByte.value != null
+                                      ? Image.memory(
+                                          controller.profileByte.value!,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Icon(
+                                          Icons.person_2,
+                                          size: 40,
+                                        ),
+                                );
+                              }),
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -153,6 +156,38 @@ class ProfilePage extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          InkWell(
+                            onTap: () {
+                              controller.gotoChangeName();
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: Icon(
+                                        Icons.person_outline,
+                                        size: 18,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      "${controller.user?.fullName}",
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: SvgPicture.asset(AppIcon.arrowRight),
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(height: 16),
@@ -194,20 +229,26 @@ class ProfilePage extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 16,
-                                      height: 16,
-                                      child: SvgPicture.asset(
-                                        AppIcon.location,
+                                Expanded(
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 16,
+                                        height: 16,
+                                        child: SvgPicture.asset(
+                                          AppIcon.location,
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      "${controller.user?.address}",
-                                    ),
-                                  ],
+                                      const SizedBox(width: 8),
+                                      Expanded(
+                                        child: Text(
+                                          "${controller.user?.address}",
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 24,
@@ -221,6 +262,92 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
+                    Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          AppTheme.softShadow,
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          GestureDetector(
+                            onTap: () => controller.gotoChangeBirth(),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 16,
+                                      height: 16,
+                                      child: SvgPicture.asset(
+                                        AppIcon.cake,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      "ວັນທີແລະເວລາເກີດ",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 18,
+                                  height: 18,
+                                  child: SvgPicture.asset(AppIcon.edit),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: SvgPicture.asset(
+                                  AppIcon.calendar,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                controller.user?.birthDate != null
+                                    ? CommonFn.parseDMY(
+                                        controller.user!.birthDate)
+                                    : "-",
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 16,
+                                height: 16,
+                                child: SvgPicture.asset(
+                                  AppIcon.clock,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                (controller.user?.birthTime != null &&
+                                        controller.user?.birthTime != "")
+                                    ? controller.user!.birthTime!
+                                    : "-",
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    // const SizedBox(height: 16),
                     // Container(
                     //   padding: EdgeInsets.all(16),
                     //   decoration: BoxDecoration(
@@ -232,20 +359,20 @@ class ProfilePage extends StatelessWidget {
                     //   ),
                     //   child: Text("แจ้งลบบัญชี"),
                     // ),
-                    LongButton(
-                      onPressed: () {},
-                      borderSide: BorderSide(
-                        width: 1,
-                        color: AppColors.errorBorder,
-                      ),
-                      backgroundColor: Colors.white,
-                      child: Text(
-                        AppLocale.reportAccountDeletion.getString(context),
-                        style: TextStyle(
-                          color: AppColors.errorBorder,
-                        ),
-                      ),
-                    ),
+                    // LongButton(
+                    //   onPressed: () {},
+                    //   borderSide: BorderSide(
+                    //     width: 1,
+                    //     color: AppColors.errorBorder,
+                    //   ),
+                    //   backgroundColor: Colors.white,
+                    //   child: Text(
+                    //     AppLocale.reportAccountDeletion.getString(context),
+                    //     style: TextStyle(
+                    //       color: AppColors.errorBorder,
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

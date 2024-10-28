@@ -22,6 +22,10 @@ class RouteName {
   static const String confirmPaymentOTP = '/confirmPaymentOTP';
   static const String changePasscode = '/changePasscode';
   static const String wallpaper = '/wallpaper';
+  static const String random = '/random';
+  static const String promotionPoint = '/promotionPoint';
+  static const String changeName = '/changeName';
+  static const String changeBirth = '/changeBirth';
 
   static const String cloudflare = '/cloudflare';
 }

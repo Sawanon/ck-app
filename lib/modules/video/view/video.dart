@@ -30,9 +30,9 @@ class _VideComponentsState extends State<VideComponents> {
           mixWithOthers: true,
         ),
       );
-      _controller.setVolume(0.0);
+      await _controller.setVolume(0.0);
       await _controller.initialize();
-      _controller.setLooping(true);
+      // _controller.setLooping(true);
       _controller.play();
       setState(() {});
     } on Exception catch (e) {

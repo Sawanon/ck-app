@@ -19,52 +19,17 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SettingController>(
-      initState: (state) {
+      initState: (state) async {
+        // await Future.delayed(
+        //   const Duration(seconds: 1),
+        //   () {
         SettingController.to.beforeSetup();
+        //   },
+        // );
       },
       builder: (controller) {
         if (controller.loading) {
           return Center(child: CircularProgressIndicator());
-        }
-        if (!controller.isLogin) {
-          return Scaffold(
-            backgroundColor: Colors.white,
-            body: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      "ກະລຸນາເຂົ້າສູ່ລະບົບ",
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    Text(
-                      "ກະລຸນາເຂົ້າສູ່ລະບົບກ່ອນທີ່ຈະຊື້ຫວຍ.",
-                      style: TextStyle(
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    LongButton(
-                      onPressed: () {
-                        Get.toNamed(RouteName.login);
-                      },
-                      child: Text(
-                        "ເຂົ້າສູ່ລະບົບ",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
         }
         return Scaffold(
           body: SafeArea(
@@ -150,17 +115,24 @@ class SettingPage extends StatelessWidget {
                                   ),
                                   shape: BoxShape.circle,
                                 ),
-                                child: Container(
-                                  clipBehavior: Clip.hardEdge,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: Icon(
-                                    Icons.person_2,
-                                    size: 40,
-                                  ),
-                                ),
+                                child: Obx(() {
+                                  return Container(
+                                    clipBehavior: Clip.hardEdge,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: controller.profileByte.value != null
+                                        ? Image.memory(
+                                            controller.profileByte.value!,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Icon(
+                                            Icons.person_2,
+                                            size: 40,
+                                          ),
+                                  );
+                                }),
                               )
                             ],
                           ),
@@ -298,7 +270,7 @@ class SettingPage extends StatelessWidget {
                                     ),
                                     const SizedBox(width: 16),
                                     Text(
-                                      "ແນະນຳບໍລິການ",
+                                      AppLocale.feedback.getString(context),
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -366,7 +338,8 @@ class SettingPage extends StatelessWidget {
                                     ),
                                     const SizedBox(width: 16),
                                     Text(
-                                      "ແນະນໍາໃຫ້ຫມູ່ເພື່ອນ",
+                                      AppLocale.shareAppToYourFriend
+                                          .getString(context),
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -434,7 +407,7 @@ class SettingPage extends StatelessWidget {
                                     ),
                                     const SizedBox(width: 16),
                                     Text(
-                                      "ຄະແນນຂອງຂ້ອຍ",
+                                      AppLocale.myScore.getString(context),
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -450,7 +423,7 @@ class SettingPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 4),
                         GestureDetector(
                           onTap: () {
                             // request scan face
@@ -503,7 +476,7 @@ class SettingPage extends StatelessWidget {
                                     ),
                                     const SizedBox(width: 16),
                                     Text(
-                                      "ຄວາມປອດໄພ",
+                                      AppLocale.security.getString(context),
                                       style: TextStyle(
                                         fontWeight: FontWeight.w600,
                                       ),
@@ -551,7 +524,7 @@ class SettingPage extends StatelessWidget {
                       );
                     },
                     child: Text(
-                      "ອອກຈາກລະບົບ",
+                      AppLocale.logout.getString(context),
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 16,

@@ -30,6 +30,12 @@ class AppIcon {
   static const String location = "assets/svg/vuesax/linear/location.svg";
   static const String promotion = "assets/svg/vuesax/linear/discount-shape.svg";
   static const String download = "assets/svg/vuesax/linear/receive-square.svg";
+  static const String image = "assets/svg/vuesax/linear/gallery.svg";
+  static const String cake = "assets/svg/vuesax/linear/cake.svg";
+  static const String calendar = "assets/svg/vuesax/linear/calendar.svg";
+  static const String clock = "assets/svg/vuesax/linear/clock.svg";
+  static const String edit = "assets/svg/vuesax/linear/edit.svg";
+  static const String random = "assets/svg/random.svg";
 
   static const String lo = "assets/laos1.png";
   static const String th = "assets/Th1.png";

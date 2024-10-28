@@ -237,7 +237,7 @@ class BuyLottery extends StatelessWidget {
                                               children: [
                                                 Text(
                                                   CommonFn.parseMoney(
-                                                      data.price),
+                                                      data.amount),
                                                   style: TextStyle(
                                                     color:
                                                         AppColors.textPrimary,

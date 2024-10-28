@@ -35,7 +35,8 @@ class WinBillContoller extends GetxController {
       lotteryDateStr: lotteryStr,
       lotteryList: transactionList,
       totalAmount: invoice.data["totalAmount"].toString(),
-      invoiceId: invoice.$id,
+      amount: invoice.data["amount"],
+      billId: invoice.$id,
       bankName: bank?.name ?? "-",
       customerId: userApp!.customerId!,
     );

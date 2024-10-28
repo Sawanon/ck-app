@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
 
@@ -39,7 +41,7 @@ class SecurityPage extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                "Enable Biometrics",
+                                AppLocale.enableBiometrics.getString(context),
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
@@ -47,7 +49,7 @@ class SecurityPage extends StatelessWidget {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                "ພວກເຮົາຈະນໍາໃຊ້ biometrics ໃຫ້ທ່ານເຂົ້າເຖິງຂໍ້ມູນທີ່ສໍາຄັນເຊັ່ນ: ປະຫວັດການຊື້, ການຕັ້ງຄ່າ, ການຊື້ຫວຍ",
+                                AppLocale.biometricsDetail.getString(context),
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w400,
@@ -81,7 +83,7 @@ class SecurityPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Change passcode",
+                            AppLocale.changePasscode.getString(context),
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,

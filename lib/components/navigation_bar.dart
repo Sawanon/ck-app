@@ -197,8 +197,8 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                     shape: BoxShape.circle,
                   ),
                   child: SizedBox(
-                    width: 24,
-                    height: 24,
+                    width: 36,
+                    height: 36,
                     child: SvgPicture.asset(
                       AppIcon.lotteryBold,
                       colorFilter: ColorFilter.mode(

@@ -19,6 +19,7 @@ class HistoryWinController extends GetxController {
     logger.d(lotteryMonthRevers);
     final listInvoiceCollection =
         await AppWriteController.to.listLotteryCollection(lotteryMonthRevers);
+    logger.d(listInvoiceCollection);
     if (listInvoiceCollection == null) {
       return;
     }

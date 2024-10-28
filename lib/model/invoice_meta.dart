@@ -9,8 +9,11 @@ class InvoiceMetaData {
   int totalAmount;
   int amount;
   int? bonus;
+  int? discount;
   String? billId;
   String? expire;
+  int price;
+  int quota;
 
   InvoiceMetaData({
     required this.lotteryDateStr,
@@ -21,17 +24,23 @@ class InvoiceMetaData {
     required this.totalAmount,
     required this.amount,
     this.bonus,
+    this.discount,
     this.billId,
     this.expire,
+    required this.price,
+    required this.quota,
   });
 
   static InvoiceMetaData empty() => InvoiceMetaData(
-      amount: 0,
-      customerId: '',
-      phone: '',
-      lotteryDateStr: '',
-      totalAmount: 0,
-      transactions: []);
+        amount: 0,
+        customerId: '',
+        phone: '',
+        lotteryDateStr: '',
+        totalAmount: 0,
+        transactions: [],
+        price: 0,
+        quota: 0,
+      );
 
   InvoiceMetaData copyWith() => InvoiceMetaData(
         lotteryDateStr: lotteryDateStr,
@@ -43,8 +52,11 @@ class InvoiceMetaData {
         totalAmount: totalAmount,
         amount: amount,
         bonus: bonus,
+        discount: discount,
         billId: billId,
         expire: expire,
+        price: price,
+        quota: quota,
       );
 
   Map<String, dynamic> toJson(String userId) {
@@ -59,49 +71,9 @@ class InvoiceMetaData {
       'totalAmount': totalAmount,
       'amount': amount,
       'bonus': bonus,
+      'discount': discount,
       'billId': billId,
+      'quota': quota,
     };
   }
 }
-
-// {
-//     "lotteryDateStr": "20241004",
-//     "totalAmount": 9600,
-//     "amount": 8000,
-//     "bonus": 1600,
-//     "customerId": "+856221606511",
-//     "phone": "+8562054656226",
-//     // "invoiceId": "66fb89d80009543b3c00",
-//     "transactions": [
-//         // {
-//         //     //    "$id": "66fb89da000cb8af416f",
-//         //     "lottery": "234",
-//         //     "digit_1": null,
-//         //     "digit_2": null,
-//         //     "digit_3": null,
-//         //     "digit_4": "2",
-//         //     "digit_5": "3",
-//         //     "digit_6": "4",
-//         //     "lotteryType": 3,
-//         //     "amount": 5000,
-//         //     "bonus": 1000,
-//         //     "totalAmount": 6000,
-//         //     "userId": "66e9b066000956d5e74e"
-//         // },
-//         {
-//             "$id": null,
-//             "lottery": "235",
-//             "digit_1": null,
-//             "digit_2": null,
-//             "digit_3": null,
-//             "digit_4": "2",
-//             "digit_5": "3",
-//             "digit_6": "5",
-//             "lotteryType": 3,
-//             "amount": 3000,
-//             "bonus": 600,
-//             "totalAmount": 3600,
-//             "userId": "66e9b066000956d5e74e"
-//         }
-//     ]
-// }

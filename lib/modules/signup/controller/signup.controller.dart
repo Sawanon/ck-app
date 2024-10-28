@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/gender_radio.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
@@ -19,6 +20,7 @@ class SignupController extends GetxController {
   String address = '';
   DateTime? birthDate;
   TimeOfDay? birthTime;
+  Gender? gender;
   bool unknowBirthTime = false;
   // TimeOfDay?
   // String phone = '';
@@ -29,20 +31,20 @@ class SignupController extends GetxController {
 
   Future<void> register(BuildContext context) async {
     if (keyForm.currentState != null && keyForm.currentState!.validate()) {
-      if (!unknowBirthTime && birthTime == null) {
-        Get.rawSnackbar(
-          backgroundColor: Colors.amber.shade200,
-          overlayColor: Colors.black.withOpacity(0.8),
-          messageText: Text(
-            AppLocale.pleaseEnterBirthTime.getString(context),
-            style: TextStyle(
-              color: Colors.black.withOpacity(0.8),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        );
-        return;
-      }
+      // if (!unknowBirthTime) {
+      //   Get.rawSnackbar(
+      //     backgroundColor: Colors.amber.shade200,
+      //     overlayColor: Colors.black.withOpacity(0.8),
+      //     messageText: Text(
+      //       AppLocale.pleaseEnterBirthTime.getString(context),
+      //       style: TextStyle(
+      //         color: Colors.black.withOpacity(0.8),
+      //         fontWeight: FontWeight.bold,
+      //       ),
+      //     ),
+      //   );
+      //   return;
+      // }
       createUserAppwrite();
     }
   }
@@ -51,9 +53,14 @@ class SignupController extends GetxController {
     // TODO: go to OTP when sucecess run function - sawanon:20240806
     logger.d("birthDate: $birthDate");
     if (birthDate == null) {
-      // Get.rawSnackbar(
-      //   message: "Please select your birth date",
-      // );
+      Get.rawSnackbar(
+        message: AppLocale.pleaseEnterBirthDate.getString(Get.context!),
+      );
+      return;
+    }
+    if (gender == null) {
+      Get.rawSnackbar(
+          message: AppLocale.pleaseChooseGender.getString(Get.context!));
       return;
     }
     await StorageController.to.clear();
@@ -69,6 +76,7 @@ class SignupController extends GetxController {
       address,
       birthDate!,
       birthTime,
+      gender!,
     );
     if (user == null) {
       Get.rawSnackbar(message: "sign up failed");
@@ -131,6 +139,10 @@ class SignupController extends GetxController {
     logger.d('unknown: $unknown');
     unknowBirthTime = unknown;
     update();
+  }
+
+  void changeGender(Gender gender) {
+    this.gender = gender;
   }
 
   @override

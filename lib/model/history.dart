@@ -4,20 +4,24 @@ class History {
   late String date;
   late String time;
   String invoiceId;
+  int amount;
   int totalAmount;
   List transactionIdList;
   List lotteryList = [];
   String createdAt;
-  String bankId;
+  String? bankId;
   String status;
+  String? billId;
 
   History({
     required this.createdAt,
     required this.invoiceId,
+    required this.amount,
     required this.totalAmount,
     required this.transactionIdList,
-    required this.bankId,
+    this.bankId,
     required this.status,
+    this.billId,
   }) {
     date = CommonFn.parseDMY(DateTime.parse(createdAt).toLocal());
     time = CommonFn.parseHMS(DateTime.parse(createdAt).toLocal());
@@ -27,10 +31,12 @@ class History {
     return History(
       createdAt: json['\$createdAt'],
       invoiceId: json["\$id"],
+      amount: json["amount"],
       totalAmount: json["totalAmount"],
       transactionIdList: json["transactionId"],
       bankId: json['bankId'],
       status: json['status'],
+      billId: json['billId'],
     );
   }
 
@@ -41,5 +47,16 @@ class History {
         transactionIdList: [],
         bankId: 'b1234',
         status: 'pending',
+        amount: 0,
       );
+
+  Map toJson() => {
+        "createdAt": createdAt,
+        "invoiceId": invoiceId,
+        "totalAmount": totalAmount,
+        "transactionIdList": transactionIdList,
+        "bankId": bankId,
+        "status": status,
+        "billId": billId,
+      };
 }

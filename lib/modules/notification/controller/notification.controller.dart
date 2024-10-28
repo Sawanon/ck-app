@@ -18,10 +18,32 @@ class NotificationController extends GetxController {
   }
 
   Future<void> listPromotions() async {
-    final promotionList = await AppWriteController.to.listPromotions();
-    if (promotionList != null) {
-      this.promotionList.value = promotionList;
+    final promotionListData = await AppWriteController.to.listPromotions();
+    List<Map> allPromotionList = [];
+    if (promotionListData != null) {
+      allPromotionList = promotionListData
+          .map((promotion) => {...promotion, "promotionType": "promotions"})
+          .toList();
     }
+    // if (promotionListData != null) {
+    //   promotionList.value = promotionListData;
+    // }
+    final promotionsPointsList =
+        await AppWriteController.to.listPromotionsPoints();
+    if (promotionsPointsList != null) {
+      for (var promotionsPoints in promotionsPointsList) {
+        allPromotionList.add({...promotionsPoints, "promotionType": "points"});
+      }
+    }
+    // logger.d(allPromotionList);
+    allPromotionList.sort(
+      (a, b) {
+        return DateTime.parse(b['start_date'])
+            .compareTo(DateTime.parse(a['start_date']));
+      },
+    );
+    // logger.d(allPromotionList);
+    promotionList.value = allPromotionList;
   }
 
   void openNewsDetail(String newsId) {
@@ -38,6 +60,15 @@ class NotificationController extends GetxController {
       RouteName.promotion,
       arguments: {
         "promotionId": promotionId,
+      },
+    );
+  }
+
+  void openPromotionPointsDetail(String promotionPointsId) {
+    Get.toNamed(
+      RouteName.promotionPoint,
+      arguments: {
+        "promotionId": promotionPointsId,
       },
     );
   }

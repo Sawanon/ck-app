@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,14 +10,19 @@ import 'package:lottery_ck/res/icon.dart';
 
 class Header extends StatelessWidget {
   final String title;
+  final Color backgroundColor;
+  final Color textColor;
   const Header({
     super.key,
     required this.title,
+    this.backgroundColor = Colors.white,
+    this.textColor = AppColors.textPrimary,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: backgroundColor,
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
       child: Row(
         children: [
@@ -50,6 +56,7 @@ class Header extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
+                color: textColor,
               ),
             ),
           ),

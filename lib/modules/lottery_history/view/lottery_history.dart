@@ -3,6 +3,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/main.dart';
 import 'package:lottery_ck/modules/lottery_history/controller/lottery_history.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/theme.dart';
@@ -124,7 +125,7 @@ class LotteryHistoryPage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                            'งวดวันที่ ${controller.lotteryHistoryList[index]["lotteryDate"]}'),
+                            '${AppLocale.lotteryDateAt.getString(context)} ${controller.lotteryHistoryList[index]["lotteryDate"]}'),
                         SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -132,40 +133,33 @@ class LotteryHistoryPage extends StatelessWidget {
                                   ["lottery"] as String)
                               .split('')
                               .map((e) {
-                            return GestureDetector(
-                              onTap: () {
-                                controller.listLotteryHistory();
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(3),
-                                width:
-                                    MediaQuery.of(context).size.width / 6 - 8,
-                                height:
-                                    MediaQuery.of(context).size.width / 6 - 8,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      AppColors.yellowGradient,
-                                      AppColors.redGradient,
-                                    ],
-                                    begin: Alignment.bottomCenter,
-                                    end: Alignment.topCenter,
-                                  ),
+                            return Container(
+                              padding: EdgeInsets.all(3),
+                              width: MediaQuery.of(context).size.width / 6 - 8,
+                              height: MediaQuery.of(context).size.width / 6 - 8,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                gradient: LinearGradient(
+                                  colors: [
+                                    AppColors.yellowGradient,
+                                    AppColors.redGradient,
+                                  ],
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.topCenter,
                                 ),
-                                child: Center(
-                                  child: Container(
-                                    width: double.maxFinite,
-                                    height: double.maxFinite,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(100),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        e,
-                                        style: TextStyle(fontSize: 32),
-                                      ),
+                              ),
+                              child: Center(
+                                child: Container(
+                                  width: double.maxFinite,
+                                  height: double.maxFinite,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(100),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      e,
+                                      style: TextStyle(fontSize: 32),
                                     ),
                                   ),
                                 ),

@@ -43,6 +43,7 @@ class HistoryBuyController extends GetxController {
   Future getHistoryBuy(DateTime lotteryDate) async {
     final lotteryStr = CommonFn.parseYMD(lotteryDate).split("-").join("");
     final response = await AppWriteController.to.getHistoryBuy(lotteryStr);
+    // TODO: limit lottery date history
     logger.d(response);
     if (response == null) {
       //TODO: this lottery date is empty
@@ -122,6 +123,7 @@ class HistoryBuyController extends GetxController {
     final appwriteController = AppWriteController.to;
     final user = await appwriteController.account.get();
     final userApp = await appwriteController.getUserApp();
+    logger.d(history.toJson());
     final bank = await appwriteController.getBankById(history.bankId);
     List<Lottery> transactionList = [];
     final lotteryStr =
@@ -142,10 +144,12 @@ class HistoryBuyController extends GetxController {
       lotteryDateStr: lotteryStr,
       lotteryList: transactionList,
       totalAmount: history.totalAmount.toString(),
-      invoiceId: history.invoiceId,
-      bankName: bank?.name ?? "-",
+      amount: history.amount,
+      billId: history.billId ?? "-",
+      bankName: bank?.fullName ?? "-",
       customerId: userApp!.customerId!,
     );
+
     if (context.mounted) {
       showDialog(
         context: context,

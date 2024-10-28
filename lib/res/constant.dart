@@ -4,9 +4,7 @@ class AppConst {
       "http://demo.mylaos.life:3000";
   static String apiUrl = "https://demo.mylaos.life/api";
   // static String apiUrl =
-  //     "https://59c5-2405-9800-b920-2f86-4453-eaab-1aa0-9520.ngrok-free.app/api";
-  // static String apiUrl =
-  //     "https://4568-2001-44c8-4083-787d-1423-ac0c-4581-4060.ngrok-free.app/api";
+  //     "https://fc88-2405-9800-b920-aa96-d5fb-31a9-c0a5-2ae1.ngrok-free.app/api";
   // static String apiUrl = "http://192.168.1.138:3000/api";
   static String videoUrl = "10.101.23.10:3000/api";
 

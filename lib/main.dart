@@ -5,20 +5,22 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:lottery_ck/binding/initial.binding.dart';
+import 'package:lottery_ck/modules/login/controller/login.controller.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
+import 'package:lottery_ck/modules/splash_screen/controller/splash_screen.controller.dart';
 import 'package:lottery_ck/modules/splash_screen/view/splash_screen.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
-import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/route/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:upgrader/upgrader.dart';
 import 'firebase_options.dart';
 
-import 'package:flutter_localizations/flutter_localizations.dart';
+// import 'package:flutter_localizations/flutter_localizations.dart';
 // import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 // import 'firebase_options.dart';
 // import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -44,7 +46,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  checkDeeplink();
+  await checkDeeplink();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
@@ -60,6 +62,9 @@ Future checkDeeplink() async {
         if (uri.path == "/payment") {
           final invoiceId = uri.queryParameters['invoiceId'];
           PaymentController.to.showBill(invoiceId!);
+        } else if (uri.path == "/bypass/4258c57e54eaeaf3") {
+          Get.put(SplashScreenController());
+          SplashScreenController.to.bypass();
         }
       },
     );
@@ -71,40 +76,6 @@ Future checkDeeplink() async {
 }
 
 final FlutterLocalization localization = FlutterLocalization.instance;
-
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-//   @override
-//   Widget build(BuildContext context) {
-//     return GetMaterialApp(
-//       onInit: () {
-//         localization.init(
-//           mapLocales: [
-//             const MapLocale('en', AppLocale.EN),
-//             const MapLocale('km', AppLocale.KM),
-//             const MapLocale('ja', AppLocale.JA),
-//           ],
-//           initLanguageCode: 'en',
-//         );
-//         localization.onTranslatedLanguage = _onTranslatedLanguage;
-//       },
-//       title: 'Lotto',
-//       theme: ThemeData(
-//         colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
-//         useMaterial3: true,
-//       ),
-//       initialBinding: InitialBinding(),
-//       getPages: AppRoutes.appRoutes(),
-//       initialRoute: RouteName.splashScreen,
-//       localizationsDelegates: [
-//         // AppLocalizations.delegate,
-//         GlobalMaterialLocalizations.delegate,
-//         GlobalWidgetsLocalizations.delegate,
-//         GlobalCupertinoLocalizations.delegate,
-//       ],
-//     );
-//   }
-// }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -147,6 +118,7 @@ class _MyAppState extends State<MyApp> {
         child: SplashScreenPage(),
       ),
       // initialRoute: '/test',
+      debugShowCheckedModeBanner: false,
       supportedLocales: localization.supportedLocales,
       localizationsDelegates: localization.localizationsDelegates,
     );

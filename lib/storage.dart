@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/model/jwt.dart';
+import 'package:lottery_ck/utils.dart';
 
 class StorageController extends GetxController {
   static StorageController get to => Get.find();
@@ -82,12 +86,14 @@ class StorageController extends GetxController {
     return await getValue("secretKey");
   }
 
-  Future<void> setAppToken(String token) async {
-    await setValue("appToken", token);
+  Future<void> setAppToken(Map jwtData) async {
+    await setValue("appToken", jsonEncode(jwtData));
   }
 
-  Future<String?> getAppToken() async {
-    return await getValue("appToken");
+  Future<AppJWT?> getAppToken() async {
+    final jwtData = await getValue("appToken");
+    if (jwtData == null) return null;
+    return AppJWT.fromJSON(jsonDecode(jwtData));
   }
 
   Future<void> setInvoiceMetaId(String invoiceMetaId) async {
@@ -96,6 +102,54 @@ class StorageController extends GetxController {
 
   Future<String?> getInvoiceMetaId() async {
     return await getValue("invoiceMetaId");
+  }
+
+  Future<void> setLuckyNumber(String luckyNumber, DateTime randomDate) async {
+    await setValue(
+        "luckyNumber",
+        jsonEncode({
+          "luckyNumber": luckyNumber,
+          "randomDate": randomDate.toIso8601String(),
+        }));
+  }
+
+  Future<void> removeLuckyNumber() async {
+    await clearValue("luckyNumber");
+  }
+
+  Future<Map?> getRandomLottery() async {
+    try {
+      final luckyNumber = await getValue("luckyNumber");
+      if (luckyNumber == null) {
+        throw "luckyNumber is empty";
+      }
+      return jsonDecode(luckyNumber);
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<void> setUnknowBirthTime(bool isUnknowBirthTime) async {
+    await setValue("unknowBirthTime", isUnknowBirthTime.toString());
+  }
+
+  Future<String?> getUnknowBirthTime() async {
+    return await getValue("unknowBirthTime");
+  }
+
+  Future<void> setPasscodeDelay(Map delayData) async {
+    await setValue("passcodeDelay", jsonEncode(delayData));
+  }
+
+  Future<void> removePassCodeDelay() async {
+    await clearValue("passcodeDelay");
+  }
+
+  Future<Map?> getPasscodeDelay() async {
+    final passcodeDelay = await getValue("passcodeDelay");
+    if (passcodeDelay == null) return null;
+    return jsonDecode(passcodeDelay);
   }
 
   @override

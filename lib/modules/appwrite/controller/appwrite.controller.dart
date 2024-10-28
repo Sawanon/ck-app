@@ -7,11 +7,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/gender_radio.dart';
 import 'package:lottery_ck/model/bank.dart';
 import 'package:lottery_ck/model/buy_lottery_configs.dart';
+import 'package:lottery_ck/model/jwt.dart';
 import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/model/lottery_date.dart';
 import 'package:lottery_ck/model/news.dart';
+import 'package:lottery_ck/model/respnose_verifypasscode.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/model/user_point.dart';
 import 'package:lottery_ck/modules/appwrite/controller/savefile.dart';
@@ -23,6 +26,7 @@ import 'package:lottery_ck/utils.dart';
 import "package:collection/collection.dart";
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'dart:typed_data';
+import 'package:image/image.dart' as img;
 
 class AppWriteController extends GetxController {
   static const String _databaseName = 'lottory';
@@ -34,10 +38,12 @@ class AppWriteController extends GetxController {
   static const String BANK = 'bank';
   static const String NEWS = 'news';
   static const String PROMOTION = 'promotions';
+  static const String POINTS = 'points';
   static const String FEEDBACK = 'feedbacks';
   static const String ARTWORKS = 'artworks';
   static const String USER_POINT = 'user_points';
   static const String CONTENT_MANAGEMENT = 'content_management';
+  static const String QUOTAS = 'quotas';
 
   static const _roleUserId = "669a2cfd00141edc45ef";
   final String _providerId = '66d28d4000300a1e7dc1';
@@ -49,7 +55,7 @@ class AppWriteController extends GetxController {
 
   Future<User> get user async => await account.get();
 
-  Future<void> getAuthToken() async {
+  Future<void> getAuthJWTToken() async {
     try {
       final dio = Dio();
       final jwt = JWT({
@@ -70,8 +76,9 @@ class AppWriteController extends GetxController {
       if (response.data["jwt"] == null) {
         throw "jwt not found";
       }
-      logger.d(response.data["jwt"]);
-      await StorageController.to.setAppToken(response.data["jwt"]);
+      // logger.d(response.data["jwt"]);
+      logger.d(response.data);
+      await StorageController.to.setAppToken(response.data);
     } catch (e) {
       logger.e("$e");
       Get.snackbar(
@@ -220,8 +227,9 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<Bank?> getBankById(String bankId) async {
+  Future<Bank?> getBankById(String? bankId) async {
     try {
+      if (bankId == null) return null;
       final bankDocument = await databases.getDocument(
         databaseId: _databaseName,
         collectionId: BANK,
@@ -295,7 +303,7 @@ class AppWriteController extends GetxController {
         data: {
           "lottery": lottery.lottery,
           "lotteryType": lottery.type,
-          "amount": lottery.price,
+          "amount": lottery.amount,
           "bankId": bankId,
           "userId": user.$id,
           ...digitMap,
@@ -312,7 +320,8 @@ class AppWriteController extends GetxController {
   }
 
   Future<Document> getLotteryDateById(String lotteryDateId) async {
-    return databases.getDocument(
+    logger.d(lotteryDateId);
+    return await databases.getDocument(
       databaseId: _databaseName,
       collectionId: LOTTERY_DATE,
       documentId: lotteryDateId,
@@ -328,7 +337,7 @@ class AppWriteController extends GetxController {
           Query.greaterThanEqual('datetime', datetime.toIso8601String()),
           Query.orderAsc('datetime'),
           Query.equal('active', true),
-          Query.equal('is_emergency', false),
+          // Query.equal('is_emergency', false),
           Query.limit(1),
         ],
       );
@@ -362,7 +371,7 @@ class AppWriteController extends GetxController {
           documentId: ID.unique(),
           data: {
             "lottery": lottery.lottery,
-            "amount": lottery.price,
+            "amount": lottery.amount,
             "lotteryType": lottery.type,
             "lastFiveTransactions": [transactionId],
             // "updateBy": "?"
@@ -378,7 +387,7 @@ class AppWriteController extends GetxController {
         collectionId: "$lotteryStr$ACCUMULATE",
         documentId: accumulateDocumentList.documents.first.$id,
         data: {
-          "amount": lottery.price + accumulateDocument.data['amount'],
+          "amount": lottery.amount + accumulateDocument.data['amount'],
           "lastFiveTransactions":
               lastFiveTransactions, //TODO: Should be reverse ?
         },
@@ -418,6 +427,7 @@ class AppWriteController extends GetxController {
           Query.equal('active', true),
           Query.equal('is_emergency', false),
           Query.orderAsc("datetime"),
+          Query.limit(10),
         ],
       );
       List<LotteryDate> lotteryDateList = [];
@@ -457,6 +467,8 @@ class AppWriteController extends GetxController {
             "userId",
             user.$id,
           ),
+          Query.equal("status", "paid"),
+          Query.isNotNull("status"),
           Query.orderDesc('\$createdAt'),
         ],
       );
@@ -508,6 +520,7 @@ class AppWriteController extends GetxController {
 
   Future<Document?> getInvoice(String invoiceId, String lotteryStr) async {
     try {
+      logger.d("$lotteryStr$INVOICE");
       return await databases.getDocument(
         databaseId: _databaseName,
         collectionId: "$lotteryStr$INVOICE",
@@ -544,6 +557,7 @@ class AppWriteController extends GetxController {
         queries: [
           Query.equal("is_active", true),
           Query.equal("is_approve", "3"),
+          Query.greaterThanEqual("end_date", DateTime.now().toIso8601String()),
           Query.orderDesc('start_date'),
           Query.limit(25),
         ],
@@ -561,6 +575,30 @@ class AppWriteController extends GetxController {
     }
   }
 
+  Future<List<Map>?> listPromotionsPoints() async {
+    try {
+      final promotionsPointsDocumentList = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: POINTS,
+        queries: [
+          Query.equal("is_active", true),
+          Query.equal("is_approve", "3"),
+          Query.orderDesc('start_date'),
+          Query.limit(25),
+        ],
+      );
+      final promotionList = promotionsPointsDocumentList.documents.map(
+        (document) {
+          return document.data;
+        },
+      ).toList();
+      return promotionList;
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
   Future<List<Map>?> listPromotions() async {
     try {
       final promotionsDocumentList = await databases.listDocuments(
@@ -573,7 +611,7 @@ class AppWriteController extends GetxController {
           Query.limit(25),
         ],
       );
-      final promotionList = promotionsDocumentList.documents.map(
+      List<Map> promotionList = promotionsDocumentList.documents.map(
         (document) {
           return document.data;
         },
@@ -612,6 +650,20 @@ class AppWriteController extends GetxController {
     } catch (e) {
       logger.e("$e");
       Get.rawSnackbar(message: "$e");
+      return null;
+    }
+  }
+
+  Future<Map?> getPromotionPoint(String promotionPointId) async {
+    try {
+      final promotionPointDocument = await databases.getDocument(
+        databaseId: _databaseName,
+        collectionId: POINTS,
+        documentId: promotionPointId,
+      );
+      return promotionPointDocument.data;
+    } catch (e) {
+      logger.e("$e");
       return null;
     }
   }
@@ -695,8 +747,8 @@ class AppWriteController extends GetxController {
   Future<String> getCredential() async {
     final userId = await user.then((value) => value.$id);
     final sessionId = await StorageController.to.getSessionId();
-    logger.d("userId: $userId");
-    logger.d("sessionId: $sessionId");
+    // logger.d("userId: $userId");
+    // logger.d("sessionId: $sessionId");
     if (sessionId == null) {
       logger.e("sessionId is null");
       await logout();
@@ -754,6 +806,7 @@ class AppWriteController extends GetxController {
           Query.limit(25),
         ],
       );
+      logger.d(lotteryHistoryDocumentList.total);
       List lotteryHistoryList = [];
       final lotteryHistoryListData =
           lotteryHistoryDocumentList.documents.map((document) => document.data);
@@ -762,6 +815,7 @@ class AppWriteController extends GetxController {
       for (var lotteryByDate in newMap.entries) {
         final lotteryDateDocument = await getLotteryDateById(
             lotteryByDate.value.first["lottery_date_id"]);
+        logger.f(lotteryDateDocument.data);
         final lotteryDate = CommonFn.parseDMY(
             DateTime.parse(lotteryDateDocument.data["datetime"]).toLocal());
         String lottery = lotteryByDate.value.first["lottery"].first as String;
@@ -777,7 +831,7 @@ class AppWriteController extends GetxController {
       return lotteryHistoryList;
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(message: "$e");
+      // Get.rawSnackbar(message: "$e");
       return null;
     }
   }
@@ -862,24 +916,56 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<Map?> verifyPasscode(String passcode, String userId) async {
+  Future<ResponseVerifyPasscode?> verifyPasscode(
+      String passcode, String userId) async {
     try {
       // final userIdInAppwriteSDK = await user.then((value) => value.$id);
       // final token = await getCredential();
       // logger.d("token: $token");
-      final appToken = await StorageController.to.getAppToken();
+      logger.d("verify passcode !!!");
+      final appToken = await getAppJWT();
       final dio = Dio();
+      final url = "${AppConst.apiUrl}/user/passcode/verify";
+      final payload = {
+        "passcode": passcode,
+        "userId": userId,
+      };
+      logger.d(url);
+      logger.d(payload);
       final response = await dio.post(
-        "${AppConst.apiUrl}/user/passcode/verify",
-        data: {
-          "passcode": passcode,
-          "userId": userId,
-        },
+        url,
+        data: payload,
         options: Options(headers: {
           "Authorization": "Bearer $appToken",
         }),
       );
-      return response.data;
+      logger.d(response.data);
+      return ResponseVerifyPasscode.fromJson(response.data);
+      // } catch (e) {
+      //   logger.e("$e");
+      //   return null;
+      // }
+    } on DioException catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        logger.e(e.response?.headers);
+        logger.e(e.response?.requestOptions);
+        try {
+          return ResponseVerifyPasscode.fromJson(e.response?.data);
+        } catch (e) {
+          logger.e("$e");
+          return null;
+        }
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        logger.e(e.requestOptions);
+        logger.e(e.message);
+      }
+      return null;
     } catch (e) {
       logger.e("$e");
       return null;
@@ -895,6 +981,7 @@ class AppWriteController extends GetxController {
     String address,
     DateTime birthDate,
     TimeOfDay? birthTime,
+    Gender gender,
   ) async {
     try {
       logger.d("signUp");
@@ -909,6 +996,7 @@ class AppWriteController extends GetxController {
         "birthDate": birthDate.toIso8601String(),
         "birthTime":
             birthTime == null ? null : CommonFn.parseTimeOfDayToHMS(birthTime),
+        "gender": gender,
       });
       logger.d("response: ${response.data}");
       if (response.data["status"] == false) {
@@ -921,11 +1009,47 @@ class AppWriteController extends GetxController {
     }
   }
 
+  Future<String> getAppJWT() async {
+    final appToken = await StorageController.to.getAppToken();
+    if (appToken == null) throw "app token is empty";
+    if (appToken.expire
+        .isBefore(DateTime.now().add(const Duration(seconds: 30)))) {
+      // refresh token
+      logger.w("refresh token");
+      final appJWT = await refreshToken();
+      return appJWT.jwt;
+    }
+    return appToken.jwt;
+  }
+
+  Future<AppJWT> refreshToken() async {
+    final dio = Dio();
+    final jwt = JWT({
+      "token": AppConst.publicToken,
+    });
+    final secretKey = await StorageController.to.getSecretKey();
+    final token =
+        jwt.sign(SecretKey('$secretKey'), algorithm: JWTAlgorithm.HS384);
+    final response = await dio.post(
+      "${AppConst.apiUrl}/auth",
+      data: {
+        "appVersion": AppConst.appVersion,
+      },
+      options: Options(headers: {
+        "Authorization": "Bearer $token",
+      }),
+    );
+    if (response.data["jwt"] == null) {
+      throw "jwt not found";
+    }
+    await StorageController.to.setAppToken(response.data);
+    return AppJWT.fromJSON(response.data);
+  }
+
   Future<Map<String, dynamic>?> getToken(String phoneNumber) async {
     try {
       final dio = Dio();
-      final appToken = await StorageController.to.getAppToken();
-      logger.d("appToken: $appToken");
+      final jwt = await getAppJWT();
       final response = await dio.post(
         // "${AppConst.cloudfareUrl}/sign-in",
         "${AppConst.apiUrl}/user/sign-in",
@@ -933,7 +1057,7 @@ class AppWriteController extends GetxController {
           "phoneNumber": phoneNumber,
         },
         options: Options(headers: {
-          "Authorization": "Bearer $appToken",
+          "Authorization": "Bearer $jwt",
         }),
       );
       final Map<String, dynamic>? token = response.data;
@@ -961,10 +1085,6 @@ class AppWriteController extends GetxController {
         try {
           final error = jsonDecode(e.response?.data['message']);
           logger.e(error);
-          if (error['message'] == "jwt expired" ||
-              (error['message'] as String).contains("jwt expired")) {
-            await getAuthToken();
-          }
         } catch (e) {
           return null;
         }
@@ -973,6 +1093,7 @@ class AppWriteController extends GetxController {
         logger.e(e.requestOptions);
         logger.e(e.message);
       }
+      return null;
     }
   }
 
@@ -986,7 +1107,6 @@ class AppWriteController extends GetxController {
       await createTarget();
       final storageController = StorageController.to;
       storageController.setSessionId(session.$id);
-      await FirebaseMessagingController.to.getToken();
       return session;
     } on Exception catch (e) {
       logger.e(e);
@@ -1007,7 +1127,6 @@ class AppWriteController extends GetxController {
           },
         ),
       );
-      logger.d(response.data['promotionList']);
       return response.data['promotionList'];
     } catch (e) {
       logger.e("$e");
@@ -1065,7 +1184,7 @@ class AppWriteController extends GetxController {
     try {
       Get.put<StorageController>(StorageController());
       await StorageController.to.setSecretKey(AppConst.secret);
-      getAuthToken();
+      getAuthJWTToken();
     } catch (e) {
       logger.e("$e");
     }
@@ -1106,7 +1225,7 @@ class AppWriteController extends GetxController {
   Future<Map> changePasscode(String passcode, String userId) async {
     try {
       final dio = Dio();
-      final appToken = await StorageController.to.getAppToken();
+      final jwt = await getAppJWT();
       final response = await dio.post(
         '${AppConst.apiUrl}/user/passcode/change-passcode',
         data: {
@@ -1114,7 +1233,7 @@ class AppWriteController extends GetxController {
           "userId": userId,
         },
         options: Options(headers: {
-          'Authorization': 'Bearer $appToken',
+          'Authorization': 'Bearer $jwt',
         }),
       );
       logger.d(response.data);
@@ -1138,6 +1257,7 @@ class AppWriteController extends GetxController {
         collectionId: USER_POINT,
         queries: [
           Query.equal("userId", userId),
+          Query.orderDesc("\$createdAt"),
         ],
       );
       logger.d(userPointDocumentList.total);
@@ -1189,6 +1309,107 @@ class AppWriteController extends GetxController {
 
     // final file = File($id: );
     // file.writeAsBytesSync(bytes);
+  }
+
+  Future<Uint8List?> getProfileImage(String fileId) async {
+    try {
+      final fileStorage = await storage.getFilePreview(
+        bucketId: "user_images",
+        fileId: fileId,
+        width: 720,
+        // height: 100,
+        quality: 80,
+        rotation: 0,
+      );
+      final image = img.decodeImage(fileStorage);
+      final orientedImage = img.bakeOrientation(image!);
+      final fixedImageData = Uint8List.fromList(img.encodePng(orientedImage));
+      return fixedImageData;
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<String?> changeProfileImage(String path) async {
+    try {
+      // final userId = await user.then((e) => e.$id);
+      final user = await getUserApp();
+      if (user == null) throw "User not found";
+      if (user.profile != null && user.profile != "") {
+        final fileId = user.profile!.split(":").last;
+        await storage.deleteFile(
+          bucketId: 'user_images',
+          fileId: fileId,
+        );
+      }
+      final fileData = await storage.createFile(
+        bucketId: 'user_images',
+        // fileId: ID.unique(),
+        fileId: user.userId,
+        file: InputFile.fromPath(path: path),
+      );
+      final profile = "user_images:${fileData.$id}";
+      await databases.updateDocument(
+        databaseId: _databaseName,
+        collectionId: USER,
+        documentId: user.userId,
+        data: {"profile": profile},
+      );
+      return profile;
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<Document?> changeName(String firstName, String lastName) async {
+    try {
+      final userId = await user.then((e) => e.$id);
+      return await databases.updateDocument(
+        databaseId: _databaseName,
+        collectionId: USER,
+        documentId: userId,
+        data: {
+          "firstname": firstName,
+          "lastname": lastName,
+        },
+      );
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<Document?> changeBirth(DateTime birthDate, String birthTime) async {
+    try {
+      final userId = await user.then((e) => e.$id);
+      return await databases.updateDocument(
+        databaseId: _databaseName,
+        collectionId: USER,
+        documentId: userId,
+        data: {
+          "birthDate": birthDate.toString(),
+          "birthTime": birthTime,
+        },
+      );
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<DocumentList?> getQuota() async {
+    try {
+      final quotaDocumentList = databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: QUOTAS,
+      );
+      return quotaDocumentList;
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
   }
 
   @override

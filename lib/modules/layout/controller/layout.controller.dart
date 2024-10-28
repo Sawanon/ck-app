@@ -9,6 +9,7 @@ import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/no_network_dialog.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
+import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.page.dart';
 import 'package:lottery_ck/modules/history/controller/history.controller.dart';
 import 'package:lottery_ck/modules/history/view/history.dart';
@@ -51,10 +52,13 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   }
 
   Future<bool> requestBioMetrics() async {
+    logger.d("request bio");
+    logger.d("isUsedBiometrics :$isUsedBiometrics");
     if (isUsedBiometrics) {
       return true;
     }
     bool isEnable = await CommonFn.requestBiometrics();
+    logger.d("isEnable: $isEnable");
     if (!isEnable) {
       await Get.dialog(
         PinVerifyPage(),
@@ -77,6 +81,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   }
 
   Widget currentPage(TabApp tab) {
+    logger.d("current tab change :$tab");
     switch (tab) {
       case TabApp.home:
         return const HomePage();
@@ -178,34 +183,20 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   }
 
   void removePaddingBottom() {
-    logger.d("removePaddingBottom");
+    // logger.d("removePaddingBottom");
     bottomPadding = 0;
     update();
   }
 
   void resetPaddingBottom() {
-    logger.d("resetPaddingBottom");
+    // logger.d("resetPaddingBottom");
     bottomPadding = 74;
     update();
   }
 
-  Future<void> checkUserLogin() async {
-    try {
-      logger.d("start");
-      await AppWriteController.to.user;
-      logger.d("end");
-      isUserLogined = true;
-    } catch (e) {
-      isUserLogined = false;
-    }
-  }
-
   void intialApp() async {
     try {
-      await AppWriteController.to.user;
-      isUserLogined = true;
-      // HistoryController.to.setup();
-      // SettingController.to.beforeSetup();
+      await checkUser();
     } catch (e) {
       logger.e("$e");
       Get.rawSnackbar(message: "$e");
@@ -227,14 +218,16 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
     });
   }
 
-  void checkUser() async {
+  Future<void> checkUser() async {
     try {
       logger.d("checkUser");
-      final user = await AppWriteController.to.user;
-      logger.d("user.phone: ${user.phone}");
       userApp = await AppWriteController.to.getUserApp();
+      if (userApp == null) {
+        throw "userApp is null";
+      }
+      isUserLogined = true;
     } catch (e) {
-      logger.d("log out auto");
+      logger.e("log out auto");
       SettingController.to.logout();
     }
   }
@@ -245,13 +238,13 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
     checkUser();
     listenNetworkEvents();
     WidgetsBinding.instance.addObserver(this);
-    checkUserLogin();
   }
 
   @override
   void onClose() {
     WidgetsBinding.instance.removeObserver(this);
     subscriptionNetwork?.cancel();
+    isUsedBiometrics = false;
     super.onClose();
   }
 
@@ -278,6 +271,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
       (event) {
         logger.w("biometrics timeout");
         isUsedBiometrics = false;
+        logger.d("isUsedBiometrics: $isUsedBiometrics");
         useBiometricsTimeout = null;
         changeTab(TabApp.home);
       },
@@ -288,6 +282,13 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   void cancelCountdownBiometrics() {
     useBiometricsTimeout?.cancel();
     useBiometricsTimeout = null;
+  }
+
+  void onResume() async {
+    cancelCountdownBiometrics();
+    isBlur = false;
+    update();
+    BuyLotteryController.to.getQuota();
   }
 
   @override
@@ -306,9 +307,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
         break;
       case AppLifecycleState.resumed:
         // do something when back to app
-        cancelCountdownBiometrics();
-        isBlur = false;
-        update();
+        onResume();
         break;
       default:
         break;

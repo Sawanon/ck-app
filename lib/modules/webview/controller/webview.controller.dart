@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/res/constant.dart';
@@ -38,10 +40,16 @@ class CustomWebviewController extends GetxController {
   // ..loadRequest(Uri.parse("${AppConst.apiUrl}/verify"));
 
   void configWebview() async {
+    controllerWebview.addJavaScriptChannel(
+      "zinzae",
+      onMessageReceived: (data) {
+        logger.d(jsonEncode(data.message));
+      },
+    );
     if (argument['url'] != null) {
       logger.d(argument['url']);
       await controllerWebview.loadRequest(Uri.parse(argument['url']));
-      await Future.delayed(Duration(seconds: 1, milliseconds: 300)).then(
+      await Future.delayed(const Duration(seconds: 1, milliseconds: 300)).then(
         (value) {
           // controllerWebview.loadRequest(Uri.parse(argument['url']));
           isLoading = false;

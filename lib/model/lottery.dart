@@ -1,33 +1,49 @@
-import 'package:lottery_ck/utils.dart';
+enum BonusType { fix, percentage }
+
+enum DiscountType { fix, percentage }
 
 class Lottery {
   String lottery;
-  int price;
+  int amount;
   int lotteryType;
   String? id;
   int? bonus;
+  BonusType? bonusType;
+  int? discount;
+  DiscountType? discountType;
   int? totalAmount;
+  int quota;
 
   Lottery({
     required this.lottery,
-    required this.price,
+    required this.amount,
     required this.lotteryType,
     this.id,
     this.bonus,
     this.totalAmount,
+    required this.quota,
+    this.bonusType,
+    this.discount,
+    this.discountType,
   }) {
     if (lottery.isEmpty || lottery.length > 6) {
       throw "invalid lottery format";
     }
   }
 
+  int get price => quota;
+
   Lottery copyWith() => Lottery(
         lottery: lottery,
-        price: price,
+        amount: amount,
         lotteryType: lotteryType,
         id: id,
         bonus: bonus,
         totalAmount: totalAmount,
+        quota: quota,
+        bonusType: bonusType,
+        discount: discount,
+        discountType: discountType,
       );
 
   int get type => lottery.length;
@@ -52,11 +68,15 @@ class Lottery {
   static Lottery fromJson(Map json) {
     return Lottery(
       lottery: json['lottery'],
-      price: json['amount'],
+      amount: json['amount'],
       lotteryType: json['lotteryType'],
       id: json['\$id'],
       bonus: json['bonus'],
       totalAmount: json['totalAmount'],
+      quota: json['quota'],
+      bonusType: json['bonusType'],
+      discount: json['discount'],
+      discountType: json['discountType'],
     );
   }
 
@@ -65,8 +85,10 @@ class Lottery {
         "lottery": lottery,
         ...toDigit(),
         "lotteryType": type,
-        "amount": price,
+        "amount": amount,
         "bonus": bonus,
         "totalAmount": totalAmount,
+        "quota": quota,
+        "discount": discount,
       };
 }

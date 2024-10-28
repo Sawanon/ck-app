@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/mmoney/controller/confirm_otp.controller.dart';
+import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:pinput/pinput.dart';
 
@@ -54,6 +58,15 @@ class MonneyConfirmOTP extends StatelessWidget {
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
                         color: AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Center(
+                      child: Text(
+                        "OTP REF: ${controller.otpRefCode ?? "-"}",
+                        style: TextStyle(
+                          color: AppColors.secodaryText,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -143,14 +156,19 @@ class MonneyConfirmOTP extends StatelessWidget {
                       );
                     }),
                     const SizedBox(height: 16),
-                    Obx(
-                      () => Align(
+                    Obx(() {
+                      if (BuyLotteryController
+                              .to.invoiceRemainExpire.value.inSeconds <=
+                          0) {
+                        controller.enableResendOTP();
+                      }
+                      return Align(
                         alignment: Alignment.center,
                         child: Text(
-                          "ກະລຸນາລໍຖ້າ ${controller.remainingTime.value.inSeconds} ວິນາທີ",
+                          "${AppLocale.pleaseWait.getString(context)} ${BuyLotteryController.to.invoiceRemainExpire.value.inMinutes.remainder(60).toString().padLeft(2, "0")} ${AppLocale.minute.getString(context)} ${BuyLotteryController.to.invoiceRemainExpire.value.inSeconds.remainder(60).toString().padLeft(2, "0")} ${AppLocale.second.getString(context)}",
                         ),
-                      ),
-                    ),
+                      );
+                    }),
                   ],
                 ),
               ),

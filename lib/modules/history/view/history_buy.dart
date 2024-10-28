@@ -87,7 +87,6 @@ class HistoryBuyPage extends StatelessWidget {
                               : controller.historyList)
                           .map(
                         (history) {
-                          // TODO:
                           return Container(
                             margin: const EdgeInsets.only(
                                 left: 8, right: 8, top: 8),
@@ -165,7 +164,7 @@ class HistoryBuyPage extends StatelessWidget {
                                               ),
                                               const SizedBox(height: 4),
                                               Text(
-                                                'ລະຫັດໃບເກັບເງິນຫວຍ: ${history.invoiceId}',
+                                                'ລະຫັດໃບເກັບເງິນຫວຍ: ${history.billId}',
                                                 style: const TextStyle(
                                                   fontSize: 12,
                                                 ),
@@ -173,8 +172,7 @@ class HistoryBuyPage extends StatelessWidget {
                                             ],
                                           ),
                                           Text(
-                                            CommonFn.parseMoney(
-                                                history.totalAmount),
+                                            CommonFn.parseMoney(history.amount),
                                             style: TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,

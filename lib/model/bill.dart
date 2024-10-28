@@ -8,7 +8,8 @@ class Bill {
   String lotteryDateStr;
   List<Lottery> lotteryList;
   String totalAmount;
-  String invoiceId;
+  int amount;
+  String billId;
   String bankName;
   String customerId;
 
@@ -20,7 +21,8 @@ class Bill {
     required this.lotteryDateStr,
     required this.lotteryList,
     required this.totalAmount,
-    required this.invoiceId,
+    required this.amount,
+    required this.billId,
     required this.bankName,
     required this.customerId,
   });

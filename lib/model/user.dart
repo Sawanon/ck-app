@@ -8,6 +8,9 @@ class UserApp {
   String userId;
   DateTime birthDate;
   String? birthTime;
+  int? topupPoint;
+  int point;
+  String? profile;
 
   UserApp({
     required this.firstName,
@@ -19,6 +22,9 @@ class UserApp {
     required this.userId,
     required this.birthDate,
     this.birthTime,
+    this.topupPoint,
+    required this.point,
+    this.profile,
   });
 
   static UserApp fromJson(Map json) {
@@ -32,6 +38,9 @@ class UserApp {
       userId: json['userId'] as String,
       birthDate: DateTime.parse(json['birthDate'] as String),
       birthTime: json['birthTime'] as String?,
+      topupPoint: json['topup_point'] as int?,
+      point: json['point'] as int,
+      profile: json['profile'] as String?,
     );
   }
 

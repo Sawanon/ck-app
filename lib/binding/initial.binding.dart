@@ -18,6 +18,7 @@ import 'package:lottery_ck/modules/network/controller/network.controller.dart';
 import 'package:lottery_ck/modules/notification/controller/news.controller.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
 import 'package:lottery_ck/modules/notification/controller/promotion.controller.dart';
+import 'package:lottery_ck/modules/notification/controller/promotion_point_detail.controller.dart';
 import 'package:lottery_ck/modules/otp/controller/otp.controller.dart';
 import 'package:lottery_ck/modules/payment/controller/confirm_payment.controller.dart';
 import 'package:lottery_ck/modules/pin/controller/change_passcode.controller.dart';
@@ -69,6 +70,9 @@ class LayoutBindings extends Bindings {
     Get.put<NotificationController>(NotificationController());
     Get.lazyPut<NewsController>(() => NewsController(), fenix: true);
     Get.lazyPut<PromotionController>(() => PromotionController(), fenix: true);
+    Get.lazyPut<PromotionPointDetailController>(
+        () => PromotionPointDetailController(),
+        fenix: true);
     Get.lazyPut<WinBillContoller>(() => WinBillContoller(), fenix: true);
     Get.put<LotteryHistoryController>(LotteryHistoryController());
     Get.lazyPut<HistoryController>(() => HistoryController(), fenix: true);

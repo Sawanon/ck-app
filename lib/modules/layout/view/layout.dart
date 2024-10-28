@@ -28,112 +28,114 @@ class LayoutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<LayoutController>(builder: (controller) {
-      if (controller.noNetwork) {
-        return NoNetworkDialog(identifier: 'identifier');
-      }
-      if (controller.isBlur) {
-        return BlurApp(identifier: 'identifier');
-      }
-      return PopScope(
-        canPop: false,
-        onPopInvoked: (didPop) {
-          logger.w("didPop: $didPop");
-          if (didPop) {}
-          Get.dialog(
-            Center(
-              child: Material(
-                color: Colors.transparent,
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 16),
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການອອກຈາກແອັບ?",
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Expanded(
-                            child: LongButton(
-                              // maximumSize: Size(width, height),
-                              onPressed: () {
-                                Get.back();
-                              },
-                              child: Text(
-                                "ຍົກເລີກ",
-                              ),
-                            ),
+    return GetBuilder<LayoutController>(
+      builder: (controller) {
+        if (controller.noNetwork) {
+          return NoNetworkDialog(identifier: 'identifier');
+        }
+        if (controller.isBlur) {
+          return BlurApp(identifier: 'identifier');
+        }
+        return PopScope(
+          canPop: false,
+          onPopInvoked: (didPop) {
+            logger.w("didPop: $didPop");
+            if (didPop) {}
+            Get.dialog(
+              Center(
+                child: Material(
+                  color: Colors.transparent,
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 16),
+                    padding: EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການອອກຈາກແອັບ?",
+                          style: TextStyle(
+                            fontSize: 16,
                           ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: LongButton(
-                              backgroundColor: Colors.white,
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: AppColors.errorBorder,
-                              ),
-                              onPressed: () {
-                                Get.back();
-                                SystemNavigator.pop();
-                              },
-                              child: Text(
-                                "ອອກ",
-                                style: TextStyle(
-                                  color: AppColors.errorBorder,
+                        ),
+                        const SizedBox(height: 16),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Expanded(
+                              child: LongButton(
+                                // maximumSize: Size(width, height),
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                child: Text(
+                                  "ຍົກເລີກ",
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: LongButton(
+                                backgroundColor: Colors.white,
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: AppColors.errorBorder,
+                                ),
+                                onPressed: () {
+                                  Get.back();
+                                  SystemNavigator.pop();
+                                },
+                                child: Text(
+                                  "ອອກ",
+                                  style: TextStyle(
+                                    color: AppColors.errorBorder,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            useSafeArea: true,
-          );
-        },
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          resizeToAvoidBottomInset: false,
-          body: SafeArea(
-            top: false,
-            child: Stack(
-              children: [
-                Container(
-                  clipBehavior: Clip.hardEdge,
-                  padding: EdgeInsets.only(bottom: controller.bottomPadding),
-                  decoration: BoxDecoration(
-                    color: Colors.transparent,
+              useSafeArea: true,
+            );
+          },
+          child: Scaffold(
+            backgroundColor: Colors.white,
+            resizeToAvoidBottomInset: false,
+            body: SafeArea(
+              top: false,
+              child: Stack(
+                children: [
+                  Container(
+                    clipBehavior: Clip.hardEdge,
+                    padding: EdgeInsets.only(bottom: controller.bottomPadding),
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                    ),
+                    child: controller.currentPage(controller.currentTab),
+                    // child: pages[controller.tabIndex],
+                    // child: Text('${controller.tabIndex}'),
                   ),
-                  child: controller.currentPage(controller.currentTab),
-                  // child: pages[controller.tabIndex],
-                  // child: Text('${controller.tabIndex}'),
-                ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: CustomNavigationBar(
-                    currentTab: controller.currentTab,
-                    onChangeTab: controller.changeTab,
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: CustomNavigationBar(
+                      currentTab: controller.currentTab,
+                      onChangeTab: controller.changeTab,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }

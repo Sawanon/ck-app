@@ -3,6 +3,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:lottery_ck/components/gender_radio.dart';
 import 'package:lottery_ck/modules/signup/controller/signup.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -75,16 +76,24 @@ class SignupPage extends StatelessWidget {
                             key: controller.keyForm,
                             child: Column(
                               children: [
-                                const Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'ຊື່',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.textPrimary,
+                                Row(
+                                  children: [
+                                    Text(
+                                      AppLocale.firstName.getString(context),
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.textPrimary,
+                                      ),
                                     ),
-                                  ),
+                                    const SizedBox(width: 4),
+                                    const Text(
+                                      "*",
+                                      style: TextStyle(
+                                        color: AppColors.errorBorder,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 const SizedBox(height: 4),
                                 TextFormField(
@@ -130,16 +139,24 @@ class SignupPage extends StatelessWidget {
                                   },
                                 ),
                                 const SizedBox(height: 16),
-                                const Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'ນາມສະກຸນ',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.textPrimary,
+                                Row(
+                                  children: [
+                                    Text(
+                                      AppLocale.lastName.getString(context),
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.textPrimary,
+                                      ),
                                     ),
-                                  ),
+                                    const SizedBox(width: 4),
+                                    const Text(
+                                      "*",
+                                      style: TextStyle(
+                                        color: AppColors.errorBorder,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 const SizedBox(height: 4),
                                 TextFormField(
@@ -185,16 +202,50 @@ class SignupPage extends StatelessWidget {
                                   },
                                 ),
                                 const SizedBox(height: 16),
-                                const Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'ວັນເດືອນປີເກີດ',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.textPrimary,
+                                Row(
+                                  children: [
+                                    Text(
+                                      AppLocale.gender.getString(context),
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.textPrimary,
+                                      ),
                                     ),
-                                  ),
+                                    const SizedBox(width: 4),
+                                    const Text(
+                                      "*",
+                                      style: TextStyle(
+                                        color: AppColors.errorBorder,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 4),
+                                GenderRadio(
+                                  onChange: (gender) {
+                                    controller.changeGender(gender);
+                                  },
+                                ),
+                                const SizedBox(height: 16),
+                                Row(
+                                  children: [
+                                    Text(
+                                      AppLocale.birthDate.getString(context),
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.textPrimary,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    const Text(
+                                      "*",
+                                      style: TextStyle(
+                                        color: AppColors.errorBorder,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 const SizedBox(height: 4),
                                 GestureDetector(
@@ -229,11 +280,11 @@ class SignupPage extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(height: 16),
-                                const Align(
+                                Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'ວັນເດືອນປີເກີດ',
-                                    style: TextStyle(
+                                    AppLocale.birthTime.getString(context),
+                                    style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.textPrimary,
@@ -280,40 +331,22 @@ class SignupPage extends StatelessWidget {
                                 const SizedBox(height: 16),
                                 Row(
                                   children: [
-                                    SizedBox(
-                                      width: 24,
-                                      height: 24,
-                                      child: Checkbox(
-                                        value: controller.unknowBirthTime,
-                                        onChanged: (value) {
-                                          if (value == null) return;
-                                          controller
-                                              .changeUnknownBirthTime(value);
-                                        },
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
                                     Text(
-                                      AppLocale.unknownTimeOfBirth
-                                          .getString(context),
-                                      style: TextStyle(
+                                      AppLocale.address.getString(context),
+                                      style: const TextStyle(
                                         fontSize: 14,
+                                        fontWeight: FontWeight.w700,
                                         color: AppColors.textPrimary,
                                       ),
                                     ),
-                                  ],
-                                ),
-                                const SizedBox(height: 16),
-                                const Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'ທີ່ຢູ່',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: AppColors.textPrimary,
+                                    const SizedBox(width: 4),
+                                    const Text(
+                                      "*",
+                                      style: TextStyle(
+                                        color: AppColors.errorBorder,
+                                      ),
                                     ),
-                                  ),
+                                  ],
                                 ),
                                 const SizedBox(height: 4),
                                 TextFormField(

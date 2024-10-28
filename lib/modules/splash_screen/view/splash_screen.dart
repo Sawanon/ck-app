@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/splash_screen/controller/splash_screen.controller.dart';
+import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/logo.dart';
 import 'package:lottery_ck/utils.dart';
 
@@ -15,6 +16,7 @@ class SplashScreenPage extends StatelessWidget {
       },
       builder: (controller) {
         return Scaffold(
+          backgroundColor: Colors.white,
           body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -26,6 +28,13 @@ class SplashScreenPage extends StatelessWidget {
                   height: 40,
                 ),
                 const SizedBox(height: 16),
+                Text(
+                  "v.1.2.0+31",
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
               ],
             ),
           ),

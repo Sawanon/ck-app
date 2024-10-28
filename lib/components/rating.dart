@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
@@ -49,7 +51,8 @@ class _RatingComponentState extends State<RatingComponent> {
         children: [
           Center(
             child: Text(
-              'แนะนำบริการ',
+              // 'แนะนำบริการ',
+              AppLocale.feedback.getString(context),
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
@@ -112,8 +115,6 @@ class _RatingComponentState extends State<RatingComponent> {
               borderRadius: BorderRadius.circular(16),
               child: InkWell(
                 onTap: () {
-                  // _settingViewModel.submitFeedback(context);
-                  logger.d("submit ");
                   widget.onSubmit(_rating, _comment);
                 },
                 child: Container(
@@ -121,7 +122,7 @@ class _RatingComponentState extends State<RatingComponent> {
                   width: MediaQuery.of(context).size.width,
                   height: 52,
                   child: Text(
-                    'ตกลง',
+                    AppLocale.confirm.getString(context),
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,

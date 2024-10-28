@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
-import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:lottery_ck/model/lottery.dart';
 import 'package:intl/intl.dart';
@@ -10,7 +9,8 @@ import 'package:lottery_ck/utils.dart';
 
 class CommonFn {
   static String parseDMY(DateTime datetime) {
-    return "${datetime.day.toString().padLeft(2, '0')}-${datetime.month.toString().padLeft(2, '0')}-${datetime.year}";
+    final parseTimeZome = datetime.toLocal();
+    return "${parseTimeZome.day.toString().padLeft(2, '0')}-${parseTimeZome.month.toString().padLeft(2, '0')}-${datetime.year}";
   }
 
   static String parseYMD(DateTime datetime) {
@@ -22,12 +22,12 @@ class CommonFn {
   }
 
   static String parseTimeOfDayToHMS(TimeOfDay timeOfDay) {
-    return '${timeOfDay.hour}:${timeOfDay.minute}';
+    return '${timeOfDay.hour.toString().padLeft(2, '0')}:${timeOfDay.minute.toString().padLeft(2, '0')}';
   }
 
   static int calculateTotalPrice(List<Lottery> lotteryList) {
     return lotteryList.fold(
-        0, (previousValue, element) => previousValue + element.price);
+        0, (previousValue, element) => previousValue + element.amount);
   }
 
   static String parseMoney(int money) {
@@ -117,7 +117,7 @@ class CommonFn {
     return false;
   }
 
-  static parseCollectionToDate(String ymd) {
+  static String parseCollectionToDate(String ymd) {
     final dateStrYMD = ymd.split("_").first;
     final dateStr =
         "${dateStrYMD.substring(6, 8)}-${dateStrYMD.substring(4, 6)}-${dateStrYMD.substring(0, 4)}";

@@ -8,6 +8,8 @@ import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:lottery_ck/utils/theme.dart';
 
 Color checkWin(String buyNumber, String winNumber) {
+  logger.d("buyNumber: $buyNumber");
+  logger.d("winNumber: $winNumber");
   final cutNumber = winNumber.substring(winNumber.length - buyNumber.length);
   // print('buyNumber: $buyNumber, winNumber: $winNumber, cutNumber: $cutNumber');
   if (cutNumber == buyNumber) {
@@ -94,6 +96,9 @@ class HistoryWinPage extends StatelessWidget {
                       return GestureDetector(
                         onTap: () {
                           // TODO: hard code
+                          logger.d(
+                              controller.winInvoice[index]['\$collectionId']);
+                          return;
                           controller.openWinDetail(
                               controller.winInvoice[index]["\$id"], "20240905");
                         },
@@ -194,7 +199,7 @@ class HistoryWinPage extends StatelessWidget {
                                           'วันที่ ${CommonFn.parseDMY(DateTime.parse(controller.winInvoice[index]["\$createdAt"]))} เวลาซื้อ ${CommonFn.parseHMS(DateTime.parse(controller.winInvoice[index]["\$createdAt"]))}'),
                                       SizedBox(height: 4),
                                       Text(
-                                          'เลขที่บิลหวย: ${controller.winInvoice[index]["\$id"]}'),
+                                          'เลขที่บิลหวย: ${controller.winInvoice[index]["billId"]}'),
                                     ],
                                   ),
                                   Text(
@@ -227,11 +232,15 @@ class HistoryWinPage extends StatelessWidget {
                                               controller.findWinNumber(
                                                   controller.winInvoice[index]
                                                       ["transactionList"]);
+                                          logger.d("winNumber: $winNumber");
+                                          if (winNumber == null) {
+                                            return Text("-");
+                                          }
                                           return Container(
                                             decoration: BoxDecoration(
                                               color: checkWin(
                                                 transaction['lottery'],
-                                                winNumber!,
+                                                winNumber,
                                               ),
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(5)),

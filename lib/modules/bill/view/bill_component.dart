@@ -61,20 +61,28 @@ class BillComponent extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        AppLocale.buyerName.getString(context),
+                        // AppLocale.buyerName.getString(context),
+                        "${AppLocale.customerId.getString(context)}:",
                         style: TextStyle(
                           fontSize: 14,
                           color: AppColors.secondary,
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      Text(
-                        "${bill.firstName} ${bill.lastName}",
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.secondary,
-                        ),
-                      ),
+                      // Text(
+                      //   AppLocale.buyerName.getString(context),
+                      //   style: TextStyle(
+                      //     fontSize: 14,
+                      //     color: AppColors.secondary,
+                      //   ),
+                      // ),
+                      // const SizedBox(width: 8),
+                      // Text(
+                      //   "${bill.firstName} ${bill.lastName}",
+                      //   style: TextStyle(
+                      //     fontSize: 14,
+                      //     color: AppColors.secondary,
+                      //   ),
+                      // ),
                     ],
                   ),
                   Row(
@@ -103,7 +111,7 @@ class BillComponent extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        "849549394058694",
+                        bill.customerId.replaceAll("+", ""),
                         style: TextStyle(
                           fontSize: 14,
                           color: AppColors.secondary,
@@ -116,20 +124,20 @@ class BillComponent extends StatelessWidget {
                       //     color: AppColors.secondary,
                       //   ),
                       // ),
-                      const SizedBox(width: 8),
-                      Text(
-                        bill.phoneNumber,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: AppColors.secondary,
-                        ),
-                      ),
+                      // const SizedBox(width: 8),
+                      // Text(
+                      //   bill.phoneNumber,
+                      //   style: TextStyle(
+                      //     fontSize: 14,
+                      //     color: AppColors.secondary,
+                      //   ),
+                      // ),
                     ],
                   ),
                   Row(
                     children: [
                       Text(
-                        "ວັນທີ ",
+                        "ເວລາ ",
                         style: TextStyle(
                           fontSize: 14,
                           color: AppColors.secondary,
@@ -149,13 +157,27 @@ class BillComponent extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          Text(
-            "ງວດວັນທີี่ ${bill.lotteryDateStr}",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                "ງວດ: ${bill.lotteryDateStr}",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                "ອອກວັນທີี่ ${CommonFn.parseCollectionToDate(bill.lotteryDateStr)}",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 8),
           Container(
@@ -200,12 +222,21 @@ class BillComponent extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(lottery.lottery),
-                      Text(CommonFn.parseMoney(lottery.price)),
+                      Text(CommonFn.parseMoney(lottery.quota)),
                     ],
                   ),
                 );
               },
             ).toList(),
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Discount"),
+              Text(CommonFn.parseMoney(bill.lotteryList.fold(0,
+                  (prev, transaction) => prev + (transaction.discount ?? 0)))),
+            ],
           ),
           const SizedBox(height: 8),
           Container(
@@ -227,7 +258,7 @@ class BillComponent extends StatelessWidget {
               children: [
                 Text("ລວມເງິນ"),
                 Text(
-                  CommonFn.parseMoney(int.parse(bill.totalAmount)),
+                  CommonFn.parseMoney(bill.amount),
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
                     color: AppColors.primary,
@@ -238,7 +269,7 @@ class BillComponent extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            "ເລກທີບິນຫວຍ: ${bill.invoiceId}",
+            "ເລກທີບິນຫວຍ: ${bill.billId}",
             style: TextStyle(
               fontSize: 12,
             ),

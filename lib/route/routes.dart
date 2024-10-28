@@ -11,6 +11,7 @@ import 'package:lottery_ck/modules/login/view/login.dart';
 import 'package:lottery_ck/modules/mmoney/view/confirm_otp.dart';
 import 'package:lottery_ck/modules/notification/view/news.dart';
 import 'package:lottery_ck/modules/notification/view/promotion.dart';
+import 'package:lottery_ck/modules/notification/view/promotion_point_detail.dart';
 import 'package:lottery_ck/modules/otp/view/otp.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/modules/payment/view/confirm_payment_otp.dart';
@@ -20,6 +21,9 @@ import 'package:lottery_ck/modules/pin/view/change_pin.dart';
 import 'package:lottery_ck/modules/pin/view/pin.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
 import 'package:lottery_ck/modules/point/view/point.dart';
+import 'package:lottery_ck/modules/random/view/random.dart';
+import 'package:lottery_ck/modules/setting/view/change_birth.dart';
+import 'package:lottery_ck/modules/setting/view/change_name.dart';
 import 'package:lottery_ck/modules/setting/view/profile.dart';
 import 'package:lottery_ck/modules/setting/view/security.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
@@ -103,6 +107,11 @@ class AppRoutes {
           transition: Transition.rightToLeft,
         ),
         GetPage(
+          name: RouteName.promotionPoint,
+          page: () => PromotionPointDetailPage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
           name: RouteName.winbill,
           page: () => WinBillPage(),
           transition: Transition.rightToLeft,
@@ -155,6 +164,21 @@ class AppRoutes {
         GetPage(
           name: RouteName.wallpaper,
           page: () => WallpaperPage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.random,
+          page: () => RandomPage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.changeName,
+          page: () => ChangeNamePage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.changeBirth,
+          page: () => const ChangeBirthPage(),
           transition: Transition.rightToLeft,
         ),
       ];

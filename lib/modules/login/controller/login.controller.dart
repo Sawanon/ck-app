@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/couldflare/controller/cloudflare.controller.dart';
@@ -30,6 +31,24 @@ class LoginController extends GetxController {
   // TODO: for test only !! - sawanon:20240816
   RxBool disableLogin = true.obs;
   WebViewController? webviewController;
+
+  // void bypassLogin() async {
+  //   Map<String, dynamic>? token =
+  //       await AppWriteController.to.getToken('+8562055265064');
+  //   if (token == null) {
+  //     Get.dialog(
+  //       const DialogApp(
+  //         title: Text("Token is null"),
+  //         details: Text("Please try again"),
+  //         disableConfirm: true,
+  //       ),
+  //     );
+  //     return;
+  //   }
+  //   final session = await AppWriteController.to.createSession(token);
+  //   LayoutController.to.intialApp();
+  //   Get.offAllNamed(RouteName.layout);
+  // }
 
   Future<void> login() async {
     final valid = keyForm.currentState?.validate();
@@ -99,8 +118,6 @@ class LoginController extends GetxController {
               "enableForgetPasscode": true,
               "whenForgetPasscode": () async {
                 Get.rawSnackbar(message: "verify otp");
-                final appToken = await StorageController.to.getAppToken();
-                logger.d("appToken: $appToken");
                 Get.toNamed(RouteName.otp, arguments: {
                   "phoneNumber": phoneNumber,
                   "whenSuccess": () async {

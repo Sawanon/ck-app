@@ -51,6 +51,57 @@ mixin AppLocale {
       'ຍັງບໍ່ທັນມີການຈັບສະຫລາກເທື່ອຕໍ່ໄປ';
   static const String unpaid = 'ບໍ່ໄດ້ຈ່າຍ';
   static const String paid = 'ຈ່າຍແລ້ວ';
+  static const String birthTime = 'ເວລາເກີດ';
+  static const String open = 'ເປີດ';
+  static const String birthTimeHoroscope =
+      'ກະລຸນາໃສ່ວັນເດືອນປີເກີດຂອງທ່ານເພື່ອປະສົບການບອກໂຊກອັນຍິ່ງໃຫຍ່';
+  static const String feedback = 'ແນະນຳບໍລິການ';
+  static const String shareAppToYourFriend = 'ແນະນໍາໃຫ້ຫມູ່ເພື່ອນ';
+  static const String myScore = 'ຄະແນນຂອງຂ້ອຍ';
+  static const String security = 'ຄວາມປອດໄພ';
+  static const String luckyNumber = 'ເລກໂຊກດີ';
+  static const String randomTitle = 'ຕົວເລກທີ່ແນະນໍາສໍາລັບໂຊກຂອງທ່ານໃນມື້ນີ້';
+  static const String recomendNumber = 'ແນະນຳຕົວເລກ';
+  static const String animalNumber = "ນາມສັດ";
+  static const String smallFish = "ປານ້ອຍ";
+  static const String customerId = "ລະຫັດລູກຄ້າ";
+  static const String youWantChangeLanguage = "ທ່ານຕ້ອງການປ່ຽນພາສາ";
+  static const String laoLanguage = "ລາວ";
+  static const String thaiLanguage = "ໄທ";
+  static const String englishLanguage = "ອັງກິດ";
+  static const String enableBiometrics = "ເປີດໃຊ້ ຊີວະມິຕິ";
+  static const String biometricsDetail =
+      "ພວກເຮົາຈະນໍາໃຊ້ biometrics ໃຫ້ທ່ານເຂົ້າເຖິງຂໍ້ມູນທີ່ສໍາຄັນເຊັ່ນ: ປະຫວັດການຊື້, ການຕັ້ງຄ່າ, ການຊື້ຫວຍ";
+  static const String changePasscode = "ປ່ຽນ Passcode";
+  static const String news = "ຂ່າວ";
+  static const String promotion = "ໂປຣໂມຊັນ";
+  static const String buy = "ຊື້";
+  static const String pleaseEnterPrice = "ກະລຸນາລະບຸລາຄາ";
+  static const String purchaseNumber = "ໝາຍເລກສັ່ງຊື້";
+  static const String price = "ລາຄາ";
+  static const String confirmBuyLottery = "ສັ່ງປີ້ຫວຍ";
+  static const String bonus = "ໂບນັດ";
+  static const String passcodeInvalid = "Passcode ​ບໍ່​ຖືກ​ຕ້ອງ​";
+  static const String passcodeRemain = "ເຫຼືອ {} ເທື່ອ";
+  static const String passcodeTryAgainTime =
+      "ກະລຸນາລອງໃໝ່ພາຍຫຼັງ {minute} ນາທີ";
+  static const String blockMessage =
+      "ຕອນນີ້ເຈົ້າຖືກບລັອກເປັນເວລາ {minute} ນາທີ";
+  static const String pleaseWait = "ກະລຸນາລໍຖ້າ";
+  static const String pointRef = "ທີ່ມາຂອງຄະແນນ";
+  static const String quantity = "ຈໍານວນ";
+  static const String score = "ຄະແນນ";
+  static const String firstName = "ຊື່";
+  static const String lastName = "ນາມສະກຸນ";
+  static const String birthDate = "ວັນເດືອນປີເກີດ";
+  static const String address = "ທີ່ຢູ່";
+  static const String gender = "ເພດ";
+  static const String female = "ຜູ້ຍິງ";
+  static const String male = "ຜູ້ຊາຍ";
+  static const String pleaseEnterBirthDate = "ກະລຸນາເລືອກວັນເດືອນປີເກີດຂອງທ່ານ";
+  static const String pleaseChooseGender = "ກະລຸນາເລືອກເພດຂອງທ່ານ";
+  static const String disableLotteryType =
+      "ຕົວເລກ {lotteryType} ຕົວເລກຍັງບໍ່ມີ";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -102,6 +153,52 @@ mixin AppLocale {
     thereIsNoNextDrawYet: 'ຍັງບໍ່ທັນມີການຈັບສະຫລາກເທື່ອຕໍ່ໄປ',
     unpaid: 'ບໍ່ໄດ້ຈ່າຍ',
     paid: 'ຈ່າຍແລ້ວ',
+    birthTime: 'ເວລາເກີດ',
+    open: 'ເປີດ',
+    birthTimeHoroscope:
+        'ກະລຸນາໃສ່ວັນເດືອນປີເກີດຂອງທ່ານເພື່ອປະສົບການບອກໂຊກອັນຍິ່ງໃຫຍ່',
+    feedback: 'ແນະນຳບໍລິການ',
+    shareAppToYourFriend: 'ແນະນໍາໃຫ້ຫມູ່ເພື່ອນ',
+    myScore: 'ຄະແນນຂອງຂ້ອຍ',
+    security: 'ຄວາມປອດໄພ',
+    randomTitle: 'ຕົວເລກທີ່ແນະນໍາສໍາລັບໂຊກຂອງທ່ານໃນມື້ນີ້',
+    recomendNumber: 'ແນະນຳຕົວເລກ',
+    animalNumber: "ນາມສັດ",
+    customerId: "ລະຫັດລູກຄ້າ",
+    youWantChangeLanguage: "ທ່ານຕ້ອງການປ່ຽນພາສາ",
+    laoLanguage: "ລາວ",
+    thaiLanguage: "ໄທ",
+    englishLanguage: "ອັງກິດ",
+    enableBiometrics: "ເປີດໃຊ້ ຊີວະມິຕິ",
+    biometricsDetail:
+        "ພວກເຮົາຈະນໍາໃຊ້ biometrics ໃຫ້ທ່ານເຂົ້າເຖິງຂໍ້ມູນທີ່ສໍາຄັນເຊັ່ນ: ປະຫວັດການຊື້, ການຕັ້ງຄ່າ, ການຊື້ຫວຍ",
+    changePasscode: "ປ່ຽນ Passcode",
+    news: "ຂ່າວ",
+    promotion: "ໂປຣໂມຊັນ",
+    buy: "ຊື້",
+    pleaseEnterPrice: "ກະລຸນາລະບຸລາຄາ",
+    purchaseNumber: "ໝາຍເລກສັ່ງຊື້",
+    price: "ລາຄາ",
+    confirmBuyLottery: "ສັ່ງປີ້ຫວຍ",
+    bonus: "ໂບນັດ",
+    passcodeInvalid: "Passcode ​ບໍ່​ຖືກ​ຕ້ອງ​",
+    passcodeRemain: "ເຫຼືອ {remain} ເທື່ອ",
+    passcodeTryAgainTime: "ກະລຸນາລອງໃໝ່ພາຍຫຼັງ {minute} ນາທີ",
+    blockMessage: "ຕອນນີ້ເຈົ້າຖືກບລັອກເປັນເວລາ {minute} ນາທີ",
+    pleaseWait: "ກະລຸນາລໍຖ້າ",
+    pointRef: "ທີ່ມາຂອງຄະແນນ",
+    quantity: "ຈໍານວນ",
+    score: "ຄະແນນ",
+    firstName: "ຊື່",
+    lastName: "ນາມສະກຸນ",
+    birthDate: "ວັນເດືອນປີເກີດ",
+    address: "ທີ່ຢູ່",
+    gender: "ເພດ",
+    female: "ຜູ້ຍິງ",
+    male: "ຜູ້ຊາຍ",
+    pleaseEnterBirthDate: "ກະລຸນາເລືອກວັນເດືອນປີເກີດຂອງທ່ານ",
+    pleaseChooseGender: "ກະລຸນາເລືອກເພດຂອງທ່ານ",
+    disableLotteryType: "ຕົວເລກ {lotteryType} ຕົວເລກຍັງບໍ່ມີ",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -114,7 +211,7 @@ mixin AppLocale {
     lotteryResult: 'ผลหวย',
     animal: 'ตำรา',
     lotteryDateAt: 'งวดวันที่',
-    lotteryPredict: 'เลขเด็ด',
+    lotteryPredict: 'เลขมงคล',
     horoscopeToday: 'ดวงวันนี้',
     day: 'วัน',
     hour: 'ชั่วโมง',
@@ -153,6 +250,52 @@ mixin AppLocale {
     thereIsNoNextDrawYet: 'ยังไม่มีการจับรางวัลครั้งต่อไป',
     unpaid: 'ไม่ได้ชำระเงิน',
     paid: 'ชำระแล้ว',
+    birthTime: 'เวลาเกิด',
+    open: 'เปิด',
+    birthTimeHoroscope:
+        'กรุณากรอกวันเกิดของคุณเพื่อรับประสบการณ์ทำนายดวงชะตาที่ยอดเยี่ยม',
+    feedback: 'ข้อเสนอแนะ',
+    shareAppToYourFriend: 'แนะนำเพื่อน',
+    myScore: 'คะแนนของฉัน',
+    security: 'ความปลอดภัย',
+    randomTitle: 'เลขแนะนำให้โชคลาภประจำวันนี้ของท่าน',
+    recomendNumber: 'แนะนำตัวเลข',
+    animalNumber: "ตำราสัตว์",
+    customerId: "รหัสลูกค้า",
+    youWantChangeLanguage: "คุณต้องการเปลี่ยนภาษา",
+    laoLanguage: "ลาว",
+    thaiLanguage: "ไทย",
+    englishLanguage: "อังกฤษ",
+    enableBiometrics: "เปิดใช้งานไบโอเมตริกซ์",
+    biometricsDetail:
+        "เราจะใช้ไบโอเมตริกซ์เพื่อให้คุณสามารถเข้าถึงข้อมูลที่สำคัญ เช่น ประวัติการซื้อ การตั้งค่า การซื้อลอตเตอรี",
+    changePasscode: "เปลี่ยน Passcode",
+    news: "ข่าว",
+    promotion: "โปรโมชั่น",
+    buy: "ซื้อ",
+    pleaseEnterPrice: "กรุณาระบุราคา",
+    purchaseNumber: "เลขที่ซื้อ",
+    price: "ราคา",
+    confirmBuyLottery: "สั่งซื้อหวย",
+    bonus: "โบนัส",
+    passcodeInvalid: "Passcode ไม่ถูกต้อง",
+    passcodeRemain: "เหลืออีก {remain} ครั้ง",
+    passcodeTryAgainTime: "โปรดลองอีกครั้งหลังจาก {minute} นาที",
+    blockMessage: "ขณะนี้คุณถูกบล็อคเป็นเวลา {minute} นาที",
+    pleaseWait: "โปรดรอ",
+    pointRef: "ที่มาของคะแนน",
+    quantity: "จำนวน",
+    score: "คะแนน",
+    firstName: "ชื่อ",
+    lastName: "นามสกุล",
+    birthDate: "วันเดือนปีเกิด",
+    address: "ที่อยู่",
+    gender: "เพศ",
+    female: "ผู้หญิง",
+    male: "ผู้ชาย",
+    pleaseEnterBirthDate: "กรุณาเลือกวันเกิดของคุณ",
+    pleaseChooseGender: "กรุณาเลือกเพศของคุณ",
+    disableLotteryType: "เลข {lotteryType} ตัวยังไม่เปิดให้บริการ",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -165,7 +308,7 @@ mixin AppLocale {
     lotteryResult: 'Lottery result',
     animal: 'Animal',
     lotteryDateAt: 'lottery date',
-    lotteryPredict: 'Lottery predict',
+    lotteryPredict: 'Lucky number',
     horoscopeToday: 'Today horoscope',
     day: 'Day',
     hour: 'Hour',
@@ -205,5 +348,51 @@ mixin AppLocale {
     thereIsNoNextDrawYet: 'There is no next draw yet.',
     unpaid: 'Unpaid',
     paid: 'Paid',
+    birthTime: 'Birth time',
+    open: 'Open',
+    birthTimeHoroscope:
+        'Please enter your birth date to get the best fortune telling experience.',
+    feedback: 'Feedback',
+    shareAppToYourFriend: 'Recommend to my friends',
+    myScore: 'My score',
+    security: 'Security',
+    randomTitle: 'Your lucky number for today',
+    recomendNumber: 'Recomend number',
+    animalNumber: "Animal number",
+    customerId: "Customer ID",
+    youWantChangeLanguage: "You want to change the language",
+    laoLanguage: "Lao",
+    thaiLanguage: "Thai",
+    englishLanguage: "English",
+    enableBiometrics: "Enable Biometrics",
+    biometricsDetail:
+        "We will use biometrics to give you access to important information such as purchase history, settings, lottery purchases",
+    changePasscode: "Change passcode",
+    news: "News",
+    promotion: "Promotion",
+    buy: "Buy",
+    pleaseEnterPrice: "Please specify the price.",
+    purchaseNumber: "Purchase number",
+    price: "Price",
+    confirmBuyLottery: "Confirm buy lottery",
+    bonus: "Bonus",
+    passcodeInvalid: "Passcode is invalid",
+    passcodeRemain: "{remain} more times left",
+    passcodeTryAgainTime: "Please try again after {minute} minutes.",
+    blockMessage: "You are currently blocked for {minute} minutes.",
+    pleaseWait: "Please wait",
+    pointRef: "Source of scores",
+    quantity: "Quantity",
+    score: "Score",
+    firstName: "First name",
+    lastName: "Last name",
+    birthDate: "Birth date",
+    address: "Address",
+    gender: "Gender",
+    female: "Female",
+    male: "Male",
+    pleaseEnterBirthDate: "Please select your birth date",
+    pleaseChooseGender: "Please choose your gender",
+    disableLotteryType: "The {lotteryType}-digit number is not yet available",
   };
 }

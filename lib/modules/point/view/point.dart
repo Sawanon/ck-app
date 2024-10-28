@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/point/controller/point.controller.dart';
+import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 
@@ -101,6 +104,7 @@ class PointPage extends StatelessWidget {
                             ),
                           ),
                           child: Container(
+                            clipBehavior: Clip.hardEdge,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(60),
@@ -108,6 +112,12 @@ class PointPage extends StatelessWidget {
                             child: Builder(
                               builder: (context) {
                                 // if (avatar == '') {
+                                final profileImage =
+                                    SettingController.to.profileByte.value;
+                                if (profileImage != null) {
+                                  return Image.memory(profileImage,
+                                      fit: BoxFit.cover);
+                                }
                                 return Icon(
                                   Icons.person,
                                   color: AppColors.primary,
@@ -141,26 +151,26 @@ class PointPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'name',
+                              controller.userApp?.fullName ?? '-',
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 16,
                               ),
                             ),
                             Text(
-                              'phoneNumber',
+                              controller.userApp?.phoneNumber ?? '-',
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.textPrimary,
                               ),
                             ),
-                            Text(
-                              'email',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.textPrimary,
-                              ),
-                            ),
+                            // Text(
+                            //   'email',
+                            //   style: TextStyle(
+                            //     fontWeight: FontWeight.w600,
+                            //     color: AppColors.textPrimary,
+                            //   ),
+                            // ),
                           ],
                         ),
                       ],
@@ -173,22 +183,30 @@ class PointPage extends StatelessWidget {
                         Container(
                           width: MediaQuery.of(context).size.width * 0.25,
                           alignment: Alignment.center,
-                          child: Text('ວັນທີ'),
+                          child: Text(
+                            AppLocale.day.getString(context),
+                          ),
                         ),
                         Container(
-                          width: MediaQuery.of(context).size.width * 0.25,
+                          width: MediaQuery.of(context).size.width * 0.35,
                           alignment: Alignment.center,
-                          child: Text('ທີ່ມາຂອງຄະແນນ'),
+                          child: Text(
+                            AppLocale.pointRef.getString(context),
+                          ),
                         ),
+                        // Container(
+                        //   width: MediaQuery.of(context).size.width * 0.25,
+                        //   alignment: Alignment.center,
+                        //   child: Text(
+                        //     AppLocale.quantity.getString(context),
+                        //   ),
+                        // ),
                         Container(
-                          width: MediaQuery.of(context).size.width * 0.25,
+                          width: MediaQuery.of(context).size.width * 0.4,
                           alignment: Alignment.center,
-                          child: Text('ຈໍານວນ'),
-                        ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.25,
-                          alignment: Alignment.center,
-                          child: Text('ຄະແນນ'),
+                          child: Text(
+                            AppLocale.score.getString(context),
+                          ),
                         ),
                       ],
                     )
@@ -211,43 +229,43 @@ class PointPage extends StatelessWidget {
                     }
                     return ListView.separated(
                       itemBuilder: (context, index) {
-                        return Row(
-                          children: [
-                            Container(
-                              color: AppColors.primary.withOpacity(0.2),
-                              padding: EdgeInsets.symmetric(vertical: 16),
-                              width: MediaQuery.of(context).size.width * 0.25,
-                              alignment: Alignment.center,
-                              child: Text(
-                                controller.userPointList[index].createdDateStr,
+                        final pointTransaction =
+                            controller.userPointList[index];
+                        return Container(
+                          color: AppColors.primary.withOpacity(0.2),
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 16),
+                                width: MediaQuery.of(context).size.width * 0.25,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  pointTransaction.createdDateStr,
+                                ),
                               ),
-                            ),
-                            Container(
-                              color: AppColors.primary.withOpacity(0.2),
-                              padding: EdgeInsets.symmetric(vertical: 16),
-                              width: MediaQuery.of(context).size.width * 0.25,
-                              alignment: Alignment.center,
-                              child: Text(
-                                controller.userPointList[index].type,
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 16),
+                                width: MediaQuery.of(context).size.width * 0.35,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  controller.renderType(
+                                      pointTransaction.type, context),
+                                ),
                               ),
-                            ),
-                            Container(
-                              color: AppColors.primary.withOpacity(0.2),
-                              padding: EdgeInsets.symmetric(vertical: 16),
-                              width: MediaQuery.of(context).size.width * 0.25,
-                              alignment: Alignment.center,
-                              child: Text(
-                                  controller.userPointList[index].value ?? "-"),
-                            ),
-                            Container(
-                              color: AppColors.primary.withOpacity(0.2),
-                              padding: EdgeInsets.symmetric(vertical: 16),
-                              width: MediaQuery.of(context).size.width * 0.25,
-                              alignment: Alignment.center,
-                              child: Text(
-                                  "${controller.userPointList[index].point}"),
-                            ),
-                          ],
+                              // Container(
+                              //   padding: EdgeInsets.symmetric(vertical: 16),
+                              //   width: MediaQuery.of(context).size.width * 0.25,
+                              //   alignment: Alignment.center,
+                              //   child: Text(pointTransaction.value ?? "-"),
+                              // ),
+                              Container(
+                                padding: EdgeInsets.symmetric(vertical: 16),
+                                width: MediaQuery.of(context).size.width * 0.4,
+                                alignment: Alignment.center,
+                                child: Text("${pointTransaction.point}"),
+                              ),
+                            ],
+                          ),
                         );
                       },
                       separatorBuilder: (context, index) =>

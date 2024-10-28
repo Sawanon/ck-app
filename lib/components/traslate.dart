@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/main.dart';
+import 'package:lottery_ck/res/app_locale.dart';
+import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 
 class TranslateComponent extends StatelessWidget {
@@ -28,7 +31,7 @@ class TranslateComponent extends StatelessWidget {
         alignment: WrapAlignment.center,
         children: [
           Text(
-            'คุณต้องการเปลี่ยนภาษา ?',
+            '${AppLocale.youWantChangeLanguage.getString(context)} ?',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w600,
@@ -56,7 +59,12 @@ class TranslateComponent extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 12),
-                    Text('ภาษาลาว'),
+                    Text(
+                      AppLocale.laoLanguage.getString(context),
+                      style: const TextStyle(
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
                   ],
                 ),
                 Column(
@@ -75,7 +83,12 @@ class TranslateComponent extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 12),
-                    Text('ภาษาไทย'),
+                    Text(
+                      AppLocale.thaiLanguage.getString(context),
+                      style: const TextStyle(
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
                   ],
                 ),
                 Column(
@@ -94,7 +107,12 @@ class TranslateComponent extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 12),
-                    Text('ภาษาอังกฤษ'),
+                    Text(
+                      AppLocale.englishLanguage.getString(context),
+                      style: const TextStyle(
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
                   ],
                 ),
               ],

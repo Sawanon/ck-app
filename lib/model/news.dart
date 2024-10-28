@@ -18,8 +18,8 @@ class News {
     this.detail,
     this.image,
   }) {
-    this.startDate = DateTime.parse(startDate);
-    this.endDate = DateTime.parse(endDate);
+    this.startDate = DateTime.parse(startDate).toLocal();
+    this.endDate = DateTime.parse(endDate).toLocal();
   }
 
   static News fromJson(Map<String, dynamic> json) {

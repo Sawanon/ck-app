@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
@@ -15,22 +17,23 @@ class NotificationPage extends StatelessWidget {
       return DefaultTabController(
         length: 2,
         child: Scaffold(
+          backgroundColor: Colors.white,
           appBar: AppBar(
             backgroundColor: Colors.white,
             // bottom: PreferredSize(preferredSize: Size(0, 0), child: Container()),
             automaticallyImplyLeading: false,
             titleSpacing: 0,
             toolbarHeight: 48,
-            title: const TabBar(
+            title: TabBar(
               unselectedLabelColor: Colors.grey,
               dividerColor: Colors.transparent,
               labelColor: Colors.white,
-              labelStyle: TextStyle(
+              labelStyle: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
               indicatorSize: TabBarIndicatorSize.tab,
-              indicator: BoxDecoration(
+              indicator: const BoxDecoration(
                 color: AppColors.primary,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(24),
@@ -40,11 +43,13 @@ class NotificationPage extends StatelessWidget {
               tabs: [
                 Tab(
                   child: Text(
-                    'ຂ່າວ',
+                    AppLocale.news.getString(context),
                   ),
                 ),
                 Tab(
-                  child: Text('ຂໍ້ສະເໜີ'),
+                  child: Text(
+                    AppLocale.promotion.getString(context),
+                  ),
                 ),
               ],
             ),
@@ -187,12 +192,11 @@ class NotificationPage extends StatelessWidget {
                   child: RefreshIndicator(
                     onRefresh: () async {
                       controller.listPromotions();
-                      // _notificationViewModel.clearNews();
-                      // _notificationViewModel.getNews();
                     },
                     child: Obx(() {
                       return ListView.separated(
                         itemBuilder: (context, index) {
+                          final promotions = controller.promotionList[index];
                           return Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -211,8 +215,13 @@ class NotificationPage extends StatelessWidget {
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(10),
                                 onTap: () {
-                                  controller.openPromotionDetail(
-                                      controller.promotionList[index]["\$id"]);
+                                  if (promotions['promotionType'] == "points") {
+                                    controller.openPromotionPointsDetail(
+                                        promotions['\$id']);
+                                  } else {
+                                    controller.openPromotionDetail(controller
+                                        .promotionList[index]["\$id"]);
+                                  }
                                 },
                                 child: Container(
                                   // margin: EdgeInsets.all(8),
@@ -273,15 +282,12 @@ class NotificationPage extends StatelessWidget {
                                                     MainAxisAlignment.end,
                                                 children: [
                                                   Text(
-                                                    // '12/05/2023',
-                                                    controller.promotionList[
-                                                                    index]
-                                                                ["startDate"] !=
+                                                    promotions['start_date'] !=
                                                             null
                                                         ? CommonFn.parseDMY(
-                                                            controller.promotionList[
-                                                                    index]
-                                                                ["startDate"]!)
+                                                            DateTime.parse(
+                                                                promotions[
+                                                                    'start_date']))
                                                         : "-",
                                                     style: TextStyle(
                                                       fontWeight:
@@ -304,7 +310,7 @@ class NotificationPage extends StatelessWidget {
                           );
                         },
                         separatorBuilder: (context, index) {
-                          return SizedBox(height: 8);
+                          return const SizedBox(height: 8);
                         },
                         itemCount: controller.promotionList.length,
                       );

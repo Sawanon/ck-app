@@ -32,8 +32,8 @@ class BuyLotteryController extends GetxController {
   TextEditingController priceTextController = TextEditingController();
   TextEditingController lotteryTextController = TextEditingController();
   List<BuyLotteryConfigs> buyLotteryConfigs = [];
-  // Map<String, dynamic> invoice = {};
   Rx<InvoiceMetaData> invoiceMeta = InvoiceMetaData.empty().obs;
+
   RxBool isLoadingAddLottery = false.obs;
   RxList promotionList = [].obs;
   UserApp? userApp;
@@ -51,6 +51,7 @@ class BuyLotteryController extends GetxController {
 
   bool get lotteryIsEmpty => lotteryList.isEmpty;
   late StreamSubscription<bool> keyboardSubscription;
+  Map<String, dynamic>? quotaMap;
 
   void gotoLoginPage() {
     Get.toNamed(RouteName.login);
@@ -88,7 +89,6 @@ class BuyLotteryController extends GetxController {
       showLoginDialog();
       return null;
     }
-    ;
     logger.d(invoiceMeta.value.invoiceId);
     if (invoiceMeta.value.invoiceId == null) {
       // create a new invoice and pre-check
@@ -103,6 +103,8 @@ class BuyLotteryController extends GetxController {
         customerId: userApp!.customerId!,
         phone: userApp!.phoneNumber,
         lotteryDateStr: lotteryDateStr,
+        price: amount,
+        quota: amount,
       );
       logger.d(invoice.toJson(userApp!.userId));
       calPrePromotion(invoice);
@@ -123,7 +125,8 @@ class BuyLotteryController extends GetxController {
       if (findTrasaction.isNotEmpty) {
         // already exist lottery number
         // final amount = CommonFn.calculateTotalPrice([lottery]);
-        findTrasaction.first.price = findTrasaction.first.price + lottery.price;
+        findTrasaction.first.amount =
+            findTrasaction.first.amount + lottery.amount;
         cloneInvoice.transactions = findTrasaction;
         logger.w("meta");
         logger.w(cloneInvoice.toJson(userApp!.userId));
@@ -161,6 +164,8 @@ class BuyLotteryController extends GetxController {
         customerId: userApp!.customerId!,
         phone: userApp!.phoneNumber,
         lotteryDateStr: lotteryDateStr,
+        price: amount,
+        quota: amount,
       );
       logger.d(invoice.toJson(userApp!.userId));
       calPrePromotion(invoice);
@@ -180,7 +185,8 @@ class BuyLotteryController extends GetxController {
       if (findTrasaction.isNotEmpty) {
         // already exist lottery number
         // final amount = CommonFn.calculateTotalPrice([lottery]);
-        findTrasaction.first.price = findTrasaction.first.price + lottery.price;
+        findTrasaction.first.amount =
+            findTrasaction.first.amount + lottery.amount;
         calPrePromotion(cloneInvoice);
         calculatePreTotalAmount(cloneInvoice);
         return cloneInvoice;
@@ -208,10 +214,11 @@ class BuyLotteryController extends GetxController {
         if (invoiceRemainExpire.value.inSeconds > 0) {
           invoiceRemainExpire.value -= const Duration(seconds: 1);
           invoiceRemainExpireStr.value =
-              "${invoiceRemainExpire.value.inMinutes.remainder(60)}:${invoiceRemainExpire.value.inSeconds.remainder(60)}";
+              "${invoiceRemainExpire.value.inMinutes.remainder(60).toString().padLeft(2, '0')}:${invoiceRemainExpire.value.inSeconds.remainder(60).toString().padLeft(2, '0')}";
           // logger.d("run ! ${remainingDateTime.value.inSeconds}");
           return;
         }
+        invoiceRemainExpireStr.value = "";
         logger.e("stop !");
         invoiceMeta.value = InvoiceMetaData.empty();
         timer.cancel();
@@ -228,11 +235,17 @@ class BuyLotteryController extends GetxController {
       return null;
     }
     if (fakeResponse['invoice']['status'] == false) {
-      Get.snackbar(
-        "create invoice failed",
-        "$fakeResponse",
-        duration: const Duration(seconds: 10),
-      );
+      Get.dialog(DialogApp(
+        title: const Text("create invoice failed"),
+        details: Text("$fakeResponse"),
+        disableConfirm: true,
+        cancelText: Text(
+          AppLocale.close.getString(Get.context!),
+          style: const TextStyle(
+            color: AppColors.primary,
+          ),
+        ),
+      ));
       return null;
     }
     final invoiceId = (fakeResponse['invoice'] as Map)['\$id'];
@@ -301,17 +314,25 @@ class BuyLotteryController extends GetxController {
         )
         .toList();
     logger.d("buyLotteryConfig: $buyLotteryConfig");
-    final currentLottery = lottery;
-    final total = currentLottery.price + lottery.price;
+    int total = lottery.amount;
+    final existTransaction = invoiceMeta.value.transactions
+        .where((element) => element.lottery == lottery.lottery)
+        .toList();
+    if (existTransaction.isNotEmpty) {
+      total = existTransaction.first.amount + total;
+    }
+
     if (buyLotteryConfig.isNotEmpty) {
       final config = buyLotteryConfig.first;
       if (config.max != null) {
-        if (config.max! < total) {
+        if (config.max! <= total) {
+          // TODO: change to dialog
           Get.snackbar("more than quota",
               "please buy maximum ${config.max} per lottery");
           return false;
         }
-        if (config.min! > lottery.price) {
+        if (config.min! > lottery.amount) {
+          // TODO: change to dialog
           Get.snackbar("less than quota",
               "please buy minumum ${config.max} per lottery");
           return false;
@@ -319,50 +340,6 @@ class BuyLotteryController extends GetxController {
       }
     }
     return true;
-  }
-
-  Future<void> addLottery(String lottery, int price) async {
-    // try {
-    logger.w(lottery);
-    logger.w(price);
-    final lotteryClass = Lottery(
-      lottery: lottery,
-      price: price,
-      lotteryType: lottery.length,
-      totalAmount: price,
-    );
-    if (!lotteryIsValid(lotteryClass)) {
-      return;
-    }
-    final oldInvoice = invoiceMeta.value.copyWith();
-
-    final invoicePreCheck = createInvoiceForPreCheck(lotteryClass);
-    final invoiceForUser = createInvoiceForUse(lotteryClass);
-    if (invoicePreCheck == null || invoiceForUser == null) {
-      Get.snackbar("Error", "can't create invoice");
-      return;
-    }
-    logger.f("preChcek");
-    logger.d(invoicePreCheck.toJson(userApp!.userId));
-    logger.f("foruse");
-    logger.d(invoiceForUser.toJson(userApp!.userId));
-    final responseInvoice =
-        await fakeAPITransaction(invoicePreCheck, invoiceForUser, oldInvoice);
-    if (responseInvoice == null) {
-      Get.snackbar("Error", "can't create invoice from API");
-      return;
-    }
-    calPrePromotion(invoiceForUser);
-    calculatePreTotalAmount(invoiceForUser);
-    logger.w("response");
-    logger.d(responseInvoice.toJson(userApp!.userId));
-    invoiceMeta.value = invoiceForUser;
-    // } catch (e) {
-    //   logger.d("$e");
-    //   print(e);
-    //   Get.snackbar("Error", "can't add lottery");
-    // }
-    return;
   }
 
   // Future<Map?> addTransaction(Lottery transaction) async {
@@ -375,18 +352,22 @@ class BuyLotteryController extends GetxController {
       final payload = invoiceMeta.toJson(userApp!.userId);
       logger.d(payload);
       final response = await dio.post(
-        // "https://59c5-2405-9800-b920-2f86-4453-eaab-1aa0-9520.ngrok-free.app/api/transaction",
         "${AppConst.apiUrl}/transaction",
         data: payload,
         options: Options(
           headers: {"Authorization": "Bearer $token"},
         ),
       );
-      logger.d("response");
-      logger.d(response.data);
-      logger.d("invoiceMeta!.invoice.\$id: ${invoiceMeta.invoiceId}");
-      // invoice.invoice.$id;
       return response.data;
+    } on DioException catch (e) {
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        logger.e(e.response?.headers);
+        logger.e(e.response?.requestOptions);
+      }
+      return null;
     } catch (e) {
       logger.e("$e");
       return null;
@@ -455,11 +436,30 @@ class BuyLotteryController extends GetxController {
 
   void removeAllLottery() {
     invoiceMeta.value = InvoiceMetaData.empty();
+    invoiceRemainExpireStr.value = "";
+    _timer?.cancel();
+  }
+
+  void showInvalidPrice() {
+    Get.rawSnackbar(
+      backgroundColor: Colors.amber,
+      messageText: Text(
+        AppLocale.amountNotCorrect.getString(Get.context!),
+        style: const TextStyle(
+          color: Colors.black,
+          fontSize: 16,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
   }
 
   void submitAddLottery(String? lottery, int? price) async {
     logger.d("formKey?.currentState: ${formKey?.currentState}");
-
+    if (userApp == null) {
+      showLoginDialog();
+      return;
+    }
     if (formKey?.currentState != null && formKey!.currentState!.validate()) {
       if (lottery == null || price == null) {
         alertLotteryEmpty();
@@ -467,22 +467,20 @@ class BuyLotteryController extends GetxController {
         return;
       }
       if (price % 1000 != 0) {
-        Get.rawSnackbar(
-          backgroundColor: Colors.amber,
-          messageText: Text(
-            AppLocale.amountNotCorrect.getString(Get.context!),
-            style: const TextStyle(
-              color: Colors.black,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        );
+        showInvalidPrice();
         return;
       }
       final valid = validateLottery(lottery, price);
+      return;
       if (valid) {
-        await addLottery(lottery, price);
+        final lotteryData = Lottery(
+          lottery: lottery,
+          amount: price,
+          lotteryType: lottery.length,
+          quota: price,
+          totalAmount: price,
+        );
+        await createTransaction([lotteryData]);
         lotteryNode.requestFocus();
       }
     }
@@ -493,9 +491,14 @@ class BuyLotteryController extends GetxController {
       if (price < 1000) {
         throw "ໃສ່ລາຄາຕໍ່າສຸດ 1000";
       }
-      if (lottery.length < 2 || lottery.length > 3) {
-        throw "ກະລຸນາຊື້ 2-3 ຕໍາແຫນ່ງ.";
+      if (quotaMap?['${lottery.length}'] == "0") {
+        throw AppLocale.disableLotteryType
+            .getString(Get.context!)
+            .replaceAll("{lotteryType}", "${lottery.length}");
       }
+      // if (lottery.length < 2 || lottery.length > 3) {
+      //   throw "ກະລຸນາຊື້ 2-3 ຕໍາແຫນ່ງ.";
+      // }
       return true;
     } catch (e) {
       logger.w(e.toString());
@@ -644,11 +647,328 @@ class BuyLotteryController extends GetxController {
     );
   }
 
-  void onClickAnimalBuy(List<Map<String, dynamic>> lotteryList) async {
-    logger.d(lotteryList);
-    for (var lottery in lotteryList) {
-      await addLottery(lottery["lottery"], int.parse(lottery["price"]));
+  void onClickAnimalBuy(List<Map<String, dynamic>> lotteryMapList) async {
+    logger.d("callback");
+    if (userApp == null) {
+      // delay after back from animal page
+      Future.delayed(const Duration(milliseconds: 250), () {
+        showLoginDialog();
+      });
+      return;
     }
+    final lotteryList = lotteryMapList
+        .map(
+          (lottery) => Lottery(
+            lottery: lottery['lottery'],
+            amount: int.parse(lottery['price']),
+            lotteryType: lottery['lottery'].length,
+            quota: int.parse(lottery['price']),
+            totalAmount: int.parse(lottery['price']),
+          ),
+        )
+        .toList();
+    createTransaction(lotteryList);
+  }
+
+  Future<void> createTransaction(List<Lottery> lotteryList) async {
+    // logger.d("run in function");
+    // lotteryList.forEach((e) {
+    //   logger.w(e.toJson());
+    // });
+    // return;
+    if (lotteryList.isEmpty) {
+      logger.e("lotteryList isEmpty length:${lotteryList.length}");
+      return;
+    }
+    if (invoiceMeta.value.invoiceId == null) {
+      final lotteryDate = HomeController.to.lotteryDate;
+      if (lotteryDate == null) return;
+      final lotteryDateStr = CommonFn.parseLotteryDateCollection(lotteryDate);
+      final amount = CommonFn.calculateTotalPrice(lotteryList);
+      final invoicePayload = InvoiceMetaData(
+        amount: amount,
+        customerId: userApp!.customerId!,
+        lotteryDateStr: lotteryDateStr,
+        phone: userApp!.phoneNumber,
+        totalAmount: amount,
+        transactions: lotteryList,
+        price: amount,
+        quota: amount,
+      );
+      calPrePromotion(invoicePayload);
+      logger.w(invoicePayload.toJson(userApp!.userId));
+      final responseCreateInvoice = await addTransaction(invoicePayload);
+      logger.w(responseCreateInvoice);
+      if (responseCreateInvoice == null ||
+          responseCreateInvoice['invoice']['status'] == false) {
+        Get.dialog(DialogApp(
+          title: const Text("create invoice failed"),
+          // FIXME: ask gie for detail message when create invoice failed
+          details: Text("$responseCreateInvoice"),
+          disableConfirm: true,
+          cancelText: Text(
+            AppLocale.close.getString(Get.context!),
+            style: const TextStyle(
+              color: AppColors.primary,
+            ),
+          ),
+        ));
+        return;
+      }
+      // handle expire invoice - sawanon:20241022
+      final invoiceExpire = responseCreateInvoice['invoice']['expire'];
+      invoicePayload.expire = invoiceExpire;
+      final expireDateTime = DateTime.parse(invoiceExpire);
+      startCountDownInvoiceExpire(expireDateTime);
+      // gen invoice from response - sawanon:20241022
+      final emptyInvoice = InvoiceMetaData.empty();
+      final invoiceId = responseCreateInvoice['invoice']['\$id'];
+      StorageController.to.setInvoiceMetaId(invoiceId);
+      emptyInvoice.invoiceId = invoiceId;
+      emptyInvoice.lotteryDateStr = lotteryDateStr;
+      // responseTransactions => {"123": {$id: '3ofodf', amount: 1000,}}
+      final List<Lottery> transactionFailed = [];
+      final responseTransactionsList =
+          responseCreateInvoice['transaction'] as Map;
+      for (var transaction in invoicePayload.transactions) {
+        final responseTransaction =
+            responseTransactionsList[transaction.lottery];
+        if (responseTransaction['status'] == true) {
+          transaction.id = responseTransaction['data']['\$id'];
+          emptyInvoice.transactions.add(transaction);
+          emptyInvoice.quota += transaction.quota;
+          emptyInvoice.discount =
+              (emptyInvoice.discount ?? 0) + (transaction.discount ?? 0);
+          emptyInvoice.amount += transaction.amount;
+          emptyInvoice.bonus =
+              (emptyInvoice.bonus ?? 0) + (transaction.bonus ?? 0);
+          emptyInvoice.totalAmount += transaction.totalAmount!;
+        } else {
+          transactionFailed.add(transaction);
+        }
+      }
+      logger.e(transactionFailed);
+      invoiceMeta.value = emptyInvoice.copyWith();
+      if (transactionFailed.isNotEmpty) {
+        Get.dialog(DialogApp(
+          title: Text(
+            AppLocale.someLotteryQuotaExceeded.getString(Get.context!),
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          details: Text(
+              '"${transactionFailed.map((e) => e.lottery).toList().join(",")}" ${AppLocale.pleaseBuyLessOrAnotherLottery.getString(Get.context!)}'),
+          disableConfirm: true,
+          cancelText: Text(
+            AppLocale.close.getString(Get.context!),
+            style: TextStyle(
+              color: AppColors.primary,
+            ),
+          ),
+        ));
+      }
+    } else {
+      // update invoice when you have invoice - sawanon:20241022
+      InvoiceMetaData cloneInvoice = invoiceMeta.value.copyWith();
+      // find is exist in invoice ?
+      final List<Lottery> lotteryUpdateLise = [];
+      for (var lotteryData in lotteryList) {
+        final transaction = cloneInvoice.transactions
+            .where((transaction) => transaction.lottery == lotteryData.lottery)
+            .toList();
+        if (transaction.isNotEmpty) {
+          // update
+          transaction.first.quota += lotteryData.quota;
+          logger.w("update: ${lotteryData.quota}");
+          lotteryUpdateLise.add(transaction.first);
+        } else {
+          // add new
+          cloneInvoice.transactions.add(lotteryData);
+        }
+      }
+      for (var transaction in cloneInvoice.transactions) {
+        transaction.amount = transaction.quota;
+        transaction.totalAmount = transaction.quota;
+        transaction.discount = null;
+        transaction.discountType = null;
+        transaction.bonus = null;
+        transaction.bonusType = null;
+      }
+      final result = calPrePromotion(cloneInvoice);
+      if (result != null) {
+        cloneInvoice = result;
+      }
+      // FIXME: clone all bonus to payload and new invoiceMeta.value !!!
+      logger.d(cloneInvoice.toJson(userApp!.userId));
+      final List<Lottery> newTransactions = [];
+      final List<Lottery> updateTransactions = [];
+      // final newTransactions = cloneInvoice.transactions
+      //     .where((tranaction) => tranaction.id == null)
+      //     .toList();
+      for (var cloneTransaction in cloneInvoice.transactions) {
+        if (cloneTransaction.id == null) {
+          newTransactions.add(cloneTransaction);
+        } else {
+          final findLottery = lotteryUpdateLise
+              .where((lotteryData) =>
+                  lotteryData.lottery == cloneTransaction.lottery)
+              .toList();
+          if (findLottery.isNotEmpty) {
+            updateTransactions.add(cloneTransaction);
+          }
+        }
+      }
+      logger.d(newTransactions.length);
+      logger.d(updateTransactions.length);
+      final invoicePayload = cloneInvoice.copyWith();
+      invoicePayload.transactions.clear();
+      invoicePayload.transactions = [...newTransactions, ...updateTransactions];
+      // final emptyInvoice = InvoiceMetaData.empty();
+      logger.d(invoicePayload.toJson(userApp!.userId));
+      logger.d("exist invoice");
+      final responseUpdateInvoice = await addTransaction(invoicePayload);
+      if (responseUpdateInvoice == null ||
+          responseUpdateInvoice['invoice']['status'] == false) {
+        Get.dialog(DialogApp(
+          title: const Text("update invoice failed"),
+          // FIXME: ask gie for detail message when create invoice failed
+          details: Text("$responseUpdateInvoice"),
+          disableConfirm: true,
+          cancelText: Text(
+            AppLocale.close.getString(Get.context!),
+            style: const TextStyle(
+              color: AppColors.primary,
+            ),
+          ),
+        ));
+        return;
+      }
+      final List<Lottery> transactionFailed = [];
+      final responseTransactionsList =
+          responseUpdateInvoice['transaction'] as Map;
+      final cloneInvoiceForCheckValue = invoiceMeta.value.copyWith();
+      for (var transaction in invoicePayload.transactions) {
+        logger.w(transaction.toJson());
+        final responseTransaction =
+            responseTransactionsList[transaction.lottery];
+        if (responseTransaction['status'] == true) {
+          // final findExistTransaction = updateTransactions
+          //     .where((transactionUpdate) =>
+          //         transactionUpdate.lottery == transaction.lottery)
+          //     .toList();
+          if (transaction.id != null) {
+            // update
+            final index = cloneInvoiceForCheckValue.transactions.indexWhere(
+                (transactionUpdate) =>
+                    transactionUpdate.lottery == transaction.lottery);
+            cloneInvoiceForCheckValue.transactions[index] = transaction;
+            logger.d(transaction.toJson());
+            // for (var transactionUpdate
+            //     in cloneInvoiceForCheckValue.transactions) {
+            //   if (transactionUpdate.lottery == transaction.lottery) {
+            //     transactionUpdate = transaction;
+            //     break;
+            //   }
+            // }
+          } else {
+            // add
+            transaction.id = responseTransaction['data']['\$id'];
+            cloneInvoiceForCheckValue.transactions.add(transaction);
+          }
+        } else {
+          transactionFailed.add(transaction);
+        }
+      }
+      cloneInvoiceForCheckValue.quota = 0;
+      cloneInvoiceForCheckValue.discount = null;
+      cloneInvoiceForCheckValue.amount = 0;
+      cloneInvoiceForCheckValue.bonus = null;
+      cloneInvoiceForCheckValue.totalAmount = 0;
+      calPrePromotion(cloneInvoiceForCheckValue);
+      // for (var transaction in cloneInvoiceForCheckValue.transactions) {
+      //   cloneInvoiceForCheckValue.quota += transaction.quota;
+      //   cloneInvoiceForCheckValue.discount = (transaction.discount ?? 0) +
+      //       (cloneInvoiceForCheckValue.discount ?? 0);
+      //   cloneInvoiceForCheckValue.amount += transaction.amount;
+      //   cloneInvoiceForCheckValue.bonus =
+      //       (transaction.bonus ?? 0) + (cloneInvoiceForCheckValue.bonus ?? 0);
+      //   cloneInvoiceForCheckValue.totalAmount += transaction.totalAmount!;
+      // }
+      logger.d(cloneInvoiceForCheckValue.toJson(userApp!.userId));
+      invoiceMeta.value = cloneInvoiceForCheckValue;
+      if (transactionFailed.isNotEmpty) {
+        Get.dialog(DialogApp(
+          title: Text(
+            AppLocale.someLotteryQuotaExceeded.getString(Get.context!),
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          details: Text(
+              '"${transactionFailed.map((e) => e.lottery).toList().join(",")}" ${AppLocale.pleaseBuyLessOrAnotherLottery.getString(Get.context!)}'),
+          disableConfirm: true,
+          cancelText: Text(
+            AppLocale.close.getString(Get.context!),
+            style: TextStyle(
+              color: AppColors.primary,
+            ),
+          ),
+        ));
+      }
+      // emptyInvoice.quota += transaction.quota;
+      // emptyInvoice.discount =
+      //     (emptyInvoice.discount ?? 0) + (transaction.discount ?? 0);
+      // emptyInvoice.amount += transaction.amount;
+      // emptyInvoice.bonus =
+      //     (emptyInvoice.bonus ?? 0) + (transaction.bonus ?? 0);
+      // emptyInvoice.totalAmount += transaction.totalAmount!;
+    }
+    logger.d(invoiceMeta.value.toJson(userApp!.userId));
+  }
+
+  void buyLotteryByRandom(String lotteryNumber) async {
+    logger.d(lotteryNumber);
+    final listPermutations = generatePermutations(lotteryNumber.split(""));
+    logger.d(listPermutations);
+    final List<Lottery> listAllFormat = listPermutations.map(
+      (lotteryNumberArray) {
+        final lottery = lotteryNumberArray.join("");
+        return Lottery(
+          amount: 1000,
+          lottery: lottery,
+          lotteryType: lottery.length,
+          quota: 1000,
+          totalAmount: 1000,
+        );
+      },
+    ).toList();
+    // logger.d(listAllFormat);
+    await createTransaction(listAllFormat);
+  }
+
+  List<List<String>> generatePermutations(List<String> list) {
+    if (list.length == 1) {
+      return [list];
+    }
+
+    final permutations = <List<String>>[];
+
+    for (var i = 0; i < list.length; i++) {
+      var current = list[i];
+      var remaining = List.of(list)..removeAt(i);
+      var subPermutations = generatePermutations(remaining);
+
+      for (var perm in subPermutations) {
+        permutations.add([current, ...perm]);
+      }
+    }
+
+    return permutations;
   }
 
   void listBuyLotteryConfigs() async {
@@ -701,6 +1021,48 @@ class BuyLotteryController extends GetxController {
   InvoiceMetaData calPrePercent(
       Map promotion, InvoiceMetaData invoiceMetaData) {
     // TODO: dev percent promotion
+    // TODO: continute !!!!
+    final bonusPercent = int.parse(
+        (jsonDecode((promotion['condition'] as List).first)['bonus'] as String)
+            .replaceAll("%", ""));
+    if (bonusPercent < 0) {
+      // discount
+      final discountPercent = bonusPercent;
+      for (var transaction in invoiceMetaData.transactions) {
+        transaction.discount = (transaction.discount ?? 0) +
+            calfromPercent(discountPercent, transaction.quota);
+        transaction.amount =
+            calfromPercent(discountPercent, transaction.quota) +
+                transaction.amount;
+      }
+      invoiceMetaData.discount = invoiceMetaData.transactions.fold(
+          0,
+          (previousValue, transaction) =>
+              previousValue! + transaction.discount!);
+    } else {
+      // bonus
+      for (var transaction in invoiceMetaData.transactions) {
+        transaction.bonus = calfromPercent(bonusPercent, transaction.quota);
+        transaction.totalAmount =
+            calfromPercent(bonusPercent, transaction.quota) +
+                (transaction.totalAmount ?? transaction.quota);
+      }
+      invoiceMetaData.bonus = invoiceMetaData.transactions
+          .fold(0, (prev, transaction) => prev! + transaction.bonus!);
+      // invoiceMetaData.totalAmount =
+      //     invoiceMetaData.quota + invoiceMetaData.bonus!;
+      // invoiceMetaData.bonus =
+      //     calfromPercent(bonusPercent, invoiceMetaData.amount);
+      // invoiceMetaData.amount = invoiceMetaData.amount +
+      //     calfromPercent(bonusPercent, invoiceMetaData.amount);
+    }
+    invoiceMetaData.amount = invoiceMetaData.transactions
+        .fold(0, (prev, transaction) => prev + transaction.amount);
+    invoiceMetaData.quota = invoiceMetaData.transactions
+        .fold(0, (prev, transaction) => prev + transaction.quota);
+    invoiceMetaData.totalAmount = invoiceMetaData.transactions
+        .fold(0, (prev, transaction) => prev + transaction.totalAmount!);
+    logger.d(bonusPercent);
     return invoiceMetaData;
   }
 
@@ -719,93 +1081,52 @@ class BuyLotteryController extends GetxController {
       if (condition['parameter'] == "buyAmount") {
         // calculate amount from invoice
         final isPassPromotion = conditionOperation(
-            condition['condition'], invoiceMetaData.amount, condition['value']);
+            condition['condition'], invoiceMetaData.quota, condition['value']);
         logger.d(
-            "isPassPromotion: ${invoiceMetaData.amount} ${condition['condition']} ${condition['value']} => $isPassPromotion");
+            "isPassPromotion: ${invoiceMetaData.quota} ${condition['condition']} ${condition['value']} => $isPassPromotion");
         if (isPassPromotion) {
           if (condition['type'] == "percent") {
-            final bonus = int.parse(condition['bonus']);
-            invoiceMetaData.bonus = bonus;
-            for (var transaction in invoiceMetaData.transactions) {
-              transaction.bonus = bonus;
-              transaction.totalAmount =
-                  transaction.price + calfromPercent(bonus, transaction.price);
+            final bonusPercent = int.parse(condition['bonus']);
+            logger.d("bonusPercent: $bonusPercent");
+            if (bonusPercent < 0) {
+              // discount
+              // final discountPercent = bonusPercent;
+              // for (var transaction in invoiceMetaData.transactions) {
+              //   transaction.discount = (transaction.discount ?? 0) +
+              //       calfromPercent(discountPercent, transaction.quota);
+              //   transaction.amount =
+              //       calfromPercent(discountPercent, transaction.quota) +
+              //           transaction.amount;
+              // }
+              // invoiceMetaData.discount = invoiceMetaData.transactions.fold(
+              //     0,
+              //     (previousValue, transaction) =>
+              //         previousValue! + transaction.discount!);
+            } else {
+              for (var transaction in invoiceMetaData.transactions) {
+                transaction.bonus = (transaction.bonus ?? 0) +
+                    calfromPercent(bonusPercent, transaction.quota);
+                transaction.totalAmount =
+                    (transaction.totalAmount ?? transaction.quota) +
+                        calfromPercent(bonusPercent, transaction.quota);
+              }
+              invoiceMetaData.bonus = invoiceMetaData.transactions.fold(
+                  0,
+                  (previousValue, transaction) =>
+                      previousValue! + transaction.bonus!);
             }
-            invoiceMetaData.totalAmount = invoiceMetaData.amount +
-                calfromPercent(bonus, invoiceMetaData.amount);
+            invoiceMetaData.amount = invoiceMetaData.transactions
+                .fold(0, (prev, transaction) => prev + transaction.amount);
+            invoiceMetaData.quota = invoiceMetaData.transactions
+                .fold(0, (prev, transaction) => prev + transaction.quota);
+            invoiceMetaData.totalAmount = invoiceMetaData.transactions.fold(
+                0, (prev, transaction) => prev + transaction.totalAmount!);
           }
           return invoiceMetaData;
         }
       }
     }
     return invoiceMetaData;
-    // logger.d("calConditionPromotion invoice: $invoiceMetaData");
-  }
-
-  InvoiceMetaData? calConditionPromotion(
-      Map promotion, Rx<InvoiceMetaData> invoiceMetaData, bool preCheck,
-      [InvoiceMetaData? invoicePreCheck]) {
-    List conditionsList = (promotion['condition'] as List)
-        .map((promotion) => jsonDecode(promotion))
-        .toList();
-    conditionsList.sort(
-      (a, b) {
-        return int.parse(b['value']).compareTo(int.parse(a['value']));
-      },
-    );
-    if (preCheck) {
-      for (var condition in conditionsList) {
-        logger.d(condition);
-        if (condition['parameter'] == "buyAmount") {
-          // calculate amount from invoice
-          final isPassPromotion = conditionOperation(condition['condition'],
-              invoicePreCheck!.amount, condition['value']);
-          logger.d(
-              "isPassPromotion: ${invoicePreCheck.amount} ${condition['condition']} ${condition['value']} => $isPassPromotion");
-          if (isPassPromotion) {
-            if (condition['type'] == "percent") {
-              final bonus = int.parse(condition['bonus']);
-              invoicePreCheck.bonus = bonus;
-              for (var transaction in invoicePreCheck.transactions) {
-                transaction.bonus = bonus;
-                transaction.totalAmount = transaction.price +
-                    calfromPercent(bonus, transaction.price);
-              }
-              invoicePreCheck.totalAmount = invoicePreCheck.amount +
-                  calfromPercent(bonus, invoicePreCheck.amount);
-            }
-            return invoicePreCheck;
-          }
-        }
-      }
-      return invoicePreCheck;
-    } else {
-      for (var condition in conditionsList) {
-        logger.d(condition);
-        if (condition['parameter'] == "buyAmount") {
-          // calculate amount from invoice
-          final isPassPromotion = conditionOperation(condition['condition'],
-              invoiceMetaData.value.amount, condition['value']);
-          logger.d(
-              "isPassPromotion: ${invoiceMetaData.value.amount} ${condition['condition']} ${condition['value']} => $isPassPromotion");
-          if (isPassPromotion) {
-            if (condition['type'] == "percent") {
-              final bonus = int.parse(condition['bonus']);
-              invoiceMetaData.value.bonus = bonus;
-              for (var transaction in invoiceMetaData.value.transactions) {
-                transaction.bonus = bonus;
-                transaction.totalAmount = transaction.price +
-                    calfromPercent(bonus, transaction.price);
-              }
-              invoiceMetaData.value.totalAmount = invoiceMetaData.value.amount +
-                  calfromPercent(bonus, invoiceMetaData.value.amount);
-            }
-            return invoiceMetaData.value;
-          }
-        }
-      }
-    }
-    return null;
     // logger.d("calConditionPromotion invoice: $invoiceMetaData");
   }
 
@@ -833,85 +1154,10 @@ class BuyLotteryController extends GetxController {
   void listPromotions() async {
     final promotionList =
         await AppWriteController.to.listCurrentActivePromotions();
-    logger.w("promotionList");
-    logger.d(promotionList);
+    // logger.w("promotionList");
+    // logger.d(promotionList);
     if (promotionList == null) return;
     this.promotionList.value = promotionList;
-  }
-
-  ResponseInvoiceAddTransaction fakeQuotaFull() {
-    // try {
-    ResponseInvoiceAddTransaction test =
-        ResponseInvoiceAddTransaction.fromJson({
-      "invoice": {
-        "status": null,
-        "totalAmount": 5000,
-        "bonus": null,
-        "totalTransfer": null,
-        "totalWin": null,
-        "is_win": false,
-        "is_transfer": false,
-        "transferBy": null,
-        "calBy": null,
-        "userId": "66e9b066000956d5e74e",
-        "billNumber": null,
-        "bankId": null,
-        "billId": "testCustimerId2410312:34:17",
-        "transactionId": [],
-        "\$id": "66fb89d80009543b3c00",
-        "\$createdAt": "2024-10-01T05:34:18.916+00:00",
-        "\$updatedAt": "2024-10-01T05:42:41.717+00:00",
-        "\$permissions": [],
-        "\$databaseId": "lottory",
-        "\$collectionId": "20241004_invoice"
-      },
-      "transaction": {
-        "234": {
-          "status": true,
-          "data": {
-            "lottery": "234",
-            "digit_1": null,
-            "digit_2": null,
-            "digit_3": null,
-            "digit_4": "2",
-            "digit_5": "3",
-            "digit_6": "4",
-            "lotteryType": 3,
-            "amount": 5000,
-            "userId": "66e9b066000956d5e74e",
-            "invoiceId": "66fb8bcf001f2a49aa4a",
-            "\$id": "66fb8bd000172c45b498",
-            "\$permissions": [],
-            "\$createdAt": "2024-10-01T05:42:40.729+00:00",
-            "\$updatedAt": "2024-10-01T05:42:40.729+00:00",
-            "paymentMethod": null,
-            "status": null,
-            "winAmount": null,
-            "bonus": null,
-            "bankId": null,
-            "calBy": null,
-            "is_win": null,
-            "lottery_history_id": null,
-            "transferBy": null,
-            "rewardId": null,
-            "\$databaseId": "lottory",
-            "\$collectionId": "20241004_transaction"
-          },
-          "message": "Buy quota successfully"
-        },
-        "235": {
-          "status": false,
-          "data": {"lottery": "235", "quotaRemain": 500000},
-          "message": "Quota exceeded"
-        }
-      }
-    });
-    logger.d("test: $test");
-    logger.d("object: ${test.transaction['235']?.status}");
-    return test;
-    // } catch (e) {
-    //   logger.e("error $e");
-    // }
   }
 
   void getUseApp() async {
@@ -922,11 +1168,60 @@ class BuyLotteryController extends GetxController {
     }
   }
 
+  void getQuota() async {
+    if (userApp == null) return;
+    final quotaList = await AppWriteController.to.getQuota();
+    if (quotaList == null) {
+      Get.dialog(
+        const DialogApp(
+          title: Text(
+            "Server error",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: AppColors.textPrimary,
+            ),
+          ),
+          details: Text(
+            "Can't get quota from server",
+            style: TextStyle(
+              color: AppColors.textPrimary,
+            ),
+          ),
+        ),
+      );
+      return;
+    }
+    Map<String, dynamic> quotaMap = {};
+    for (var quota in quotaList.documents) {
+      final thisQuotaMap = {
+        '${quota.data['type']}': '${quota.data['amount']}',
+      };
+      quotaMap.addAll(thisQuotaMap);
+    }
+    logger.d(quotaMap);
+    this.quotaMap = quotaMap;
+    startTimerGetQuota();
+  }
+
+  Timer? _timerGetQuota;
+  void startTimerGetQuota() async {
+    _timerGetQuota?.cancel();
+    _timerGetQuota = Timer.periodic(
+      const Duration(minutes: 10),
+      (timer) {
+        getQuota();
+      },
+    );
+  }
+
   @override
   void onInit() {
     // checkUser();
     listBuyLotteryConfigs();
+    getUseApp();
+    listPromotions();
     setupNode();
+    getQuota();
     keyboardSubscription = KeyboardVisibilityController().onChange.listen(
       (event) {
         onFucusTextInput(event);
@@ -941,6 +1236,7 @@ class BuyLotteryController extends GetxController {
     priceNode.removeListener(onFocus);
     lotteryNode.removeListener(onFocus);
     _timer?.cancel();
+    _timerGetQuota?.cancel();
     super.onClose();
   }
 }
