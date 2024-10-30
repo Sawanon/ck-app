@@ -42,7 +42,7 @@ class SplashScreenController extends GetxController {
 
   Future<void> checkUser() async {
     final isActive = await AppWriteController.to.isActiveUser();
-    logger.d("isActive: $isActive");
+    // logger.d("isActive: $isActive");
     if (isActive == false) {
       AppWriteController.to.logout();
     }

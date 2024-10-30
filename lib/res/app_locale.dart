@@ -102,6 +102,12 @@ mixin AppLocale {
   static const String pleaseChooseGender = "ກະລຸນາເລືອກເພດຂອງທ່ານ";
   static const String disableLotteryType =
       "ຕົວເລກ {lotteryType} ຕົວເລກຍັງບໍ່ມີ";
+  static const String exceededQuota = "ເກີນໂຄຕ້າ";
+  static const String lessThanQuota = "ຊື້ຫນ້ອຍກວ່າຕໍາສຸດທີ່";
+  static const String pleaseBuyMax = "ກະລຸນາຊື້ຫວຍສູງສຸດ {max} LAK ຕໍ່ຫວຍ";
+  static const String pleaseBuyMin =
+      "ກະລຸນາຊື້ຫວຍດ້ວຍລາຄາຕໍ່າສຸດ {min} LAK ຕໍ່ໃບຫວຍ";
+  static const String closeSale = "ດຽວນີ້ລະບົບໄດ້ປິດການຂາຍແລ້ວ";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -199,6 +205,11 @@ mixin AppLocale {
     pleaseEnterBirthDate: "ກະລຸນາເລືອກວັນເດືອນປີເກີດຂອງທ່ານ",
     pleaseChooseGender: "ກະລຸນາເລືອກເພດຂອງທ່ານ",
     disableLotteryType: "ຕົວເລກ {lotteryType} ຕົວເລກຍັງບໍ່ມີ",
+    exceededQuota: "ເກີນໂຄຕ້າ",
+    lessThanQuota: "ຊື້ຫນ້ອຍກວ່າຕໍາສຸດທີ່",
+    pleaseBuyMax: "ກະລຸນາຊື້ຫວຍສູງສຸດ {max} LAK ຕໍ່ຫວຍ",
+    pleaseBuyMin: "ກະລຸນາຊື້ຫວຍດ້ວຍລາຄາຕໍ່າສຸດ {min} LAK ຕໍ່ໃບຫວຍ",
+    closeSale: "ດຽວນີ້ລະບົບໄດ້ປິດການຂາຍແລ້ວ",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -296,6 +307,11 @@ mixin AppLocale {
     pleaseEnterBirthDate: "กรุณาเลือกวันเกิดของคุณ",
     pleaseChooseGender: "กรุณาเลือกเพศของคุณ",
     disableLotteryType: "เลข {lotteryType} ตัวยังไม่เปิดให้บริการ",
+    exceededQuota: "เกินโควต้า",
+    lessThanQuota: "ซื้อน้อยกว่าขั้นต่ำ",
+    pleaseBuyMax: "กรุณาซื้อลอตเตอรี่สูงสุด {max} LAK ต่อลอตเตอรี่",
+    pleaseBuyMin: "กรุณาซื้อลอตเตอรี่น้อยสุด {min} LAK ต่อลอตเตอรี่",
+    closeSale: "ขณะนี้ระบบได้ปิดการขายแล้ว",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -394,5 +410,10 @@ mixin AppLocale {
     pleaseEnterBirthDate: "Please select your birth date",
     pleaseChooseGender: "Please choose your gender",
     disableLotteryType: "The {lotteryType}-digit number is not yet available",
+    exceededQuota: "Exceeded quota",
+    lessThanQuota: "Purchase less than minimum",
+    pleaseBuyMax: "Please purchase a maximum of {max} LAK per lottery ticket",
+    pleaseBuyMin: "Please buy a minimum of {min} LAK per lottery ticket",
+    closeSale: "The system is now closed for sales",
   };
 }

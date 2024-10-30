@@ -11,6 +11,9 @@ class UserApp {
   int? topupPoint;
   int point;
   String? profile;
+  String? gender;
+  String? idCard;
+  bool? isKYC;
 
   UserApp({
     required this.firstName,
@@ -25,6 +28,9 @@ class UserApp {
     this.topupPoint,
     required this.point,
     this.profile,
+    this.gender,
+    this.idCard,
+    this.isKYC,
   });
 
   static UserApp fromJson(Map json) {
@@ -41,6 +47,9 @@ class UserApp {
       topupPoint: json['topup_point'] as int?,
       point: json['point'] as int,
       profile: json['profile'] as String?,
+      gender: json['gender'] as String?,
+      idCard: json['idCard'] as String?,
+      isKYC: json['isKYC'] as bool?,
     );
   }
 

@@ -77,7 +77,6 @@ class AppWriteController extends GetxController {
         throw "jwt not found";
       }
       // logger.d(response.data["jwt"]);
-      logger.d(response.data);
       await StorageController.to.setAppToken(response.data);
     } catch (e) {
       logger.e("$e");
@@ -328,13 +327,14 @@ class AppWriteController extends GetxController {
     );
   }
 
-  Future<Document?> getLotteryDate(DateTime datetime) async {
+  Future<Document?> getLotteryDate(DateTime datetime, DateTime now) async {
     try {
       final response = await databases.listDocuments(
         databaseId: _databaseName,
         collectionId: LOTTERY_DATE,
         queries: [
           Query.greaterThanEqual('datetime', datetime.toIso8601String()),
+          Query.greaterThan('end_time', now.toIso8601String()),
           Query.orderAsc('datetime'),
           Query.equal('active', true),
           // Query.equal('is_emergency', false),

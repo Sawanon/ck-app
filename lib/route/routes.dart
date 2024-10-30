@@ -6,6 +6,7 @@ import 'package:lottery_ck/modules/bill/view/bill.dart';
 import 'package:lottery_ck/modules/biometrics/view/enable_biometrics.dart';
 import 'package:lottery_ck/modules/couldflare/view/cloudflare.dart';
 import 'package:lottery_ck/modules/history/view/win_bill.dart';
+import 'package:lottery_ck/modules/kyc/view/kyc.dart';
 import 'package:lottery_ck/modules/layout/view/layout.dart';
 import 'package:lottery_ck/modules/login/view/login.dart';
 import 'package:lottery_ck/modules/mmoney/view/confirm_otp.dart';
@@ -179,6 +180,11 @@ class AppRoutes {
         GetPage(
           name: RouteName.changeBirth,
           page: () => const ChangeBirthPage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.kyc,
+          page: () => const KYCPage(),
           transition: Transition.rightToLeft,
         ),
       ];

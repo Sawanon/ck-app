@@ -26,6 +26,7 @@ class RouteName {
   static const String promotionPoint = '/promotionPoint';
   static const String changeName = '/changeName';
   static const String changeBirth = '/changeBirth';
+  static const String kyc = '/kyc';
 
   static const String cloudflare = '/cloudflare';
 }

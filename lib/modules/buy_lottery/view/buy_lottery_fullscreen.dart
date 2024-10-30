@@ -65,8 +65,16 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                     if (controller
                                             .invoiceRemainExpireStr.value ==
                                         "") return const SizedBox();
-                                    return Text(
-                                      "ໃບເກັບເງິນນີ້ໝົດອາຍຸໃນ ${controller.invoiceRemainExpireStr.value}",
+                                    return Container(
+                                      alignment: Alignment.center,
+                                      width: double.infinity,
+                                      padding: const EdgeInsets.all(8),
+                                      decoration: BoxDecoration(
+                                        color: Colors.amber.shade100,
+                                      ),
+                                      child: Text(
+                                        "ໃບເກັບເງິນນີ້ໝົດອາຍຸໃນ ${controller.invoiceRemainExpireStr.value}",
+                                      ),
                                     );
                                   }),
                                   Padding(
@@ -769,44 +777,43 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                       ),
                                     ),
                                     const SizedBox(width: 4),
-                                    GestureDetector(
-                                      onTap: () {
-                                        // if (HomeController.to.lotteryDate ==
-                                        //     null) {
-                                        //   return;
-                                        // }
-                                        controller.submitAddLottery(
-                                          controller.lottery,
-                                          controller.price,
-                                        );
-                                      },
-                                      child: Container(
-                                        height: 48,
-                                        width: 48,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          color:
-                                              HomeController.to.lotteryDate ==
-                                                      null
-                                                  ? AppColors.disable
-                                                  : AppColors.primary,
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        child: SvgPicture.asset(
-                                          AppIcon.add,
-                                          colorFilter: ColorFilter.mode(
-                                            HomeController.to.lotteryDate ==
-                                                    null
-                                                ? Colors.black.withOpacity(0.6)
-                                                : Colors.white,
-                                            BlendMode.srcIn,
+                                    Obx(() {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          if (controller.disabledBuy.value) {
+                                            return;
+                                          }
+                                          controller.submitAddLottery(
+                                            controller.lottery,
+                                            controller.price,
+                                          );
+                                        },
+                                        child: Container(
+                                          height: 48,
+                                          width: 48,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            color: controller.disabledBuy.value
+                                                ? AppColors.disable
+                                                : AppColors.primary,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
                                           ),
-                                          width: 36,
-                                          height: 36,
+                                          child: SvgPicture.asset(
+                                            AppIcon.add,
+                                            colorFilter: ColorFilter.mode(
+                                              controller.disabledBuy.value
+                                                  ? Colors.black
+                                                      .withOpacity(0.6)
+                                                  : Colors.white,
+                                              BlendMode.srcIn,
+                                            ),
+                                            width: 36,
+                                            height: 36,
+                                          ),
                                         ),
-                                      ),
-                                    ),
+                                      );
+                                    }),
                                   ],
                                 ),
                                 const SizedBox(height: 8),
@@ -815,8 +822,7 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                     controller.confirmLottery(
                                         context); // lottery confirm
                                   },
-                                  disabled:
-                                      HomeController.to.lotteryDate == null,
+                                  disabled: controller.disabledBuy.value,
                                   child: Text(
                                     AppLocale.confirmBuyLottery
                                         .getString(context),

@@ -30,6 +30,101 @@ class _GenderRadioState extends State<GenderRadio> {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        Expanded(
+          child: GestureDetector(
+            onTap: () => onChange(Gender.male),
+            child: Container(
+              padding: EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 1,
+                  color: AppColors.inputBorder,
+                ),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Positioned(
+                    left: 0,
+                    child: Container(
+                      width: 16,
+                      height: 16,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: valueGender == Gender.male
+                            ? Colors.red
+                            : Colors.white,
+                        border: Border.all(
+                          width: 1,
+                          color: AppColors.inputBorder,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "ผู้ชาย",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 4),
+        Expanded(
+          child: GestureDetector(
+            onTap: () => onChange(Gender.female),
+            child: Container(
+              padding: EdgeInsets.all(14),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  width: 1,
+                  color: AppColors.inputBorder,
+                ),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Positioned(
+                    left: 0,
+                    child: Container(
+                      width: 16,
+                      height: 16,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: valueGender == Gender.female
+                            ? Colors.red
+                            : Colors.white,
+                        border: Border.all(
+                          width: 1,
+                          color: AppColors.inputBorder,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Text(
+                    "ผู้หญิง",
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+    return Row(
+      children: [
         GestureDetector(
           onTap: () {
             onChange(Gender.female);

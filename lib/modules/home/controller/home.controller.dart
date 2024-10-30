@@ -5,7 +5,9 @@ import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/dialog_change_birthtime.dart';
+import 'package:lottery_ck/model/lottery_date.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.page.dart';
@@ -22,12 +24,6 @@ import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
-class FakeLottery {
-  Map data;
-
-  FakeLottery({required this.data});
-}
-
 class HomeController extends GetxController {
   static HomeController get to => Get.find();
   Timer? _timer;
@@ -41,6 +37,7 @@ class HomeController extends GetxController {
   RxList<Map> artWorksContent = <Map>[].obs;
   RxList<Map> wallpaperContent = <Map>[].obs;
   RxList<Map> bannerContent = <Map>[].obs;
+  LotteryDate? lotteryDateData;
 
   void lotteryFullScreen() {
     lotteryAlinment = Alignment.center;
@@ -63,14 +60,20 @@ class HomeController extends GetxController {
       return;
     }
     remainingDateTime.value = remain;
+    DateTime cloneCurrentDateTime = currentDateTime;
     _timer = Timer.periodic(
       const Duration(seconds: 1),
       (timer) async {
         if (remainingDateTime.value.inSeconds > 0) {
           remainingDateTime.value -= const Duration(seconds: 1);
           // logger.d("run ! ${remainingDateTime.value.inSeconds}");
+          cloneCurrentDateTime =
+              cloneCurrentDateTime.add(const Duration(seconds: 1));
+          // logger.w(cloneCurrentDateTime);
+          manageBuy(lotteryDateData, cloneCurrentDateTime);
           return;
         }
+        manageBuy(lotteryDateData, cloneCurrentDateTime);
         logger.e("stop !");
         timer.cancel();
         await getLotteryDate();
@@ -78,45 +81,87 @@ class HomeController extends GetxController {
     );
   }
 
+  void manageBuy(LotteryDate? lotteryDateData, DateTime now) async {
+    final buyController = BuyLotteryController.to;
+    if (lotteryDateData == null ||
+        lotteryDateData.isCal ||
+        lotteryDateData.isEmergency) {
+      buyController.disableBuy();
+      // logger.e("disable: 92");
+      return;
+    }
+    // logger.d(lotteryDateData?.toJson());
+    // final now = await getCurrentDatetime();
+    // if (now == null) return;
+    // FIXME:
+    // final now = DateTime.parse("2024-10-28 20:10:00");
+    final nowIsAfterStart = now.isAfter(lotteryDateData.startTime);
+    final nowIsBeforeEnd = now.isBefore(lotteryDateData.endTime);
+    // logger.d("nowIsAfterStart: $nowIsAfterStart");
+    // logger.d("nowIsBeforeEnd: $nowIsBeforeEnd");
+    if (nowIsAfterStart && nowIsBeforeEnd) {
+      // logger.e("enable: 101");
+      buyController.enableBuy();
+    } else {
+      // logger.e("disable: 103");
+      buyController.disableBuy();
+    }
+  }
+
   Future<void> getLotteryDate() async {
     try {
       isLoadingLotteryDate.value = true;
       final now = await getCurrentDatetime();
-      // final nowLocal = now!.toLocal();
       if (now == null) {
-        Get.rawSnackbar(message: "Can't get date time from server");
+        Get.dialog(
+          const DialogApp(
+            title: Text(
+              "Can't get current time from server",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+              ),
+            ),
+          ),
+        );
         return;
       }
-      // final todayMidnight =
-      //     DateTime(nowLocal.year, nowLocal.month, nowLocal.day);
+      // // FIXME: fake now remove on production
+      // final now = DateTime.parse("2024-10-28 20:09:40");
+      final nowLocal = now.toLocal();
+      final nowMidnight =
+          DateTime(nowLocal.year, nowLocal.month, nowLocal.day).toUtc();
       final appwriteController = AppWriteController.to;
-      final lotteryDateDocument = await appwriteController.getLotteryDate(now);
+      final lotteryDateDocument =
+          await appwriteController.getLotteryDate(nowMidnight, now.toUtc());
       logger.d(lotteryDateDocument?.data);
-      final isEmergency = lotteryDateDocument?.data['is_emergency'];
-      if (isEmergency) {
-        this.lotteryDate = null;
+      if (lotteryDateDocument == null) {
+        lotteryDate = null;
+        _timer?.cancel();
         update();
         return;
       }
-      // FIXME: is_emergency
-      // final fakeLotteryDate = FakeLottery(data: {
-      //   'end_time': '2024-10-22T03:42:00.373Z',
-      //   'datetime': '2024-10-22T02:17:00.373Z',
-      // });
-      // final lotteryEndTimeISO = fakeLotteryDate.data['end_time'];
-      // final lotteryDateISO = fakeLotteryDate.data['datetime'];
-      final lotteryEndTimeISO = lotteryDateDocument?.data['end_time'];
-      final lotteryDateISO = lotteryDateDocument?.data['datetime'];
+      final lotteryDateData = LotteryDate.fromJson(lotteryDateDocument.data);
+      // final lotteryDateData = LotteryDate(
+      //   dateTime: DateTime.parse("2024-10-28 00:00:00"),
+      //   startTime: DateTime.parse("2024-10-25 20:30:00"),
+      //   endTime: DateTime.parse("2024-10-28 20:10:00"),
+      //   active: true,
+      //   isEmergency: false,
+      //   isCal: false,
+      //   isTransfer: false,
+      // );
+      this.lotteryDateData = lotteryDateData;
+      if (lotteryDateData.isEmergency) {
+        lotteryDate = null;
+        update();
+        return;
+      }
 
-      final lotteryEndTime = DateTime.parse(lotteryEndTimeISO);
-      final lotteryDate = DateTime.parse(lotteryDateISO);
-      final lotteryEndTimeLocal = lotteryEndTime.toLocal();
-      logger.d(lotteryEndTimeLocal);
-      this.lotteryDate = lotteryDate.toLocal();
-      logger.f("$lotteryDate");
-      lotteryDateStr = CommonFn.parseDMY(lotteryDate.toLocal());
-      // final nowLocal = now.toLocal();
-      startCountdown(lotteryEndTime, now);
+      lotteryDate = lotteryDateData.dateTime.toLocal();
+      lotteryDateStr = CommonFn.parseDMY(lotteryDateData.dateTime.toLocal());
+      startCountdown(lotteryDateData.endTime, now);
       update();
     } catch (e) {
       logger.e(e.toString());
@@ -136,9 +181,9 @@ class HomeController extends GetxController {
         throw "date is not found";
       }
       final nowStr = dateServer![0];
-      // TODO: fake date time for test - sawanon
       final now = DateTime.parse(nowStr);
-      // final now = DateTime.now().add(const Duration(days: -7));
+      // TODO: fake date time for test - sawanon
+      // final now = DateTime.now().add(const Duration(days: -5));
       return now;
     } catch (e) {
       logger.e(e.toString());

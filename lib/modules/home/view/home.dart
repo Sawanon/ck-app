@@ -416,7 +416,7 @@ class HomePage extends StatelessWidget {
                             // },
                             child: GestureDetector(
                               onTap: () {
-                                // controller.testDeeplink();
+                                // controller.getLotteryDate();
                               },
                               child: SizedBox(
                                 // height: 30,
@@ -628,7 +628,7 @@ class HomePage extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      VideoList(),
+                      // VideoList(),
                       const SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -659,7 +659,7 @@ class HomePage extends StatelessWidget {
                       const SizedBox(height: 8),
                       Builder(builder: (context) {
                         final screenWidth = MediaQuery.of(context).size.width;
-                        logger.d("screenWidth: $screenWidth");
+                        // logger.d("screenWidth: $screenWidth");
                         return SizedBox(
                           height: screenWidth / 3,
                           child: Obx(() {

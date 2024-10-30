@@ -32,14 +32,16 @@ class PayMentPage extends StatelessWidget {
                   Obx(() {
                     if (BuyLotteryController.to.invoiceRemainExpireStr.value ==
                         "") return const SizedBox();
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          "ໃບເກັບເງິນນີ້ໝົດອາຍຸໃນ ${BuyLotteryController.to.invoiceRemainExpireStr.value}",
-                        ),
-                        const SizedBox(height: 8),
-                      ],
+                    return Container(
+                      alignment: Alignment.center,
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.amber.shade100,
+                      ),
+                      child: Text(
+                        "ໃບເກັບເງິນນີ້ໝົດອາຍຸໃນ ${BuyLotteryController.to.invoiceRemainExpireStr.value}",
+                      ),
                     );
                   }),
                   Expanded(
@@ -57,49 +59,36 @@ class PayMentPage extends StatelessWidget {
                         // ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                          child: Table(
-                            // border: TableBorder.all(color: Colors.blue),
-                            columnWidths: {
-                              0: FlexColumnWidth(50),
-                              1: FlexColumnWidth(25),
-                              2: FlexColumnWidth(25),
-                            },
-                            defaultVerticalAlignment:
-                                TableCellVerticalAlignment.middle,
-                            children: [
-                              TableRow(
-                                children: [
-                                  TableCell(
-                                    verticalAlignment:
-                                        TableCellVerticalAlignment.middle,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        AppLocale.lotteryList
-                                            .getString(context),
-                                        style: const TextStyle(
-                                          fontSize: 14,
+                          child: Builder(builder: (context) {
+                            final isHasBonus = BuyLotteryController
+                                    .to.invoiceMeta.value.bonus !=
+                                null;
+                            return Table(
+                              // border: TableBorder.all(color: Colors.blue),
+                              columnWidths: {
+                                0: FlexColumnWidth(50),
+                                1: FlexColumnWidth(50),
+                                // 2: FlexColumnWidth(25),
+                              },
+                              defaultVerticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              children: [
+                                TableRow(
+                                  children: [
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          AppLocale.lotteryList
+                                              .getString(context),
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  TableCell(
-                                    verticalAlignment:
-                                        TableCellVerticalAlignment.middle,
-                                    child: Container(
-                                      alignment: Alignment.centerRight,
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        AppLocale.amount.getString(context),
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  if (BuyLotteryController
-                                          .to.invoiceMeta.value.bonus !=
-                                      null)
                                     TableCell(
                                       verticalAlignment:
                                           TableCellVerticalAlignment.middle,
@@ -107,52 +96,51 @@ class PayMentPage extends StatelessWidget {
                                         alignment: Alignment.centerRight,
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text(
-                                          AppLocale.bonus.getString(context),
+                                          AppLocale.amount.getString(context),
                                           style: const TextStyle(
                                             fontSize: 14,
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.green,
                                           ),
                                         ),
                                       ),
                                     ),
-                                ],
-                              ),
-                              ...[
-                                ...BuyLotteryController
-                                    .to.invoiceMeta.value.transactions
-                                    .map(
-                                  (transaction) => TableRow(
-                                    children: [
-                                      TableCell(
-                                        verticalAlignment:
-                                            TableCellVerticalAlignment.middle,
-                                        child: Container(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            transaction.lottery,
-                                            style: const TextStyle(
-                                              fontSize: 14,
+                                    // if (isHasBonus)
+                                    //   TableCell(
+                                    //     verticalAlignment:
+                                    //         TableCellVerticalAlignment.middle,
+                                    //     child: Container(
+                                    //       alignment: Alignment.centerRight,
+                                    //       padding: const EdgeInsets.all(8.0),
+                                    //       child: Text(
+                                    //         AppLocale.bonus.getString(context),
+                                    //         style: const TextStyle(
+                                    //           fontSize: 14,
+                                    //           fontWeight: FontWeight.w700,
+                                    //           color: Colors.green,
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                  ],
+                                ),
+                                ...[
+                                  ...BuyLotteryController
+                                      .to.invoiceMeta.value.transactions
+                                      .map(
+                                    (transaction) => TableRow(
+                                      children: [
+                                        TableCell(
+                                          verticalAlignment:
+                                              TableCellVerticalAlignment.middle,
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text(
+                                              transaction.lottery,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      TableCell(
-                                        verticalAlignment:
-                                            TableCellVerticalAlignment.middle,
-                                        child: Container(
-                                          alignment: Alignment.centerRight,
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            CommonFn.parseMoney(
-                                                transaction.quota),
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      if (transaction.bonus != null)
                                         TableCell(
                                           verticalAlignment:
                                               TableCellVerticalAlignment.middle,
@@ -161,90 +149,117 @@ class PayMentPage extends StatelessWidget {
                                             padding: const EdgeInsets.all(8.0),
                                             child: Text(
                                               CommonFn.parseMoney(
-                                                  transaction.totalAmount! -
-                                                      transaction.quota),
+                                                  transaction.quota),
                                               style: const TextStyle(
                                                 fontSize: 14,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.green,
                                               ),
                                             ),
                                           ),
                                         ),
-                                    ],
+                                        // if (transaction.bonus != null)
+                                        //   TableCell(
+                                        //     verticalAlignment:
+                                        //         TableCellVerticalAlignment
+                                        //             .middle,
+                                        //     child: Container(
+                                        //       alignment: Alignment.centerRight,
+                                        //       padding:
+                                        //           const EdgeInsets.all(8.0),
+                                        //       child: Text(
+                                        //         CommonFn.parseMoney(
+                                        //             transaction.totalAmount! -
+                                        //                 transaction.quota),
+                                        //         style: const TextStyle(
+                                        //           fontSize: 14,
+                                        //           fontWeight: FontWeight.w700,
+                                        //           color: Colors.green,
+                                        //         ),
+                                        //       ),
+                                        //     ),
+                                        //   ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                                TableRow(
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(
+                                        width: 1,
+                                        color: AppColors.disableText,
+                                      ),
+                                    ),
                                   ),
+                                  children: [
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          "Discount",
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Container(
+                                        alignment: Alignment.centerRight,
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          BuyLotteryController
+                                              .to.invoiceMeta.value.discount
+                                              .toString(),
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    // TableCell(
+                                    //   verticalAlignment:
+                                    //       TableCellVerticalAlignment.middle,
+                                    //   child: Container(
+                                    //     alignment: Alignment.centerRight,
+                                    //     padding: const EdgeInsets.all(8.0),
+                                    //     // child: Text(
+                                    //     //   AppLocale.bonus.getString(context),
+                                    //     //   style: const TextStyle(
+                                    //     //     fontSize: 14,
+                                    //     //     fontWeight: FontWeight.w700,
+                                    //     //     color: Colors.green,
+                                    //     //   ),
+                                    //     // ),
+                                    //   ),
+                                    // ),
+                                  ],
                                 )
                               ],
-                              TableRow(
-                                children: [
-                                  TableCell(
-                                    verticalAlignment:
-                                        TableCellVerticalAlignment.middle,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "Discount",
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  TableCell(
-                                    verticalAlignment:
-                                        TableCellVerticalAlignment.middle,
-                                    child: Container(
-                                      alignment: Alignment.centerRight,
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        BuyLotteryController
-                                            .to.invoiceMeta.value.discount
-                                            .toString(),
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  TableCell(
-                                    verticalAlignment:
-                                        TableCellVerticalAlignment.middle,
-                                    child: Container(
-                                      alignment: Alignment.centerRight,
-                                      padding: const EdgeInsets.all(8.0),
-                                      // child: Text(
-                                      //   AppLocale.bonus.getString(context),
-                                      //   style: const TextStyle(
-                                      //     fontSize: 14,
-                                      //     fontWeight: FontWeight.w700,
-                                      //     color: Colors.green,
-                                      //   ),
-                                      // ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
+                            );
+                          }),
                         ),
-                        const SizedBox(height: 8),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 16 + 8),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Bonus"),
-                                  Text(BuyLotteryController
-                                      .to.invoiceMeta.value.bonus
-                                      .toString()),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
+                        // const SizedBox(height: 8),
+                        // Padding(
+                        //   padding: EdgeInsets.symmetric(horizontal: 16 + 8),
+                        //   child: Column(
+                        //     children: [
+                        //       Row(
+                        //         mainAxisAlignment:
+                        //             MainAxisAlignment.spaceBetween,
+                        //         children: [
+                        //           Text("Bonus"),
+                        //           Text(BuyLotteryController
+                        //               .to.invoiceMeta.value.bonus
+                        //               .toString()),
+                        //         ],
+                        //       )
+                        //     ],
+                        //   ),
+                        // ),
                         const SizedBox(height: 8),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),

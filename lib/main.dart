@@ -8,6 +8,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:lottery_ck/binding/initial.binding.dart';
+import 'package:lottery_ck/modules/kyc/view/kyc.dart';
 import 'package:lottery_ck/modules/login/controller/login.controller.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/modules/splash_screen/controller/splash_screen.controller.dart';
@@ -114,6 +115,7 @@ class _MyAppState extends State<MyApp> {
       initialBinding: InitialBinding(),
       getPages: AppRoutes.appRoutes(),
       // initialRoute: RouteName.splashScreen,
+      // home: KYCPage(),
       home: UpgradeAlert(
         child: SplashScreenPage(),
       ),

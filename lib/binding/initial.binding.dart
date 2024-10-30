@@ -10,6 +10,7 @@ import 'package:lottery_ck/modules/history/controller/history.controller.dart';
 import 'package:lottery_ck/modules/history/controller/history_win.controller.dart';
 import 'package:lottery_ck/modules/history/controller/win_bill.contoller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
+import 'package:lottery_ck/modules/kyc/controller/kyc.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/login/controller/login.controller.dart';
 import 'package:lottery_ck/modules/lottery_history/controller/lottery_history.controller.dart';
@@ -86,5 +87,6 @@ class LayoutBindings extends Bindings {
     Get.lazyPut<PointController>(() => PointController(), fenix: true);
     Get.lazyPut<CustomWebviewController>(() => CustomWebviewController(),
         fenix: true);
+    Get.lazyPut<KYCController>(() => KYCController(), fenix: true);
   }
 }

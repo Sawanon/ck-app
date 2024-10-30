@@ -14,6 +14,7 @@ import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.page.dart';
 import 'package:lottery_ck/modules/history/controller/history.controller.dart';
 import 'package:lottery_ck/modules/history/view/history.dart';
 import 'package:lottery_ck/modules/home/view/home.dart';
+import 'package:lottery_ck/modules/kyc/view/ask_kyc_dialog.dart';
 import 'package:lottery_ck/modules/lottery_history/view/lottery_history.dart';
 import 'package:lottery_ck/modules/notification/view/notification.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
@@ -81,7 +82,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   }
 
   Widget currentPage(TabApp tab) {
-    logger.d("current tab change :$tab");
+    // logger.d("current tab change :$tab");
     switch (tab) {
       case TabApp.home:
         return const HomePage();
@@ -147,6 +148,16 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
     );
   }
 
+  void showDialogKYC() {
+    logger.d("message");
+    if (userApp == null) return;
+    if (userApp!.isKYC == null || userApp!.isKYC == false) {
+      Get.dialog(
+        AskKycDialog(),
+      );
+    }
+  }
+
   void changeTab(TabApp tab) async {
     switch (tab) {
       case TabApp.home:
@@ -161,9 +172,11 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
         logger.w("isPass: $isPass");
         if (isPass) {
           onChangeTabIndex(tab);
+          showDialogKYC();
         }
         break;
       case TabApp.lottery:
+        BuyLotteryController.to.chnageParentTab(0);
         onChangeTabIndex(tab);
         break;
       case TabApp.notifications:
@@ -177,6 +190,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
         final isPass = await requestBioMetrics();
         if (isPass) {
           onChangeTabIndex(tab);
+          showDialogKYC();
         }
         break;
     }
@@ -220,7 +234,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
 
   Future<void> checkUser() async {
     try {
-      logger.d("checkUser");
+      // logger.d("checkUser");
       userApp = await AppWriteController.to.getUserApp();
       if (userApp == null) {
         throw "userApp is null";

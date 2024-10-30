@@ -36,6 +36,7 @@ class AppIcon {
   static const String clock = "assets/svg/vuesax/linear/clock.svg";
   static const String edit = "assets/svg/vuesax/linear/edit.svg";
   static const String random = "assets/svg/random.svg";
+  static const String kycFace = "assets/svg/ar_on_you.svg";
 
   static const String lo = "assets/laos1.png";
   static const String th = "assets/Th1.png";
