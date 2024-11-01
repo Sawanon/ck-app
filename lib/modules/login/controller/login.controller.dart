@@ -32,24 +32,6 @@ class LoginController extends GetxController {
   RxBool disableLogin = true.obs;
   WebViewController? webviewController;
 
-  // void bypassLogin() async {
-  //   Map<String, dynamic>? token =
-  //       await AppWriteController.to.getToken('+8562055265064');
-  //   if (token == null) {
-  //     Get.dialog(
-  //       const DialogApp(
-  //         title: Text("Token is null"),
-  //         details: Text("Please try again"),
-  //         disableConfirm: true,
-  //       ),
-  //     );
-  //     return;
-  //   }
-  //   final session = await AppWriteController.to.createSession(token);
-  //   LayoutController.to.intialApp();
-  //   Get.offAllNamed(RouteName.layout);
-  // }
-
   Future<void> login() async {
     final valid = keyForm.currentState?.validate();
     if (valid == null || valid == false) {
@@ -59,8 +41,6 @@ class LoginController extends GetxController {
     Map<String, dynamic>? token =
         await AppWriteController.to.getToken(phoneNumber);
     // go to otp for verify then go to enter user info - sawanon:20240807
-    logger.w("toke login");
-    logger.w(token);
     if (token == null) {
       Get.snackbar("Something went wrong", "please try again later");
       return;

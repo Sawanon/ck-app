@@ -442,89 +442,127 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                     height:
                                         MediaQuery.of(context).size.height / 2,
                                     color: Colors.white,
-                                    child: ListView.separated(
-                                        padding: const EdgeInsets.all(16),
-                                        itemBuilder: (context, index) {
-                                          return GestureDetector(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.only(
+                                            top: 8,
+                                            left: 16,
+                                            right: 16,
+                                          ),
+                                          alignment: Alignment.centerRight,
+                                          child: GestureDetector(
                                             onTap: () {
-                                              final condition = jsonDecode(
-                                                  controller
-                                                          .promotionList[index]
-                                                      ['condition'][0]);
-                                              logger.d(condition);
+                                              controller.listPromotions();
                                             },
-                                            child: Container(
-                                              padding: const EdgeInsets.all(8),
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    width: 1,
-                                                    color:
-                                                        AppColors.borderGray),
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              // child: Text(
-                                              //   '${controller.promotionList[index]['detail']}',
-                                              //   // softWrap: false,
-                                              //   maxLines: 2,
-                                              //   overflow: TextOverflow.ellipsis,
-                                              // ),
-                                              child: Row(
-                                                children: [
-                                                  SizedBox(
-                                                    width: 24,
-                                                    height: 24,
-                                                    child: SvgPicture.asset(
-                                                        AppIcon.promotion),
-                                                  ),
-                                                  const SizedBox(width: 8),
-                                                  Expanded(
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          '${controller.promotionList[index]['name']}',
-                                                          style: TextStyle(
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.bold,
+                                            child: const Icon(
+                                                Icons.refresh_rounded),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Obx(() {
+                                            return ListView.separated(
+                                                padding:
+                                                    const EdgeInsets.all(16),
+                                                itemBuilder: (context, index) {
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      final condition =
+                                                          jsonDecode(controller
+                                                                      .promotionList[
+                                                                  index]
+                                                              ['condition'][0]);
+                                                      logger.d(condition);
+                                                    },
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8),
+                                                      decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            width: 1,
                                                             color: AppColors
-                                                                .textPrimary,
+                                                                .borderGray),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                      ),
+                                                      // child: Text(
+                                                      //   '${controller.promotionList[index]['detail']}',
+                                                      //   // softWrap: false,
+                                                      //   maxLines: 2,
+                                                      //   overflow: TextOverflow.ellipsis,
+                                                      // ),
+                                                      child: Row(
+                                                        children: [
+                                                          SizedBox(
+                                                            width: 24,
+                                                            height: 24,
+                                                            child: SvgPicture
+                                                                .asset(AppIcon
+                                                                    .promotion),
                                                           ),
-                                                          maxLines: 2,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 4),
-                                                        Text(
-                                                          '${controller.promotionList[index]['detail']}',
-                                                          style: TextStyle(
-                                                            color: AppColors
-                                                                .textPrimary,
+                                                          const SizedBox(
+                                                              width: 8),
+                                                          Expanded(
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                  '${controller.promotionList[index]['name']}',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: AppColors
+                                                                        .textPrimary,
+                                                                  ),
+                                                                  maxLines: 2,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
+                                                                const SizedBox(
+                                                                    height: 4),
+                                                                Text(
+                                                                  '${controller.promotionList[index]['detail']}',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: AppColors
+                                                                        .textPrimary,
+                                                                  ),
+                                                                  maxLines: 2,
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                ),
+                                                                const SizedBox(
+                                                                    height: 4),
+                                                                Text(
+                                                                    '${AppLocale.promotionExpire.getString(context)}: ${CommonFn.parseDMY(DateTime.parse(controller.promotionList[index]['end_date']))}'),
+                                                              ],
+                                                            ),
                                                           ),
-                                                          maxLines: 2,
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                        ),
-                                                        const SizedBox(
-                                                            height: 4),
-                                                        Text(
-                                                            '${AppLocale.promotionExpire.getString(context)}: ${CommonFn.parseDMY(DateTime.parse(controller.promotionList[index]['end_date']))}'),
-                                                      ],
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        separatorBuilder: (context, index) =>
-                                            SizedBox(height: 8),
-                                        itemCount:
-                                            controller.promotionList.length),
+                                                  );
+                                                },
+                                                separatorBuilder:
+                                                    (context, index) =>
+                                                        SizedBox(height: 8),
+                                                itemCount: controller
+                                                    .promotionList.length);
+                                          }),
+                                        ),
+                                      ],
+                                    ),
                                     // child: ListView(
                                     //   padding: const EdgeInsets.all(16),
                                     //   children: controller.promotionList.map(

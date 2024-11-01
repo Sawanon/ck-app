@@ -7,9 +7,15 @@ enum Gender { female, male }
 
 class GenderRadio extends StatefulWidget {
   final void Function(Gender gender) onChange;
+  final bool disabled;
+  final String? defaultValue;
+  final String? errorText;
   const GenderRadio({
     super.key,
     required this.onChange,
+    this.disabled = false,
+    this.defaultValue,
+    this.errorText,
   });
 
   @override
@@ -27,100 +33,139 @@ class _GenderRadioState extends State<GenderRadio> {
   }
 
   @override
+  void initState() {
+    if (widget.defaultValue == null) return;
+    if (widget.defaultValue == "male") {
+      onChange(Gender.male);
+    } else if (widget.defaultValue == "male") {
+      onChange(Gender.female);
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: GestureDetector(
-            onTap: () => onChange(Gender.male),
-            child: Container(
-              padding: EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 1,
-                  color: AppColors.inputBorder,
-                ),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Positioned(
-                    left: 0,
-                    child: Container(
-                      width: 16,
-                      height: 16,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: valueGender == Gender.male
-                            ? Colors.red
-                            : Colors.white,
-                        border: Border.all(
-                          width: 1,
-                          color: AppColors.inputBorder,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Text(
-                    "ผู้ชาย",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                ],
-              ),
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            border: Border.all(
+              width: 1,
+              color: widget.errorText != ""
+                  ? AppColors.errorBorder
+                  : Colors.transparent,
             ),
           ),
-        ),
-        const SizedBox(width: 4),
-        Expanded(
-          child: GestureDetector(
-            onTap: () => onChange(Gender.female),
-            child: Container(
-              padding: EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 1,
-                  color: AppColors.inputBorder,
-                ),
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Positioned(
-                    left: 0,
-                    child: Container(
-                      width: 16,
-                      height: 16,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: valueGender == Gender.female
-                            ? Colors.red
-                            : Colors.white,
-                        border: Border.all(
-                          width: 1,
-                          color: AppColors.inputBorder,
-                        ),
+          child: Row(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: () => widget.disabled ? () {} : onChange(Gender.male),
+                  child: Container(
+                    padding: EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 1,
+                        color: AppColors.inputBorder,
                       ),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Positioned(
+                          left: 0,
+                          child: Container(
+                            width: 16,
+                            height: 16,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: valueGender == Gender.male
+                                  ? Colors.red
+                                  : Colors.white,
+                              border: Border.all(
+                                width: 1,
+                                color: AppColors.inputBorder,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          "ผู้ชาย",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Text(
-                    "ผู้หญิง",
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
+              const SizedBox(width: 4),
+              Expanded(
+                child: GestureDetector(
+                  onTap: () =>
+                      widget.disabled ? () {} : onChange(Gender.female),
+                  child: Container(
+                    padding: EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 1,
+                        color: AppColors.inputBorder,
+                      ),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Positioned(
+                          left: 0,
+                          child: Container(
+                            width: 16,
+                            height: 16,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: valueGender == Gender.female
+                                  ? Colors.red
+                                  : Colors.white,
+                              border: Border.all(
+                                width: 1,
+                                color: AppColors.inputBorder,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Text(
+                          "ผู้หญิง",
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
+        if (widget.errorText != null) ...[
+          const SizedBox(height: 8),
+          Text(
+            widget.errorText!,
+            style: const TextStyle(
+              color: AppColors.errorBorder,
+              fontSize: 12,
+            ),
+          ),
+        ]
       ],
     );
     return Row(

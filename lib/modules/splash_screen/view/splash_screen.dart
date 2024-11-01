@@ -29,7 +29,7 @@ class SplashScreenPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  "v.1.2.0+31",
+                  "v.1.2.0+32",
                   style: TextStyle(
                     fontSize: 10,
                     color: AppColors.textPrimary,

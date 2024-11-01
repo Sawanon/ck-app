@@ -44,6 +44,7 @@ class AppWriteController extends GetxController {
   static const String USER_POINT = 'user_points';
   static const String CONTENT_MANAGEMENT = 'content_management';
   static const String QUOTAS = 'quotas';
+  static const String QYC_USER = 'kyc_users';
 
   static const _roleUserId = "669a2cfd00141edc45ef";
   final String _providerId = '66d28d4000300a1e7dc1';
@@ -426,13 +427,18 @@ class AppWriteController extends GetxController {
         queries: [
           Query.equal('active', true),
           Query.equal('is_emergency', false),
-          Query.orderAsc("datetime"),
+          Query.lessThanEqual(
+              'start_time', DateTime.now().toUtc().toIso8601String()),
+          Query.orderDesc("datetime"),
           Query.limit(10),
         ],
       );
       List<LotteryDate> lotteryDateList = [];
       bool isGreatOne = false;
+      // int count = 0;
       for (var lotteryDateDocument in listLotteryDate.documents) {
+        // count++;
+        // if (count == 10) break;
         final lotteryDate = LotteryDate.fromJson(lotteryDateDocument.data);
         lotteryDateList.add(lotteryDate);
         logger.d(lotteryDate.endTime.toString());
@@ -1273,7 +1279,6 @@ class AppWriteController extends GetxController {
 
   Future<List<Map>?> listContent() async {
     try {
-      // final
       final contentDocumentList = await databases.listDocuments(
         databaseId: _databaseName,
         collectionId: CONTENT_MANAGEMENT,
@@ -1281,7 +1286,8 @@ class AppWriteController extends GetxController {
           Query.equal('is_approve', '1'),
           Query.equal('is_active', true),
           Query.or([
-            Query.greaterThanEqual('expire', DateTime.now().toIso8601String()),
+            Query.greaterThanEqual(
+                'expire', DateTime.now().toUtc().toIso8601String()),
             Query.isNull('expire'),
           ]),
         ],
@@ -1406,6 +1412,23 @@ class AppWriteController extends GetxController {
         collectionId: QUOTAS,
       );
       return quotaDocumentList;
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<Map?> getKYC(String userId) async {
+    try {
+      final qycData = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: QYC_USER,
+        queries: [
+          Query.equal("userId", userId),
+        ],
+      );
+      final data = qycData.documents.first;
+      return data.data;
     } catch (e) {
       logger.e("$e");
       return null;

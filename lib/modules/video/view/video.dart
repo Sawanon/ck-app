@@ -8,11 +8,11 @@ import 'package:video_player/video_player.dart';
 
 class VideComponents extends StatefulWidget {
   final String url;
-  final String link;
+  final String? link;
   const VideComponents({
     super.key,
     required this.url,
-    required this.link,
+    this.link,
   });
 
   @override
@@ -28,6 +28,7 @@ class _VideComponentsState extends State<VideComponents> {
         Uri.parse(widget.url),
         videoPlayerOptions: VideoPlayerOptions(
           mixWithOthers: true,
+          allowBackgroundPlayback: false,
         ),
       );
       await _controller.setVolume(0.0);
@@ -53,18 +54,32 @@ class _VideComponentsState extends State<VideComponents> {
     if (_controller.value.isInitialized) {
       return GestureDetector(
         onTap: () async {
-          await launchUrl(Uri.parse(
-            widget.link,
-          ));
+          if (widget.link == null) return;
+          try {
+            await launchUrl(Uri.parse(
+              widget.link!,
+            ));
+          } catch (e) {
+            logger.e("$e");
+          }
         },
-        child: Container(
-          clipBehavior: Clip.hardEdge,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
+        child: AspectRatio(
+          aspectRatio: 9 / 16,
+          child: Container(
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: FittedBox(
+              fit: BoxFit.cover,
+              clipBehavior: Clip.hardEdge,
+              child: Container(
+                width: heightVideo * _controller.value.aspectRatio,
+                height: heightVideo,
+                child: VideoPlayer(_controller),
+              ),
+            ),
           ),
-          width: heightVideo * _controller.value.aspectRatio,
-          height: heightVideo,
-          child: VideoPlayer(_controller),
         ),
       );
     }

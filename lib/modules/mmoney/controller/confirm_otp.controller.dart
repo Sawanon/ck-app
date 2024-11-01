@@ -14,6 +14,7 @@ import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/utils.dart';
 
 class MonneyConfirmOTPController extends GetxController {
+  static MonneyConfirmOTPController get to => Get.find();
   final argrument = Get.arguments;
   final String phoneNumber = Get.arguments['phoneNumber'];
   RxBool enableOTP = false.obs;
@@ -110,9 +111,22 @@ class MonneyConfirmOTPController extends GetxController {
               disableConfirm: true,
               title: Text("Error"),
               details: Text("$error"),
+              onCancel: () {
+                Get.back();
+              },
             ),
           );
-        } catch (e) {
+        } catch (error) {
+          Get.dialog(
+            DialogApp(
+              disableConfirm: true,
+              title: Text("Error: ${e.response?.statusCode}"),
+              details: Text("${e.response?.statusMessage}"),
+              onCancel: () {
+                Get.back();
+              },
+            ),
+          );
           return null;
         }
       } else {
@@ -128,71 +142,121 @@ class MonneyConfirmOTPController extends GetxController {
   }
 
   void _setup() async {
-    final bankId = argrument['bankId'];
-    final phoneNumber = argrument['phoneNumber'];
-    final totalAmount = argrument['totalAmount'];
-    final invoiceId = argrument['invoiceId'];
-    final lotteryDateStr = argrument['lotteryDateStr'];
-    final userApp = LayoutController.to.userApp;
-    final dio = Dio();
-    final token = await AppWriteController.to.getCredential();
-    final payload = {
-      "bankId": bankId,
-      "phone": phoneNumber,
-      "totalAmount": totalAmount,
-      "invoiceId": invoiceId,
-      "lotteryDateStr": lotteryDateStr,
-      "customerId": userApp!.customerId,
-    };
-    logger.w(payload);
-    // TODO:
-    final response = await dio.post(
-      "${AppConst.apiUrl}/payment",
-      data: payload,
-      options: Options(
-        headers: {
-          "Authorization": "Bearer $token",
-        },
-      ),
-    );
-    logger.d(response.data);
-    if (response.data['data']['payment']['responseCode'] != '0000') {
-      Get.dialog(
-        DialogApp(
-          disableConfirm: true,
-          cancelText: const Text(
-            "Close",
-            style: TextStyle(
-              color: AppColors.primary,
-            ),
-          ),
-          title: Text(
-            "${response.data['data']['payment']['responseStatus']}",
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          details: Text(
-            "${response.data['data']['payment']['responseMessage']}",
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+    try {
+      final bankId = argrument['bankId'];
+      final phoneNumber = argrument['phoneNumber'];
+      final totalAmount = argrument['totalAmount'];
+      final invoiceId = argrument['invoiceId'];
+      final lotteryDateStr = argrument['lotteryDateStr'];
+      final int? point = argrument['point'];
+      final userApp = LayoutController.to.userApp;
+      final dio = Dio();
+      final token = await AppWriteController.to.getCredential();
+      Map payload = {
+        "bankId": bankId,
+        "phone": phoneNumber,
+        "totalAmount": totalAmount,
+        "invoiceId": invoiceId,
+        "lotteryDateStr": lotteryDateStr,
+        "customerId": userApp!.customerId,
+      };
+      if (point != null) {
+        payload['point'] = point;
+      }
+      logger.w(payload);
+      // TODO:
+      final response = await dio.post(
+        "${AppConst.apiUrl}/payment",
+        data: payload,
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
         ),
       );
+      logger.d(response.data);
+      if (response.data['data']['payment']['responseCode'] != '0000') {
+        Get.dialog(
+          DialogApp(
+            disableConfirm: true,
+            cancelText: const Text(
+              "Close",
+              style: TextStyle(
+                color: AppColors.primary,
+              ),
+            ),
+            title: Text(
+              "${response.data['data']['payment']['responseStatus']}",
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            details: Text(
+              "${response.data['data']['payment']['responseMessage']}",
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        );
+      }
+      enableOTP.value = true;
+      otpRefNo = response.data['data']['payment']['otpRefNo'];
+      otpRefCode = response.data['data']['payment']['otpRefCode'];
+      transCashOutID =
+          response.data['data']['payment']['transData'][0]['transCashOutID'];
+      transID = response.data['data']['payment']['transID'];
+      final newExpire = DateTime.parse(
+          response.data['data']['payment']['transData'][0]['transExpiry']);
+      BuyLotteryController.to.startCountDownInvoiceExpire(newExpire);
+      update();
+    } on DioException catch (e) {
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        logger.e(e.response?.headers);
+        logger.e(e.response?.requestOptions);
+        if (e.response?.data is Map) {
+          handleErrorAddTransaction(e.response?.data);
+          return;
+        }
+        Get.dialog(
+          DialogApp(
+            disableConfirm: true,
+            title: Text("Error: ${e.response?.statusCode}"),
+            details: Text("${e.response?.statusMessage}"),
+            onCancel: () {
+              Get.back();
+            },
+          ),
+        );
+      }
     }
-    enableOTP.value = true;
-    otpRefNo = response.data['data']['payment']['otpRefNo'];
-    otpRefCode = response.data['data']['payment']['otpRefCode'];
-    transCashOutID =
-        response.data['data']['payment']['transData'][0]['transCashOutID'];
-    transID = response.data['data']['payment']['transID'];
-    final newExpire = DateTime.parse(
-        response.data['data']['payment']['transData'][0]['transExpiry']);
-    BuyLotteryController.to.startCountDownInvoiceExpire(newExpire);
-    update();
+  }
+
+  void handleErrorAddTransaction(Map errorData) {
+    final String message = errorData['message'];
+    Get.dialog(
+      DialogApp(
+        title: const Text(
+          "Error",
+          style: TextStyle(
+            fontSize: 18,
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        onCancel: () {
+          Get.back();
+        },
+        cancelText: Text("Back"),
+        details: Text(message),
+        disableConfirm: true,
+      ),
+    );
   }
 
   void startTimerOTP() {

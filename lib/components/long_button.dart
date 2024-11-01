@@ -9,6 +9,8 @@ class LongButton extends StatelessWidget {
   final Color? backgroundColor;
   final BorderSide borderSide;
   final bool disabled;
+  final BorderRadiusGeometry? borderRadius;
+  final bool isLoading;
   const LongButton({
     super.key,
     required this.onPressed,
@@ -18,6 +20,8 @@ class LongButton extends StatelessWidget {
     this.backgroundColor = AppColors.primary,
     this.borderSide = BorderSide.none,
     this.disabled = false,
+    this.borderRadius,
+    this.isLoading = false,
   });
 
   @override
@@ -29,15 +33,36 @@ class LongButton extends StatelessWidget {
         elevation: 0,
         shadowColor: Colors.transparent,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius:
+              borderRadius == null ? BorderRadius.circular(10) : borderRadius!,
           side: borderSide,
         ),
         fixedSize: Size(MediaQuery.of(context).size.width, 48),
         backgroundColor: backgroundColor,
         foregroundColor: Colors.white,
       ),
-      onPressed: disabled ? null : onPressed,
-      child: child,
+      onPressed: disabled
+          ? null
+          : isLoading
+              ? () {}
+              : onPressed,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (isLoading) ...[
+            const SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(width: 8),
+          ],
+          child,
+        ],
+      ),
     );
   }
 }

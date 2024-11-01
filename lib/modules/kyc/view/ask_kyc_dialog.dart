@@ -76,7 +76,11 @@ class AskKycDialog extends StatelessWidget {
                   children: [
                     Expanded(
                       child: LongButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.back();
+                        },
+                        backgroundColor: AppColors.backButtonHover,
+                        borderRadius: BorderRadius.circular(6),
                         child: Text(
                           "ภายหลัง",
                           style: TextStyle(
@@ -88,9 +92,14 @@ class AskKycDialog extends StatelessWidget {
                     const SizedBox(width: 4),
                     Expanded(
                       child: LongButton(
-                        onPressed: () {
-                          Get.toNamed(RouteName.kyc);
+                        onPressed: () async {
+                          Get.back();
+                          await Future.delayed(
+                              const Duration(milliseconds: 250), () {
+                            Get.toNamed(RouteName.kyc);
+                          });
                         },
+                        borderRadius: BorderRadius.circular(6),
                         child: Text(
                           "ยืนยันตัวตน",
                           style: TextStyle(

@@ -17,6 +17,7 @@ import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/layout/view/layout.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
 import 'package:lottery_ck/modules/restart/view/restart.dart';
+import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/splash_screen/view/splash_screen.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/route/route_name.dart';
@@ -176,6 +177,9 @@ class SplashScreenController extends GetxController {
             final promotionPointId = link.split("/").last;
             NotificationController.to
                 .openPromotionPointsDetail(promotionPointId);
+          } else if (link.contains("/kyc")) {
+            LayoutController.to.changeTab(TabApp.settings);
+            SettingController.to.setup();
           }
         }
       },

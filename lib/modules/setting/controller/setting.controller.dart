@@ -27,11 +27,20 @@ class SettingController extends GetxController {
   String? newPhoneNumber;
   String? newAddress;
   Rx<Uint8List?> profileByte = Rx<Uint8List?>(null);
+  Map? kycData;
 
   Future<void> logout() async {
     await AppWriteController.to.logout();
     // Get.offAllNamed(RouteName.login);
     LayoutController.to.changeTab(TabApp.home);
+  }
+
+  Future<void> getKYC() async {
+    if (user == null) return;
+    final kycData = await AppWriteController.to.getKYC(user!.userId);
+    logger.w(kycData);
+    this.kycData = kycData;
+    update();
   }
 
   Future<void> getUser([bool forceReloadProfile = false]) async {
@@ -40,6 +49,13 @@ class SettingController extends GetxController {
     this.user = user;
     update();
     getProfileImage(user, forceReloadProfile);
+    logger.w(user.isKYC);
+    if (user.isKYC != true) {
+      await getKYC();
+    } else {
+      kycData = null;
+      update();
+    }
   }
 
   void getProfileImage(UserApp user, [bool forseReload = false]) async {
@@ -54,33 +70,9 @@ class SettingController extends GetxController {
   }
 
   Future<void> setup() async {
-    await getUser();
-    enabledBiometrics.value = await StorageController.to.getEnableBio();
-  }
-
-  void onShare(BuildContext context) async {
-    final box = context.findRenderObject() as RenderBox?;
-    await Share.share(
-      "test",
-      subject: "test sub",
-      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
-    );
-  }
-
-  // Future<bool> checkPermission() async {
-  //   try {
-  //     await AppWriteController.to.user;
-  //     isLogin = true;
-  //     return true;
-  //   } catch (e) {
-  //     logger.e("$e");
-  //     return false;
-  //   }
-  // }
-
-  void beforeSetup() async {
     try {
-      await setup();
+      await getUser();
+      enabledBiometrics.value = await StorageController.to.getEnableBio();
     } catch (e) {
       logger.e("$e");
       try {
@@ -92,6 +84,15 @@ class SettingController extends GetxController {
       // loading = false;
       // update();
     }
+  }
+
+  void onShare(BuildContext context) async {
+    final box = context.findRenderObject() as RenderBox?;
+    await Share.share(
+      "test",
+      subject: "test sub",
+      sharePositionOrigin: box!.localToGlobal(Offset.zero) & box.size,
+    );
   }
 
   void submitRating(double rating, String? comment) async {
@@ -391,9 +392,22 @@ class SettingController extends GetxController {
     return userDocument;
   }
 
+  void viewKYCDetail() {
+    if (kycData == null) return;
+    if (kycData!['status'] == "pending") {
+      // TODO: goto detail process
+      return;
+    }
+    gotoKYC();
+  }
+
+  void gotoKYC() {
+    Get.toNamed(RouteName.kyc);
+  }
+
   @override
   void onInit() {
-    initSettings();
+    // initSettings();
     getUser();
     super.onInit();
   }

@@ -37,6 +37,7 @@ class HomeController extends GetxController {
   RxList<Map> artWorksContent = <Map>[].obs;
   RxList<Map> wallpaperContent = <Map>[].obs;
   RxList<Map> bannerContent = <Map>[].obs;
+  RxList<Map> videoContent = <Map>[].obs;
   LotteryDate? lotteryDateData;
 
   void lotteryFullScreen() {
@@ -281,9 +282,11 @@ class HomeController extends GetxController {
 
   Future<void> listContent() async {
     try {
+      logger.d("refresh !");
       artWorksContent.clear();
       wallpaperContent.clear();
       bannerContent.clear();
+      videoContent.clear();
       final contentList = await AppWriteController.to.listContent();
       if (contentList == null) return;
       List<Map> artworksList = [];
@@ -303,9 +306,17 @@ class HomeController extends GetxController {
             // logger.d(contentData);
             bannerContent.add(contentData);
             break;
+          case 'video':
+            logger.d(content);
+            final videoData = content['videos'];
+            videoContent.add({
+              "videoUrl":
+                  "${AppConst.apiUrl}/upload/video/${videoData['fileName']}",
+            });
           default:
         }
       }
+      logger.d(videoContent);
       artWorksContent.value = artworksList;
     } catch (e) {
       logger.e("$e");

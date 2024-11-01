@@ -29,6 +29,7 @@ class HistoryBuyController extends GetxController {
       if (lotteryDateList == null) {
         return;
       }
+      logger.d(lotteryDateList);
       logger.w("lotteryDateList: ${lotteryDateList.length}");
       // cuuretn datetime and when found after current date keep 1 and remove all
       this.lotteryDateList = lotteryDateList;
@@ -69,6 +70,7 @@ class HistoryBuyController extends GetxController {
 
   Future<void> onChangeLotteryDate(DateTime lotteryDate) async {
     logger.d("fetch API !");
+    return;
     loadingHistoryList.value = true;
     await getHistoryBuy(lotteryDate);
     loadingHistoryList.value = false;
@@ -88,6 +90,7 @@ class HistoryBuyController extends GetxController {
   }
 
   Future<void> refreshHistory() async {
+    listLotteryDate();
     if (selectedLotteryDate == null) {
       return;
     }

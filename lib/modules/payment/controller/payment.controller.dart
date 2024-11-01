@@ -37,6 +37,12 @@ class PaymentController extends GetxController {
   String? otpRefCode;
   String? transCashOutID;
   String? transID;
+  int? point;
+
+  void onChangePoint(int value) {
+    point = value;
+    update();
+  }
 
   Future<void> getBank() async {
     final appwriteController = AppWriteController.to;
@@ -55,6 +61,7 @@ class PaymentController extends GetxController {
   }
 
   void setup() async {
+    point = null;
     setLotteryDate();
     getBank();
   }
@@ -141,152 +148,7 @@ class PaymentController extends GetxController {
           "totalAmount": invoiceMeta.amount,
           "invoiceId": invoiceMeta.invoiceId,
           "lotteryDateStr": invoiceMeta.lotteryDateStr,
-          // "onInit": () async {
-          //   final userApp = LayoutController.to.userApp;
-          //   final dio = Dio();
-          //   final token = await AppWriteController.to.getCredential();
-          //   final payload = {
-          //     "bankId": bank.$id,
-          //     "phone": user.phone,
-          //     "totalAmount": invoiceMeta.amount,
-          //     "invoiceId": invoiceMeta.invoiceId,
-          //     "lotteryDateStr": invoiceMeta.lotteryDateStr,
-          //     "customerId": userApp!.customerId,
-          //   };
-          //   logger.w(payload);
-          //   final response = await dio.post(
-          //     "${AppConst.apiUrl}/payment",
-          //     data: payload,
-          //     options: Options(
-          //       headers: {
-          //         "Authorization": "Bearer $token",
-          //       },
-          //     ),
-          //   );
-          //   logger.d(response.data);
-          //   if (response.data['data']['payment']['responseCode'] != '0000') {
-          //     Get.dialog(
-          //       DialogApp(
-          //         disableConfirm: true,
-          //         cancelText: Text(
-          //           "Close",
-          //           style: TextStyle(
-          //             color: AppColors.primary,
-          //           ),
-          //         ),
-          //         title: Text(
-          //           "${response.data['data']['payment']['responseStatus']}",
-          //           style: TextStyle(
-          //             fontSize: 18,
-          //             fontWeight: FontWeight.bold,
-          //           ),
-          //         ),
-          //         details: Text(
-          //           "${response.data['data']['payment']['responseMessage']}",
-          //           style: TextStyle(
-          //             fontSize: 16,
-          //             fontWeight: FontWeight.bold,
-          //           ),
-          //         ),
-          //       ),
-          //     );
-          //   }
-          //   otpRefNo = response.data['data']['payment']['otpRefNo'];
-          //   otpRefCode = response.data['data']['payment']['otpRefCode'];
-          //   transCashOutID = response.data['data']['payment']['transData'][0]
-          //       ['transCashOutID'];
-          //   transID = response.data['data']['payment']['transID'];
-          //   final newExpire = DateTime.parse(response.data['data']['payment']
-          //       ['transData'][0]['transExpiry']);
-          //   BuyLotteryController.to.startCountDownInvoiceExpire(newExpire);
-          //   update();
-          // },
-          // "onConfirm": (otp) async {
-          //   try {
-          //     final dio = Dio();
-          //     final token = await AppWriteController.to.getCredential();
-          //     final payload = {
-          //       "invoiceId": invoiceMeta.invoiceId,
-          //       "transID": transID,
-          //       "otpRefNo": otpRefNo,
-          //       "otpRefCode": otpRefCode,
-          //       "otp": otp,
-          //       "transCashOutID": transCashOutID,
-          //       "lotteryDate": invoiceMeta.lotteryDateStr,
-          //     };
-          //     logger.d(payload);
-          //     final response = await dio.post(
-          //       "${AppConst.apiUrl}/payment/confirm",
-          //       data: payload,
-          //       options: Options(
-          //         headers: {
-          //           "Authorization": "Bearer $token",
-          //         },
-          //       ),
-          //     );
-          //     logger.d(response.data);
-          //     if (response.data['responseCode'] != '0000') {
-          //       Get.dialog(
-          //         DialogApp(
-          //           disableConfirm: true,
-          //           cancelText: Text(
-          //             "Close",
-          //             style: TextStyle(
-          //               color: AppColors.primary,
-          //             ),
-          //           ),
-          //           title: Text(
-          //             "${response.data['responseStatus']}",
-          //             style: TextStyle(
-          //               fontSize: 18,
-          //               fontWeight: FontWeight.bold,
-          //             ),
-          //           ),
-          //           details: Text(
-          //             "${response.data['responseMessage']}",
-          //             style: TextStyle(
-          //               fontSize: 16,
-          //               fontWeight: FontWeight.bold,
-          //             ),
-          //           ),
-          //         ),
-          //       );
-          //       // responseMessage
-          //       return;
-          //     }
-          //     Get.back();
-          //     showBill(invoiceMeta.invoiceId!);
-          //   } on DioException catch (e) {
-          //     // The request was made and the server responded with a status code
-          //     // that falls out of the range of 2xx and is also not 304.
-          //     if (e.response != null) {
-          //       logger.e(e.response?.statusCode);
-          //       logger.e(e.response?.statusMessage);
-          //       logger.e(e.response?.data);
-          //       logger.e(e.response?.headers);
-          //       logger.e(e.response?.requestOptions);
-          //       try {
-          //         final error = jsonDecode(e.response?.data['message']);
-          //         logger.e(error);
-          //         Get.dialog(
-          //           DialogApp(
-          //             disableConfirm: true,
-          //             title: Text("Error"),
-          //             details: Text("$error"),
-          //           ),
-          //         );
-          //       } catch (e) {
-          //         return null;
-          //       }
-          //     } else {
-          //       // Something happened in setting up or sending the request that triggered an Error
-          //       logger.e(e.requestOptions);
-          //       logger.e(e.message);
-          //     }
-          //   }
-
-          //   // goto show bill
-          // }
+          "point": point,
         });
 
         // logger.

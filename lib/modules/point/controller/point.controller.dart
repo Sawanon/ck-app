@@ -27,10 +27,14 @@ class PointController extends GetxController {
 
   String renderType(String type, BuildContext context) {
     switch (type.toLowerCase()) {
-      case "buylottery":
+      case "buyPromotion":
         return AppLocale.buyLottery.getString(context);
       case "daily":
         return AppLocale.horoscope.getString(context);
+      case "buyLottery":
+        return "ใช้ซื้อหวย";
+      case "register":
+        return "สมัครใหม่";
       default:
         if (type.contains("daily")) {
           return type.split("|").last;

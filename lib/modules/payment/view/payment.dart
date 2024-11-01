@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/components/pay_by_point_component.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
+import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -181,85 +183,146 @@ class PayMentPage extends StatelessWidget {
                                     ),
                                   )
                                 ],
-                                TableRow(
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      top: BorderSide(
-                                        width: 1,
-                                        color: AppColors.disableText,
+                                if (BuyLotteryController
+                                            .to.invoiceMeta.value.discount !=
+                                        null &&
+                                    BuyLotteryController
+                                            .to.invoiceMeta.value.discount !=
+                                        0)
+                                  TableRow(
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        top: BorderSide(
+                                          width: 1,
+                                          color: AppColors.disableText,
+                                        ),
                                       ),
                                     ),
+                                    children: [
+                                      TableCell(
+                                        verticalAlignment:
+                                            TableCellVerticalAlignment.middle,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            "Discount",
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      TableCell(
+                                        verticalAlignment:
+                                            TableCellVerticalAlignment.middle,
+                                        child: Container(
+                                          alignment: Alignment.centerRight,
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            BuyLotteryController
+                                                .to.invoiceMeta.value.discount
+                                                .toString(),
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      // TableCell(
+                                      //   verticalAlignment:
+                                      //       TableCellVerticalAlignment.middle,
+                                      //   child: Container(
+                                      //     alignment: Alignment.centerRight,
+                                      //     padding: const EdgeInsets.all(8.0),
+                                      //     // child: Text(
+                                      //     //   AppLocale.bonus.getString(context),
+                                      //     //   style: const TextStyle(
+                                      //     //     fontSize: 14,
+                                      //     //     fontWeight: FontWeight.w700,
+                                      //     //     color: Colors.green,
+                                      //     //   ),
+                                      //     // ),
+                                      //   ),
+                                      // ),
+                                    ],
                                   ),
-                                  children: [
-                                    TableCell(
-                                      verticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          "Discount",
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                          ),
+                                if (controller.point != null)
+                                  TableRow(
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        top: BorderSide(
+                                          width: 1,
+                                          color: AppColors.disableText,
                                         ),
                                       ),
                                     ),
-                                    TableCell(
-                                      verticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      child: Container(
-                                        alignment: Alignment.centerRight,
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          BuyLotteryController
-                                              .to.invoiceMeta.value.discount
-                                              .toString(),
-                                          style: const TextStyle(
-                                            fontSize: 14,
+                                    children: [
+                                      TableCell(
+                                        verticalAlignment:
+                                            TableCellVerticalAlignment.middle,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            "Point discount",
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    // TableCell(
-                                    //   verticalAlignment:
-                                    //       TableCellVerticalAlignment.middle,
-                                    //   child: Container(
-                                    //     alignment: Alignment.centerRight,
-                                    //     padding: const EdgeInsets.all(8.0),
-                                    //     // child: Text(
-                                    //     //   AppLocale.bonus.getString(context),
-                                    //     //   style: const TextStyle(
-                                    //     //     fontSize: 14,
-                                    //     //     fontWeight: FontWeight.w700,
-                                    //     //     color: Colors.green,
-                                    //     //   ),
-                                    //     // ),
-                                    //   ),
-                                    // ),
-                                  ],
-                                )
+                                      TableCell(
+                                        verticalAlignment:
+                                            TableCellVerticalAlignment.middle,
+                                        child: Container(
+                                          alignment: Alignment.centerRight,
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            CommonFn.parseMoney(
+                                                -controller.point!),
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      // TableCell(
+                                      //   verticalAlignment:
+                                      //       TableCellVerticalAlignment.middle,
+                                      //   child: Container(
+                                      //     alignment: Alignment.centerRight,
+                                      //     padding: const EdgeInsets.all(8.0),
+                                      //     // child: Text(
+                                      //     //   AppLocale.bonus.getString(context),
+                                      //     //   style: const TextStyle(
+                                      //     //     fontSize: 14,
+                                      //     //     fontWeight: FontWeight.w700,
+                                      //     //     color: Colors.green,
+                                      //     //   ),
+                                      //     // ),
+                                      //   ),
+                                      // ),
+                                    ],
+                                  )
                               ],
                             );
                           }),
                         ),
-                        // const SizedBox(height: 8),
-                        // Padding(
-                        //   padding: EdgeInsets.symmetric(horizontal: 16 + 8),
-                        //   child: Column(
-                        //     children: [
-                        //       Row(
-                        //         mainAxisAlignment:
-                        //             MainAxisAlignment.spaceBetween,
-                        //         children: [
-                        //           Text("Bonus"),
-                        //           Text(BuyLotteryController
-                        //               .to.invoiceMeta.value.bonus
-                        //               .toString()),
-                        //         ],
-                        //       )
-                        //     ],
-                        //   ),
-                        // ),
+                        const SizedBox(height: 8),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Text(
+                              "Your point : ${SettingController.to.user?.point}"),
+                        ),
+                        Container(
+                          margin: EdgeInsets.symmetric(horizontal: 16),
+                          child: PayByPointComponent(
+                            onChange: (value) {
+                              logger.d(value);
+                              controller.onChangePoint(value);
+                            },
+                            maxPoint: SettingController.to.user?.point,
+                          ),
+                        ),
                         const SizedBox(height: 8),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -284,15 +347,21 @@ class PayMentPage extends StatelessWidget {
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
-                                    Text(
-                                      CommonFn.parseMoney(BuyLotteryController
-                                          .to.invoiceMeta.value.amount),
-                                      style: TextStyle(
-                                        color: AppColors.primary,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
+                                    Builder(builder: (context) {
+                                      int amount = BuyLotteryController
+                                          .to.invoiceMeta.value.amount;
+                                      if (controller.point != null) {
+                                        amount = amount - controller.point!;
+                                      }
+                                      return Text(
+                                        CommonFn.parseMoney(amount),
+                                        style: TextStyle(
+                                          color: AppColors.primary,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      );
+                                    }),
                                   ],
                                 ),
                               ],
@@ -392,41 +461,6 @@ class PayMentPage extends StatelessWidget {
                         ),
                       );
                     }),
-                    // child: ElevatedButton(
-                    //   style: ElevatedButton.styleFrom(
-                    //     elevation: 0,
-                    //     shadowColor: Colors.transparent,
-                    //     shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(10),
-                    //     ),
-                    //     fixedSize: Size(MediaQuery.of(context).size.width, 48),
-                    //     backgroundColor: controller.enablePay
-                    //         ? AppColors.primary
-                    //         : AppColors.disable,
-                    //     overlayColor:
-                    //         controller.enablePay ? null : Colors.transparent,
-                    //     foregroundColor: controller.enablePay
-                    //         ? Colors.white
-                    //         : AppColors.disableText,
-                    //   ),
-                    //   onPressed: () {
-                    //     if (controller.selectedBank == null) {
-                    //       return;
-                    //     }
-                    //     controller.payLottery(
-                    //       controller.selectedBank!,
-                    //       controller.totalAmount!,
-                    //       context,
-                    //     );
-                    //   },
-                    //   child: Text(
-                    //     AppLocale.pay.getString(context),
-                    //     style: TextStyle(
-                    //       fontSize: 16,
-                    //       fontWeight: FontWeight.w700,
-                    //     ),
-                    //   ),
-                    // ),
                   ),
                 ],
               ),

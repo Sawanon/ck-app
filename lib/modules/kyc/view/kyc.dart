@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -6,6 +7,8 @@ import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/input_text.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/kyc/controller/kyc.controller.dart';
+import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
+import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 
@@ -66,6 +69,13 @@ class KYCPage extends StatelessWidget {
                                     ),
                                   ),
                                   InputText(
+                                    isError: controller.remark?['firstName']
+                                            ['status'] ==
+                                        false,
+                                    errorText: controller.remark?['firstName']
+                                        ['message'],
+                                    controller: controller.firstNameController,
+                                    disabled: controller.isLoading,
                                     onChanged: (value) {
                                       controller.firstName = value;
                                     },
@@ -80,101 +90,27 @@ class KYCPage extends StatelessWidget {
                                     ),
                                   ),
                                   InputText(
+                                    isError: controller.remark?['lastName']
+                                            ['status'] ==
+                                        false,
+                                    errorText: controller.remark?['lastName']
+                                        ['message'],
+                                    controller: controller.lastNameController,
+                                    disabled: controller.isLoading,
                                     onChanged: (value) {
                                       controller.lastName = value;
                                     },
                                   ),
                                   const SizedBox(height: 24),
-                                  // Row(
-                                  //   children: [
-                                  //     Expanded(
-                                  //       child: Container(
-                                  //         padding: EdgeInsets.all(14),
-                                  //         decoration: BoxDecoration(
-                                  //           border: Border.all(
-                                  //             width: 1,
-                                  //             color: AppColors.inputBorder,
-                                  //           ),
-                                  //           borderRadius:
-                                  //               BorderRadius.circular(4),
-                                  //         ),
-                                  //         child: Stack(
-                                  //           alignment: Alignment.center,
-                                  //           children: [
-                                  //             Positioned(
-                                  //               left: 0,
-                                  //               child: Container(
-                                  //                 width: 16,
-                                  //                 height: 16,
-                                  //                 decoration: BoxDecoration(
-                                  //                   shape: BoxShape.circle,
-                                  //                   color: Colors.red,
-                                  //                   border: Border.all(
-                                  //                     width: 1,
-                                  //                     color:
-                                  //                         AppColors.inputBorder,
-                                  //                   ),
-                                  //                 ),
-                                  //               ),
-                                  //             ),
-                                  //             Text(
-                                  //               "ผู้ชาย",
-                                  //               style: TextStyle(
-                                  //                 fontSize: 14,
-                                  //                 fontWeight: FontWeight.w600,
-                                  //                 color: AppColors.textPrimary,
-                                  //               ),
-                                  //             ),
-                                  //           ],
-                                  //         ),
-                                  //       ),
-                                  //     ),
-                                  //     const SizedBox(width: 4),
-                                  //     Expanded(
-                                  //       child: Container(
-                                  //         padding: EdgeInsets.all(14),
-                                  //         decoration: BoxDecoration(
-                                  //           border: Border.all(
-                                  //             width: 1,
-                                  //             color: AppColors.inputBorder,
-                                  //           ),
-                                  //           borderRadius:
-                                  //               BorderRadius.circular(4),
-                                  //         ),
-                                  //         child: Stack(
-                                  //           alignment: Alignment.center,
-                                  //           children: [
-                                  //             Positioned(
-                                  //               left: 0,
-                                  //               child: Container(
-                                  //                 width: 16,
-                                  //                 height: 16,
-                                  //                 decoration: BoxDecoration(
-                                  //                   shape: BoxShape.circle,
-                                  //                   // color: Colors.red,
-                                  //                   border: Border.all(
-                                  //                     width: 1,
-                                  //                     color:
-                                  //                         AppColors.inputBorder,
-                                  //                   ),
-                                  //                 ),
-                                  //               ),
-                                  //             ),
-                                  //             Text(
-                                  //               "ผู้หญิง",
-                                  //               style: TextStyle(
-                                  //                 fontSize: 14,
-                                  //                 fontWeight: FontWeight.w600,
-                                  //                 color: AppColors.textPrimary,
-                                  //               ),
-                                  //             ),
-                                  //           ],
-                                  //         ),
-                                  //       ),
-                                  //     ),
-                                  //   ],
-                                  // ),
                                   GenderRadio(
+                                    errorText: controller.remark?['gender']
+                                                ['status'] ==
+                                            false
+                                        ? controller.remark!['gender']
+                                            ['message']
+                                        : null,
+                                    defaultValue: controller.gender,
+                                    disabled: controller.isLoading,
                                     onChange: (gender) {
                                       controller.gender = gender.name;
                                     },
@@ -190,12 +126,12 @@ class KYCPage extends StatelessWidget {
                                   ),
                                   GestureDetector(
                                     onTap: () async {
+                                      if (controller.isLoading) return;
                                       final datetime = await showDatePicker(
                                         context: context,
                                         firstDate: DateTime(1970),
                                         lastDate: DateTime.now(),
                                         initialDate: DateTime.now(),
-                                        // initialDate: controller.birthDate,
                                       );
                                       if (datetime == null) return;
                                       controller.changeBirthDate(datetime);
@@ -211,7 +147,11 @@ class KYCPage extends StatelessWidget {
                                         borderRadius: BorderRadius.circular(4),
                                         border: Border.all(
                                           width: 1,
-                                          color: AppColors.inputBorder,
+                                          color: controller.remark?['birthDate']
+                                                      ['status'] ==
+                                                  false
+                                              ? AppColors.errorBorder
+                                              : AppColors.inputBorder,
                                         ),
                                       ),
                                       child: Row(
@@ -229,6 +169,19 @@ class KYCPage extends StatelessWidget {
                                       ),
                                     ),
                                   ),
+                                  if (controller.remark?['birthDate']
+                                          ['status'] ==
+                                      false) ...[
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      controller.remark?['birthDate']
+                                          ['message'],
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        color: AppColors.errorBorder,
+                                      ),
+                                    ),
+                                  ]
                                 ],
                               ),
                             ),
@@ -266,6 +219,14 @@ class KYCPage extends StatelessWidget {
                                     ),
                                   ),
                                   InputText(
+                                    errorText: controller.remark?['address']
+                                                ['status'] ==
+                                            false
+                                        ? controller.remark!['address']
+                                            ['message']
+                                        : null,
+                                    controller: controller.addressController,
+                                    disabled: controller.isLoading,
                                     onChanged: (value) =>
                                         controller.address = value,
                                   ),
@@ -279,6 +240,13 @@ class KYCPage extends StatelessWidget {
                                     ),
                                   ),
                                   InputText(
+                                    errorText: controller.remark?['city']
+                                                ['status'] ==
+                                            false
+                                        ? controller.remark!['city']['message']
+                                        : null,
+                                    controller: controller.cityController,
+                                    disabled: controller.isLoading,
                                     onChanged: (value) =>
                                         controller.city = value,
                                   ),
@@ -292,6 +260,14 @@ class KYCPage extends StatelessWidget {
                                     ),
                                   ),
                                   InputText(
+                                    errorText: controller.remark?['district']
+                                                ['status'] ==
+                                            false
+                                        ? controller.remark!['district']
+                                            ['message']
+                                        : null,
+                                    controller: controller.districtController,
+                                    disabled: controller.isLoading,
                                     onChanged: (value) =>
                                         controller.district = value,
                                   ),
@@ -376,6 +352,7 @@ class KYCPage extends StatelessWidget {
                                               ),
                                             ),
                                           ),
+                                          const SizedBox(width: 4),
                                           Text(
                                             "เลขที่บัตรประชาชน",
                                             style: TextStyle(
@@ -388,14 +365,58 @@ class KYCPage extends StatelessWidget {
                                       )
                                     ],
                                   ),
+                                  const SizedBox(height: 8),
                                   InputText(
+                                    errorText: controller.remark?['idCard']
+                                                ['status'] ==
+                                            false
+                                        ? controller.remark!['idCard']
+                                            ['message']
+                                        : null,
+                                    controller: controller.idCardController,
+                                    disabled: controller.isLoading,
                                     onChanged: (value) =>
                                         controller.idCard = value,
                                   ),
                                   const SizedBox(height: 8),
-                                  controller.documentImage != null
-                                      ? Image.file(controller.documentImage!)
-                                      : Container(
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                      width: 2,
+                                      color: controller.remark?['documentImage']
+                                                  ['status'] ==
+                                              false
+                                          ? AppColors.errorBorder
+                                          : Colors.transparent,
+                                    )),
+                                    child: Builder(
+                                      builder: (context) {
+                                        if (controller.documentImage != null) {
+                                          return Image.file(
+                                              controller.documentImage!);
+                                        }
+                                        if (controller.documentImageUrl !=
+                                            null) {
+                                          return CachedNetworkImage(
+                                            imageUrl:
+                                                controller.documentImageUrl!,
+                                            progressIndicatorBuilder: (
+                                              context,
+                                              url,
+                                              downloadProgress,
+                                            ) =>
+                                                Center(
+                                              child: CircularProgressIndicator(
+                                                value:
+                                                    downloadProgress.progress,
+                                              ),
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
+                                          );
+                                        }
+                                        return Container(
                                           padding: EdgeInsets.all(28),
                                           width: double.infinity,
                                           decoration: BoxDecoration(
@@ -408,13 +429,31 @@ class KYCPage extends StatelessWidget {
                                               fit: BoxFit.fitHeight,
                                             ),
                                           ),
-                                        ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  if (controller.remark?['documentImage']
+                                          ['message'] !=
+                                      "") ...[
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      controller.remark?['documentImage']
+                                              ['message'] ??
+                                          "",
+                                      style: TextStyle(
+                                        color: AppColors.errorBorder,
+                                        fontSize: 12,
+                                      ),
+                                    )
+                                  ],
                                   const SizedBox(height: 8),
                                   LongButton(
+                                    disabled: controller.isLoading,
                                     onPressed: () async {
                                       controller.takeIdCard();
                                     },
-                                    child: Row(
+                                    child: const Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
@@ -436,6 +475,7 @@ class KYCPage extends StatelessWidget {
                                 ],
                               ),
                             ),
+                            const SizedBox(height: 16),
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
@@ -491,10 +531,47 @@ class KYCPage extends StatelessWidget {
                                     ),
                                   ),
                                   const SizedBox(height: 8),
-                                  controller.selfieWithDocumentImage != null
-                                      ? Image.file(
-                                          controller.selfieWithDocumentImage!)
-                                      : Container(
+                                  Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                      width: 2,
+                                      color: controller.remark?['verifySelfie']
+                                                  ['status'] ==
+                                              false
+                                          ? AppColors.errorBorder
+                                          : Colors.transparent,
+                                    )),
+                                    child: Builder(
+                                      builder: (context) {
+                                        if (controller
+                                                .selfieWithDocumentImage !=
+                                            null) {
+                                          return Image.file(controller
+                                              .selfieWithDocumentImage!);
+                                        }
+                                        if (controller
+                                                .selfieWithDocumentImageUrl !=
+                                            null) {
+                                          return CachedNetworkImage(
+                                            imageUrl: controller
+                                                .selfieWithDocumentImageUrl!,
+                                            progressIndicatorBuilder: (
+                                              context,
+                                              url,
+                                              downloadProgress,
+                                            ) =>
+                                                Center(
+                                              child: CircularProgressIndicator(
+                                                value:
+                                                    downloadProgress.progress,
+                                              ),
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
+                                          );
+                                        }
+                                        return Container(
                                           width: double.infinity,
                                           decoration: BoxDecoration(
                                             color: AppColors.documentBackground,
@@ -506,13 +583,31 @@ class KYCPage extends StatelessWidget {
                                               fit: BoxFit.fitHeight,
                                             ),
                                           ),
-                                        ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  if (controller.remark?['verifySelfie']
+                                          ['message'] !=
+                                      "") ...[
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      controller.remark?['verifySelfie']
+                                              ['message'] ??
+                                          "",
+                                      style: TextStyle(
+                                        color: AppColors.errorBorder,
+                                        fontSize: 12,
+                                      ),
+                                    )
+                                  ],
                                   const SizedBox(height: 8),
                                   LongButton(
+                                    disabled: controller.isLoading,
                                     onPressed: () async {
                                       controller.takeSelfieWithIdCard();
                                     },
-                                    child: Row(
+                                    child: const Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
@@ -543,6 +638,7 @@ class KYCPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: LongButton(
+                    isLoading: controller.isLoading,
                     onPressed: () {
                       controller.sendKYC();
                     },
@@ -605,7 +701,9 @@ class UserBannerComponent extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(16),
+                  width: 100,
+                  height: 100,
+                  // padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
@@ -613,15 +711,28 @@ class UserBannerComponent extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  child: Icon(
-                    Icons.person,
-                    size: 40,
-                    color: Colors.white,
-                  ),
+                  child: SettingController.to.profileByte.value != null
+                      ? Container(
+                          width: 100,
+                          height: 100,
+                          clipBehavior: Clip.hardEdge,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                          ),
+                          child: Image.memory(
+                            SettingController.to.profileByte.value!,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : Icon(
+                          Icons.person,
+                          size: 40,
+                          color: Colors.white,
+                        ),
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  "firstName lastName",
+                  LayoutController.to.userApp?.fullName ?? "firstName lastName",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
@@ -630,7 +741,7 @@ class UserBannerComponent extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  "+8562055265064",
+                  LayoutController.to.userApp?.phoneNumber ?? "+8562012341234",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.white,

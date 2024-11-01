@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
+import 'package:lottery_ck/modules/video/view/video.dart';
 import 'package:lottery_ck/modules/video/view/video_list.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -42,6 +43,40 @@ class HomePage extends StatelessWidget {
                       AspectRatio(
                           aspectRatio: 16 / 9,
                           child: Obx(() {
+                            if (controller.bannerContent.value.isEmpty) {
+                              return Container(
+                                padding: const EdgeInsets.all(24),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Colors.white,
+                                  boxShadow: const [
+                                    AppTheme.softShadow,
+                                  ],
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      clipBehavior: Clip.hardEdge,
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Image.asset(
+                                        "assets/icon/ck-lotto.jpg",
+                                        width: 52,
+                                        height: 52,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Expanded(
+                                      child: Image.asset(
+                                        "assets/ck-w3.png",
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
                             return CarouselSlider(
                               // items: [
                               //   "https://baas.moevedigital.com/v1/storage/buckets/news_image/files/66d532000003e376a41c/view?project=667afb24000fbd66b4df&mode=admin",
@@ -629,6 +664,24 @@ class HomePage extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       // VideoList(),
+                      Container(
+                        height: 160,
+                        child: Obx(() {
+                          return ListView.separated(
+                            physics: const BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              final video =
+                                  controller.videoContent.value[index];
+                              return VideComponents(url: video['videoUrl']);
+                            },
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(width: 8),
+                            itemCount: controller.videoContent.value.length,
+                          );
+                        }),
+                      ),
                       const SizedBox(height: 16),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

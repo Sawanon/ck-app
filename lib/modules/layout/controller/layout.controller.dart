@@ -149,12 +149,15 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   }
 
   void showDialogKYC() {
-    logger.d("message");
-    if (userApp == null) return;
-    if (userApp!.isKYC == null || userApp!.isKYC == false) {
-      Get.dialog(
-        AskKycDialog(),
-      );
+    final user = SettingController.to.user;
+    final kycData = SettingController.to.kycData;
+    if (user == null) return;
+    if (user.isKYC == null || user.isKYC == false) {
+      if (kycData == null) {
+        Get.dialog(
+          const AskKycDialog(),
+        );
+      }
     }
   }
 

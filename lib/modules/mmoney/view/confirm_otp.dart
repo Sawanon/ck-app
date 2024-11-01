@@ -157,11 +157,6 @@ class MonneyConfirmOTP extends StatelessWidget {
                     }),
                     const SizedBox(height: 16),
                     Obx(() {
-                      if (BuyLotteryController
-                              .to.invoiceRemainExpire.value.inSeconds <=
-                          0) {
-                        controller.enableResendOTP();
-                      }
                       return Align(
                         alignment: Alignment.center,
                         child: Text(

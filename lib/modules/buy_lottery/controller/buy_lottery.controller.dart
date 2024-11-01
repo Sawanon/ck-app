@@ -16,6 +16,9 @@ import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
+import 'package:lottery_ck/modules/mmoney/controller/confirm_otp.controller.dart';
+import 'package:lottery_ck/modules/mmoney/view/confirm_otp.dart';
+import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/constant.dart';
@@ -92,125 +95,6 @@ class BuyLotteryController extends GetxController {
     lotteryNode.addListener(onFocus);
   }
 
-  InvoiceMetaData? createInvoiceForPreCheck(Lottery lottery) {
-    logger.d(userApp);
-    if (userApp == null) {
-      showLoginDialog();
-      return null;
-    }
-    logger.d(invoiceMeta.value.invoiceId);
-    if (invoiceMeta.value.invoiceId == null) {
-      // create a new invoice and pre-check
-      final lotteryDate = HomeController.to.lotteryDate;
-      if (lotteryDate == null) return null;
-      final lotteryDateStr = CommonFn.parseLotteryDateCollection(lotteryDate);
-      final amount = CommonFn.calculateTotalPrice([lottery]);
-      final invoice = InvoiceMetaData(
-        amount: amount,
-        totalAmount: amount,
-        transactions: [lottery],
-        customerId: userApp!.customerId!,
-        phone: userApp!.phoneNumber,
-        lotteryDateStr: lotteryDateStr,
-        price: amount,
-        quota: amount,
-      );
-      logger.d(invoice.toJson(userApp!.userId));
-      calPrePromotion(invoice);
-      logger.w(invoice.toJson(userApp!.userId));
-      return invoice;
-    } else {
-      // create invoice from old ref and pre-check
-      // check has exist transaction lottery
-      // final backUpInvoice = invoiceMeta.value.copyWith();
-      InvoiceMetaData cloneInvoice = InvoiceMetaData.empty();
-      cloneInvoice = invoiceMeta.value.copyWith();
-      final findTrasaction = cloneInvoice.transactions.where(
-        (transaction) {
-          return transaction.lottery == lottery.lottery;
-        },
-      ).toList();
-      logger.e(findTrasaction.length);
-      if (findTrasaction.isNotEmpty) {
-        // already exist lottery number
-        // final amount = CommonFn.calculateTotalPrice([lottery]);
-        findTrasaction.first.amount =
-            findTrasaction.first.amount + lottery.amount;
-        cloneInvoice.transactions = findTrasaction;
-        logger.w("meta");
-        logger.w(cloneInvoice.toJson(userApp!.userId));
-        calPrePromotion(cloneInvoice);
-        calculatePreTotalAmount(cloneInvoice);
-        logger.w(cloneInvoice.toJson(userApp!.userId));
-        return cloneInvoice;
-      } else {
-        // dosen't exist lottery number
-        cloneInvoice.transactions.clear();
-        cloneInvoice.transactions.add(lottery);
-        calPrePromotion(cloneInvoice);
-        calculatePreTotalAmount(cloneInvoice);
-        logger.w(cloneInvoice.toJson(userApp!.userId));
-        // logger.f(invoiceMeta.value.toJson(userApp!.userId));
-        return cloneInvoice;
-      }
-    }
-    return null;
-  }
-
-  InvoiceMetaData? createInvoiceForUse(Lottery lottery) {
-    if (userApp == null) return null;
-    logger.d(invoiceMeta.value.invoiceId);
-    if (invoiceMeta.value.invoiceId == null) {
-      // create a new invoice and pre-check
-      final lotteryDate = HomeController.to.lotteryDate;
-      if (lotteryDate == null) return null;
-      final lotteryDateStr = CommonFn.parseLotteryDateCollection(lotteryDate);
-      final amount = CommonFn.calculateTotalPrice([lottery]);
-      final invoice = InvoiceMetaData(
-        amount: amount,
-        totalAmount: amount,
-        transactions: [lottery],
-        customerId: userApp!.customerId!,
-        phone: userApp!.phoneNumber,
-        lotteryDateStr: lotteryDateStr,
-        price: amount,
-        quota: amount,
-      );
-      logger.d(invoice.toJson(userApp!.userId));
-      calPrePromotion(invoice);
-      logger.w(invoice.toJson(userApp!.userId));
-      return invoice;
-    } else {
-      // create invoice from old ref and pre-check
-      // check has exist transaction lottery
-      // final backUpInvoice = invoiceMeta.value.copyWith();
-      InvoiceMetaData cloneInvoice = invoiceMeta.value.copyWith();
-      final findTrasaction = cloneInvoice.transactions.where(
-        (transaction) {
-          return transaction.lottery == lottery.lottery;
-        },
-      ).toList();
-      logger.e(findTrasaction.length);
-      if (findTrasaction.isNotEmpty) {
-        // already exist lottery number
-        // final amount = CommonFn.calculateTotalPrice([lottery]);
-        findTrasaction.first.amount =
-            findTrasaction.first.amount + lottery.amount;
-        calPrePromotion(cloneInvoice);
-        calculatePreTotalAmount(cloneInvoice);
-        return cloneInvoice;
-      } else {
-        // dosen't exist lottery number
-        cloneInvoice.transactions.add(lottery);
-        calPrePromotion(cloneInvoice);
-        calculatePreTotalAmount(cloneInvoice);
-        // logger.f(invoiceMeta.value.toJson(userApp!.userId));
-        return cloneInvoice;
-      }
-    }
-    return null;
-  }
-
   void startCountDownInvoiceExpire(DateTime expire) {
     final currentDateTime = DateTime.now();
     invoiceRemainExpire.value = expire.difference(currentDateTime);
@@ -229,10 +113,23 @@ class BuyLotteryController extends GetxController {
         }
         invoiceRemainExpireStr.value = "";
         logger.e("stop !");
-        invoiceMeta.value = InvoiceMetaData.empty();
+        clearInvoice();
+        enableResendOTPPayment();
         timer.cancel();
       },
     );
+  }
+
+  void clearInvoice() {
+    invoiceMeta.value = InvoiceMetaData.empty();
+  }
+
+  void enableResendOTPPayment() {
+    try {
+      MonneyConfirmOTPController.to.enableResendOTP();
+    } catch (e) {
+      logger.e("$e");
+    }
   }
 
   bool lotteryIsValid(Lottery lottery) {
@@ -714,22 +611,6 @@ class BuyLotteryController extends GetxController {
       if (responseCreateInvoice == null) {
         return;
       }
-      // if (responseCreateInvoice == null ||
-      //     responseCreateInvoice['invoice']['status'] == false) {
-      //   Get.dialog(DialogApp(
-      //     title: const Text("create invoice failed"),
-      //     // FIXME: ask gie for detail message when create invoice failed
-      //     details: Text("$responseCreateInvoice"),
-      //     disableConfirm: true,
-      //     cancelText: Text(
-      //       AppLocale.close.getString(Get.context!),
-      //       style: const TextStyle(
-      //         color: AppColors.primary,
-      //       ),
-      //     ),
-      //   ));
-      //   return;
-      // }
       // handle expire invoice - sawanon:20241022
       final invoiceExpire = responseCreateInvoice['invoice']['expire'];
       invoicePayload.expire = invoiceExpire;
@@ -1039,6 +920,10 @@ class BuyLotteryController extends GetxController {
           // check percentage
           _invoicePreCheck = calPrePercent(promotion, _invoicePreCheck);
           break;
+        case 'fixed':
+          _invoicePreCheck = calPreFixed(promotion, _invoicePreCheck);
+          // _invoicePreCheck = calPrePercent(promotion, _invoicePreCheck);
+          break;
         default:
           break;
         // return _invoicePreCheck;
@@ -1047,10 +932,41 @@ class BuyLotteryController extends GetxController {
     return _invoicePreCheck;
   }
 
+  InvoiceMetaData calPreFixed(Map promotion, InvoiceMetaData invoiceMetaData) {
+    final bonusFixed = int.parse(
+        jsonDecode((promotion['condition'] as List).first)['bonus'] as String);
+    logger.w(bonusFixed);
+    if (bonusFixed < 0) {
+      // discount
+      final discount = bonusFixed;
+      for (var transaction in invoiceMetaData.transactions) {
+        transaction.discount = (transaction.discount ?? 0) + discount;
+        transaction.amount = transaction.discount! + transaction.quota;
+      }
+    } else {
+      // bonus
+      for (var transaction in invoiceMetaData.transactions) {
+        transaction.bonus = (transaction.bonus ?? 0) + bonusFixed;
+        transaction.totalAmount = transaction.bonus! + transaction.quota;
+      }
+    }
+    invoiceMetaData.discount = invoiceMetaData.transactions
+        .fold(0, (prev, transaction) => prev! + (transaction.discount ?? 0));
+    invoiceMetaData.bonus = invoiceMetaData.transactions.fold(
+        0,
+        (previousValue, transaction) =>
+            previousValue! + (transaction.bonus ?? 0));
+    invoiceMetaData.amount = invoiceMetaData.transactions
+        .fold(0, (prev, transaction) => prev + transaction.amount);
+    invoiceMetaData.quota = invoiceMetaData.transactions
+        .fold(0, (prev, transaction) => prev + transaction.quota);
+    invoiceMetaData.totalAmount = invoiceMetaData.transactions
+        .fold(0, (prev, transaction) => prev + transaction.totalAmount!);
+    return invoiceMetaData;
+  }
+
   InvoiceMetaData calPrePercent(
       Map promotion, InvoiceMetaData invoiceMetaData) {
-    // TODO: dev percent promotion
-    // TODO: continute !!!!
     final bonusPercent = int.parse(
         (jsonDecode((promotion['condition'] as List).first)['bonus'] as String)
             .replaceAll("%", ""));
@@ -1060,9 +976,7 @@ class BuyLotteryController extends GetxController {
       for (var transaction in invoiceMetaData.transactions) {
         transaction.discount = (transaction.discount ?? 0) +
             calfromPercent(discountPercent, transaction.quota);
-        transaction.amount =
-            calfromPercent(discountPercent, transaction.quota) +
-                transaction.amount;
+        transaction.amount = transaction.discount! + transaction.quota;
       }
       invoiceMetaData.discount = invoiceMetaData.transactions.fold(
           0,
@@ -1071,19 +985,12 @@ class BuyLotteryController extends GetxController {
     } else {
       // bonus
       for (var transaction in invoiceMetaData.transactions) {
-        transaction.bonus = calfromPercent(bonusPercent, transaction.quota);
-        transaction.totalAmount =
-            calfromPercent(bonusPercent, transaction.quota) +
-                (transaction.totalAmount ?? transaction.quota);
+        transaction.bonus = (transaction.bonus ?? 0) +
+            calfromPercent(bonusPercent, transaction.quota);
+        transaction.totalAmount = transaction.bonus! + transaction.quota;
       }
       invoiceMetaData.bonus = invoiceMetaData.transactions
           .fold(0, (prev, transaction) => prev! + transaction.bonus!);
-      // invoiceMetaData.totalAmount =
-      //     invoiceMetaData.quota + invoiceMetaData.bonus!;
-      // invoiceMetaData.bonus =
-      //     calfromPercent(bonusPercent, invoiceMetaData.amount);
-      // invoiceMetaData.amount = invoiceMetaData.amount +
-      //     calfromPercent(bonusPercent, invoiceMetaData.amount);
     }
     invoiceMetaData.amount = invoiceMetaData.transactions
         .fold(0, (prev, transaction) => prev + transaction.amount);
@@ -1105,6 +1012,56 @@ class BuyLotteryController extends GetxController {
         return int.parse(b['value']).compareTo(int.parse(a['value']));
       },
     );
+    for (var transaction in invoiceMetaData.transactions) {
+      for (var condition in conditionsList) {
+        final isPassPromotion = conditionOperation(
+            condition['condition'], transaction.quota, condition['value']);
+        logger.e("isPassPromotion: $isPassPromotion");
+        if (isPassPromotion) {
+          if (condition['type'] == "percent") {
+            final bonusPercent = int.parse(condition['bonus']);
+            if (bonusPercent < 0) {
+              // discount
+              final discountPercent = bonusPercent;
+              transaction.discount = (transaction.discount ?? 0) +
+                  calfromPercent(discountPercent, transaction.quota);
+              transaction.amount = transaction.discount! + transaction.quota;
+            } else {
+              // bonus
+              transaction.bonus = (transaction.bonus ?? 0) +
+                  calfromPercent(bonusPercent, transaction.quota);
+              transaction.totalAmount = transaction.quota + transaction.bonus!;
+            }
+          } else if (condition['type'] == "fixed") {
+            final bonus = int.parse(condition['bonus']);
+            if (bonus < 0) {
+              // discount
+              final discount = bonus;
+              transaction.discount = (transaction.discount ?? 0) + discount;
+              transaction.amount = transaction.discount! + transaction.quota;
+            } else {
+              // bonus
+              transaction.bonus = (transaction.bonus ?? 0) + bonus;
+              transaction.totalAmount = transaction.bonus! + transaction.quota;
+            }
+          }
+          break;
+        }
+      }
+    }
+    invoiceMetaData.discount = invoiceMetaData.transactions
+        .fold(0, (prev, transaction) => prev! + (transaction.discount ?? 0));
+    invoiceMetaData.bonus = invoiceMetaData.transactions.fold(
+        0,
+        (previousValue, transaction) =>
+            previousValue! + (transaction.bonus ?? 0));
+    invoiceMetaData.amount = invoiceMetaData.transactions
+        .fold(0, (prev, transaction) => prev + transaction.amount);
+    invoiceMetaData.quota = invoiceMetaData.transactions
+        .fold(0, (prev, transaction) => prev + transaction.quota);
+    invoiceMetaData.totalAmount = invoiceMetaData.transactions
+        .fold(0, (prev, transaction) => prev + transaction.totalAmount!);
+    return invoiceMetaData;
     for (var condition in conditionsList) {
       logger.d(condition);
       if (condition['parameter'] == "buyAmount") {

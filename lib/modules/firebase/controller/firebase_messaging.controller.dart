@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/modules/history/controller/history_win.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
+import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 
@@ -109,6 +110,9 @@ class FirebaseMessagingController extends GetxController {
         LayoutController.to.changeTab(TabApp.history);
         final invoiceId = link.split("/").last;
         HistoryWinController.to.openWinDetail(invoiceId, lotteryStr);
+      } else if (link.contains("/kyc")) {
+        LayoutController.to.changeTab(TabApp.settings);
+        SettingController.to.setup();
       }
     }
   }
@@ -139,6 +143,9 @@ class FirebaseMessagingController extends GetxController {
             LayoutController.to.changeTab(TabApp.history);
             final invoiceId = link.split("/").last;
             HistoryWinController.to.openWinDetail(invoiceId, lotteryStr);
+          } else if (link.contains("/kyc")) {
+            LayoutController.to.changeTab(TabApp.settings);
+            SettingController.to.setup();
           }
         }
       },
