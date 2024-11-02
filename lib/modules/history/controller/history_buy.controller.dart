@@ -69,8 +69,6 @@ class HistoryBuyController extends GetxController {
   }
 
   Future<void> onChangeLotteryDate(DateTime lotteryDate) async {
-    logger.d("fetch API !");
-    return;
     loadingHistoryList.value = true;
     await getHistoryBuy(lotteryDate);
     loadingHistoryList.value = false;
