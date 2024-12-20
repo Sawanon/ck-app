@@ -2,34 +2,34 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:lottery_ck/components/blur_app.dart';
 import 'package:lottery_ck/components/long_button.dart';
-import 'package:lottery_ck/components/no_network_dialog.dart';
+import 'package:lottery_ck/model/bill.dart';
+import 'package:lottery_ck/model/get_argument/otp.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.page.dart';
-import 'package:lottery_ck/modules/history/controller/history.controller.dart';
 import 'package:lottery_ck/modules/history/view/history.dart';
+import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/home/view/home.dart';
+import 'package:lottery_ck/modules/home/view/home.v2.dart';
 import 'package:lottery_ck/modules/kyc/view/ask_kyc_dialog.dart';
-import 'package:lottery_ck/modules/lottery_history/view/lottery_history.dart';
 import 'package:lottery_ck/modules/notification/view/notification.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/setting/view/setting.dart';
-import 'package:lottery_ck/modules/signup/view/signup.dart';
+import 'package:lottery_ck/modules/splash_screen/controller/splash_screen.controller.dart';
 import 'package:lottery_ck/res/color.dart';
-import 'package:lottery_ck/res/logo.dart';
 import 'package:lottery_ck/route/route_name.dart';
+import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 
 enum TabApp { home, history, lottery, notifications, settings }
 
-class LayoutController extends GetxController with WidgetsBindingObserver {
+// class LayoutController extends GetxController with WidgetsBindingObserver {
+class LayoutController extends GetxController {
   bool isUsedBiometrics = false;
   static LayoutController get to => Get.find();
   var tabIndex = 0;
@@ -85,7 +85,8 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
     // logger.d("current tab change :$tab");
     switch (tab) {
       case TabApp.home:
-        return const HomePage();
+        return const HomePageV2();
+      // return const HomePage();
       case TabApp.history:
         return const HistoryPage();
       case TabApp.lottery:
@@ -128,9 +129,29 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
                 ),
                 const SizedBox(height: 16),
                 LongButton(
-                  onPressed: () {
-                    navigator?.pop();
-                    Get.toNamed(RouteName.login);
+                  onPressed: () async {
+                    // navigator?.pop();
+                    Get.back();
+                    await Future.delayed(
+                      const Duration(milliseconds: 250),
+                      () {
+                        Get.toNamed(RouteName.login);
+                      },
+                    );
+                    // Get.toNamed(
+                    //   RouteName.otp,
+                    //   arguments: OTPArgument(
+                    //     action: OTPAction.signIn,
+                    //     phoneNumber: '',
+                    //     onInit: () async {
+                    //       logger.d("init");
+                    //       return 'boom';
+                    //     },
+                    //     whenConfirmOTP: (otp) async {
+                    //       logger.d("confirm");
+                    //     },
+                    //   ),
+                    // );
                   },
                   child: Text(
                     "ເຂົ້າສູ່ລະບົບ",
@@ -148,15 +169,21 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
     );
   }
 
-  void showDialogKYC() {
+  void showDialogKYC() async {
     final user = SettingController.to.user;
     final kycData = SettingController.to.kycData;
+    final kycLater = await StorageController.to.getKYCLater();
+    final kycLaterDate = kycLater != null ? DateTime.parse(kycLater) : null;
+    final isShouldShow =
+        kycLaterDate == null ? true : kycLaterDate.day != DateTime.now().day;
     if (user == null) return;
     if (user.isKYC == null || user.isKYC == false) {
       if (kycData == null) {
-        Get.dialog(
-          const AskKycDialog(),
-        );
+        if (isShouldShow) {
+          Get.dialog(
+            const AskKycDialog(),
+          );
+        }
       }
     }
   }
@@ -183,7 +210,8 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
         onChangeTabIndex(tab);
         break;
       case TabApp.notifications:
-        onChangeTabIndex(tab);
+        // onChangeTabIndex(tab);
+        Get.toNamed(RouteName.scanQR);
         break;
       case TabApp.settings:
         if (!isUserLogined) {
@@ -249,17 +277,79 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
     }
   }
 
+  void actionWithPath() async {
+    final uri = SplashScreenController.to.openPath;
+    logger.d("uri?.path: ${uri?.path}");
+    if (uri == null) return;
+    if (uri.path.contains("/payment")) {
+      final userApp = await AppWriteController.to.getUserApp();
+      if (userApp == null) return;
+      final invoiceId = uri.queryParameters['invoiceId'];
+      logger.f("invoiceId: $invoiceId");
+      final lotteryStr =
+          uri.queryParameters['lotteryStr'] ?? HomeController.to.lotteryDateStr;
+      logger.f(
+          "uri.queryParameters['lotteryStr']: ${uri.queryParameters['lotteryStr']}");
+      logger.f(
+          "HomeController.to.lotteryDateStr: ${HomeController.to.lotteryDateStr}");
+      if (invoiceId == null || lotteryStr == null) {
+        Get.rawSnackbar(message: "lotteryStr is empty");
+        return;
+      }
+      final invoiceDocument =
+          await AppWriteController.to.getInvoice(invoiceId, lotteryStr);
+      // Get.rawSnackbar(message: "invoiceDocument $invoiceDocument");
+      logger.w(invoiceDocument?.data);
+      if (invoiceDocument == null) {
+        Get.rawSnackbar(message: "invoiceDocument is empty");
+        return;
+      }
+      final lotteryList = await AppWriteController.to
+          .listTransactionByInvoiceId(invoiceId, lotteryStr);
+      final bank = await AppWriteController.to
+          .getBankById(invoiceDocument.data['bankId']);
+      if (lotteryList == null) {
+        // Get.rawSnackbar(message: "lotteryList is empty");
+        return;
+      }
+      final cloneUserApp = userApp;
+      final bill = Bill(
+        firstName: cloneUserApp.firstName,
+        lastName: cloneUserApp.lastName,
+        phoneNumber: cloneUserApp.phoneNumber,
+        dateTime: DateTime.parse(invoiceDocument.data['\$createdAt']),
+        lotteryDateStr: lotteryStr,
+        lotteryList: lotteryList,
+        totalAmount: invoiceDocument.data['totalAmount'].toString(),
+        amount: invoiceDocument.data['amount'],
+        billId: invoiceDocument.data['billId'],
+        bankName: bank?.name ?? "-",
+        customerId: cloneUserApp.customerId ?? "-",
+      );
+      Get.toNamed(
+        RouteName.bill,
+        arguments: {"bill": bill, "onClose": () {}},
+      );
+    }
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    actionWithPath();
+  }
+
   @override
   void onInit() {
     super.onInit();
     checkUser();
     listenNetworkEvents();
-    WidgetsBinding.instance.addObserver(this);
+    // WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void onClose() {
-    WidgetsBinding.instance.removeObserver(this);
+    // WidgetsBinding.instance.removeObserver(this);
     subscriptionNetwork?.cancel();
     isUsedBiometrics = false;
     super.onClose();
@@ -308,27 +398,27 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
     BuyLotteryController.to.getQuota();
   }
 
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    logger.w(state);
-    // TODO: priority high - sawanon:20240814
-    switch (state) {
-      case AppLifecycleState.inactive:
-        // change background to other image
-        startCountdownBiometrics();
-        isBlur = true;
-        update();
-        break;
-      case AppLifecycleState.paused:
-        // stop something
-        break;
-      case AppLifecycleState.resumed:
-        // do something when back to app
-        onResume();
-        break;
-      default:
-        break;
-    }
-    super.didChangeAppLifecycleState(state);
-  }
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   logger.w(state);
+  //   // TODO: priority high - sawanon:20240814
+  //   // switch (state) {
+  //   //   case AppLifecycleState.inactive:
+  //   //     // change background to other image
+  //   //     startCountdownBiometrics();
+  //   //     isBlur = true;
+  //   //     update();
+  //   //     break;
+  //   //   case AppLifecycleState.paused:
+  //   //     // stop something
+  //   //     break;
+  //   //   case AppLifecycleState.resumed:
+  //   //     // do something when back to app
+  //   //     onResume();
+  //   //     break;
+  //   //   default:
+  //   //     break;
+  //   // }
+  //   super.didChangeAppLifecycleState(state);
+  // }
 }

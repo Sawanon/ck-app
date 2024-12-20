@@ -5,6 +5,7 @@ import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/route/route_name.dart';
+import 'package:lottery_ck/storage.dart';
 
 class AskKycDialog extends StatelessWidget {
   const AskKycDialog({super.key});
@@ -78,6 +79,7 @@ class AskKycDialog extends StatelessWidget {
                       child: LongButton(
                         onPressed: () {
                           Get.back();
+                          StorageController.to.setKYCLater();
                         },
                         backgroundColor: AppColors.backButtonHover,
                         borderRadius: BorderRadius.circular(6),

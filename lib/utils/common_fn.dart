@@ -138,4 +138,63 @@ class CommonFn {
         return '';
     }
   }
+
+  static String hidePhoneNumber(String? phoneNumber) {
+    if (phoneNumber == null) {
+      return "";
+    }
+    if (phoneNumber.length < 14) {
+      // other country phone number
+      // thai
+      if (phoneNumber.startsWith("+66")) {
+        return '${phoneNumber.substring(0, 5)}XXX${phoneNumber.substring(8, 12)}';
+      }
+      return phoneNumber;
+    }
+    return '${phoneNumber.substring(0, 6)}XXXX${phoneNumber.substring(10, 14)}';
+  }
+
+  static bool isBeforeTime(TimeOfDay time1, TimeOfDay time2) {
+    if (time1.hour < time2.hour) {
+      return true;
+    } else if (time1.hour == time2.hour) {
+      return time1.minute < time2.minute;
+    } else {
+      return false;
+    }
+  }
+
+  static bool isSameBeforeTime(TimeOfDay time1, TimeOfDay time2) {
+    if (time1.hour < time2.hour) {
+      return true;
+    } else if (time1.hour == time2.hour) {
+      return time1.minute <= time2.minute;
+    } else {
+      return false;
+    }
+  }
+
+  static bool isAfterTime(TimeOfDay time1, TimeOfDay time2) {
+    if (time1.hour > time2.hour) {
+      return true;
+    } else if (time1.hour == time2.hour) {
+      return time1.minute > time2.minute;
+    } else {
+      return false;
+    }
+  }
+
+  static bool isSameAfterTime(TimeOfDay time1, TimeOfDay time2) {
+    if (time1.hour > time2.hour) {
+      return true;
+    } else if (time1.hour == time2.hour) {
+      return time1.minute >= time2.minute;
+    } else {
+      return false;
+    }
+  }
+
+  static String renderCountdown(Duration remain) {
+    return "${remain.inHours.toString().padLeft(2, '0')}:${remain.inMinutes.remainder(60).toString().padLeft(2, '0')}:${remain.inSeconds.remainder(60).toString().padLeft(2, '0')}";
+  }
 }

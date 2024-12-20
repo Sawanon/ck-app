@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -70,8 +71,12 @@ class FirebaseMessagingController extends GetxController {
               'Message also contained a notification: ${message.notification}');
         }
       });
-    } on Exception catch (e) {
+    } on FirebaseException catch (e) {
+      logger.e(e.message);
+      logger.e(e.code);
       logger.e(e.toString());
+    } on Exception catch (e) {
+      logger.e("$e");
       Get.snackbar(
         "initialFirebase",
         e.toString(),

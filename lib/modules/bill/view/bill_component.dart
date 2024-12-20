@@ -229,6 +229,16 @@ class BillComponent extends StatelessWidget {
               },
             ).toList(),
           ),
+          if (bill.pointMoney != null) ...[
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Point discount"),
+                Text("-${bill.pointMoney?.toString() ?? '-'}"),
+              ],
+            ),
+          ],
           const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -257,13 +267,16 @@ class BillComponent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("ລວມເງິນ"),
-                Text(
-                  CommonFn.parseMoney(bill.amount),
-                  style: TextStyle(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primary,
-                  ),
-                ),
+                Builder(builder: (context) {
+                  final pointMonney = bill.pointMoney ?? 0;
+                  return Text(
+                    CommonFn.parseMoney(bill.amount - pointMonney),
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primary,
+                    ),
+                  );
+                }),
               ],
             ),
           ),

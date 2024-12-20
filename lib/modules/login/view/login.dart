@@ -281,9 +281,9 @@ class LoginPage extends StatelessWidget {
                                       ),
                                 onPressed: () {
                                   // TODO: comment for dev
-                                  if (controller.disableLogin.value) {
-                                    return;
-                                  }
+                                  // if (controller.disableLogin.value) {
+                                  //   return;
+                                  // }
                                   controller.login();
                                 },
                                 child: Text(

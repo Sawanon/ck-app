@@ -4,19 +4,26 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/dialog_change_birthtime.dart';
+import 'package:lottery_ck/components/user_qr.dart';
 import 'package:lottery_ck/model/lottery_date.dart';
+import 'package:lottery_ck/model/menu.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.page.dart';
 import 'package:lottery_ck/modules/history/controller/history_win.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
+import 'package:lottery_ck/modules/notification/view/news.dart';
 import 'package:lottery_ck/modules/webview/view/webview.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/constant.dart';
+import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
@@ -26,6 +33,7 @@ import 'package:video_player/video_player.dart';
 
 class HomeController extends GetxController {
   static HomeController get to => Get.find();
+  List<MenuModel> menu = [];
   Timer? _timer;
   DateTime? lotteryDate;
 
@@ -39,6 +47,7 @@ class HomeController extends GetxController {
   RxList<Map> bannerContent = <Map>[].obs;
   RxList<Map> videoContent = <Map>[].obs;
   LotteryDate? lotteryDateData;
+  RxString wallpaperUrl = ''.obs;
 
   void lotteryFullScreen() {
     lotteryAlinment = Alignment.center;
@@ -51,8 +60,6 @@ class HomeController extends GetxController {
   }
 
   void startCountdown(DateTime targetDateTime, DateTime currentDateTime) {
-    logger.d(targetDateTime);
-    logger.d(currentDateTime);
     final remain = targetDateTime.difference(currentDateTime);
     if (_timer != null) {
       _timer?.cancel();
@@ -136,7 +143,6 @@ class HomeController extends GetxController {
       final appwriteController = AppWriteController.to;
       final lotteryDateDocument =
           await appwriteController.getLotteryDate(nowMidnight, now.toUtc());
-      logger.d(lotteryDateDocument?.data);
       if (lotteryDateDocument == null) {
         lotteryDate = null;
         _timer?.cancel();
@@ -174,10 +180,11 @@ class HomeController extends GetxController {
   Future<DateTime?> getCurrentDatetime() async {
     try {
       final dio = Dio();
-      const url = "${AppConst.cloudfareUrl}/currentTime";
-      logger.d(url);
+      final url = "${AppConst.apiUrl}/currentTime";
       final response = await dio.get(url);
+      // logger.d(response);
       final dateServer = response.headers['dateISO'];
+      // logger.d("dateServer: $dateServer");
       if (dateServer?.isEmpty == true) {
         throw "date is not found";
       }
@@ -203,10 +210,270 @@ class HomeController extends GetxController {
     artworksList.value = artworks;
   }
 
+  Future<void> setupMenu() async {
+    menu.clear();
+    menu.addAll([
+      MenuModel(
+        ontab: () {
+          // Get.toNamed(RouteName.scanQR);
+          Get.toNamed(RouteName.horoscopeDaily);
+        },
+        icon: SizedBox(
+          height: 32,
+          width: 32,
+          child: SvgPicture.asset(
+            AppIcon.horoscope,
+            colorFilter: const ColorFilter.mode(
+              AppColors.menuIcon,
+              BlendMode.srcIn,
+            ),
+          ),
+        ),
+        name: Align(
+          alignment: Alignment.center,
+          child: Text(
+            "โชคลาภ ประจำวัน",
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+              height: 1.2,
+            ),
+            textAlign: TextAlign.center,
+            softWrap: true,
+          ),
+        ),
+      ),
+      MenuModel(
+        ontab: () {
+          showModalBottomSheet(
+            context: Get.context!,
+            isScrollControlled: true,
+            builder: (context) {
+              return const UserQR();
+            },
+          );
+        },
+        icon: SizedBox(
+          height: 32,
+          width: 32,
+          child: SvgPicture.asset(
+            AppIcon.groupUser,
+            colorFilter: const ColorFilter.mode(
+              AppColors.menuIcon,
+              BlendMode.srcIn,
+            ),
+          ),
+        ),
+        name: Align(
+          alignment: Alignment.center,
+          child: Text(
+            "แนะนำเพื่อน",
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+              height: 1.2,
+            ),
+            textAlign: TextAlign.center,
+            softWrap: true,
+          ),
+        ),
+      ),
+      // MenuModel(
+      //   ontab: gotoHoroScope,
+      //   icon: SizedBox(
+      //     height: 32,
+      //     width: 32,
+      //     child: SvgPicture.asset(
+      //       AppIcon.horoscope,
+      //       colorFilter: const ColorFilter.mode(
+      //         AppColors.menuIcon,
+      //         BlendMode.srcIn,
+      //       ),
+      //     ),
+      //   ),
+      //   name: Text(
+      //     AppLocale.horoscope.getString(Get.context!),
+      //     style: TextStyle(
+      //       fontWeight: FontWeight.w600,
+      //       fontSize: 12,
+      //     ),
+      //   ),
+      // ),
+      // MenuModel(
+      //   ontab: gotoRandom,
+      //   icon: SizedBox(
+      //     height: 32,
+      //     width: 32,
+      //     child: SvgPicture.asset(
+      //       AppIcon.random,
+      //       colorFilter: const ColorFilter.mode(
+      //         AppColors.menuIcon,
+      //         BlendMode.srcIn,
+      //       ),
+      //     ),
+      //   ),
+      //   name: Text(
+      //     AppLocale.random.getString(Get.context!),
+      //     style: TextStyle(
+      //       fontWeight: FontWeight.w600,
+      //       fontSize: 12,
+      //     ),
+      //   ),
+      // ),
+      // MenuModel(
+      //   ontab: gotoAnimal,
+      //   icon: SizedBox(
+      //     height: 32,
+      //     width: 32,
+      //     child: SvgPicture.asset(AppIcon.animalMenu),
+      //   ),
+      //   name: Text(
+      //     AppLocale.animal.getString(Get.context!),
+      //     style: TextStyle(
+      //       fontWeight: FontWeight.w600,
+      //       fontSize: 12,
+      //     ),
+      //   ),
+      // ),
+      // MenuModel(
+      //   ontab: gotoLotteryResult,
+      //   icon: SizedBox(
+      //     height: 32,
+      //     width: 32,
+      //     child: SvgPicture.asset(AppIcon.lotteryResult),
+      //   ),
+      //   name: Text(
+      //     AppLocale.lotteryResult.getString(Get.context!),
+      //     style: TextStyle(
+      //       fontWeight: FontWeight.w600,
+      //       fontSize: 12,
+      //     ),
+      //   ),
+      // ),
+      MenuModel(
+        ontab: gotoWallPaperPage,
+        icon: SizedBox(
+          height: 32,
+          width: 32,
+          child: SvgPicture.asset(
+            AppIcon.wallpaper,
+            colorFilter: const ColorFilter.mode(
+              AppColors.menuIcon,
+              BlendMode.srcIn,
+            ),
+          ),
+        ),
+        name: Text(
+          AppLocale.wallpaper.getString(Get.context!),
+          style: TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 12,
+          ),
+        ),
+      ),
+      MenuModel(
+        disabled: true,
+        ontab: () {
+          logger.d("comming soon");
+        },
+        icon: SizedBox(
+          height: 32,
+          width: 32,
+          child: SvgPicture.asset(
+            AppIcon.walletEmpty,
+            colorFilter: const ColorFilter.mode(
+              AppColors.menuIconDisabled,
+              BlendMode.srcIn,
+            ),
+          ),
+        ),
+        name: Align(
+          alignment: Alignment.center,
+          child: Text(
+            "Wallet",
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+              height: 1.2,
+              color: AppColors.menuTextDisabled,
+            ),
+            textAlign: TextAlign.center,
+            softWrap: true,
+          ),
+        ),
+      ),
+      MenuModel(
+        disabled: true,
+        ontab: () {
+          logger.d("comming soon");
+        },
+        icon: SizedBox(
+          height: 32,
+          width: 32,
+          child: SvgPicture.asset(
+            AppIcon.shareFriend,
+            colorFilter: const ColorFilter.mode(
+              AppColors.menuIconDisabled,
+              BlendMode.srcIn,
+            ),
+          ),
+        ),
+        name: Align(
+          alignment: Alignment.center,
+          child: Text(
+            "คุยกับเพื่อน",
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+              height: 1.2,
+              color: AppColors.menuTextDisabled,
+            ),
+            textAlign: TextAlign.center,
+            softWrap: true,
+          ),
+        ),
+      ),
+      // MenuModel(
+      //   ontab: gotoRandomCard,
+      //   icon: SizedBox(
+      //     height: 32,
+      //     width: 32,
+      //     child: SvgPicture.asset(
+      //       AppIcon.card,
+      //       colorFilter: const ColorFilter.mode(
+      //         AppColors.menuIcon,
+      //         BlendMode.srcIn,
+      //       ),
+      //     ),
+      //   ),
+      //   name: Text(
+      //     AppLocale.randomCard.getString(Get.context!),
+      //     style: TextStyle(
+      //       fontWeight: FontWeight.w600,
+      //       fontSize: 12,
+      //     ),
+      //   ),
+      // ),
+    ]);
+    update();
+  }
+
+  Future<void> getWallpaperBackground() async {
+    final wallaper = await AppWriteController.to.getWallpaperBackground();
+    logger.d(wallaper);
+    wallpaperUrl.value = wallaper!['url'] as String;
+  }
+
   void setup() async {
     await getLotteryDate();
     // await listArtworks();
     await listContent();
+    await setupMenu();
+    await getWallpaperBackground();
+  }
+
+  void gotoBuyLottery() {
+    LayoutController.to.changeTab(TabApp.lottery);
   }
 
   void gotoAnimal() {
@@ -227,14 +494,56 @@ class HomeController extends GetxController {
     StorageController.to.setUnknowBirthTime(true);
   }
 
-  void gotoHoroScope([bool? isUnknowBirthTime]) async {
+  void gotoRandomCard() async {
     // final userApp = LayoutController.to.userApp;
     final userApp = await AppWriteController.to.getUserApp();
-    logger.d(userApp);
     if (userApp == null) {
       LayoutController.to.showDialogLogin();
       return;
     }
+    logger.d(userApp.userId);
+    logger.d(userApp.point);
+    final now = (DateTime.now().millisecondsSinceEpoch / 1000).toInt();
+    final exp =
+        (DateTime.now().add(Duration(minutes: 10)).millisecondsSinceEpoch /
+                1000)
+            .toInt();
+    final payload2 = {
+      "birthTime": userApp.birthTime,
+      "birthday": CommonFn.parseYMD(userApp.birthDate),
+      "iat": now,
+      "exp": exp,
+      "points": userApp.point.toString(),
+      "userId": userApp.userId,
+    };
+
+    logger.d(payload2);
+    final jwt = JWT(payload2);
+    final payload = jwt.sign(
+      SecretKey(AppConst.secretZZ),
+      algorithm: JWTAlgorithm.HS384,
+    );
+    logger.d("https://staging.randomcards.pages.dev/?payload=$payload");
+    Get.dialog(
+      WebviewPage(),
+      arguments: {
+        'url': 'https://staging.randomcards.pages.dev/?payload=$payload',
+        // 'url':
+        //     'https://staging.daily-ce2.pages.dev/?payload=eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJiaXJ0aFRpbWUiOiIwMToyNCIsImJpcnRoZGF5IjoiMTk5Ni0wMy0yMiIsImlhdCI6MTcyODA0NjM5OCwiZXhwIjoxNzI4MzY2Nzc2LCJwb2ludHMiOiI5NSIsInVzZXJJZCI6IjY2ZmY1OWFiMDAyNjlmMGViYmM2In0.L5_O5vkQeWo7tlADAVRoCuk5cpdUN40v19oReu9AGa5YzFdpE68L-tg_wb7e15Ju',
+      },
+      useSafeArea: false,
+    );
+  }
+
+  void gotoHoroScope([bool? isUnknowBirthTime]) async {
+    // final userApp = LayoutController.to.userApp;
+    final userApp = await AppWriteController.to.getUserApp();
+    if (userApp == null) {
+      LayoutController.to.showDialogLogin();
+      return;
+    }
+    logger.d(userApp.userId);
+    logger.d(userApp.point);
     if (isUnknowBirthTime != true) {
       if (userApp.birthTime == null || userApp.birthTime == "") {
         final isUnknowBirthTime =
@@ -282,7 +591,6 @@ class HomeController extends GetxController {
 
   Future<void> listContent() async {
     try {
-      logger.d("refresh !");
       artWorksContent.clear();
       wallpaperContent.clear();
       bannerContent.clear();
@@ -316,7 +624,6 @@ class HomeController extends GetxController {
           default:
         }
       }
-      logger.d(videoContent);
       artWorksContent.value = artworksList;
     } catch (e) {
       logger.e("$e");
@@ -362,13 +669,25 @@ class HomeController extends GetxController {
       logger.d(link);
       if (link.startsWith("/news")) {
         logger.d("goto news page");
-        LayoutController.to.changeTab(TabApp.notifications);
+        // LayoutController.to.changeTab(TabApp.notifications);
         final newsId = link.split("/").last;
         logger.d(newsId);
-        NotificationController.to.openNewsDetail(newsId);
+        Get.dialog(
+          Center(
+            child: Material(
+              child: NewsDetailPage(
+                isModal: true,
+              ),
+            ),
+          ),
+          arguments: {
+            "newsId": newsId,
+          },
+        );
+        // NotificationController.to.openNewsDetail(newsId);
       } else if (link.startsWith("/promotion")) {
         logger.d("goto news page");
-        LayoutController.to.changeTab(TabApp.notifications);
+        // LayoutController.to.changeTab(TabApp.notifications);
         final promotionId = link.split("/").last;
         logger.d(promotionId);
         NotificationController.to.openPromotionDetail(promotionId);
@@ -440,6 +759,10 @@ class HomeController extends GetxController {
 
   void goToNewsPage() {
     LayoutController.to.changeTab(TabApp.notifications);
+  }
+
+  void tryFunction() async {
+    await AppWriteController.to.tryFunction();
   }
 
   @override

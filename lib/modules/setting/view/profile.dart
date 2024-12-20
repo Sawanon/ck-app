@@ -125,19 +125,124 @@ class ProfilePage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              "${controller.user?.fullName}",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w700,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "${controller.user?.fullName}",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
                               ),
-                            ),
+                              if (controller.user?.isKYC == true) ...[
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                const Icon(
+                                  Icons.verified,
+                                  color: Colors.green,
+                                ),
+                              ],
+                            ],
                           ),
                         ],
                       ),
                     ),
+                    Builder(builder: (context) {
+                      if (controller.kycData == null) {
+                        return Column(
+                          children: [
+                            const SizedBox(height: 16),
+                            GestureDetector(
+                              onTap: () => controller.gotoKYC(),
+                              child: Container(
+                                height: 48,
+                                padding: EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Colors.blue.shade100,
+                                ),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.verified_user_rounded,
+                                      color: Colors.blue.shade900,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        AppLocale.verifyIdentity
+                                            .getString(context),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.blue.shade900,
+                                        ),
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: Colors.blue.shade900,
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                      final String status = controller.kycData!['status'];
+                      return GestureDetector(
+                        onTap: () => controller.viewKYCDetail(),
+                        child: Container(
+                          height: 48,
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: status == "pending"
+                                ? Colors.amber.shade100
+                                : Colors.red.shade100,
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                status == "pending"
+                                    ? Icons.pending_actions_rounded
+                                    : Icons.remove_circle_rounded,
+                                color: status == "pending"
+                                    ? Colors.amber.shade900
+                                    : Colors.red.shade900,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  status == "pending"
+                                      ? "การยืนยันตัวตนอยู่ระว่างการตรวจสอบ"
+                                      : "การยืนยันตัวตนของคุณถูกปฏิเสธ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: status == "pending"
+                                        ? Colors.amber.shade900
+                                        : Colors.red.shade900,
+                                  ),
+                                ),
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                color: status == "pending"
+                                    ? Colors.amber.shade900
+                                    : Colors.red.shade900,
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
                     const SizedBox(height: 16),
                     Container(
                       padding: EdgeInsets.all(16),

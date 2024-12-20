@@ -2,7 +2,7 @@
   "project_info": {
     "project_number": "199151369914",
     "project_id": "ck-app-2a1f7",
-    "storage_bucket": "ck-app-2a1f7.appspot.com"
+    "storage_bucket": "ck-app-2a1f7.firebasestorage.app"
   },
   "client": [
     {
@@ -10,25 +10,6 @@
         "mobilesdk_app_id": "1:199151369914:android:0882046aaa7f708542cc83",
         "android_client_info": {
           "package_name": "com.ck.lotto"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyB2PVGdRW12XynN9a2AEakIuQnNqYg1Jmg"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:199151369914:android:cdf78e66b50ce52e42cc83",
-        "android_client_info": {
-          "package_name": "com.example.lottery_ck"
         }
       },
       "oauth_client": [],

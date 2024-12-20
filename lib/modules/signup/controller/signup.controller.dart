@@ -1,12 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/gender_radio.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
-import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
-import 'package:lottery_ck/modules/login/controller/login.controller.dart';
 import 'package:lottery_ck/repository/user_repository/user.repository.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/route/route_name.dart';
@@ -22,29 +19,11 @@ class SignupController extends GetxController {
   TimeOfDay? birthTime;
   Gender? gender;
   bool unknowBirthTime = false;
-  // TimeOfDay?
-  // String phone = '';
-  // String password = '';
-  // String confirmPassword = '';
   GlobalKey<FormState> keyForm = GlobalKey<FormState>();
   final argument = Get.arguments;
 
   Future<void> register(BuildContext context) async {
     if (keyForm.currentState != null && keyForm.currentState!.validate()) {
-      // if (!unknowBirthTime) {
-      //   Get.rawSnackbar(
-      //     backgroundColor: Colors.amber.shade200,
-      //     overlayColor: Colors.black.withOpacity(0.8),
-      //     messageText: Text(
-      //       AppLocale.pleaseEnterBirthTime.getString(context),
-      //       style: TextStyle(
-      //         color: Colors.black.withOpacity(0.8),
-      //         fontWeight: FontWeight.bold,
-      //       ),
-      //     ),
-      //   );
-      //   return;
-      // }
       createUserAppwrite();
     }
   }
@@ -67,7 +46,7 @@ class SignupController extends GetxController {
     final phoneNumber = argument["phoneNumber"] as String;
     final appwriteController = AppWriteController.to;
     final email = '$phoneNumber@ckmail.com';
-    final user = await appwriteController.signUp(
+    final response = await appwriteController.signUp(
       email,
       firstName,
       lastName,
@@ -78,7 +57,8 @@ class SignupController extends GetxController {
       birthTime,
       gender!,
     );
-    if (user == null) {
+    logger.d("response: $response");
+    if (response == null) {
       Get.rawSnackbar(message: "sign up failed");
       return;
     }
@@ -88,13 +68,14 @@ class SignupController extends GetxController {
       Get.rawSnackbar(message: "get token failed");
       return;
     }
-    final session = await appwriteController.createSession(token);
+    final session = await appwriteController.createSession(
+        response.user.$id, response.secret);
     if (session == null) {
       Get.rawSnackbar(message: "create session failed");
       return;
     }
     await FirebaseMessagingController.to.getToken();
-    logger.d("user: ${user?.$id}");
+    logger.d("user: ${response.user.$id}");
     // if (user != null) {
     Get.delete<UserStore>();
     Get.toNamed(

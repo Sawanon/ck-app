@@ -74,3 +74,11 @@ android {
 flutter {
     source = "../.."
 }
+
+dependencies {
+    implementation 'com.bytedanceapi:ttsdk-player_premium:1.44.300.2'
+    // Add the following code if you integrate a version earlier than 1.40.200.3
+    // implementation 'com.bytedance.applog:RangersAppLog-Lite-global:6.15.4'
+    implementation "com.bytedance.applog:RangersAppLog-Lite-global:6.14.3"
+    implementation 'com.squareup.okhttp3:okhttp:4.2.1'
+}

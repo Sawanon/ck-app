@@ -4,9 +4,11 @@ import 'package:lottery_ck/components/long_button.dart';
 
 class NoNetworkDialog extends StatelessWidget {
   final String identifier;
+  final void Function() onConfirm;
   const NoNetworkDialog({
     super.key,
     required this.identifier,
+    required this.onConfirm,
   });
 
   @override
@@ -41,16 +43,8 @@ class NoNetworkDialog extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 LongButton(
-                  onPressed: () async {
-                    // await Get.to(() => RestartPage());
-                    // await Get.deleteAll(force: true);
-                    // await Get.to(
-                    //   SplashScreenPage(),
-                    //   binding: InitialBinding(),
-                    // );
-                    SystemNavigator.pop();
-                  },
-                  child: Text("OK"),
+                  onPressed: onConfirm,
+                  child: Text("Reload"),
                 )
               ],
             ),

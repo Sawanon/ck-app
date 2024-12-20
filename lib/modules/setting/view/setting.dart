@@ -12,6 +12,7 @@ import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -50,106 +51,15 @@ class SettingPage extends StatelessWidget {
                       child: ListView(
                         // physics: const BouncingScrollPhysics(),
                         children: [
-                          // GestureDetector(
-                          //   onTap: () {
-                          //     Get.toNamed(RouteName.profile);
-                          //   },
-                          //   child: Stack(
-                          //     alignment: Alignment.topCenter,
-                          //     children: [
-                          //       Column(
-                          //         children: [
-                          //           Container(
-                          //             margin: EdgeInsets.only(top: 50),
-                          //             padding: EdgeInsets.all(2),
-                          //             decoration: BoxDecoration(
-                          //               borderRadius: BorderRadius.circular(8),
-                          //               gradient: LinearGradient(
-                          //                 colors: [
-                          //                   AppColors.redGradient,
-                          //                   AppColors.yellowGradient,
-                          //                 ],
-                          //                 begin: Alignment.topLeft,
-                          //                 end: Alignment.bottomRight,
-                          //               ),
-                          //             ),
-                          //             child: Container(
-                          //               decoration: BoxDecoration(
-                          //                 borderRadius: BorderRadius.circular(6),
-                          //                 color: Colors.white,
-                          //               ),
-                          //               alignment: Alignment.center,
-                          //               padding: EdgeInsets.only(
-                          //                 top: 50 + 8,
-                          //                 bottom: 8,
-                          //               ),
-                          //               width: double.infinity,
-                          //               child: Column(
-                          //                 children: [
-                          //                   Text(
-                          //                     controller.user?.fullName ?? "-",
-                          //                     style: TextStyle(
-                          //                       fontWeight: FontWeight.w600,
-                          //                     ),
-                          //                   ),
-                          //                   Text(
-                          //                     controller.user?.phoneNumber ?? "-",
-                          //                     style: TextStyle(
-                          //                       fontSize: 12,
-                          //                     ),
-                          //                   ),
-                          //                 ],
-                          //               ),
-                          //             ),
-                          //           ),
-                          //         ],
-                          //       ),
-                          //       Container(
-                          //         width: 100,
-                          //         height: 100,
-                          //         padding: const EdgeInsets.all(2),
-                          //         decoration: const BoxDecoration(
-                          //           gradient: LinearGradient(
-                          //             colors: [
-                          //               AppColors.redGradient,
-                          //               AppColors.yellowGradient,
-                          //             ],
-                          //             begin: Alignment.topLeft,
-                          //             end: Alignment.bottomRight,
-                          //           ),
-                          //           shape: BoxShape.circle,
-                          //         ),
-                          //         child: Obx(() {
-                          //           return Container(
-                          //             clipBehavior: Clip.hardEdge,
-                          //             decoration: BoxDecoration(
-                          //               color: Colors.white,
-                          //               shape: BoxShape.circle,
-                          //             ),
-                          //             child: controller.profileByte.value != null
-                          //                 ? Image.memory(
-                          //                     controller.profileByte.value!,
-                          //                     fit: BoxFit.cover,
-                          //                   )
-                          //                 : Icon(
-                          //                     Icons.person_2,
-                          //                     size: 40,
-                          //                   ),
-                          //           );
-                          //         }),
-                          //       )
-                          //     ],
-                          //   ),
-                          // ),
                           GestureDetector(
                             onTap: () {
                               Get.toNamed(RouteName.profile);
                             },
                             child: Container(
-                              padding: EdgeInsets.all(2),
+                              padding: const EdgeInsets.all(2),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
-                                gradient: LinearGradient(
+                                gradient: const LinearGradient(
                                   colors: [
                                     AppColors.redGradient,
                                     AppColors.yellowGradient,
@@ -163,7 +73,7 @@ class SettingPage extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(6),
                                   color: Colors.white,
                                 ),
-                                padding: EdgeInsets.all(12),
+                                padding: const EdgeInsets.all(12),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
@@ -171,8 +81,8 @@ class SettingPage extends StatelessWidget {
                                       return Container(
                                           height: 80,
                                           width: 80,
-                                          padding: EdgeInsets.all(2),
-                                          decoration: BoxDecoration(
+                                          padding: const EdgeInsets.all(2),
+                                          decoration: const BoxDecoration(
                                             shape: BoxShape.circle,
                                             gradient: LinearGradient(
                                               colors: [
@@ -185,7 +95,7 @@ class SettingPage extends StatelessWidget {
                                           ),
                                           child: Container(
                                             clipBehavior: Clip.hardEdge,
-                                            decoration: BoxDecoration(
+                                            decoration: const BoxDecoration(
                                               shape: BoxShape.circle,
                                             ),
                                             child:
@@ -196,7 +106,7 @@ class SettingPage extends StatelessWidget {
                                                             .profileByte.value!,
                                                         fit: BoxFit.fitHeight,
                                                       )
-                                                    : Icon(
+                                                    : const Icon(
                                                         Icons.person_2,
                                                         size: 40,
                                                       ),
@@ -208,7 +118,7 @@ class SettingPage extends StatelessWidget {
                                         children: [
                                           Row(
                                             children: [
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 16,
                                                 height: 16,
                                                 child: Icon(
@@ -222,7 +132,7 @@ class SettingPage extends StatelessWidget {
                                               if (controller.user?.isKYC ==
                                                   true) ...[
                                                 const SizedBox(width: 4),
-                                                Icon(
+                                                const Icon(
                                                   Icons.verified,
                                                   color: Colors.green,
                                                 ),
@@ -240,26 +150,57 @@ class SettingPage extends StatelessWidget {
                                                 ),
                                               ),
                                               const SizedBox(width: 8),
-                                              Text(controller
-                                                      .user?.phoneNumber ??
-                                                  "-"),
+                                              Text(CommonFn.hidePhoneNumber(
+                                                  controller
+                                                      .user?.phoneNumber)),
                                             ],
                                           ),
                                           const SizedBox(height: 4),
                                           Row(
                                             children: [
-                                              SizedBox(
-                                                width: 16,
-                                                height: 16,
-                                                child: SvgPicture.asset(
-                                                  AppIcon.location,
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                  vertical: 2,
+                                                  horizontal: 8,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  color:
+                                                      controller.user?.isKYC ==
+                                                              true
+                                                          ? Colors.green
+                                                          : Colors.red,
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                ),
+                                                child: Text(
+                                                  controller.user?.isKYC == true
+                                                      ? AppLocale.verified
+                                                          .getString(context)
+                                                      : AppLocale.notVerified
+                                                          .getString(context),
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 12,
+                                                  ),
                                                 ),
                                               ),
-                                              const SizedBox(width: 8),
-                                              Text(controller.user?.address ??
-                                                  "-"),
                                             ],
                                           ),
+                                          // Row(
+                                          //   children: [
+                                          //     SizedBox(
+                                          //       width: 16,
+                                          //       height: 16,
+                                          //       child: SvgPicture.asset(
+                                          //         AppIcon.location,
+                                          //       ),
+                                          //     ),
+                                          //     const SizedBox(width: 8),
+                                          //     Text(controller.user?.address ??
+                                          //         "-"),
+                                          //   ],
+                                          // ),
                                         ],
                                       ),
                                     ),

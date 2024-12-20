@@ -1,14 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottery_ck/components/gender_radio.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/input_text.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/components/prefix_radio.dart';
 import 'package:lottery_ck/modules/kyc/controller/kyc.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 
@@ -39,7 +43,7 @@ class KYCPage extends StatelessWidget {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "รายละเอียด",
+                                AppLocale.detail.getString(context),
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textPrimary,
@@ -61,7 +65,32 @@ class KYCPage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "ชื่อ",
+                                    AppLocale.prefix.getString(context),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.textPrimary,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  PrefixRadio(
+                                    errorText: controller.remark?['gender']
+                                                ['status'] ==
+                                            false
+                                        ? controller.remark!['gender']
+                                            ['message']
+                                        : null,
+                                    defaultValue: controller.gender,
+                                    disabled: controller.isLoading,
+                                    onChange: (preFix) {
+                                      logger.d(preFix);
+                                      controller.handleChangeGender(preFix);
+                                      return;
+                                      controller.gender = preFix.name;
+                                    },
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    AppLocale.firstName.getString(context),
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.textPrimary,
@@ -82,7 +111,7 @@ class KYCPage extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    "นามสกุล",
+                                    AppLocale.lastName.getString(context),
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.textPrimary,
@@ -101,23 +130,9 @@ class KYCPage extends StatelessWidget {
                                       controller.lastName = value;
                                     },
                                   ),
-                                  const SizedBox(height: 24),
-                                  GenderRadio(
-                                    errorText: controller.remark?['gender']
-                                                ['status'] ==
-                                            false
-                                        ? controller.remark!['gender']
-                                            ['message']
-                                        : null,
-                                    defaultValue: controller.gender,
-                                    disabled: controller.isLoading,
-                                    onChange: (gender) {
-                                      controller.gender = gender.name;
-                                    },
-                                  ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    "วันเกิด",
+                                    AppLocale.birthDate.getString(context),
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.textPrimary,
@@ -189,7 +204,7 @@ class KYCPage extends StatelessWidget {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "ที่อยู่",
+                                AppLocale.address.getString(context),
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textPrimary,
@@ -211,7 +226,7 @@ class KYCPage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "บ้านเลขที่",
+                                    AppLocale.houseNo.getString(context),
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.textPrimary,
@@ -232,7 +247,7 @@ class KYCPage extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    "เมือง",
+                                    AppLocale.city.getString(context),
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.textPrimary,
@@ -252,7 +267,7 @@ class KYCPage extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    "แขวง",
+                                    AppLocale.district.getString(context),
                                     style: TextStyle(
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.textPrimary,
@@ -278,7 +293,7 @@ class KYCPage extends StatelessWidget {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "รูปเอกสารของท่าน",
+                                AppLocale.yourDocumentPhoto.getString(context),
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textPrimary,
@@ -309,7 +324,9 @@ class KYCPage extends StatelessWidget {
                                       ),
                                       Expanded(
                                         child: Text(
-                                          "กรุณาป้อนข้อมูลและถ่ายรูปบัตรประชาชนของท่าน",
+                                          AppLocale
+                                              .pleaseEnterInformationAndPhotoIDCard
+                                              .getString(context),
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w600,
@@ -321,7 +338,7 @@ class KYCPage extends StatelessWidget {
                                     ],
                                   ),
                                   Text(
-                                    "(ตัวอย่าง)",
+                                    "(${AppLocale.example.getString(context)})",
                                     style: TextStyle(
                                       color: Colors.red,
                                       fontWeight: FontWeight.w600,
@@ -329,44 +346,49 @@ class KYCPage extends StatelessWidget {
                                       decorationColor: Colors.red,
                                     ),
                                   ),
-                                  const SizedBox(height: 8),
-                                  Row(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Container(
-                                            width: 14,
-                                            height: 14,
-                                            padding: EdgeInsets.all(2),
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                width: 1,
-                                                color: AppColors.inputBorder,
-                                              ),
-                                            ),
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Colors.red,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 4),
-                                          Text(
-                                            "เลขที่บัตรประชาชน",
-                                            style: TextStyle(
-                                              color: AppColors.textPrimary,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
+                                  // const SizedBox(height: 8),
+                                  // Row(
+                                  //   children: [
+                                  //     Row(
+                                  //       children: [
+                                  //         Container(
+                                  //           width: 14,
+                                  //           height: 14,
+                                  //           padding: EdgeInsets.all(2),
+                                  //           decoration: BoxDecoration(
+                                  //             shape: BoxShape.circle,
+                                  //             border: Border.all(
+                                  //               width: 1,
+                                  //               color: AppColors.inputBorder,
+                                  //             ),
+                                  //           ),
+                                  //           child: Container(
+                                  //             decoration: BoxDecoration(
+                                  //               shape: BoxShape.circle,
+                                  //               color: Colors.red,
+                                  //             ),
+                                  //           ),
+                                  //         ),
+                                  //         const SizedBox(width: 4),
+                                  //         Text(
+                                  //           "เลขที่บัตรประชาชน",
+                                  //           style: TextStyle(
+                                  //             color: AppColors.textPrimary,
+                                  //             fontWeight: FontWeight.w600,
+                                  //             fontSize: 14,
+                                  //           ),
+                                  //         ),
+                                  //       ],
+                                  //     )
+                                  //   ],
+                                  // ),
                                   const SizedBox(height: 8),
                                   InputText(
+                                    maxLength: 10,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                    ],
+                                    keyboardType: TextInputType.number,
                                     errorText: controller.remark?['idCard']
                                                 ['status'] ==
                                             false
@@ -453,18 +475,19 @@ class KYCPage extends StatelessWidget {
                                     onPressed: () async {
                                       controller.takeIdCard();
                                     },
-                                    child: const Row(
+                                    child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        Icon(
+                                        const Icon(
                                           Icons.camera_alt,
                                           color: Colors.white,
                                         ),
                                         const SizedBox(width: 4),
                                         Text(
-                                          "ถ่ายรูป",
-                                          style: TextStyle(
+                                          AppLocale.takePhoto
+                                              .getString(context),
+                                          style: const TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -479,7 +502,7 @@ class KYCPage extends StatelessWidget {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                "รูปภาพยืนยันตัวตน",
+                                AppLocale.verificationPhoto.getString(context),
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textPrimary,
@@ -510,7 +533,9 @@ class KYCPage extends StatelessWidget {
                                       ),
                                       Expanded(
                                         child: Text(
-                                          "กรุณาถ่ายรูปขอวท่านและให้เห็นเอกสารของท่านอย่างชัดเจน",
+                                          AppLocale
+                                              .pleaseTakePhotoAndClearlyYourDocuments
+                                              .getString(context),
                                           style: TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.w600,
@@ -522,7 +547,7 @@ class KYCPage extends StatelessWidget {
                                     ],
                                   ),
                                   Text(
-                                    "(ตัวอย่าง)",
+                                    "(${AppLocale.example.getString(context)})",
                                     style: TextStyle(
                                       color: Colors.red,
                                       fontWeight: FontWeight.w600,
@@ -607,7 +632,7 @@ class KYCPage extends StatelessWidget {
                                     onPressed: () async {
                                       controller.takeSelfieWithIdCard();
                                     },
-                                    child: const Row(
+                                    child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
@@ -617,7 +642,8 @@ class KYCPage extends StatelessWidget {
                                         ),
                                         const SizedBox(width: 4),
                                         Text(
-                                          "ถ่ายรูป",
+                                          AppLocale.takePhoto
+                                              .getString(context),
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
@@ -643,7 +669,7 @@ class KYCPage extends StatelessWidget {
                       controller.sendKYC();
                     },
                     child: Text(
-                      "ยืนยัน",
+                      AppLocale.confirm.getString(context),
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 16,

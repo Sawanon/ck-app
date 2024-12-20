@@ -454,7 +454,7 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                           alignment: Alignment.centerRight,
                                           child: GestureDetector(
                                             onTap: () {
-                                              controller.listPromotions();
+                                              controller.listPromotions(true);
                                             },
                                             child: const Icon(
                                                 Icons.refresh_rounded),

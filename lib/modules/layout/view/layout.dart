@@ -5,6 +5,7 @@ import 'package:lottery_ck/components/blur_app.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/navigation_bar.dart';
 import 'package:lottery_ck/components/no_network_dialog.dart';
+import 'package:lottery_ck/components/overlay.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.page.dart';
 import 'package:lottery_ck/modules/history/view/history.dart';
 import 'package:lottery_ck/modules/home/view/home.dart';
@@ -14,9 +15,10 @@ import 'package:lottery_ck/modules/notification/view/notification.dart';
 import 'package:lottery_ck/modules/setting/view/setting.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:upgrader/upgrader.dart';
 
 class LayoutPage extends StatelessWidget {
-  LayoutPage({super.key});
+  const LayoutPage({super.key});
   // final pages = [
   //   HomePage(),
   //   HistoryPage(),
@@ -31,11 +33,16 @@ class LayoutPage extends StatelessWidget {
     return GetBuilder<LayoutController>(
       builder: (controller) {
         if (controller.noNetwork) {
-          return NoNetworkDialog(identifier: 'identifier');
+          return NoNetworkDialog(
+            identifier: 'identifier',
+            onConfirm: () {
+              logger.d("refresh network");
+            },
+          );
         }
-        if (controller.isBlur) {
-          return BlurApp(identifier: 'identifier');
-        }
+        // if (controller.isBlur) {
+        //   return BlurApp(identifier: 'identifier');
+        // }
         return PopScope(
           canPop: false,
           onPopInvoked: (didPop) {
@@ -106,31 +113,38 @@ class LayoutPage extends StatelessWidget {
               useSafeArea: true,
             );
           },
-          child: Scaffold(
-            backgroundColor: Colors.white,
-            resizeToAvoidBottomInset: false,
-            body: SafeArea(
-              top: false,
-              child: Stack(
-                children: [
-                  Container(
-                    clipBehavior: Clip.hardEdge,
-                    padding: EdgeInsets.only(bottom: controller.bottomPadding),
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
+          child: Visibility(
+            maintainState: true,
+            maintainSize: true,
+            maintainAnimation: true,
+            visible: !controller.isBlur,
+            child: Scaffold(
+              backgroundColor: Colors.white,
+              resizeToAvoidBottomInset: false,
+              body: SafeArea(
+                top: false,
+                child: Stack(
+                  children: [
+                    Container(
+                      clipBehavior: Clip.hardEdge,
+                      padding:
+                          EdgeInsets.only(bottom: controller.bottomPadding),
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                      ),
+                      child: controller.currentPage(controller.currentTab),
+                      // child: pages[controller.tabIndex],
+                      // child: Text('${controller.tabIndex}'),
                     ),
-                    child: controller.currentPage(controller.currentTab),
-                    // child: pages[controller.tabIndex],
-                    // child: Text('${controller.tabIndex}'),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: CustomNavigationBar(
-                      currentTab: controller.currentTab,
-                      onChangeTab: controller.changeTab,
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: CustomNavigationBar(
+                        currentTab: controller.currentTab,
+                        onChangeTab: controller.changeTab,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

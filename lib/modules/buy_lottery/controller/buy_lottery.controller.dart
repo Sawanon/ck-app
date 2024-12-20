@@ -7,6 +7,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
+import 'package:lottery_ck/components/dialog_promotion.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/model/buy_lottery_configs.dart';
 import 'package:lottery_ck/model/invoice_meta.dart';
@@ -886,7 +887,6 @@ class BuyLotteryController extends GetxController {
     if (buyLotteryConfigsList == null) {
       return;
     }
-    logger.d("buyLotteryConfigsList: $buyLotteryConfigsList");
     buyLotteryConfigs = buyLotteryConfigsList;
     update();
   }
@@ -1137,56 +1137,68 @@ class BuyLotteryController extends GetxController {
   }
 
 // TODO: get promotion
-  void listPromotions() async {
+  void listPromotions([bool? isRefresh]) async {
     final promotionList =
         await AppWriteController.to.listCurrentActivePromotions();
-    // logger.w("promotionList");
     // logger.d(promotionList);
     if (promotionList == null) return;
+    logger.w("promotionList ${promotionList.length}");
     this.promotionList.value = promotionList;
+    if (isRefresh == true) {
+      return;
+    }
+    if (promotionList.isEmpty) return;
+    Get.dialog(
+      DialogPromotion(
+        promotionList: promotionList,
+      ),
+      barrierDismissible: false,
+    );
   }
 
   void getUseApp() async {
-    logger.d("userApp:");
-    logger.d(userApp);
     if (userApp == null) {
       userApp = await AppWriteController.to.getUserApp();
     }
   }
 
   void getQuota() async {
-    if (userApp == null) return;
-    final quotaList = await AppWriteController.to.getQuota();
-    if (quotaList == null) {
-      Get.dialog(
-        const DialogApp(
-          title: Text(
-            "Server error",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
+    try {
+      if (userApp == null) return;
+      final quotaList = await AppWriteController.to.getQuota();
+      if (quotaList == null) {
+        Get.dialog(
+          const DialogApp(
+            title: Text(
+              "Server error",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+              ),
+            ),
+            details: Text(
+              "Can't get quota from server",
+              style: TextStyle(
+                color: AppColors.textPrimary,
+              ),
             ),
           ),
-          details: Text(
-            "Can't get quota from server",
-            style: TextStyle(
-              color: AppColors.textPrimary,
-            ),
-          ),
-        ),
-      );
-      return;
+        );
+        return;
+      }
+      Map<String, dynamic> quotaMap = {};
+      for (var quota in quotaList.documents) {
+        final thisQuotaMap = {
+          '${quota.data['type']}': '${quota.data['amount']}',
+        };
+        quotaMap.addAll(thisQuotaMap);
+      }
+      logger.d(quotaMap);
+      this.quotaMap = quotaMap;
+      startTimerGetQuota();
+    } catch (e) {
+      logger.e("$e");
     }
-    Map<String, dynamic> quotaMap = {};
-    for (var quota in quotaList.documents) {
-      final thisQuotaMap = {
-        '${quota.data['type']}': '${quota.data['amount']}',
-      };
-      quotaMap.addAll(thisQuotaMap);
-    }
-    logger.d(quotaMap);
-    this.quotaMap = quotaMap;
-    startTimerGetQuota();
   }
 
   Timer? _timerGetQuota;

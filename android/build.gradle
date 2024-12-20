@@ -2,6 +2,10 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven {
+            // BytePlus's Maven repository
+            url "https://artifact.byteplus.com/repository/public/"
+        }
     }
 }
 

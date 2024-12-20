@@ -5,20 +5,15 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:lottery_ck/binding/initial.binding.dart';
 import 'package:lottery_ck/components/dialog.dart';
-import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/no_network_dialog.dart';
-import 'package:lottery_ck/main.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
+import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
 import 'package:lottery_ck/modules/history/controller/history_win.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
-import 'package:lottery_ck/modules/layout/view/layout.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
-import 'package:lottery_ck/modules/restart/view/restart.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
-import 'package:lottery_ck/modules/splash_screen/view/splash_screen.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/storage.dart';
@@ -27,11 +22,13 @@ import 'package:lottery_ck/utils.dart';
 class SplashScreenController extends GetxController {
   static SplashScreenController get to => Get.find();
   StreamSubscription<List<ConnectivityResult>>? subscription;
-  bool isBypass = false;
+  Uri? openPath;
+  bool stop = false;
 
   void gotoLayout() {
     // TODO: uncomment for production
-    Get.offNamed(RouteName.layout);
+    // Get.offNamed(RouteName.layout);
+    Get.toNamed(RouteName.layout);
   }
 
   void checkTimeZone() {
@@ -42,6 +39,7 @@ class SplashScreenController extends GetxController {
   }
 
   Future<void> checkUser() async {
+    Get.put<AppWriteController>(AppWriteController());
     final isActive = await AppWriteController.to.isActiveUser();
     // logger.d("isActive: $isActive");
     if (isActive == false) {
@@ -49,47 +47,21 @@ class SplashScreenController extends GetxController {
     }
   }
 
-  void bypass() {
-    isBypass = true;
-    update();
+  void updateUrlPath(Uri url) async {
+    openPath = url;
   }
 
-  void bypassLogin() async {
-    try {
-      Get.put<AppWriteController>(AppWriteController());
-      Get.put<LayoutController>(LayoutController());
-      Get.put<StorageController>(StorageController());
-      Get.put<FirebaseMessagingController>(FirebaseMessagingController());
-      Map<String, dynamic>? token =
-          await AppWriteController.to.getToken('+8562055265064');
-      if (token == null) {
-        Get.dialog(
-          const DialogApp(
-            title: Text("Token is null"),
-            details: Text("Please try again"),
-            disableConfirm: true,
-          ),
-        );
-        return;
-      }
-      final session = await AppWriteController.to.createSession(token);
-      LayoutController.to.intialApp();
-      Get.offNamed(RouteName.layout);
-    } on Exception catch (e) {
-      Get.rawSnackbar(message: "$e");
-    }
+  void setStop(bool _stop) {
+    stop = _stop;
   }
 
   void setup() async {
     try {
-      Get.put<AppWriteController>(AppWriteController());
       await Future.delayed(
-        const Duration(seconds: 1),
+        const Duration(seconds: 2),
         () async {
-          if (isBypass) {
-            bypassLogin();
-            return;
-          }
+          logger.d("setup: $stop");
+          if (stop) return;
           await checkUser();
           checkTimeZone();
           gotoLayout();
@@ -103,7 +75,7 @@ class SplashScreenController extends GetxController {
         barrierDismissible: false,
         confirm: GestureDetector(
           onTap: () {
-            SystemNavigator.pop();
+            Get.back();
           },
           child: Container(
             height: 48,
@@ -219,8 +191,15 @@ class SplashScreenController extends GetxController {
     } else if (connectivityResult.contains(ConnectivityResult.none)) {
       // No available network types
       logger.w("No available network");
+      logger.d(Get.isDialogOpen);
+      if (Get.isDialogOpen == true) return;
       Get.dialog(
-        NoNetworkDialog(identifier: 'noNetwork'),
+        NoNetworkDialog(
+          identifier: 'noNetwork',
+          onConfirm: () {
+            checkNetWork();
+          },
+        ),
         barrierDismissible: false,
         useSafeArea: true,
       );

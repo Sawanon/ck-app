@@ -27,6 +27,10 @@ class RouteName {
   static const String changeName = '/changeName';
   static const String changeBirth = '/changeBirth';
   static const String kyc = '/kyc';
+  static const String tc = '/tc';
+  static const String scanQR = '/scanQR';
+  static const String horoscopeDaily = '/horoscopeDaily';
+  static const String setting = '/setting';
 
   static const String cloudflare = '/cloudflare';
 }

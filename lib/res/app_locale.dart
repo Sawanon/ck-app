@@ -108,6 +108,26 @@ mixin AppLocale {
   static const String pleaseBuyMin =
       "ກະລຸນາຊື້ຫວຍດ້ວຍລາຄາຕໍ່າສຸດ {min} LAK ຕໍ່ໃບຫວຍ";
   static const String closeSale = "ດຽວນີ້ລະບົບໄດ້ປິດການຂາຍແລ້ວ";
+  static const String houseNo = "ເລກເຮືອນ";
+  static const String city = "ເມືອງ";
+  static const String district = "ແຂວງ";
+  static const String yourDocumentPhoto = "ຮູບພາບຂອງເອກະສານຂອງທ່ານ";
+  static const String pleaseEnterInformationAndPhotoIDCard =
+      "ກະລຸນາໃສ່ຂໍ້ມູນ ແລະຖ່າຍຮູບບັດປະຈຳຕົວຂອງເຈົ້າ";
+  static const String example = "ຕົວຢ່າງ";
+  static const String takePhoto = "ຖ່າຍຮູບ";
+  static const String verificationPhoto = "ຮູບພາບການລະບຸຕົວຕົນ";
+  static const String pleaseTakePhotoAndClearlyYourDocuments =
+      "ກະລຸນາຖ່າຍຮູບຕົວເອງ ແລະສະແດງເອກະສານຂອງເຈົ້າໃຫ້ຊັດເຈນ";
+  static const String detail = "ລາຍລະອຽດ";
+  static const String prefix = "ຄຳນຳໜ້າ";
+  static const String mr = "ທ້າວ​";
+  static const String mrs = "ນາງ";
+  static const String verified = "ຢັ້ງຢືນຕົວຕົນແລ້ວ";
+  static const String notVerified = "ບໍ່ໄດ້ຢັ້ງຢືນຕົວຕົນ";
+  static const String verifyIdentity = "ຢືນຢັນຕົວຕົນຂອງທ່ານ";
+  static const String randomCard = "ບັດໂຊກ";
+  static const String downtimeBank = "ບໍ່ສາມາດຊໍາລະໄດ້ໃນລະຫວ່າງໄລຍະເວລາ";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -210,6 +230,26 @@ mixin AppLocale {
     pleaseBuyMax: "ກະລຸນາຊື້ຫວຍສູງສຸດ {max} LAK ຕໍ່ຫວຍ",
     pleaseBuyMin: "ກະລຸນາຊື້ຫວຍດ້ວຍລາຄາຕໍ່າສຸດ {min} LAK ຕໍ່ໃບຫວຍ",
     closeSale: "ດຽວນີ້ລະບົບໄດ້ປິດການຂາຍແລ້ວ",
+    houseNo: "ເລກເຮືອນ",
+    city: "ເມືອງ",
+    district: "ແຂວງ",
+    yourDocumentPhoto: "ຮູບພາບຂອງເອກະສານຂອງທ່ານ",
+    pleaseEnterInformationAndPhotoIDCard:
+        "ກະລຸນາໃສ່ຂໍ້ມູນ ແລະຖ່າຍຮູບບັດປະຈຳຕົວຂອງເຈົ້າ",
+    example: "ຕົວຢ່າງ",
+    takePhoto: "ຖ່າຍຮູບ",
+    verificationPhoto: "ຮູບພາບການລະບຸຕົວຕົນ",
+    pleaseTakePhotoAndClearlyYourDocuments:
+        "ກະລຸນາຖ່າຍຮູບຕົວເອງ ແລະສະແດງເອກະສານຂອງເຈົ້າໃຫ້ຊັດເຈນ",
+    detail: "ລາຍລະອຽດ",
+    prefix: "ຄຳນຳໜ້າ",
+    mr: "ທ້າວ​",
+    mrs: "ນາງ",
+    verified: "ຢັ້ງຢືນຕົວຕົນແລ້ວ",
+    notVerified: "ບໍ່ໄດ້ຢັ້ງຢືນຕົວຕົນ",
+    verifyIdentity: "ຢືນຢັນຕົວຕົນຂອງທ່ານ",
+    randomCard: "ບັດໂຊກ",
+    downtimeBank: "ບໍ່ສາມາດຊໍາລະໄດ້ໃນລະຫວ່າງໄລຍະເວລາ",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -312,6 +352,26 @@ mixin AppLocale {
     pleaseBuyMax: "กรุณาซื้อลอตเตอรี่สูงสุด {max} LAK ต่อลอตเตอรี่",
     pleaseBuyMin: "กรุณาซื้อลอตเตอรี่น้อยสุด {min} LAK ต่อลอตเตอรี่",
     closeSale: "ขณะนี้ระบบได้ปิดการขายแล้ว",
+    houseNo: "บ้านเลขที่",
+    city: "เมือง",
+    district: "แขวง",
+    yourDocumentPhoto: "รูปเอกสารของท่าน",
+    pleaseEnterInformationAndPhotoIDCard:
+        "กรุณาป้อนข้อมูลและถ่ายรูปบัตรประชาชนของท่าน",
+    example: "ตัวอย่าง",
+    takePhoto: "ถ่ายรูป",
+    verificationPhoto: "รูปภาพยืนยันตัวตน",
+    pleaseTakePhotoAndClearlyYourDocuments:
+        "กรุณาถ่ายรูปของท่านและให้เห็นเอกสารของท่านอย่างชัดเจน",
+    detail: "รายละเอียด",
+    prefix: "คำนำหน้า",
+    mr: "ท้าว",
+    mrs: "นาง",
+    verified: "ยืนยันตัวตนแล้ว",
+    notVerified: "ไม่ได้ยืนยันตัวตน",
+    verifyIdentity: "ยืนยันตัวตนของคุณ",
+    randomCard: "ไพ่นำโชค",
+    downtimeBank: "ไม่สามารถชำระเงินได้ในช่วงเวลา",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -415,5 +475,25 @@ mixin AppLocale {
     pleaseBuyMax: "Please purchase a maximum of {max} LAK per lottery ticket",
     pleaseBuyMin: "Please buy a minimum of {min} LAK per lottery ticket",
     closeSale: "The system is now closed for sales",
+    houseNo: "Address No.",
+    city: "City",
+    district: "Dsistrict",
+    yourDocumentPhoto: "Your document photo",
+    pleaseEnterInformationAndPhotoIDCard:
+        "Please enter your information and take a photo of your ID card",
+    example: "Example",
+    takePhoto: "Take a photo",
+    verificationPhoto: "Verification photo",
+    pleaseTakePhotoAndClearlyYourDocuments:
+        "Please take a photo of yourself and clearly show your document",
+    detail: "Details",
+    prefix: "Prefix",
+    mr: "Mr",
+    mrs: "Mrs",
+    verified: "Verified",
+    notVerified: "Not verified",
+    verifyIdentity: "Verify your identity",
+    randomCard: "Lucky Cards",
+    downtimeBank: "Unable to pay during the period",
   };
 }

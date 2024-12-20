@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.2.0+33
+version: 1.2.1+35
 
 environment:
   sdk: ">=3.4.3 <4.0.0"
@@ -69,6 +69,15 @@ dependencies:
   flutter_animate: ^4.5.0
   cached_network_image: ^3.4.0
   flutter_exif_rotation: ^0.5.2
+  pubnub: 4.3.4
+  byteplus_vod: ^1.44.2-1
+  google_fonts: ^6.2.1
+  qr_flutter: ^4.1.0
+  mobile_scanner: ^6.0.2
+  flutter_windowmanager: ^0.2.0
+
+byteplus_vod:
+  sub_spec: premium
 
 dev_dependencies:
   flutter_test:
@@ -109,6 +118,7 @@ flutter:
     - assets/svg/vuesax/linear/
     - assets/svg/vuesax/bulk/
     - assets/animalphoto/
+    - assets/font/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

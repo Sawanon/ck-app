@@ -54,7 +54,7 @@ class _GenderRadioState extends State<GenderRadio> {
             borderRadius: BorderRadius.circular(4),
             border: Border.all(
               width: 1,
-              color: widget.errorText != ""
+              color: widget.errorText != null
                   ? AppColors.errorBorder
                   : Colors.transparent,
             ),

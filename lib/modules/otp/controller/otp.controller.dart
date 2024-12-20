@@ -1,22 +1,19 @@
 import 'dart:async';
 
-import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lottery_ck/components/dialog.dart';
-import 'package:lottery_ck/res/constant.dart';
+import 'package:lottery_ck/model/get_argument/otp.dart';
 import 'package:lottery_ck/utils.dart';
 
 class OtpController extends GetxController {
   RxBool enableOTP = false.obs;
   RxBool disabledReOTP = true.obs;
   RxBool loadingSendOTP = false.obs;
-  final argrument = Get.arguments;
-  final String phoneNumber = Get.arguments['phoneNumber'];
+  final OTPArgument argrument = Get.arguments;
+  // final String phoneNumber = Get.arguments['phoneNumber'];
   String verificationId = '';
   int count = 0;
-  StreamSubscription<User?>? _authStateChanges;
+  RxString otpRef = ''.obs;
+  String userId = '';
 
   Timer? _timer;
   Rx<Duration> remainingTime = Duration.zero.obs;
@@ -45,87 +42,124 @@ class OtpController extends GetxController {
     });
   }
 
-  Future<void> sendVerifyOTP() async {
-    try {
-      FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: argrument["phoneNumber"],
-        verificationCompleted: (phoneAuthCredential) {
-          logger.d("verificationCompleted $phoneAuthCredential");
-        },
-        verificationFailed: (error) {
-          logger.d("verificationFailed $error");
-          final invalidPhoneNumber = error.code == "invalid-phone-number";
-          Get.dialog(
-            DialogApp(
-              title: Text("${error.message}"),
-              disableConfirm: invalidPhoneNumber,
-              confirmText: Text(
-                "Try again",
-              ),
-              onConfirm: () async {
-                if (!invalidPhoneNumber) {
-                  await sendVerifyOTP();
-                }
-                Get.back();
-              },
-              onCancel: () {
-                Get.back();
-              },
-            ),
-          );
-        },
-        codeSent: (verificationId, forceResendingToken) async {
-          enableOTP.value = true;
-          loadingSendOTP.value = false;
-          startTimer();
-          logger.d("codeSent $verificationId");
-          logger.d("codeSent $forceResendingToken");
-          this.verificationId = verificationId;
-        },
-        timeout: const Duration(seconds: 60),
-        codeAutoRetrievalTimeout: (verificationId) {
-          logger.d("codeAutoRetrievalTimeout $verificationId");
-        },
-      );
-    } catch (e) {
-      logger.e(e.toString());
-      Get.snackbar(
-        "Something went wrong otp:70",
-        e.toString(),
-      );
-      navigator?.pop();
-    }
-  }
+  // Future<void> signOut() async {
+  //   logger.d("signOut");
+  //   await FirebaseAuth.instance.signOut();
+  // }
 
-  void subscribeAuthStateChange() {
-    _authStateChanges = FirebaseAuth.instance.authStateChanges().listen(
-      (User? user) {
-        if (user == null) {
-          logger.d('User is currently signed out!');
-        } else {
-          logger.d('User is signed in!');
-          ++count;
-          logger.d(count);
-          unsubscribeAuthStateChange();
-          runWhenSuccess();
-        }
-      },
-    );
-  }
+  // void setup() async {
+  //   await signOut();
+  //   await sendVerifyOTP();
+  //   subscribeAuthStateChange();
+  // }
 
-  void unsubscribeAuthStateChange() async {
-    await _authStateChanges?.cancel();
-  }
+  // Future<void> getOTPSignup(String phoneNumber) async {
+  //   try {
+  //     final dio = Dio();
+  //     logger.d("phoneNumber: $phoneNumber");
+  //     final response = await dio.post("${AppConst.apiUrl}/user/otp", data: {
+  //       "phoneNumber": phoneNumber,
+  //     });
+  //     logger.d(response.data);
+  //     final data = response.data['data'];
+  //     otpRef.value = data['otpRef'];
+  //   } on DioException catch (e) {
+  //     if (e.response != null) {
+  //       logger.e(e.response?.statusCode);
+  //       logger.e(e.response?.statusMessage);
+  //       logger.e(e.response?.data);
+  //       logger.e(e.response?.headers);
+  //       logger.e(e.response?.requestOptions);
+  //     } else {
+  //       // Something happened in setting up or sending the request that triggered an Error
+  //       logger.e(e.requestOptions);
+  //       logger.e(e.message);
+  //     }
+  //   }
+  // }
 
-  Future<void> signOut() async {
-    logger.d("signOut");
-    await FirebaseAuth.instance.signOut();
+  // Future<void> getOtp(String phoneNumber) async {
+  //   final action = argrument['action'];
+  //   if (action == "signup") {
+  //     getOTPSignup(phoneNumber);
+  //     return;
+  //   }
+  //   final dio = Dio();
+  //   final response = await dio.post(
+  //     "${AppConst.apiUrl}/otp",
+  //     data: {
+  //       'phone': phoneNumber,
+  //     },
+  //   );
+  //   logger.w(response.data);
+  //   final result = response.data;
+  //   otpRef.value = result['data']['otpRef'];
+  //   userId = result['data']['userId'];
+  //   startTimer();
+  //   enableOTP.value = true;
+  // }
+
+  Future<void> confirmOTPAppwrite(String pin) async {
+    await argrument.whenConfirmOTP(pin);
+    // logger.d(pin);
+    // final dio = Dio();
+    // final response = await dio.post(
+    //   "${AppConst.apiUrl}/otp/verify",
+    //   data: {
+    //     "userId": userId,
+    //     "otp": pin,
+    //     "otpRef": otpRef.value,
+    //   },
+    // );
+    // final result = response.data;
+    // final secret = result['data']['secret'];
+    // runWhenSuccess(userId, secret);
   }
 
   void setup() async {
-    await signOut();
-    await sendVerifyOTP();
-    subscribeAuthStateChange();
+    try {
+      final otpRef = await argrument.onInit();
+      if (otpRef == null) throw "otpRef is empty";
+
+      this.otpRef.value = otpRef;
+      enableOTP.value = true;
+      startTimer();
+    } catch (e) {
+      logger.e("$e");
+    } finally {
+      loadingSendOTP.value = false;
+    }
+    // try {
+    // final phoneNumber = argrument["phoneNumber"];
+    // if (phoneNumber == null) {
+    //   throw 'Phone number is empty';
+    // }
+    // await getOtp(phoneNumber);
+    // } on DioException catch (e) {
+    //   if (e.response != null) {
+    //     logger.e(e.response?.statusCode);
+    //     logger.e(e.response?.statusMessage);
+    //     logger.e(e.response?.data);
+    //     logger.e(e.response?.headers);
+    //     logger.e(e.response?.requestOptions);
+    //     Get.dialog(
+    //       DialogApp(
+    //         title: Text("Network error"),
+    //         details: Text(
+    //             'code:${e.response?.statusCode ?? '-'} message:${e.response?.statusMessage ?? '-'}'),
+    //         disableConfirm: true,
+    //       ),
+    //     );
+    //   }
+    // } catch (e) {
+    //   Get.dialog(
+    //     DialogApp(
+    //       title: Text('something went wrong'),
+    //       details: Text('$e'),
+    //       disableConfirm: true,
+    //     ),
+    //   );
+    // }
   }
 
   @override
@@ -134,35 +168,35 @@ class OtpController extends GetxController {
     super.onInit();
   }
 
-  void runWhenSuccess() {
-    if (argrument["whenSuccess"] is Function) {
-      argrument["whenSuccess"]();
-    }
-  }
+  // void runWhenSuccess(String userId, String secret) {
+  //   if (argrument["whenSuccess"] is Function) {
+  //     argrument["whenSuccess"](userId, secret);
+  //   }
+  // }
 
-  Future<void> confirmOTP(String pin) async {
-    try {
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: verificationId,
-        smsCode: pin,
-      );
-      final userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+  // Future<void> confirmOTP(String pin) async {
+  //   try {
+  //     PhoneAuthCredential credential = PhoneAuthProvider.credential(
+  //       verificationId: verificationId,
+  //       smsCode: pin,
+  //     );
+  //     final userCredential =
+  //         await FirebaseAuth.instance.signInWithCredential(credential);
 
-      logger.d(userCredential.user?.phoneNumber);
-    } catch (e) {
-      logger.e(e.toString());
-      Get.snackbar(
-        "confirmOTP failed",
-        e.toString(),
-      );
-    }
-  }
+  //     logger.d(userCredential.user?.phoneNumber);
+  //   } catch (e) {
+  //     logger.e(e.toString());
+  //     Get.snackbar(
+  //       "confirmOTP failed",
+  //       e.toString(),
+  //     );
+  //   }
+  // }
 
   void resendOTP() {
     // disabledReOTP.value = true;
     loadingSendOTP.value = true;
     enableOTP.value = false;
-    sendVerifyOTP();
+    setup();
   }
 }

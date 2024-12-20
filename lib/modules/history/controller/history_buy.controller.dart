@@ -149,6 +149,8 @@ class HistoryBuyController extends GetxController {
       billId: history.billId ?? "-",
       bankName: bank?.fullName ?? "-",
       customerId: userApp!.customerId!,
+      point: history.point,
+      pointMoney: history.pointMoney,
     );
 
     if (context.mounted) {

@@ -12,6 +12,8 @@ class History {
   String? bankId;
   String status;
   String? billId;
+  int? point;
+  int? pointMoney;
 
   History({
     required this.createdAt,
@@ -22,6 +24,8 @@ class History {
     this.bankId,
     required this.status,
     this.billId,
+    this.point,
+    this.pointMoney,
   }) {
     date = CommonFn.parseDMY(DateTime.parse(createdAt).toLocal());
     time = CommonFn.parseHMS(DateTime.parse(createdAt).toLocal());
@@ -37,6 +41,8 @@ class History {
       bankId: json['bankId'],
       status: json['status'],
       billId: json['billId'],
+      point: json['point'],
+      pointMoney: json['pointMoney'],
     );
   }
 
@@ -58,5 +64,8 @@ class History {
         "bankId": bankId,
         "status": status,
         "billId": billId,
+        "point": point,
+        "pointMoney": pointMoney,
+        "amount": amount,
       };
 }

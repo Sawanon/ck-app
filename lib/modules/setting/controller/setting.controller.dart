@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottery_ck/model/get_argument/otp.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
@@ -38,7 +39,6 @@ class SettingController extends GetxController {
   Future<void> getKYC() async {
     if (user == null) return;
     final kycData = await AppWriteController.to.getKYC(user!.userId);
-    logger.w(kycData);
     this.kycData = kycData;
     update();
   }
@@ -49,7 +49,6 @@ class SettingController extends GetxController {
     this.user = user;
     update();
     getProfileImage(user, forceReloadProfile);
-    logger.w(user.isKYC);
     if (user.isKYC != true) {
       await getKYC();
     } else {
@@ -88,6 +87,7 @@ class SettingController extends GetxController {
 
   void onShare(BuildContext context) async {
     final box = context.findRenderObject() as RenderBox?;
+
     await Share.share(
       "test",
       subject: "test sub",
@@ -173,24 +173,60 @@ class SettingController extends GetxController {
           "userId": user!.userId,
           "whenSuccess": () {
             logger.d("pin verify successful");
-            Get.offNamed(RouteName.otp, arguments: {
-              "phoneNumber": user!.phoneNumber,
-              "whenSuccess": () {
-                logger.d("otp verify successful");
-                Get.offNamed(RouteName.pin, arguments: {
-                  "whenSuccess": () {
-                    Get.back();
-                    logger.d("change passcode successful");
-                    Get.snackbar(
-                      "Change passcode success",
-                      "message",
-                      backgroundColor: Colors.green.shade700,
-                      colorText: Colors.white,
-                    );
+            String? otpRef;
+            Get.offNamed(
+              RouteName.otp,
+              arguments: OTPArgument(
+                action: OTPAction.changePasscode,
+                phoneNumber: user!.phoneNumber,
+                onInit: () async {
+                  final responseOTPRef =
+                      await AppWriteController.to.getOTPUser(user!.phoneNumber);
+                  otpRef = responseOTPRef;
+                  return responseOTPRef;
+                },
+                whenConfirmOTP: (otp) async {
+                  final response = await AppWriteController.to
+                      .confirmOTPUser(user!.userId, otp, otpRef!);
+                  if (response == null) {
+                    Get.rawSnackbar(message: "resposne is empty");
+                    return;
                   }
-                });
-              }
-            });
+                  if (response['status'] == 200) {
+                    Get.offNamed(RouteName.pin, arguments: {
+                      "whenSuccess": () {
+                        Get.back();
+                        logger.d("change passcode successful");
+                        Get.snackbar(
+                          "Change passcode success",
+                          "message",
+                          backgroundColor: Colors.green.shade700,
+                          colorText: Colors.white,
+                        );
+                      }
+                    });
+                  }
+                },
+              ),
+              // arguments: {
+              //   "phoneNumber": user!.phoneNumber,
+              //   "whenSuccess": () {
+              //     logger.d("otp verify successful");
+              //     Get.offNamed(RouteName.pin, arguments: {
+              //       "whenSuccess": () {
+              //         Get.back();
+              //         logger.d("change passcode successful");
+              //         Get.snackbar(
+              //           "Change passcode success",
+              //           "message",
+              //           backgroundColor: Colors.green.shade700,
+              //           colorText: Colors.white,
+              //         );
+              //       }
+              //     });
+              //   }
+              // },
+            );
           }
         },
       );
@@ -260,36 +296,90 @@ class SettingController extends GetxController {
                   return;
                 }
               }
-              Get.toNamed(RouteName.otp, arguments: {
-                "phoneNumber": newPhoneNumber,
-                "whenSuccess": () async {
-                  logger.d("message: otp");
-                  final response = await AppWriteController.to
-                      .updateUserPhone(newPhoneNumber!);
-                  if (response == null) {
-                    Get.snackbar(
-                      "Update phone number failed",
-                      "please try again later",
-                      margin: const EdgeInsets.all(8),
-                      backgroundColor: Colors.red,
-                      colorText: Colors.white,
-                    );
-                    Get.back();
-                    Get.back();
-                    return;
-                  }
-                  Get.back();
-                  Get.back();
-                  Get.snackbar(
-                    "Change phone number success",
-                    "message",
-                    margin: const EdgeInsets.all(8),
-                    backgroundColor: Colors.green.shade700,
-                    colorText: Colors.white,
-                  );
-                  getUser();
-                }
-              });
+              String? otpRef;
+              Get.toNamed(
+                RouteName.otp,
+                arguments: OTPArgument(
+                  action: OTPAction.changePhone,
+                  phoneNumber: newPhoneNumber!,
+                  onInit: () async {
+                    // final responseOTPRef =
+                    //     await AppWriteController.to.getOTPUser(newPhoneNumber!);
+                    // otpRef = responseOTPRef;
+                    // return responseOTPRef;
+                    final result =
+                        await AppWriteController.to.getOTP(newPhoneNumber!);
+                    otpRef = result?.otpRef;
+                    return result?.otpRef;
+                  },
+                  whenConfirmOTP: (otp) async {
+                    // final response = await AppWriteController.to
+                    //     .confirmOTPUser(user!.userId, otp, otpRef!);
+                    // if (response == null) {
+                    //   Get.rawSnackbar(message: "response is empty");
+                    //   return;
+                    // }
+                    final result = await AppWriteController.to
+                        .confirmOTP(newPhoneNumber!, otp, otpRef!);
+                    if (result) {
+                      final response = await AppWriteController.to
+                          .updateUserPhone(newPhoneNumber!);
+                      if (response == null) {
+                        Get.snackbar(
+                          "Update phone number failed",
+                          "please try again later",
+                          margin: const EdgeInsets.all(8),
+                          backgroundColor: Colors.red,
+                          colorText: Colors.white,
+                        );
+                        Get.back();
+                        Get.back();
+                        return;
+                      }
+                      Get.back();
+                      Get.back();
+                      Get.snackbar(
+                        "Change phone number success",
+                        "message",
+                        margin: const EdgeInsets.all(8),
+                        backgroundColor: Colors.green.shade700,
+                        colorText: Colors.white,
+                      );
+                      getUser();
+                    }
+                  },
+                ),
+                // arguments: {
+                //   "phoneNumber": newPhoneNumber,
+                //   "whenSuccess": () async {
+                //     logger.d("message: otp");
+                //     final response = await AppWriteController.to
+                //         .updateUserPhone(newPhoneNumber!);
+                //     if (response == null) {
+                //       Get.snackbar(
+                //         "Update phone number failed",
+                //         "please try again later",
+                //         margin: const EdgeInsets.all(8),
+                //         backgroundColor: Colors.red,
+                //         colorText: Colors.white,
+                //       );
+                //       Get.back();
+                //       Get.back();
+                //       return;
+                //     }
+                //     Get.back();
+                //     Get.back();
+                //     Get.snackbar(
+                //       "Change phone number success",
+                //       "message",
+                //       margin: const EdgeInsets.all(8),
+                //       backgroundColor: Colors.green.shade700,
+                //       colorText: Colors.white,
+                //     );
+                //     getUser();
+                //   }
+                // },
+              );
             }
           });
         }

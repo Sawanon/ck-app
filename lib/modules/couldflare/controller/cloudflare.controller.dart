@@ -43,7 +43,8 @@ class CloudFlareController extends GetxController {
   Future<void> verifyToken(String token) async {
     final dio = Dio();
     final response = await dio.post(
-      "${AppConst.cloudfareUrl}/verifyCloudflare",
+      // "${AppConst.cloudfareUrl}/verifyCloudflare",
+      "${AppConst.apiUrl}/verify",
       data: {
         "cf-turnstile-response": token,
       },

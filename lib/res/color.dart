@@ -13,6 +13,10 @@ class AppColors {
   static const Color containerBorder = Color.fromRGBO(241, 241, 241, 1);
   static const Color kycBackground = Color.fromRGBO(255, 249, 247, 1);
   static const Color documentBackground = Color.fromRGBO(233, 233, 233, 1);
+  static const Color menuIcon = Color.fromRGBO(197, 64, 50, 1);
+  static const Color menuIconDisabled = Color.fromRGBO(204, 204, 204, 1);
+  static const Color menuBackgroundDisabled = Color.fromRGBO(235, 235, 235, 1);
+  static const Color menuTextDisabled = Color.fromRGBO(209, 209, 209, 1);
 
   static const Color shadow = Color.fromRGBO(174, 174, 192, 0.4);
   static const Color yellowGradient = Color.fromRGBO(255, 194, 36, 1);
@@ -31,9 +35,18 @@ class AppColors {
   static const Color foreground = Color.fromRGBO(243, 243, 243, 1);
   static const Color foregroundBorder = Color.fromRGBO(241, 240, 240, 1);
 
-  static const Color menuIcon = Color.fromRGBO(248, 96, 100, 1);
-
   static const Color zinZaeBackground = Color.fromRGBO(36, 36, 68, 1);
 
+  static const Color redTone = Color.fromRGBO(239, 45, 41, 1);
+
   static const Color kycBanner = Color.fromRGBO(255, 93, 93, 1);
+
+  static const LinearGradient primayBtn = LinearGradient(
+    colors: [
+      Color.fromRGBO(253, 150, 153, 1),
+      Color.fromRGBO(242, 49, 55, 1),
+    ],
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+  );
 }

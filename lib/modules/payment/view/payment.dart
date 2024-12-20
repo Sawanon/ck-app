@@ -374,15 +374,22 @@ class PayMentPage extends StatelessWidget {
                             // shrinkWrap: true,
                             children: controller.bankList.map(
                               (bank) {
+                                final isActive = bank.downtime != null
+                                    ? controller.checkActiveBank(bank.downtime!)
+                                    : true;
                                 return GestureDetector(
                                   onTap: () {
-                                    controller.selectBank(bank);
+                                    if (isActive) {
+                                      controller.selectBank(bank);
+                                    }
                                   },
                                   child: Container(
                                     padding: EdgeInsets.all(8),
                                     margin: EdgeInsets.only(bottom: 8),
                                     decoration: BoxDecoration(
-                                      color: Colors.white,
+                                      color: isActive
+                                          ? Colors.white
+                                          : AppColors.disable,
                                       borderRadius: BorderRadius.circular(8),
                                       boxShadow: [
                                         BoxShadow(
@@ -420,7 +427,27 @@ class PayMentPage extends StatelessWidget {
                                           },
                                         ),
                                         const SizedBox(width: 8),
-                                        Text(bank.fullName),
+                                        Expanded(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(bank.fullName),
+                                              if (bank.downtime != null) ...[
+                                                const SizedBox(height: 8),
+                                                Text(
+                                                  "${AppLocale.downtimeBank.getString(context)} ${bank.downtime!}",
+                                                  softWrap: true,
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.grey.shade800,
+                                                  ),
+                                                ),
+                                              ]
+                                            ],
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -435,13 +462,11 @@ class PayMentPage extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Obx(() {
-                      logger.d(
-                          BuyLotteryController.to.invoiceRemainExpireStr.value);
+                      final invoiceRemainExpireStr =
+                          BuyLotteryController.to.invoiceRemainExpireStr.value;
                       return LongButton(
                         disabled: !controller.enablePay ||
-                            BuyLotteryController
-                                    .to.invoiceRemainExpireStr.value ==
-                                "",
+                            invoiceRemainExpireStr == "",
                         onPressed: () {
                           if (controller.selectedBank == null) {
                             return;

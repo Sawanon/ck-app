@@ -7,13 +7,19 @@ import 'package:lottery_ck/utils.dart';
 
 class HistoryWinController extends GetxController {
   static HistoryWinController get to => Get.find();
-  String lotteryMonth = "09-2024";
   RxList winInvoice = [].obs;
   List<String> lotteryMonthList = [];
   String selectedMonth = "";
 
+  void changeMonth(String yearMonth) {
+    selectedMonth = yearMonth;
+    listWinInVoice(yearMonth);
+    update();
+  }
+
   Future<void> listWinInVoice([String? lotteryMonth]) async {
     winInvoice.clear();
+    logger.d(selectedMonth);
     final lotteryMonthRevers =
         (lotteryMonth ?? selectedMonth).split("-").reversed.join("");
     logger.d(lotteryMonthRevers);
@@ -75,7 +81,6 @@ class HistoryWinController extends GetxController {
         break;
       }
     }
-    logger.d(lotteryMonthList);
     selectedMonth = lotteryMonthList.first;
     this.lotteryMonthList = lotteryMonthList;
     update();

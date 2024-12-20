@@ -29,6 +29,7 @@ import 'package:lottery_ck/modules/point/controller/point.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/signup/controller/signup.controller.dart';
 import 'package:lottery_ck/modules/splash_screen/controller/splash_screen.controller.dart';
+import 'package:lottery_ck/modules/t_c/controller/t_c.controller.dart';
 import 'package:lottery_ck/modules/webview/controller/webview.controller.dart';
 import 'package:lottery_ck/repository/user_repository/user.repository.dart';
 import 'package:lottery_ck/storage.dart';
@@ -49,7 +50,7 @@ class LayoutBindings extends Bindings {
     Get.put<FirebaseAuthController>(FirebaseAuthController());
     Get.put<AppWriteController>(AppWriteController());
     Get.put<UserStore>(UserStore());
-    Get.put<LayoutController>(LayoutController());
+    Get.put<LayoutController>(LayoutController(), permanent: true);
     Get.lazyPut<LoginController>(() => LoginController(), fenix: true);
     Get.lazyPut<SignupController>(() => SignupController(), fenix: true);
     Get.lazyPut<OtpController>(() => OtpController(), fenix: true);
@@ -88,5 +89,6 @@ class LayoutBindings extends Bindings {
     Get.lazyPut<CustomWebviewController>(() => CustomWebviewController(),
         fenix: true);
     Get.lazyPut<KYCController>(() => KYCController(), fenix: true);
+    Get.lazyPut<TCController>(() => TCController(), fenix: true);
   }
 }

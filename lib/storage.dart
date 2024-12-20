@@ -152,6 +152,14 @@ class StorageController extends GetxController {
     return jsonDecode(passcodeDelay);
   }
 
+  Future<void> setKYCLater() async {
+    await setValue("kycLater", DateTime.now().toIso8601String());
+  }
+
+  Future<String?> getKYCLater() async {
+    return await getValue("kycLater");
+  }
+
   @override
   void onInit() {
     storage = FlutterSecureStorage(

@@ -10,6 +10,7 @@ import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 
 class PinVerifyPage extends StatelessWidget {
   final bool? disabledBackButton;
@@ -62,7 +63,8 @@ class PinVerifyPage extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      SettingController.to.user?.phoneNumber ?? "",
+                      CommonFn.hidePhoneNumber(
+                          SettingController.to.user?.phoneNumber),
                       style: TextStyle(
                         fontSize: 12,
                         color: AppColors.textPrimary.withOpacity(0.6),

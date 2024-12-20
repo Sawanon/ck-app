@@ -12,6 +12,8 @@ class Bill {
   String billId;
   String bankName;
   String customerId;
+  int? point;
+  int? pointMoney;
 
   Bill({
     required this.firstName,
@@ -25,5 +27,7 @@ class Bill {
     required this.billId,
     required this.bankName,
     required this.customerId,
+    this.point,
+    this.pointMoney,
   });
 }

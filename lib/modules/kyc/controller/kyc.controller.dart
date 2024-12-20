@@ -7,6 +7,8 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottery_ck/components/dialog.dart';
+import 'package:lottery_ck/components/gender_radio.dart';
+import 'package:lottery_ck/components/prefix_radio.dart';
 import 'package:lottery_ck/modules/kyc/view/success_kyc_dialog.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
@@ -28,6 +30,7 @@ class KYCController extends GetxController {
   String lastName = "";
   TextEditingController lastNameController = TextEditingController();
   String gender = "";
+  String prefix = "";
   String birthDate = "";
   String address = "";
   TextEditingController addressController = TextEditingController();
@@ -159,6 +162,16 @@ class KYCController extends GetxController {
     }
   }
 
+  void changePrefix(Prefix prefix) {
+    if (prefix == Prefix.mr) {
+      gender = Gender.male.name;
+      this.prefix = Prefix.mr.name;
+    } else if (prefix == Prefix.mrs) {
+      gender = Gender.female.name;
+      this.prefix = Prefix.mrs.name;
+    }
+  }
+
   void resendKYC() async {
     try {
       if (!validFormResendKYC()) {
@@ -173,6 +186,7 @@ class KYCController extends GetxController {
       if (firstName != "") data['firstName'] = firstName;
       if (lastName != "") data['lastName'] = lastName;
       if (gender != "") data['gender'] = gender;
+      if (prefix != "") data['prefix'] = prefix;
       if (address != "") data['address'] = address;
       if (city != "") data['city'] = city;
       if (district != "") data['district'] = district;
@@ -259,6 +273,7 @@ class KYCController extends GetxController {
         "firstName": firstName,
         "lastName": lastName,
         "gender": gender,
+        "prefix": prefix,
         "address": address,
         "city": city,
         "district": district,
@@ -337,6 +352,12 @@ class KYCController extends GetxController {
     Map remark = jsonDecode(kycData['remark']);
     logger.w(remark);
     this.remark = remark['data'];
+  }
+
+  void handleChangeGender(Prefix prefix) {
+    logger.d("prefix: $prefix");
+    this.prefix = prefix.name;
+    gender = prefix == Prefix.mr ? Gender.male.name : Gender.female.name;
   }
 
   @override

@@ -11,7 +11,6 @@ class NotificationController extends GetxController {
 
   Future<void> listNews() async {
     final newsList = await AppWriteController.to.listNews();
-    logger.d(newsList);
     if (newsList != null) {
       this.newsList.value = newsList;
     }
@@ -75,7 +74,6 @@ class NotificationController extends GetxController {
 
   @override
   void onInit() {
-    logger.d("message_controller");
     listNews();
     listPromotions();
     super.onInit();

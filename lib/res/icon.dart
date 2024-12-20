@@ -37,6 +37,18 @@ class AppIcon {
   static const String edit = "assets/svg/vuesax/linear/edit.svg";
   static const String random = "assets/svg/random.svg";
   static const String kycFace = "assets/svg/ar_on_you.svg";
+  static const String card = "assets/svg/card.svg";
+  static const String timer = "assets/svg/vuesax/linear/timer.svg";
+  static const String setting_2 = "assets/svg/vuesax/linear/setting-2.svg";
+  static const String groupAdd = "assets/svg/group_add.svg";
+  static const String groupUser = "assets/svg/vuesax/linear/profile-2user.svg";
+  static const String walletEmpty = "assets/svg/vuesax/linear/empty-wallet.svg";
+  static const String x = "assets/svg/x.svg";
+  static const String share = "assets/svg/share-2.svg";
+  static const String scan = "assets/svg/vuesax/linear/scan.svg";
+  static const String scanBold = "assets/svg/vuesax/bold/scan.svg";
+  static const String gift = "assets/svg/vuesax/linear/gift.svg";
+  static const String giftBold = "assets/svg/vuesax/bold/gift.svg";
 
   static const String lo = "assets/laos1.png";
   static const String th = "assets/Th1.png";

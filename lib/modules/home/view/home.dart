@@ -5,16 +5,13 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
-import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/video/view/video.dart';
-import 'package:lottery_ck/modules/video/view/video_list.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/res/logo.dart';
-import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -29,7 +26,7 @@ class HomePage extends StatelessWidget {
           body: Stack(
             children: [
               Padding(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: RefreshIndicator(
                   onRefresh: () async {
                     // logger.d("message");
@@ -137,183 +134,230 @@ class HomePage extends StatelessWidget {
                           // ),
                           ),
                       const SizedBox(height: 16),
-                      // horoscope
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          // horoscope
-                          Column(
+                      GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 5,
+                          childAspectRatio: 3 / 4,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 8,
+                        ),
+                        itemBuilder: (context, index) {
+                          final menu = controller.menu[index];
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               GestureDetector(
-                                onTap: () {
-                                  controller.gotoHoroScope();
-                                },
-                                child: Container(
-                                  width: 52,
-                                  height: 52,
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8),
-                                    boxShadow: [
-                                      AppTheme.softShadow,
-                                    ],
-                                  ),
-                                  child: SizedBox(
-                                    height: 32,
-                                    width: 32,
-                                    child: SvgPicture.asset(AppIcon.horoscope),
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                AppLocale.horoscope.getString(context),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                          // random
-                          Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  controller.gotoRandom();
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  width: 52,
-                                  height: 52,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8),
-                                    boxShadow: [
-                                      AppTheme.softShadow,
-                                    ],
-                                  ),
-                                  child: SizedBox(
-                                    height: 32,
-                                    width: 32,
-                                    child: SvgPicture.asset(
-                                      AppIcon.random,
-                                      colorFilter: const ColorFilter.mode(
-                                          AppColors.menuIcon, BlendMode.srcIn),
+                                onTap: menu.ontab,
+                                child: AspectRatio(
+                                  aspectRatio: 1,
+                                  child: Container(
+                                    // width: 48,
+                                    // height: 48,
+                                    // alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8),
+                                      boxShadow: [
+                                        AppTheme.softShadow,
+                                      ],
+                                    ),
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      child: menu.icon,
                                     ),
                                   ),
                                 ),
                               ),
-                              Text(
-                                AppLocale.random.getString(context),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
-                                ),
+                              Align(
+                                child: menu.name,
                               ),
                             ],
-                          ),
-                          // animalMenu
-                          Column(
-                            children: [
-                              GestureDetector(
-                                onTap: controller.gotoAnimal,
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  width: 52,
-                                  height: 52,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8),
-                                    boxShadow: [
-                                      AppTheme.softShadow,
-                                    ],
-                                  ),
-                                  child: SizedBox(
-                                    height: 32,
-                                    width: 32,
-                                    child: SvgPicture.asset(AppIcon.animalMenu),
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                AppLocale.animal.getString(context),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                          // lotteryResult
-                          Column(
-                            children: [
-                              GestureDetector(
-                                onTap: controller.gotoLotteryResult,
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  width: 52,
-                                  height: 52,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8),
-                                    boxShadow: [
-                                      AppTheme.softShadow,
-                                    ],
-                                  ),
-                                  child: SizedBox(
-                                    height: 32,
-                                    width: 32,
-                                    child:
-                                        SvgPicture.asset(AppIcon.lotteryResult),
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                AppLocale.lotteryResult.getString(context),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                          // wallpaper
-                          Column(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  controller.gotoWallPaperPage();
-                                },
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  width: 52,
-                                  height: 52,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8),
-                                    boxShadow: [
-                                      AppTheme.softShadow,
-                                    ],
-                                  ),
-                                  child: SizedBox(
-                                    height: 32,
-                                    width: 32,
-                                    child: SvgPicture.asset(AppIcon.wallpaper),
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                AppLocale.wallpaper.getString(context),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 12,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                          );
+                        },
+                        itemCount: controller.menu.length,
                       ),
+                      // horoscope
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     // horoscope
+                      //     Column(
+                      //       children: [
+                      //         GestureDetector(
+                      //           onTap: () {
+                      //             controller.gotoHoroScope();
+                      //           },
+                      //           child: Container(
+                      //             width: 52,
+                      //             height: 52,
+                      //             alignment: Alignment.center,
+                      //             decoration: BoxDecoration(
+                      //               color: Colors.white,
+                      //               borderRadius: BorderRadius.circular(8),
+                      //               boxShadow: [
+                      //                 AppTheme.softShadow,
+                      //               ],
+                      //             ),
+                      //             child: SizedBox(
+                      //               height: 32,
+                      //               width: 32,
+                      //               child: SvgPicture.asset(AppIcon.horoscope),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         Text(
+                      //           AppLocale.horoscope.getString(context),
+                      //           style: TextStyle(
+                      //             fontWeight: FontWeight.w600,
+                      //             fontSize: 12,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     // random
+                      //     Column(
+                      //       children: [
+                      //         GestureDetector(
+                      //           onTap: () {
+                      //             controller.gotoRandom();
+                      //           },
+                      //           child: Container(
+                      //             alignment: Alignment.center,
+                      //             width: 52,
+                      //             height: 52,
+                      //             decoration: BoxDecoration(
+                      //               color: Colors.white,
+                      //               borderRadius: BorderRadius.circular(8),
+                      //               boxShadow: [
+                      //                 AppTheme.softShadow,
+                      //               ],
+                      //             ),
+                      //             child: SizedBox(
+                      //               height: 32,
+                      //               width: 32,
+                      //               child: SvgPicture.asset(
+                      //                 AppIcon.random,
+                      //                 colorFilter: const ColorFilter.mode(
+                      //                   AppColors.menuIcon,
+                      //                   BlendMode.srcIn,
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         Text(
+                      //           AppLocale.random.getString(context),
+                      //           style: TextStyle(
+                      //             fontWeight: FontWeight.w600,
+                      //             fontSize: 12,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     // animalMenu
+                      //     Column(
+                      //       children: [
+                      //         GestureDetector(
+                      //           onTap: controller.gotoAnimal,
+                      //           child: Container(
+                      //             alignment: Alignment.center,
+                      //             width: 52,
+                      //             height: 52,
+                      //             decoration: BoxDecoration(
+                      //               color: Colors.white,
+                      //               borderRadius: BorderRadius.circular(8),
+                      //               boxShadow: [
+                      //                 AppTheme.softShadow,
+                      //               ],
+                      //             ),
+                      //             child: SizedBox(
+                      //               height: 32,
+                      //               width: 32,
+                      //               child: SvgPicture.asset(AppIcon.animalMenu),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         Text(
+                      //           AppLocale.animal.getString(context),
+                      //           style: TextStyle(
+                      //             fontWeight: FontWeight.w600,
+                      //             fontSize: 12,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     // lotteryResult
+                      //     Column(
+                      //       children: [
+                      //         GestureDetector(
+                      //           onTap: controller.gotoLotteryResult,
+                      //           child: Container(
+                      //             alignment: Alignment.center,
+                      //             width: 52,
+                      //             height: 52,
+                      //             decoration: BoxDecoration(
+                      //               color: Colors.white,
+                      //               borderRadius: BorderRadius.circular(8),
+                      //               boxShadow: [
+                      //                 AppTheme.softShadow,
+                      //               ],
+                      //             ),
+                      //             child: SizedBox(
+                      //               height: 32,
+                      //               width: 32,
+                      //               child:
+                      //                   SvgPicture.asset(AppIcon.lotteryResult),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         Text(
+                      //           AppLocale.lotteryResult.getString(context),
+                      //           style: TextStyle(
+                      //             fontWeight: FontWeight.w600,
+                      //             fontSize: 12,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     // wallpaper
+                      //     Column(
+                      //       children: [
+                      //         GestureDetector(
+                      //           onTap: () {
+                      //             controller.gotoWallPaperPage();
+                      //           },
+                      //           child: Container(
+                      //             alignment: Alignment.center,
+                      //             width: 52,
+                      //             height: 52,
+                      //             decoration: BoxDecoration(
+                      //               color: Colors.white,
+                      //               borderRadius: BorderRadius.circular(8),
+                      //               boxShadow: [
+                      //                 AppTheme.softShadow,
+                      //               ],
+                      //             ),
+                      //             child: SizedBox(
+                      //               height: 32,
+                      //               width: 32,
+                      //               child: SvgPicture.asset(AppIcon.wallpaper),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         Text(
+                      //           AppLocale.wallpaper.getString(context),
+                      //           style: TextStyle(
+                      //             fontWeight: FontWeight.w600,
+                      //             fontSize: 12,
+                      //           ),
+                      //         ),
+                      //       ],
+                      //     ),
+                      //   ],
+                      // ),
                       const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -452,6 +496,13 @@ class HomePage extends StatelessWidget {
                             child: GestureDetector(
                               onTap: () {
                                 // controller.getLotteryDate();
+                                // launchUrl(
+                                //   Uri.parse(
+                                //     "https://bcel.la/qr/00020101021133600004BCEL0116ONEPAYLOTTO0216mch12345678901230513CLOSEWHENDONE530341854051000062430112+8562021345605152202212345678900704NAGA",
+                                //   ),
+                                //   mode: LaunchMode.externalApplication,
+                                // );
+                                controller.tryFunction();
                               },
                               child: SizedBox(
                                 // height: 30,
@@ -792,7 +843,7 @@ class HomePage extends StatelessWidget {
                                         return;
                                       }
                                       controller.onClickContent(
-                                          artworks[index]['imageUrl']);
+                                          artworks[index]['getLink']);
                                     },
                                     child: SizedBox(
                                       // width: screenWidth / 3,

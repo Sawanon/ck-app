@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/enums.dart';
 import 'package:appwrite/models.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/gender_radio.dart';
 import 'package:lottery_ck/model/bank.dart';
 import 'package:lottery_ck/model/buy_lottery_configs.dart';
@@ -15,6 +17,8 @@ import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/model/lottery_date.dart';
 import 'package:lottery_ck/model/news.dart';
 import 'package:lottery_ck/model/respnose_verifypasscode.dart';
+import 'package:lottery_ck/model/response/get_otp.dart';
+import 'package:lottery_ck/model/response/signup.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/model/user_point.dart';
 import 'package:lottery_ck/modules/appwrite/controller/savefile.dart';
@@ -45,6 +49,9 @@ class AppWriteController extends GetxController {
   static const String CONTENT_MANAGEMENT = 'content_management';
   static const String QUOTAS = 'quotas';
   static const String QYC_USER = 'kyc_users';
+  static const String SETTINGS = 'settings';
+
+  static const String FN_SIGNIN = '6759aebe003c92a6fa81';
 
   static const _roleUserId = "669a2cfd00141edc45ef";
   final String _providerId = '66d28d4000300a1e7dc1';
@@ -52,6 +59,7 @@ class AppWriteController extends GetxController {
   late Account account;
   late Databases databases;
   late Storage storage;
+  late Functions functions;
   Client client = Client();
 
   Future<User> get user async => await account.get();
@@ -320,7 +328,6 @@ class AppWriteController extends GetxController {
   }
 
   Future<Document> getLotteryDateById(String lotteryDateId) async {
-    logger.d(lotteryDateId);
     return await databases.getDocument(
       databaseId: _databaseName,
       collectionId: LOTTERY_DATE,
@@ -441,7 +448,7 @@ class AppWriteController extends GetxController {
         // if (count == 10) break;
         final lotteryDate = LotteryDate.fromJson(lotteryDateDocument.data);
         lotteryDateList.add(lotteryDate);
-        logger.d(lotteryDate.endTime.toString());
+        // logger.d(lotteryDate.endTime.toString());
         if (lotteryDate.endTime.isAfter(DateTime.now())) {
           isGreatOne = true;
         }
@@ -454,7 +461,7 @@ class AppWriteController extends GetxController {
 
       //   return lotterDate;
       // }).toList();
-      return lotteryDateList.reversed.toList();
+      return lotteryDateList;
     } catch (e) {
       logger.e("$e");
       Get.rawSnackbar(message: "$e");
@@ -589,6 +596,7 @@ class AppWriteController extends GetxController {
         queries: [
           Query.equal("is_active", true),
           Query.equal("is_approve", "3"),
+          Query.greaterThanEqual("end_date", DateTime.now().toIso8601String()),
           Query.orderDesc('start_date'),
           Query.limit(25),
         ],
@@ -613,6 +621,7 @@ class AppWriteController extends GetxController {
         queries: [
           Query.equal("is_active", true),
           Query.equal("is_approve", "3"),
+          Query.greaterThanEqual("end_date", DateTime.now().toIso8601String()),
           Query.orderDesc('start_date'),
           Query.limit(25),
         ],
@@ -812,7 +821,7 @@ class AppWriteController extends GetxController {
           Query.limit(25),
         ],
       );
-      logger.d(lotteryHistoryDocumentList.total);
+      // logger.d(lotteryHistoryDocumentList.total);
       List lotteryHistoryList = [];
       final lotteryHistoryListData =
           lotteryHistoryDocumentList.documents.map((document) => document.data);
@@ -821,7 +830,7 @@ class AppWriteController extends GetxController {
       for (var lotteryByDate in newMap.entries) {
         final lotteryDateDocument = await getLotteryDateById(
             lotteryByDate.value.first["lottery_date_id"]);
-        logger.f(lotteryDateDocument.data);
+        // logger.f(lotteryDateDocument.data);
         final lotteryDate = CommonFn.parseDMY(
             DateTime.parse(lotteryDateDocument.data["datetime"]).toLocal());
         String lottery = lotteryByDate.value.first["lottery"].first as String;
@@ -978,7 +987,7 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<User?> signUp(
+  Future<ResponseSignup?> signUp(
     String username,
     String firstName,
     String lastName,
@@ -1002,13 +1011,15 @@ class AppWriteController extends GetxController {
         "birthDate": birthDate.toIso8601String(),
         "birthTime":
             birthTime == null ? null : CommonFn.parseTimeOfDayToHMS(birthTime),
-        "gender": gender,
+        "gender": gender.name,
       });
       logger.d("response: ${response.data}");
       if (response.data["status"] == false) {
         throw "create user failed";
       }
-      return User.fromMap(response.data["user"]);
+      return ResponseSignup(
+          user: User.fromMap(response.data["user"]),
+          secret: response.data["secret"]);
     } catch (e) {
       logger.e("$e");
       return null;
@@ -1066,19 +1077,20 @@ class AppWriteController extends GetxController {
           "Authorization": "Bearer $jwt",
         }),
       );
-      final Map<String, dynamic>? token = response.data;
-      // logger.d("token: ${token}");
-      if (token?['status'] == false) {
-        if (token?['code'] == "user_notfound") {
-          return {
-            "status": false,
-            "code": "user_notfound",
-            "message": "User not found",
-          };
-        }
-      }
-      logger.d("token: $token");
-      return token;
+      return response.data;
+
+      // final response = await functions.createExecution(
+      //   functionId: FN_SIGNIN,
+      //   method: ExecutionMethod.pOST,
+      //   path: '/',
+      //   body: jsonEncode(
+      //     {
+      //       'phoneNumber': phoneNumber,
+      //     },
+      //   ),
+      // );
+      // logger.d(response.responseBody);
+      // return jsonDecode(response.responseBody);
     } on DioException catch (e) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx and is also not 304.
@@ -1103,11 +1115,11 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<Session?> createSession(Map<String, dynamic> token) async {
+  Future<Session?> createSession(String userId, String secret) async {
     try {
       final session = await account.createSession(
-        userId: token["userId"],
-        secret: token["secret"],
+        userId: userId,
+        secret: secret,
       );
       await clearOtherSession(session.$id);
       await createTarget();
@@ -1204,6 +1216,7 @@ class AppWriteController extends GetxController {
     account = Account(client);
     databases = Databases(client);
     storage = Storage(client);
+    functions = Functions(client);
     await intialTokenToStorage();
   }
 
@@ -1255,7 +1268,7 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<List<UserPoint>?> listUserPoint() async {
+  Future<List<UserPoint>?> listUserPoint(int offset) async {
     try {
       final userId = await user.then((user) => user.$id);
       final userPointDocumentList = await databases.listDocuments(
@@ -1264,6 +1277,8 @@ class AppWriteController extends GetxController {
         queries: [
           Query.equal("userId", userId),
           Query.orderDesc("\$createdAt"),
+          Query.limit(10),
+          Query.offset(offset),
         ],
       );
       logger.d(userPointDocumentList.total);
@@ -1429,6 +1444,247 @@ class AppWriteController extends GetxController {
       );
       final data = qycData.documents.first;
       return data.data;
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<Map?> getPointRaio() async {
+    try {
+      final pointRatioDocumentList = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: SETTINGS,
+        queries: [
+          Query.equal('type', 'pointConvert'),
+          Query.limit(1),
+        ],
+      );
+      return pointRatioDocumentList.documents.first.data;
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<List<Lottery>?> listTransactionByInvoiceId(
+      String invoiceId, String lotteryStr) async {
+    try {
+      final transactionDocumentList = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: "$lotteryStr$TRANSACTION",
+        queries: [
+          Query.equal("invoiceId", invoiceId),
+        ],
+      );
+      final transactionListMap =
+          transactionDocumentList.documents.map((transaction) {
+        return Lottery.fromJson(transaction.data);
+      }).toList();
+      return transactionListMap;
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<ResponseGetOTP?> getOTP(String phoneNumber) async {
+    try {
+      final dio = Dio();
+      final response = await dio.post(
+        "${AppConst.apiUrl}/user/otp",
+        data: {
+          'phoneNumber': phoneNumber,
+        },
+      );
+      final result = response.data;
+      if (result['isError'] == true) throw "Error OTP service";
+      logger.d("result: $result");
+      final otpRef = result['data']['otpRef'];
+      return ResponseGetOTP(otpRef: otpRef);
+    } on DioException catch (e) {
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        logger.e(e.response?.headers);
+        logger.e(e.response?.requestOptions);
+        Get.dialog(
+          DialogApp(
+            title: const Text("Network error"),
+            details: Text(
+                'code:${e.response?.statusCode ?? '-'} message:${e.response?.statusMessage ?? '-'}'),
+            disableConfirm: true,
+          ),
+        );
+      }
+      return null;
+    } catch (e) {
+      Get.dialog(
+        DialogApp(
+          title: const Text("Something went wrong"),
+          details: Text(
+            '$e',
+          ),
+          disableConfirm: true,
+        ),
+      );
+      return null;
+    }
+  }
+
+  Future<bool> confirmOTP(String phoneNumber, String otp, String otpRef) async {
+    try {
+      final dio = Dio();
+      final response = await dio.post(
+        "${AppConst.apiUrl}/user/otp/verify",
+        data: {
+          "phoneNumber": phoneNumber,
+          "otp": otp,
+          "otpRef": otpRef,
+        },
+      );
+      final data = response.data;
+      logger.d(data);
+      if (data['status'] != "success") {
+        return false;
+      }
+      return true;
+    } on DioException catch (e) {
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        logger.e(e.response?.headers);
+        logger.e(e.response?.requestOptions);
+        Get.dialog(
+          DialogApp(
+            title: const Text("Network error"),
+            details: Text(
+                'code:${e.response?.statusCode ?? '-'} message:${e.response?.statusMessage ?? '-'}'),
+            disableConfirm: true,
+          ),
+        );
+      }
+      return false;
+    }
+  }
+
+  Future<String?> getOTPUser(String phoneNumber) async {
+    try {
+      final dio = Dio();
+      final response = await dio.post(
+        "${AppConst.apiUrl}/otp",
+        data: {
+          'phone': phoneNumber,
+        },
+      );
+      final result = response.data;
+      logger.d(result);
+      if (result['isError'] == true) {
+        logger.d("in if");
+        DialogApp(
+          title: const Text("Network error"),
+          details: Text('code:${result['code']} message:${result['message']}'),
+          disableConfirm: true,
+        );
+        return null;
+      }
+      return result['data']['otpRef'];
+    } on DioException catch (e) {
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        logger.e(e.response?.headers);
+        logger.e(e.response?.requestOptions);
+        Get.dialog(
+          DialogApp(
+            title: const Text("Network error"),
+            details: Text(
+                'code:${e.response?.statusCode ?? '-'} message:${e.response?.statusMessage ?? '-'}'),
+            disableConfirm: true,
+          ),
+        );
+      }
+      return null;
+    }
+  }
+
+  Future<Map?> confirmOTPUser(String userId, String otp, String otpRef) async {
+    try {
+      final dio = Dio();
+      final response = await dio.post(
+        "${AppConst.apiUrl}/otp/verify",
+        data: {
+          "userId": userId,
+          "otp": otp,
+          "otpRef": otpRef,
+        },
+      );
+      final result = response.data;
+      if (result['isError'] == true) {
+        Get.dialog(
+          DialogApp(
+            title: Text("Code: ${result['code']}"),
+            details: Text("${result['message']}"),
+          ),
+        );
+        return null;
+      }
+      return response.data;
+    } on DioException catch (e) {
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        logger.e(e.response?.headers);
+        logger.e(e.response?.requestOptions);
+        Get.dialog(
+          DialogApp(
+            title: const Text("Network error"),
+            details: Text(
+                'code:${e.response?.statusCode ?? '-'} message:${e.response?.statusMessage ?? '-'}'),
+            disableConfirm: true,
+          ),
+        );
+      }
+      return null;
+    }
+  }
+
+  Future<void> tryFunction() async {
+    try {
+      final result = await functions.createExecution(
+        functionId: '6752ab8a003970b1d5bf',
+        method: ExecutionMethod.pOST,
+        path: '/',
+      );
+      logger.d(result);
+      logger.d(result.responseBody);
+      final response = jsonDecode(result.responseBody);
+      logger.d(response);
+    } catch (e) {
+      logger.e("$e");
+    }
+  }
+
+  Future<Map?> getWallpaperBackground() async {
+    try {
+      logger.w("getWallpaperBackground");
+      final response = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: 'appWallpapers',
+        queries: [
+          Query.equal('approve', '3'),
+          Query.lessThanEqual('start_date', DateTime.now().toIso8601String()),
+          Query.greaterThanEqual("end_date", DateTime.now().toIso8601String()),
+          Query.limit(1),
+        ],
+      );
+      if (response.documents.isNotEmpty) {
+        return response.documents.first.data;
+      }
     } catch (e) {
       logger.e("$e");
       return null;

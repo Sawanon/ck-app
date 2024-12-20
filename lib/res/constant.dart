@@ -3,9 +3,9 @@ class AppConst {
       // "https://60e3-2405-9800-b920-d13f-d8cb-7807-d2d1-1fbe.ngrok-free.app";
       "http://demo.mylaos.life:3000";
   static String apiUrl = "https://demo.mylaos.life/api";
+  // static String apiUrl = "172.31.146.7:3000/api";
   // static String apiUrl =
-  //     "https://c881-2405-9800-b920-2ef7-f02e-ef95-e4cb-b5d.ngrok-free.app/api";
-  // static String apiUrl = "http://192.168.1.138:3000/api";
+  //     "https://8fc7-2405-9800-b920-997e-4c4e-13cd-34ff-e89b.ngrok-free.app/api";
   static String videoUrl = "10.101.23.10:3000/api";
 
   // authorization
@@ -23,4 +23,10 @@ class AppConst {
 
   // zz
   static const String secretZZ = "sHib5ycSalFybq6dhFdmvmQSw82+fj/nhhLM0sAPVqs=";
+
+  // https://daily.horodd.win/?payload=<token>
+  static const String horoScopeUrl = "https://daily.horodd.win/?payload=";
+  // https://randomcards.horodd.win/?payload=<token>
+  static const String randomCardUrl =
+      "https://randomcards.horodd.win/?payload=";
 }

@@ -228,6 +228,7 @@ class PointPage extends StatelessWidget {
                       );
                     }
                     return ListView.separated(
+                      controller: controller.scrollController,
                       itemBuilder: (context, index) {
                         final pointTransaction =
                             controller.userPointList[index];
@@ -275,6 +276,7 @@ class PointPage extends StatelessWidget {
                   },
                 ),
               ),
+              if (controller.loadingPoint) CircularProgressIndicator(),
             ],
           ),
         ),

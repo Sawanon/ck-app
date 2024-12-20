@@ -341,9 +341,9 @@ class _AnimalPageState extends State<AnimalPage> {
       "lotteries": ["40", "80"],
     },
   ];
-  void Function(List<Map<String, dynamic>> lotterise) onClickBuy =
-      Get.arguments[0];
-  final disableBuy = Get.arguments[1];
+  void Function(List<Map<String, dynamic>> lotterise)? onClickBuy =
+      Get.arguments?[0];
+  final bool? disableBuy = Get.arguments?[1];
   final inputStyle = InputDecoration(
     contentPadding: const EdgeInsets.symmetric(
       horizontal: 16,
@@ -453,7 +453,7 @@ class _AnimalPageState extends State<AnimalPage> {
                             SizedBox(height: 8),
                             Material(
                               child: InkWell(
-                                onTap: disableBuy
+                                onTap: disableBuy == true
                                     ? null
                                     : () {
                                         // showSimpleNotification
@@ -758,7 +758,11 @@ class _AnimalPageState extends State<AnimalPage> {
                                                             return;
                                                           }
                                                           // onClickBuy(animal['lotteries'] as List<String>);
-                                                          onClickBuy(
+                                                          if (onClickBuy ==
+                                                              null) {
+                                                            return;
+                                                          }
+                                                          onClickBuy!(
                                                               lotteryWithPrice);
                                                           Navigator.of(context)
                                                               .pop();
@@ -803,7 +807,7 @@ class _AnimalPageState extends State<AnimalPage> {
                                     //   color: Color.fromRGBO(0, 117, 255, 1),
                                     //   width: 1,
                                     // ),
-                                    color: disableBuy
+                                    color: disableBuy == true
                                         ? AppColors.disable
                                         : AppColors.primary,
                                     borderRadius: BorderRadius.circular(4),
@@ -815,7 +819,7 @@ class _AnimalPageState extends State<AnimalPage> {
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
-                                      color: disableBuy
+                                      color: disableBuy == true
                                           ? Colors.black.withOpacity(0.6)
                                           : Colors.white,
                                     ),

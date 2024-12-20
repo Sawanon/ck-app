@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/history/controller/history_win.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
@@ -75,7 +74,10 @@ class HistoryWinPage extends StatelessWidget {
                         value: e,
                       );
                     }).toList(),
-                    onChanged: (e) {},
+                    onChanged: (e) {
+                      if (e == null) return;
+                      controller.changeMonth(e);
+                    },
                   ),
                 )
               ],

@@ -6,6 +6,7 @@ import 'package:lottery_ck/modules/bill/view/bill.dart';
 import 'package:lottery_ck/modules/biometrics/view/enable_biometrics.dart';
 import 'package:lottery_ck/modules/couldflare/view/cloudflare.dart';
 import 'package:lottery_ck/modules/history/view/win_bill.dart';
+import 'package:lottery_ck/modules/horoscope_daily/view/horoscope_dialy.dart';
 import 'package:lottery_ck/modules/kyc/view/kyc.dart';
 import 'package:lottery_ck/modules/layout/view/layout.dart';
 import 'package:lottery_ck/modules/login/view/login.dart';
@@ -15,7 +16,6 @@ import 'package:lottery_ck/modules/notification/view/promotion.dart';
 import 'package:lottery_ck/modules/notification/view/promotion_point_detail.dart';
 import 'package:lottery_ck/modules/otp/view/otp.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
-import 'package:lottery_ck/modules/payment/view/confirm_payment_otp.dart';
 import 'package:lottery_ck/modules/payment/view/payment.dart';
 import 'package:lottery_ck/modules/phone/view/change_phone.dart';
 import 'package:lottery_ck/modules/pin/view/change_pin.dart';
@@ -23,12 +23,15 @@ import 'package:lottery_ck/modules/pin/view/pin.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
 import 'package:lottery_ck/modules/point/view/point.dart';
 import 'package:lottery_ck/modules/random/view/random.dart';
+import 'package:lottery_ck/modules/scan/view/scan.dart';
 import 'package:lottery_ck/modules/setting/view/change_birth.dart';
 import 'package:lottery_ck/modules/setting/view/change_name.dart';
 import 'package:lottery_ck/modules/setting/view/profile.dart';
 import 'package:lottery_ck/modules/setting/view/security.dart';
+import 'package:lottery_ck/modules/setting/view/setting.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/modules/splash_screen/view/splash_screen.dart';
+import 'package:lottery_ck/modules/t_c/view/t_c.dart';
 import 'package:lottery_ck/modules/test/video_toomany.dart';
 import 'package:lottery_ck/modules/wallpaper/view/wallpaper.dart';
 import 'package:lottery_ck/route/route_name.dart';
@@ -185,6 +188,26 @@ class AppRoutes {
         GetPage(
           name: RouteName.kyc,
           page: () => const KYCPage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.tc,
+          page: () => const TCPage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.scanQR,
+          page: () => const ScanQR(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.horoscopeDaily,
+          page: () => const HoroscopeDialyPage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.setting,
+          page: () => const SettingPage(),
           transition: Transition.rightToLeft,
         ),
       ];

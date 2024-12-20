@@ -48,14 +48,28 @@ class OtpPage extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      'ກະລຸນາຕື່ມລະຫັດ 6 ຫຼັກ ທີ່ໄດ້ຮັບຈາກ SMS ທີ່ສົ່ງໄປຍັງເບີ ${controller.phoneNumber}',
+                      'ກະລຸນາຕື່ມລະຫັດ 6 ຫຼັກ ທີ່ໄດ້ຮັບຈາກ SMS ທີ່ສົ່ງໄປຍັງເບີ ${controller.argrument.phoneNumber}',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
                         color: AppColors.textPrimary,
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 12),
+                    Align(
+                      alignment: Alignment.center,
+                      child: controller.loadingSendOTP.value
+                          ? SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : Obx(() {
+                              return Text(
+                                  "OTP Ref: ${controller.otpRef.value}");
+                            }),
+                    ),
+                    const SizedBox(height: 12),
                     Obx(
                       () => (Pinput(
                         // onChanged: (value) {
@@ -76,7 +90,8 @@ class OtpPage extends StatelessWidget {
                         // focusNode: focusNode,
                         defaultPinTheme: defaultPinTheme,
                         onCompleted: (pin) {
-                          controller.confirmOTP(pin);
+                          // controller.confirmOTP(pin);
+                          controller.confirmOTPAppwrite(pin);
                         },
                         disabledPinTheme: defaultPinTheme.copyWith(
                           decoration: BoxDecoration(

@@ -18,17 +18,6 @@ class BillController extends GetxController {
     update();
   }
 
-  void test() async {
-    final appwriteController = AppWriteController.to;
-
-    final account = appwriteController.account;
-    final sessionList = await account.listSessions();
-    for (var session in sessionList.sessions) {
-      logger.d(session);
-      logger.f(session.$id);
-    }
-  }
-
   void backToHome() {
     navigator?.pop();
     BuyLotteryController.to.clearLottery();
