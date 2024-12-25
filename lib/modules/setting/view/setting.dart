@@ -3,6 +3,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
+import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/rating.dart';
 import 'package:lottery_ck/components/traslate.dart';
@@ -36,13 +37,16 @@ class SettingPage extends StatelessWidget {
           body: SafeArea(
             child: Padding(
               padding: const EdgeInsets.only(
-                top: 16.0,
+                // top: 16.0,
                 left: 16,
                 right: 16,
                 bottom: 16 + 8,
               ),
               child: Column(
                 children: [
+                  Header(
+                    title: AppLocale.setting.getString(context),
+                  ),
                   Expanded(
                     child: RefreshIndicator(
                       onRefresh: () async {
@@ -416,147 +420,147 @@ class SettingPage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          GestureDetector(
-                            onTap: () {
-                              controller.onShare(context);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: AppColors.primary.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.all(2),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              AppColors.redGradient,
-                                              AppColors.yellowGradient,
-                                            ],
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                          ),
-                                        ),
-                                        child: Container(
-                                          width: 48,
-                                          height: 48,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.white,
-                                          ),
-                                          child: SizedBox(
-                                            width: 24,
-                                            height: 24,
-                                            child: SvgPicture.asset(
-                                              AppIcon.shareFriend,
-                                              colorFilter:
-                                                  const ColorFilter.mode(
-                                                AppColors.primary,
-                                                BlendMode.srcIn,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 16),
-                                      Text(
-                                        AppLocale.shareAppToYourFriend
-                                            .getString(context),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 24,
-                                    width: 24,
-                                    child: SvgPicture.asset(AppIcon.arrowRight),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          GestureDetector(
-                            onTap: () {
-                              Get.toNamed(RouteName.point);
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: AppColors.primary.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.all(2),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              AppColors.redGradient,
-                                              AppColors.yellowGradient,
-                                            ],
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                          ),
-                                        ),
-                                        child: Container(
-                                          width: 48,
-                                          height: 48,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.white,
-                                          ),
-                                          child: SizedBox(
-                                            width: 24,
-                                            height: 24,
-                                            child: SvgPicture.asset(
-                                              AppIcon.point,
-                                              colorFilter:
-                                                  const ColorFilter.mode(
-                                                AppColors.primary,
-                                                BlendMode.srcIn,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 16),
-                                      Text(
-                                        AppLocale.myScore.getString(context),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: SvgPicture.asset(AppIcon.arrowRight),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 4),
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     controller.onShare(context);
+                          //   },
+                          //   child: Container(
+                          //     padding: EdgeInsets.all(8),
+                          //     decoration: BoxDecoration(
+                          //       color: AppColors.primary.withOpacity(0.2),
+                          //       borderRadius: BorderRadius.circular(8),
+                          //     ),
+                          //     child: Row(
+                          //       mainAxisAlignment:
+                          //           MainAxisAlignment.spaceBetween,
+                          //       children: [
+                          //         Row(
+                          //           children: [
+                          //             Container(
+                          //               padding: EdgeInsets.all(2),
+                          //               decoration: BoxDecoration(
+                          //                 shape: BoxShape.circle,
+                          //                 gradient: LinearGradient(
+                          //                   colors: [
+                          //                     AppColors.redGradient,
+                          //                     AppColors.yellowGradient,
+                          //                   ],
+                          //                   begin: Alignment.topLeft,
+                          //                   end: Alignment.bottomRight,
+                          //                 ),
+                          //               ),
+                          //               child: Container(
+                          //                 width: 48,
+                          //                 height: 48,
+                          //                 alignment: Alignment.center,
+                          //                 decoration: BoxDecoration(
+                          //                   shape: BoxShape.circle,
+                          //                   color: Colors.white,
+                          //                 ),
+                          //                 child: SizedBox(
+                          //                   width: 24,
+                          //                   height: 24,
+                          //                   child: SvgPicture.asset(
+                          //                     AppIcon.shareFriend,
+                          //                     colorFilter:
+                          //                         const ColorFilter.mode(
+                          //                       AppColors.primary,
+                          //                       BlendMode.srcIn,
+                          //                     ),
+                          //                   ),
+                          //                 ),
+                          //               ),
+                          //             ),
+                          //             const SizedBox(width: 16),
+                          //             Text(
+                          //               AppLocale.shareAppToYourFriend
+                          //                   .getString(context),
+                          //               style: TextStyle(
+                          //                 fontWeight: FontWeight.w600,
+                          //               ),
+                          //             ),
+                          //           ],
+                          //         ),
+                          //         SizedBox(
+                          //           height: 24,
+                          //           width: 24,
+                          //           child: SvgPicture.asset(AppIcon.arrowRight),
+                          //         )
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
+                          // const SizedBox(height: 4),
+                          // GestureDetector(
+                          //   onTap: () {
+                          //     Get.toNamed(RouteName.point);
+                          //   },
+                          //   child: Container(
+                          //     padding: EdgeInsets.all(8),
+                          //     decoration: BoxDecoration(
+                          //       color: AppColors.primary.withOpacity(0.2),
+                          //       borderRadius: BorderRadius.circular(8),
+                          //     ),
+                          //     child: Row(
+                          //       mainAxisAlignment:
+                          //           MainAxisAlignment.spaceBetween,
+                          //       children: [
+                          //         Row(
+                          //           children: [
+                          //             Container(
+                          //               padding: EdgeInsets.all(2),
+                          //               decoration: BoxDecoration(
+                          //                 shape: BoxShape.circle,
+                          //                 gradient: LinearGradient(
+                          //                   colors: [
+                          //                     AppColors.redGradient,
+                          //                     AppColors.yellowGradient,
+                          //                   ],
+                          //                   begin: Alignment.topLeft,
+                          //                   end: Alignment.bottomRight,
+                          //                 ),
+                          //               ),
+                          //               child: Container(
+                          //                 width: 48,
+                          //                 height: 48,
+                          //                 alignment: Alignment.center,
+                          //                 decoration: BoxDecoration(
+                          //                   shape: BoxShape.circle,
+                          //                   color: Colors.white,
+                          //                 ),
+                          //                 child: SizedBox(
+                          //                   width: 24,
+                          //                   height: 24,
+                          //                   child: SvgPicture.asset(
+                          //                     AppIcon.point,
+                          //                     colorFilter:
+                          //                         const ColorFilter.mode(
+                          //                       AppColors.primary,
+                          //                       BlendMode.srcIn,
+                          //                     ),
+                          //                   ),
+                          //                 ),
+                          //               ),
+                          //             ),
+                          //             const SizedBox(width: 16),
+                          //             Text(
+                          //               AppLocale.myScore.getString(context),
+                          //               style: TextStyle(
+                          //                 fontWeight: FontWeight.w600,
+                          //               ),
+                          //             ),
+                          //           ],
+                          //         ),
+                          //         SizedBox(
+                          //           width: 24,
+                          //           height: 24,
+                          //           child: SvgPicture.asset(AppIcon.arrowRight),
+                          //         ),
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
+                          // const SizedBox(height: 4),
                           GestureDetector(
                             onTap: () {
                               // request scan face
@@ -631,42 +635,55 @@ class SettingPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  LongButton(
-                    onPressed: () {
-                      Get.dialog(
-                        DialogApp(
-                          title: Text(
-                            AppLocale.areYouSureYouWantToLogout
-                                .getString(context),
-                          ),
-                          onConfirm: () async {
-                            await controller.logout();
-                            Get.back();
-                          },
-                          confirmText: Text(
-                            AppLocale.logout.getString(Get.context!),
-                            style: const TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                          onCancel: () => Get.back(),
-                          cancelText: Text(
-                            AppLocale.cancel.getString(Get.context!),
-                            style: const TextStyle(
-                              color: AppColors.primary,
-                            ),
-                          ),
+                  if (controller.user == null)
+                    LongButton(
+                      onPressed: () {
+                        Get.toNamed(RouteName.login);
+                      },
+                      child: Text(
+                        AppLocale.login.getString(context),
+                        style: const TextStyle(
+                          color: Colors.white,
                         ),
-                      );
-                    },
-                    child: Text(
-                      AppLocale.logout.getString(context),
-                      style: TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
+                      ),
+                    )
+                  else
+                    LongButton(
+                      onPressed: () {
+                        Get.dialog(
+                          DialogApp(
+                            title: Text(
+                              AppLocale.areYouSureYouWantToLogout
+                                  .getString(context),
+                            ),
+                            onConfirm: () async {
+                              await controller.logout();
+                              Get.back();
+                            },
+                            confirmText: Text(
+                              AppLocale.logout.getString(Get.context!),
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            onCancel: () => Get.back(),
+                            cancelText: Text(
+                              AppLocale.cancel.getString(Get.context!),
+                              style: const TextStyle(
+                                color: AppColors.primary,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        AppLocale.logout.getString(context),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/modules/point/controller/point.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
@@ -19,10 +20,8 @@ class PointPage extends StatelessWidget {
         body: SafeArea(
           child: Column(
             children: [
-              HeaderCK(
-                onTap: () {
-                  navigator?.pop();
-                },
+              Header(
+                title: "Point",
               ),
               Container(
                 // color: Colors.amber,

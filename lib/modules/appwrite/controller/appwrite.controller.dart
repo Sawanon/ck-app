@@ -50,6 +50,8 @@ class AppWriteController extends GetxController {
   static const String QUOTAS = 'quotas';
   static const String QYC_USER = 'kyc_users';
   static const String SETTINGS = 'settings';
+  static const String BACKGROUND_THEME = '6768df870033004ee896';
+  static const String APP_WALLPAPERS = 'appWallpapers';
 
   static const String FN_SIGNIN = '6759aebe003c92a6fa81';
 
@@ -87,8 +89,15 @@ class AppWriteController extends GetxController {
       }
       // logger.d(response.data["jwt"]);
       await StorageController.to.setAppToken(response.data);
-    } catch (e) {
+    } on DioException catch (e) {
       logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        logger.e(e.response?.headers);
+        logger.e(e.response?.requestOptions);
+      }
       Get.snackbar(
         "Something went wrong appwrite:66 getAuthToken",
         "Please try again later or plaese contact admin",
@@ -1067,6 +1076,7 @@ class AppWriteController extends GetxController {
     try {
       final dio = Dio();
       final jwt = await getAppJWT();
+      logger.d("jwt: $jwt");
       final response = await dio.post(
         // "${AppConst.cloudfareUrl}/sign-in",
         "${AppConst.apiUrl}/user/sign-in",
@@ -1671,20 +1681,47 @@ class AppWriteController extends GetxController {
 
   Future<Map?> getWallpaperBackground() async {
     try {
-      logger.w("getWallpaperBackground");
+      final now = DateTime.now().toUtc().toIso8601String();
       final response = await databases.listDocuments(
         databaseId: _databaseName,
-        collectionId: 'appWallpapers',
+        collectionId: APP_WALLPAPERS,
         queries: [
+          Query.equal('is_active', true),
           Query.equal('approve', '3'),
-          Query.lessThanEqual('start_date', DateTime.now().toIso8601String()),
-          Query.greaterThanEqual("end_date", DateTime.now().toIso8601String()),
+          Query.lessThanEqual('start_date', now),
+          Query.greaterThanEqual("end_date", now),
           Query.limit(1),
         ],
       );
       if (response.documents.isNotEmpty) {
         return response.documents.first.data;
       }
+      return null;
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<List<String>?> getBackgroundTheme() async {
+    try {
+      final now = DateTime.now().toUtc().toIso8601String();
+      final response = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: BACKGROUND_THEME,
+        queries: [
+          Query.equal('approve', '3'),
+          Query.lessThanEqual('start_date', now),
+          Query.greaterThanEqual("end_date", now),
+        ],
+      );
+      // for (var document in response.documents) {
+      //   logger.d("data: ${document.data}");
+      // }
+      if (response.documents.isEmpty) return null;
+      return response.documents
+          .map((document) => document.data['url'] as String)
+          .toList();
     } catch (e) {
       logger.e("$e");
       return null;

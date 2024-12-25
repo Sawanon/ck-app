@@ -27,6 +27,9 @@ class PointController extends GetxController {
   }
 
   String renderType(String type, BuildContext context) {
+    if (type.toLowerCase().contains("random")) {
+      return "ไพ่มงคล";
+    }
     switch (type.toLowerCase()) {
       case "buyPromotion":
         return AppLocale.buyLottery.getString(context);

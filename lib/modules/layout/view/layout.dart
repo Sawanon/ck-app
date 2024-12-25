@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/blur_app.dart';
+import 'package:lottery_ck/components/cart.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/navigation_bar.dart';
 import 'package:lottery_ck/components/no_network_dialog.dart';
@@ -141,6 +142,18 @@ class LayoutPage extends StatelessWidget {
                       child: CustomNavigationBar(
                         currentTab: controller.currentTab,
                         onChangeTab: controller.changeTab,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 48,
+                            right: 8,
+                          ),
+                          child: controller.renderMyCart(controller.currentTab),
+                        ),
                       ),
                     ),
                   ],

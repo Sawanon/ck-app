@@ -31,10 +31,10 @@ class HistoryWinPage extends StatelessWidget {
           children: [
             SizedBox(height: 8),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  margin: EdgeInsets.only(right: 8),
+                  margin: EdgeInsets.only(left: 8),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(20)),

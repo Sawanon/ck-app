@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/cart.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/model/bill.dart';
 import 'package:lottery_ck/model/get_argument/otp.dart';
@@ -41,6 +44,7 @@ class LayoutController extends GetxController {
   bool isBlur = false;
   StreamSubscription? useBiometricsTimeout;
   UserApp? userApp;
+  List<String> backgroundThemeList = [];
 
   void clearState() {
     isUsedBiometrics = false;
@@ -81,6 +85,14 @@ class LayoutController extends GetxController {
     return isEnable;
   }
 
+  Widget renderMyCart(TabApp tab) {
+    if (tab == TabApp.home || tab == TabApp.lottery) {
+      // if (tab == TabApp.home) {
+      return const SizedBox.shrink();
+    }
+    return const CartComponent();
+  }
+
   Widget currentPage(TabApp tab) {
     // logger.d("current tab change :$tab");
     switch (tab) {
@@ -93,9 +105,9 @@ class LayoutController extends GetxController {
         // return const LotteryHistoryPage();
         return const BuyLotteryPage();
       case TabApp.notifications:
-        return const NotificationPage();
-      case TabApp.settings:
         return const SettingPage();
+      case TabApp.settings:
+        return const NotificationPage();
     }
   }
 
@@ -214,15 +226,16 @@ class LayoutController extends GetxController {
         Get.toNamed(RouteName.scanQR);
         break;
       case TabApp.settings:
-        if (!isUserLogined) {
-          showDialogLogin();
-          return;
-        }
-        final isPass = await requestBioMetrics();
-        if (isPass) {
-          onChangeTabIndex(tab);
-          showDialogKYC();
-        }
+        onChangeTabIndex(tab);
+        // if (!isUserLogined) {
+        //   showDialogLogin();
+        //   return;
+        // }
+        // final isPass = await requestBioMetrics();
+        // if (isPass) {
+        //   onChangeTabIndex(tab);
+        //   showDialogKYC();
+        // }
         break;
     }
   }
@@ -333,6 +346,23 @@ class LayoutController extends GetxController {
     }
   }
 
+  Future<void> listBackgroundTheme() async {
+    final backgroundThemeList =
+        await AppWriteController.to.getBackgroundTheme();
+    if (backgroundThemeList == null) return;
+    this.backgroundThemeList = backgroundThemeList;
+    update();
+  }
+
+  String? randomBackgroundThemeUrl() {
+    final random = Random();
+    if (backgroundThemeList.isEmpty) {
+      return null;
+    }
+    final randomNumber = random.nextInt(backgroundThemeList.length);
+    return backgroundThemeList[randomNumber];
+  }
+
   @override
   void onReady() {
     super.onReady();
@@ -344,6 +374,7 @@ class LayoutController extends GetxController {
     super.onInit();
     checkUser();
     listenNetworkEvents();
+    listBackgroundTheme();
     // WidgetsBinding.instance.addObserver(this);
   }
 

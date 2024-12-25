@@ -50,7 +50,7 @@ class _DialogPromotionState extends State<DialogPromotion> {
                       return GestureDetector(
                         onTap: () {
                           Get.back();
-                          LayoutController.to.changeTab(TabApp.notifications);
+                          // LayoutController.to.changeTab(TabApp.notifications);
                           final promotionId = promotion['\$id'];
                           NotificationController.to
                               .openPromotionDetail(promotionId);

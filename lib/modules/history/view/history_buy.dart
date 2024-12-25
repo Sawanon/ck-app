@@ -20,52 +20,58 @@ class HistoryBuyPage extends StatelessWidget {
       builder: (controller) {
         return Column(
           children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 2,
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 8,
+                horizontal: 8,
+              ),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    border: Border.all(
+                      color: Colors.grey,
+                      width: 2,
+                    ),
                   ),
-                ),
-                width: 160,
-                child: DropdownButton(
-                  padding: const EdgeInsets.all(0),
-                  isExpanded: true,
-                  underline: Container(),
-                  value: controller.selectedLotteryDate,
-                  borderRadius: BorderRadius.circular(20),
-                  isDense: true,
-                  items: controller.lotteryDateList.map(
-                    (lotteryDate) {
-                      return DropdownMenuItem(
-                        value: lotteryDate.dateTime,
-                        child: Container(
-                          width: 160,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          margin: const EdgeInsets.only(left: 10),
-                          decoration: const BoxDecoration(
-                              // color: Colors.lime,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          child: Text(
-                            CommonFn.parseDMY(lotteryDate.dateTime),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey,
+                  width: 160,
+                  child: DropdownButton(
+                    padding: const EdgeInsets.all(0),
+                    isExpanded: true,
+                    underline: Container(),
+                    value: controller.selectedLotteryDate,
+                    borderRadius: BorderRadius.circular(20),
+                    isDense: true,
+                    items: controller.lotteryDateList.map(
+                      (lotteryDate) {
+                        return DropdownMenuItem(
+                          value: lotteryDate.dateTime,
+                          child: Container(
+                            width: 160,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            margin: const EdgeInsets.only(left: 10),
+                            decoration: const BoxDecoration(
+                                // color: Colors.lime,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
+                            child: Text(
+                              CommonFn.parseDMY(lotteryDate.dateTime),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
                             ),
                           ),
-                        ),
-                      );
+                        );
+                      },
+                    ).toList(),
+                    onChanged: (value) {
+                      if (value == null) return;
+                      controller.onChangeLotteryDate(value);
                     },
-                  ).toList(),
-                  onChanged: (value) {
-                    if (value == null) return;
-                    controller.onChangeLotteryDate(value);
-                  },
+                  ),
                 ),
               ),
             ),

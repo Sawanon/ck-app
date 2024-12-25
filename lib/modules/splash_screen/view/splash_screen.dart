@@ -21,17 +21,43 @@ class SplashScreenPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset(Logo.lotto),
-                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 150,
+                      height: 150,
+                      margin: EdgeInsets.only(top: 8),
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      child: Image.asset(
+                        "assets/icon/icon.png",
+                        fit: BoxFit.none,
+                        width: 200,
+                        height: 200,
+                        scale: 2.2,
+                      ),
+                    ),
+                    Container(
+                      width: 170,
+                      height: 170,
+                      child: Image.asset(Logo.lotto),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 32),
                 Image.asset(
                   Logo.ck,
                   height: 40,
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  "v.1.2.1+35",
+                  "v.2.0.0",
                   style: TextStyle(
-                    fontSize: 10,
+                    fontSize: 12,
                     color: AppColors.textPrimary,
                   ),
                 ),

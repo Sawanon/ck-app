@@ -128,6 +128,8 @@ mixin AppLocale {
   static const String verifyIdentity = "ຢືນຢັນຕົວຕົນຂອງທ່ານ";
   static const String randomCard = "ບັດໂຊກ";
   static const String downtimeBank = "ບໍ່ສາມາດຊໍາລະໄດ້ໃນລະຫວ່າງໄລຍະເວລາ";
+  static const String auspiciousWallpaper = "ຮູບວໍເປເປີທີ່ປະເສີດ";
+  static const String login = "ເຂົ້າສູ່ລະບົບ";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -250,6 +252,8 @@ mixin AppLocale {
     verifyIdentity: "ຢືນຢັນຕົວຕົນຂອງທ່ານ",
     randomCard: "ບັດໂຊກ",
     downtimeBank: "ບໍ່ສາມາດຊໍາລະໄດ້ໃນລະຫວ່າງໄລຍະເວລາ",
+    auspiciousWallpaper: "ຮູບວໍເປເປີ ທີ່ປະເສີດ",
+    login: "ເຂົ້າສູ່ລະບົບ",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -372,6 +376,8 @@ mixin AppLocale {
     verifyIdentity: "ยืนยันตัวตนของคุณ",
     randomCard: "ไพ่นำโชค",
     downtimeBank: "ไม่สามารถชำระเงินได้ในช่วงเวลา",
+    auspiciousWallpaper: "วอลเปเปอร์ มงคล",
+    login: "เข้าสู่ระบบ",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -495,5 +501,7 @@ mixin AppLocale {
     verifyIdentity: "Verify your identity",
     randomCard: "Lucky Cards",
     downtimeBank: "Unable to pay during the period",
+    auspiciousWallpaper: "Auspicious wallpaper",
+    login: "Login",
   };
 }

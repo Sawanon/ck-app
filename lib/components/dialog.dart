@@ -3,8 +3,8 @@ import 'package:get/route_manager.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/res/color.dart';
 
-class DialogApp extends StatelessWidget {
-  final void Function()? onConfirm;
+class DialogApp extends StatefulWidget {
+  final Future<void> Function()? onConfirm;
   final void Function()? onCancel;
   final Widget confirmText;
   final Widget cancelText;
@@ -27,11 +27,31 @@ class DialogApp extends StatelessWidget {
     this.disableConfirm = false,
   });
 
+  @override
+  State<DialogApp> createState() => _DialogAppState();
+}
+
+class _DialogAppState extends State<DialogApp> {
+  bool isLoading = false;
+
+  void setLoading(bool isLoading) {
+    setState(() {
+      this.isLoading = isLoading;
+    });
+  }
+
   void onClose() {
     Get.back();
-    if (onCancel != null) {
-      onCancel!();
+    if (widget.onCancel != null) {
+      widget.onCancel!();
     }
+  }
+
+  void onConfirm() async {
+    if (widget.onConfirm == null) return;
+    setLoading(true);
+    await widget.onConfirm!();
+    setLoading(false);
   }
 
   @override
@@ -49,8 +69,11 @@ class DialogApp extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              title,
-              if (details != null) ...[const SizedBox(height: 8), details!],
+              widget.title,
+              if (widget.details != null) ...[
+                const SizedBox(height: 8),
+                widget.details!
+              ],
               const SizedBox(height: 16),
               Row(
                 children: [
@@ -62,15 +85,16 @@ class DialogApp extends StatelessWidget {
                         color: AppColors.primary,
                       ),
                       onPressed: onClose,
-                      child: cancelText,
+                      child: widget.cancelText,
                     ),
                   ),
-                  if (!disableConfirm) const SizedBox(width: 8),
-                  if (!disableConfirm)
+                  if (!widget.disableConfirm) const SizedBox(width: 8),
+                  if (!widget.disableConfirm)
                     Expanded(
                       child: LongButton(
+                        isLoading: isLoading,
                         onPressed: onConfirm,
-                        child: confirmText,
+                        child: widget.confirmText,
                       ),
                     ),
                 ],

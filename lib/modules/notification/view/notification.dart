@@ -23,7 +23,7 @@ class NotificationPage extends StatelessWidget {
             // bottom: PreferredSize(preferredSize: Size(0, 0), child: Container()),
             automaticallyImplyLeading: false,
             titleSpacing: 0,
-            toolbarHeight: 48,
+            toolbarHeight: 42,
             title: TabBar(
               unselectedLabelColor: Colors.grey,
               dividerColor: Colors.transparent,
@@ -35,20 +35,22 @@ class NotificationPage extends StatelessWidget {
               indicatorSize: TabBarIndicatorSize.tab,
               indicator: const BoxDecoration(
                 color: AppColors.primary,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(24),
-                  bottomRight: Radius.circular(24),
-                ),
               ),
               tabs: [
                 Tab(
                   child: Text(
                     AppLocale.news.getString(context),
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
                   ),
                 ),
                 Tab(
                   child: Text(
                     AppLocale.promotion.getString(context),
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
                   ),
                 ),
               ],

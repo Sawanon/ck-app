@@ -101,6 +101,10 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                   fontSize: 14,
                                                 ),
                                               ),
+                                              // TODO: this!
+                                              const SizedBox(
+                                                width: 12,
+                                              ),
                                               if (controller.invoiceMeta.value
                                                           .bonus !=
                                                       0 &&
@@ -331,6 +335,10 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                                   FontWeight
                                                                       .w500,
                                                             ),
+                                                          ),
+                                                          // TODO: this!
+                                                          const SizedBox(
+                                                            width: 12,
                                                           ),
                                                           if (lotteryData
                                                                       .bonus !=
@@ -633,8 +641,12 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                             ),
                           ),
                         Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 16.0, vertical: 8),
+                          margin: const EdgeInsets.only(
+                            left: 16.0,
+                            right: 16.0,
+                            top: 8,
+                            bottom: 26,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.white,
                           ),
@@ -708,45 +720,45 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                         },
                                       ),
                                     ),
-                                    const SizedBox(width: 4),
-                                    GestureDetector(
-                                      onTap: () => controller.gotoAnimalPage(),
-                                      child: Container(
-                                        width: 48,
-                                        height: 48,
-                                        decoration: BoxDecoration(
-                                          color: AppColors.primary,
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                        ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            SizedBox(
-                                              width: 24,
-                                              height: 24,
-                                              child: SvgPicture.asset(
-                                                AppIcon.animal,
-                                                colorFilter: ColorFilter.mode(
-                                                  Colors.white,
-                                                  BlendMode.srcIn,
-                                                ),
-                                              ),
-                                            ),
-                                            Text(
-                                              AppLocale.animal
-                                                  .getString(context),
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
+                                    // const SizedBox(width: 4),
+                                    // GestureDetector(
+                                    //   onTap: () => controller.gotoAnimalPage(),
+                                    //   child: Container(
+                                    //     width: 48,
+                                    //     height: 48,
+                                    //     decoration: BoxDecoration(
+                                    //       color: AppColors.primary,
+                                    //       borderRadius:
+                                    //           BorderRadius.circular(8),
+                                    //     ),
+                                    //     child: Column(
+                                    //       mainAxisSize: MainAxisSize.min,
+                                    //       mainAxisAlignment:
+                                    //           MainAxisAlignment.center,
+                                    //       children: [
+                                    //         SizedBox(
+                                    //           width: 24,
+                                    //           height: 24,
+                                    //           child: SvgPicture.asset(
+                                    //             AppIcon.animal,
+                                    //             colorFilter: ColorFilter.mode(
+                                    //               Colors.white,
+                                    //               BlendMode.srcIn,
+                                    //             ),
+                                    //           ),
+                                    //         ),
+                                    //         Text(
+                                    //           AppLocale.animal
+                                    //               .getString(context),
+                                    //           style: TextStyle(
+                                    //             fontSize: 14,
+                                    //             color: Colors.white,
+                                    //           ),
+                                    //         ),
+                                    //       ],
+                                    //     ),
+                                    //   ),
+                                    // ),
                                     // const SizedBox(width: 4),
                                   ],
                                 ),

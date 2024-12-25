@@ -33,6 +33,8 @@ import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/modules/splash_screen/view/splash_screen.dart';
 import 'package:lottery_ck/modules/t_c/view/t_c.dart';
 import 'package:lottery_ck/modules/test/video_toomany.dart';
+import 'package:lottery_ck/modules/video/view/menu.dart';
+import 'package:lottery_ck/modules/video/view/video_fullscreen.dart';
 import 'package:lottery_ck/modules/wallpaper/view/wallpaper.dart';
 import 'package:lottery_ck/route/route_name.dart';
 
@@ -46,6 +48,7 @@ class AppRoutes {
         GetPage(
           name: RouteName.login,
           page: () => LoginPage(),
+          transition: Transition.downToUp,
         ),
         GetPage(
           name: RouteName.signup,
@@ -208,6 +211,16 @@ class AppRoutes {
         GetPage(
           name: RouteName.setting,
           page: () => const SettingPage(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.videoMenu,
+          page: () => const VideoMenu(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: RouteName.videoFullscreen,
+          page: () => const VideoFullscreen(),
           transition: Transition.rightToLeft,
         ),
       ];

@@ -28,7 +28,7 @@ class AppIcon {
   static const String animalMenu = "assets/svg/animal_menu.svg";
   static const String phone = "assets/svg/vuesax/linear/call.svg";
   static const String location = "assets/svg/vuesax/linear/location.svg";
-  static const String promotion = "assets/svg/vuesax/linear/discount-shape.svg";
+  static const String promotion = "assets/svg/vuesax/bulk/ticket-discount.svg";
   static const String download = "assets/svg/vuesax/linear/receive-square.svg";
   static const String image = "assets/svg/vuesax/linear/gallery.svg";
   static const String cake = "assets/svg/vuesax/linear/cake.svg";
@@ -49,6 +49,26 @@ class AppIcon {
   static const String scanBold = "assets/svg/vuesax/bold/scan.svg";
   static const String gift = "assets/svg/vuesax/linear/gift.svg";
   static const String giftBold = "assets/svg/vuesax/bold/gift.svg";
+  static const String dialyHoroscope = "assets/png/today_horoscope.png";
+  // static const String dialyHoroscope = "assets/svg/dialy_horoscope.svg";
+  static const String invateFriends = "assets/png/invite_friends.png";
+  static const String wallpapers = "assets/png/wallpapers.png";
+  static const String wallet = "assets/png/wallet.png";
+  static const String community = "assets/png/community.png";
+  static const String todayHoroscope = "assets/png/horoscope.png";
+  static const String todayCard = "assets/png/card.png";
+  static const String todayBook = "assets/png/book.png";
+  static const String copy = "assets/svg/vuesax/linear/copy.svg";
+  static const String shoppingCart =
+      "assets/svg/vuesax/linear/shopping-cart.svg";
+  static const String news = "assets/svg/news.svg";
+  static const String aiChat = "assets/svg/vuesax/bulk/cpu-charge.svg";
+  static const String registerAndVerify =
+      "assets/svg/vuesax/bulk/document-download.svg";
+  static const String allMenu = "assets/svg/vuesax/bulk/element-3.svg";
+  static const String videoTodayHoroscope =
+      "assets/png/video_today_horoscope.png";
+  static const String videoLuckyNumber = "assets/png/video_lucky_number.png";
 
   static const String lo = "assets/laos1.png";
   static const String th = "assets/Th1.png";

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/couldflare/view/cloudflare.dart';
 import 'package:lottery_ck/modules/login/controller/login.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
@@ -281,13 +284,13 @@ class LoginPage extends StatelessWidget {
                                       ),
                                 onPressed: () {
                                   // TODO: comment for dev
-                                  // if (controller.disableLogin.value) {
-                                  //   return;
-                                  // }
+                                  if (controller.disableLogin.value) {
+                                    return;
+                                  }
                                   controller.login();
                                 },
                                 child: Text(
-                                  'ເຂົ້າສູ່ລະບົບ',
+                                  'เข้าสู่ระบบ',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w700,
@@ -296,6 +299,24 @@ class LoginPage extends StatelessWidget {
                               )),
                             ),
                             const SizedBox(height: 8),
+                            LongButton(
+                              backgroundColor: Colors.white,
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: AppColors.primary,
+                              ),
+                              onPressed: () {
+                                Get.back();
+                              },
+                              child: Text(
+                                AppLocale.cancel.getString(context),
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.primary,
+                                ),
+                              ),
+                            ),
                             // ElevatedButton(
                             //   style: ElevatedButton.styleFrom(
                             //     elevation: 0,

@@ -31,6 +31,8 @@ class RouteName {
   static const String scanQR = '/scanQR';
   static const String horoscopeDaily = '/horoscopeDaily';
   static const String setting = '/setting';
+  static const String videoMenu = '/videoMenu';
+  static const String videoFullscreen = '/videoFullscreen';
 
   static const String cloudflare = '/cloudflare';
 }

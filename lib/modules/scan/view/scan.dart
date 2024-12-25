@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 // import 'package:mobile_scanner_example/scanned_barcode_label.dart';
@@ -29,64 +31,90 @@ class _ScanQRState extends State<ScanQR> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('Scanner with Overlay Example app'),
+        title: const Text(''),
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
       ),
-      body: Stack(
-        fit: StackFit.expand,
+      body: Column(
         children: [
-          Center(
-            child: MobileScanner(
-              fit: BoxFit.cover,
-              controller: controller,
-              scanWindow: scanWindow,
-              errorBuilder: (context, error, child) {
-                return ScannerErrorWidget(error: error);
-              },
-              onDetect: (barcodes) {
-                logger.d(barcodes.barcodes);
-                barcodes.barcodes.forEach(
-                  (element) {
-                    logger.d("QR: ${element.displayValue}");
-                  },
-                );
-              },
-              // overlayBuilder: (context, constraints) {
-              //   return Padding(
-              //     padding: const EdgeInsets.all(16.0),
-              //     child: Align(
-              //       alignment: Alignment.bottomCenter,
-              //       // child: ScannedBarcodeLabel(barcodes: controller.barcodes),
-              //       child: Text(),
-              //     ),
-              //   );
-              // },
-            ),
-          ),
-          ValueListenableBuilder(
-            valueListenable: controller,
-            builder: (context, value, child) {
-              if (!value.isInitialized ||
-                  !value.isRunning ||
-                  value.error != null) {
-                return const SizedBox();
-              }
+          // Container(
+          //   padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+          //   child: Row(
+          //     children: [
+          //       SizedBox(
+          //         width: 32,
+          //         height: 32,
+          //         child: SvgPicture.asset(
+          //           AppIcon.x,
+          //           colorFilter: ColorFilter.mode(
+          //             Colors.white,
+          //             BlendMode.srcIn,
+          //           ),
+          //         ),
+          //       )
+          //     ],
+          //   ),
+          // ),
+          Expanded(
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Center(
+                  child: MobileScanner(
+                    fit: BoxFit.cover,
+                    controller: controller,
+                    scanWindow: scanWindow,
+                    errorBuilder: (context, error, child) {
+                      return ScannerErrorWidget(error: error);
+                    },
+                    onDetect: (barcodes) {
+                      logger.d(barcodes.barcodes);
+                      barcodes.barcodes.forEach(
+                        (element) {
+                          logger.d("QR: ${element.displayValue}");
+                        },
+                      );
+                    },
+                    // overlayBuilder: (context, constraints) {
+                    //   return Padding(
+                    //     padding: const EdgeInsets.all(16.0),
+                    //     child: Align(
+                    //       alignment: Alignment.bottomCenter,
+                    //       // child: ScannedBarcodeLabel(barcodes: controller.barcodes),
+                    //       child: Text(),
+                    //     ),
+                    //   );
+                    // },
+                  ),
+                ),
+                ValueListenableBuilder(
+                  valueListenable: controller,
+                  builder: (context, value, child) {
+                    if (!value.isInitialized ||
+                        !value.isRunning ||
+                        value.error != null) {
+                      return const SizedBox();
+                    }
 
-              return CustomPaint(
-                painter: ScannerOverlay(scanWindow: scanWindow),
-              );
-            },
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // ToggleFlashlightButton(controller: controller),
-                  // SwitchCameraButton(controller: controller),
-                ],
-              ),
+                    return CustomPaint(
+                      painter: ScannerOverlay(scanWindow: scanWindow),
+                    );
+                  },
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        // ToggleFlashlightButton(controller: controller),
+                        // SwitchCameraButton(controller: controller),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

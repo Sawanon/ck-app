@@ -52,32 +52,20 @@ class _VideComponentsState extends State<VideComponents> {
   Widget build(BuildContext context) {
     double heightVideo = 160;
     if (_controller.value.isInitialized) {
-      return GestureDetector(
-        onTap: () async {
-          if (widget.link == null) return;
-          try {
-            await launchUrl(Uri.parse(
-              widget.link!,
-            ));
-          } catch (e) {
-            logger.e("$e");
-          }
-        },
-        child: AspectRatio(
-          aspectRatio: 9 / 16,
-          child: Container(
+      return AspectRatio(
+        aspectRatio: 9 / 16,
+        child: Container(
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: FittedBox(
+            fit: BoxFit.cover,
             clipBehavior: Clip.hardEdge,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: FittedBox(
-              fit: BoxFit.cover,
-              clipBehavior: Clip.hardEdge,
-              child: Container(
-                width: heightVideo * _controller.value.aspectRatio,
-                height: heightVideo,
-                child: VideoPlayer(_controller),
-              ),
+            child: Container(
+              width: heightVideo * _controller.value.aspectRatio,
+              height: heightVideo,
+              child: VideoPlayer(_controller),
             ),
           ),
         ),

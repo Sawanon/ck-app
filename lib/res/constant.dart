@@ -24,9 +24,20 @@ class AppConst {
   // zz
   static const String secretZZ = "sHib5ycSalFybq6dhFdmvmQSw82+fj/nhhLM0sAPVqs=";
 
+  // production
   // https://daily.horodd.win/?payload=<token>
-  static const String horoScopeUrl = "https://daily.horodd.win/?payload=";
+  // static const String horoScopeUrl = "https://daily.horodd.win/?payload=";
+
+  // staging
+  static const String horoScopeUrl =
+      "https://staging.daily-ce2.pages.dev/?payload=";
+
+  // production
   // https://randomcards.horodd.win/?payload=<token>
+  // static const String randomCardUrl =
+  //     "https://randomcards.horodd.win/?payload=";
+
+  // staging
   static const String randomCardUrl =
-      "https://randomcards.horodd.win/?payload=";
+      "https://staging.randomcards.pages.dev/?payload=";
 }

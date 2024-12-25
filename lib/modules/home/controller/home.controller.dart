@@ -211,6 +211,99 @@ class HomeController extends GetxController {
   }
 
   Future<void> setupMenu() async {
+    // MenuModel(
+    //   ontab: gotoHoroScope,
+    //   icon: SizedBox(
+    //     height: 32,
+    //     width: 32,
+    //     child: SvgPicture.asset(
+    //       AppIcon.horoscope,
+    //       colorFilter: const ColorFilter.mode(
+    //         AppColors.menuIcon,
+    //         BlendMode.srcIn,
+    //       ),
+    //     ),
+    //   ),
+    //   name: Text(
+    //     AppLocale.horoscope.getString(Get.context!),
+    //     style: TextStyle(
+    //       fontWeight: FontWeight.w600,
+    //       fontSize: 12,
+    //     ),
+    //   ),
+    // ),
+    // MenuModel(
+    //   ontab: gotoRandom,
+    //   icon: SizedBox(
+    //     height: 32,
+    //     width: 32,
+    //     child: SvgPicture.asset(
+    //       AppIcon.random,
+    //       colorFilter: const ColorFilter.mode(
+    //         AppColors.menuIcon,
+    //         BlendMode.srcIn,
+    //       ),
+    //     ),
+    //   ),
+    //   name: Text(
+    //     AppLocale.random.getString(Get.context!),
+    //     style: TextStyle(
+    //       fontWeight: FontWeight.w600,
+    //       fontSize: 12,
+    //     ),
+    //   ),
+    // ),
+    // MenuModel(
+    //   ontab: gotoAnimal,
+    //   icon: SizedBox(
+    //     height: 32,
+    //     width: 32,
+    //     child: SvgPicture.asset(AppIcon.animalMenu),
+    //   ),
+    //   name: Text(
+    //     AppLocale.animal.getString(Get.context!),
+    //     style: TextStyle(
+    //       fontWeight: FontWeight.w600,
+    //       fontSize: 12,
+    //     ),
+    //   ),
+    // ),
+    // MenuModel(
+    //   ontab: gotoLotteryResult,
+    //   icon: SizedBox(
+    //     height: 32,
+    //     width: 32,
+    //     child: SvgPicture.asset(AppIcon.lotteryResult),
+    //   ),
+    //   name: Text(
+    //     AppLocale.lotteryResult.getString(Get.context!),
+    //     style: TextStyle(
+    //       fontWeight: FontWeight.w600,
+    //       fontSize: 12,
+    //     ),
+    //   ),
+    // ),
+    // MenuModel(
+    //   ontab: gotoRandomCard,
+    //   icon: SizedBox(
+    //     height: 32,
+    //     width: 32,
+    //     child: SvgPicture.asset(
+    //       AppIcon.card,
+    //       colorFilter: const ColorFilter.mode(
+    //         AppColors.menuIcon,
+    //         BlendMode.srcIn,
+    //       ),
+    //     ),
+    //   ),
+    //   name: Text(
+    //     AppLocale.randomCard.getString(Get.context!),
+    //     style: TextStyle(
+    //       fontWeight: FontWeight.w600,
+    //       fontSize: 12,
+    //     ),
+    //   ),
+    // ),
     menu.clear();
     menu.addAll([
       MenuModel(
@@ -221,12 +314,8 @@ class HomeController extends GetxController {
         icon: SizedBox(
           height: 32,
           width: 32,
-          child: SvgPicture.asset(
-            AppIcon.horoscope,
-            colorFilter: const ColorFilter.mode(
-              AppColors.menuIcon,
-              BlendMode.srcIn,
-            ),
+          child: Image.asset(
+            AppIcon.dialyHoroscope,
           ),
         ),
         name: Align(
@@ -256,12 +345,8 @@ class HomeController extends GetxController {
         icon: SizedBox(
           height: 32,
           width: 32,
-          child: SvgPicture.asset(
-            AppIcon.groupUser,
-            colorFilter: const ColorFilter.mode(
-              AppColors.menuIcon,
-              BlendMode.srcIn,
-            ),
+          child: Image.asset(
+            AppIcon.invateFriends,
           ),
         ),
         name: Align(
@@ -278,97 +363,22 @@ class HomeController extends GetxController {
           ),
         ),
       ),
-      // MenuModel(
-      //   ontab: gotoHoroScope,
-      //   icon: SizedBox(
-      //     height: 32,
-      //     width: 32,
-      //     child: SvgPicture.asset(
-      //       AppIcon.horoscope,
-      //       colorFilter: const ColorFilter.mode(
-      //         AppColors.menuIcon,
-      //         BlendMode.srcIn,
-      //       ),
-      //     ),
-      //   ),
-      //   name: Text(
-      //     AppLocale.horoscope.getString(Get.context!),
-      //     style: TextStyle(
-      //       fontWeight: FontWeight.w600,
-      //       fontSize: 12,
-      //     ),
-      //   ),
-      // ),
-      // MenuModel(
-      //   ontab: gotoRandom,
-      //   icon: SizedBox(
-      //     height: 32,
-      //     width: 32,
-      //     child: SvgPicture.asset(
-      //       AppIcon.random,
-      //       colorFilter: const ColorFilter.mode(
-      //         AppColors.menuIcon,
-      //         BlendMode.srcIn,
-      //       ),
-      //     ),
-      //   ),
-      //   name: Text(
-      //     AppLocale.random.getString(Get.context!),
-      //     style: TextStyle(
-      //       fontWeight: FontWeight.w600,
-      //       fontSize: 12,
-      //     ),
-      //   ),
-      // ),
-      // MenuModel(
-      //   ontab: gotoAnimal,
-      //   icon: SizedBox(
-      //     height: 32,
-      //     width: 32,
-      //     child: SvgPicture.asset(AppIcon.animalMenu),
-      //   ),
-      //   name: Text(
-      //     AppLocale.animal.getString(Get.context!),
-      //     style: TextStyle(
-      //       fontWeight: FontWeight.w600,
-      //       fontSize: 12,
-      //     ),
-      //   ),
-      // ),
-      // MenuModel(
-      //   ontab: gotoLotteryResult,
-      //   icon: SizedBox(
-      //     height: 32,
-      //     width: 32,
-      //     child: SvgPicture.asset(AppIcon.lotteryResult),
-      //   ),
-      //   name: Text(
-      //     AppLocale.lotteryResult.getString(Get.context!),
-      //     style: TextStyle(
-      //       fontWeight: FontWeight.w600,
-      //       fontSize: 12,
-      //     ),
-      //   ),
-      // ),
       MenuModel(
         ontab: gotoWallPaperPage,
         icon: SizedBox(
           height: 32,
           width: 32,
-          child: SvgPicture.asset(
-            AppIcon.wallpaper,
-            colorFilter: const ColorFilter.mode(
-              AppColors.menuIcon,
-              BlendMode.srcIn,
-            ),
+          child: Image.asset(
+            AppIcon.wallpapers,
           ),
         ),
         name: Text(
-          AppLocale.wallpaper.getString(Get.context!),
+          AppLocale.auspiciousWallpaper.getString(Get.context!),
           style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 12,
           ),
+          textAlign: TextAlign.center,
         ),
       ),
       MenuModel(
@@ -379,12 +389,8 @@ class HomeController extends GetxController {
         icon: SizedBox(
           height: 32,
           width: 32,
-          child: SvgPicture.asset(
-            AppIcon.walletEmpty,
-            colorFilter: const ColorFilter.mode(
-              AppColors.menuIconDisabled,
-              BlendMode.srcIn,
-            ),
+          child: Image.asset(
+            AppIcon.wallet,
           ),
         ),
         name: Align(
@@ -410,12 +416,8 @@ class HomeController extends GetxController {
         icon: SizedBox(
           height: 32,
           width: 32,
-          child: SvgPicture.asset(
-            AppIcon.shareFriend,
-            colorFilter: const ColorFilter.mode(
-              AppColors.menuIconDisabled,
-              BlendMode.srcIn,
-            ),
+          child: Image.asset(
+            AppIcon.community,
           ),
         ),
         name: Align(
@@ -433,35 +435,167 @@ class HomeController extends GetxController {
           ),
         ),
       ),
-      // MenuModel(
-      //   ontab: gotoRandomCard,
-      //   icon: SizedBox(
-      //     height: 32,
-      //     width: 32,
-      //     child: SvgPicture.asset(
-      //       AppIcon.card,
-      //       colorFilter: const ColorFilter.mode(
-      //         AppColors.menuIcon,
-      //         BlendMode.srcIn,
-      //       ),
-      //     ),
-      //   ),
-      //   name: Text(
-      //     AppLocale.randomCard.getString(Get.context!),
-      //     style: TextStyle(
-      //       fontWeight: FontWeight.w600,
-      //       fontSize: 12,
-      //     ),
-      //   ),
-      // ),
+      MenuModel(
+        disabled: true,
+        ontab: () {
+          logger.d("comming soon");
+        },
+        icon: SizedBox(
+          height: 32,
+          width: 32,
+          child: SvgPicture.asset(
+            AppIcon.news,
+          ),
+        ),
+        name: Align(
+          alignment: Alignment.center,
+          child: Text(
+            AppLocale.news.getString(Get.context!),
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+              height: 1.2,
+            ),
+            textAlign: TextAlign.center,
+            softWrap: true,
+          ),
+        ),
+      ),
+      MenuModel(
+        disabled: true,
+        ontab: () {
+          logger.d("comming soon");
+        },
+        icon: SizedBox(
+          height: 32,
+          width: 32,
+          child: SvgPicture.asset(
+            AppIcon.promotion,
+            colorFilter: const ColorFilter.mode(
+              AppColors.redGradient,
+              BlendMode.srcIn,
+            ),
+          ),
+        ),
+        name: Align(
+          alignment: Alignment.center,
+          child: Text(
+            AppLocale.promotion.getString(Get.context!),
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+              height: 1.2,
+            ),
+            textAlign: TextAlign.center,
+            softWrap: true,
+          ),
+        ),
+      ),
+      MenuModel(
+        disabled: true,
+        ontab: () {
+          logger.d("comming soon");
+        },
+        icon: SizedBox(
+          height: 32,
+          width: 32,
+          // child: Image.asset(
+          //   AppIcon.news,
+          // ),
+          child: SvgPicture.asset(
+            AppIcon.aiChat,
+            colorFilter: ColorFilter.mode(
+              Colors.grey.shade700,
+              BlendMode.srcIn,
+            ),
+          ),
+        ),
+        name: Align(
+          alignment: Alignment.center,
+          child: Text(
+            'CK-AI Chat',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+              height: 1.2,
+              color: AppColors.menuTextDisabled,
+            ),
+            textAlign: TextAlign.center,
+            softWrap: true,
+          ),
+        ),
+      ),
+      MenuModel(
+        disabled: true,
+        ontab: () {
+          logger.d("comming soon");
+        },
+        icon: SizedBox(
+          height: 32,
+          width: 32,
+          child: SvgPicture.asset(
+            AppIcon.registerAndVerify,
+            colorFilter: const ColorFilter.mode(
+              AppColors.redGradient,
+              BlendMode.srcIn,
+            ),
+          ),
+        ),
+        name: Align(
+          alignment: Alignment.center,
+          child: Text(
+            'ยืนยันตัวตน',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+              height: 1.2,
+            ),
+            textAlign: TextAlign.center,
+            softWrap: true,
+          ),
+        ),
+      ),
+      MenuModel(
+        disabled: true,
+        ontab: () {
+          logger.d("comming soon");
+        },
+        icon: SizedBox(
+          height: 32,
+          width: 32,
+          child: SvgPicture.asset(
+            AppIcon.allMenu,
+            colorFilter: const ColorFilter.mode(
+              AppColors.redGradient,
+              BlendMode.srcIn,
+            ),
+          ),
+        ),
+        name: Align(
+          alignment: Alignment.center,
+          child: Text(
+            'ทั้งหมด',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 12,
+              height: 1.2,
+            ),
+            textAlign: TextAlign.center,
+            softWrap: true,
+          ),
+        ),
+      ),
     ]);
     update();
   }
 
   Future<void> getWallpaperBackground() async {
     final wallaper = await AppWriteController.to.getWallpaperBackground();
-    logger.d(wallaper);
-    wallpaperUrl.value = wallaper!['url'] as String;
+    logger.d("wallaper: $wallaper");
+    if (wallaper == null) {
+      return;
+    }
+    wallpaperUrl.value = wallaper['url'] as String;
   }
 
   void setup() async {

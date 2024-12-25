@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/main.dart';
+import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/lottery_history/controller/lottery_history.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/theme.dart';
 
@@ -15,6 +19,7 @@ class LotteryHistoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<LotteryHistoryController>(builder: (controller) {
       return Scaffold(
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: RefreshIndicator(
             onRefresh: () async {
@@ -103,71 +108,134 @@ class LotteryHistoryPage extends StatelessWidget {
               }
               return ListView.separated(
                 itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.all(8),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 1,
-                          blurRadius: 2,
-                          offset: Offset(0, 3),
-                        )
-                      ],
-                    ),
-                    child: Column(
-                      // mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                            '${AppLocale.lotteryDateAt.getString(context)} ${controller.lotteryHistoryList[index]["lotteryDate"]}'),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: (controller.lotteryHistoryList[index]
-                                  ["lottery"] as String)
-                              .split('')
-                              .map((e) {
-                            return Container(
-                              padding: EdgeInsets.all(3),
-                              width: MediaQuery.of(context).size.width / 6 - 8,
-                              height: MediaQuery.of(context).size.width / 6 - 8,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                gradient: LinearGradient(
-                                  colors: [
-                                    AppColors.yellowGradient,
-                                    AppColors.redGradient,
-                                  ],
-                                  begin: Alignment.bottomCenter,
-                                  end: Alignment.topCenter,
+                  /*
+                  lottery: string => 123456
+                  lotteryDate: string => 04-10-2024
+                  */
+                  final lotteryHistory = controller.lotteryHistoryList[index];
+                  return GestureDetector(
+                    onTap: () {
+                      logger.d(lotteryHistory);
+                      BuyLotteryController.to
+                          .setLottery(lotteryHistory['lottery']);
+                      Clipboard.setData(
+                        ClipboardData(
+                          text: lotteryHistory['lottery'],
+                        ),
+                      );
+                      Get.rawSnackbar(
+                        message: 'คัดลอกแล้ว',
+                        margin: EdgeInsets.only(
+                          bottom: 24,
+                        ),
+                      );
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.all(8),
+                      padding: EdgeInsets.only(
+                        top: index == 0 ? 36 : 12,
+                        bottom: 12,
+                        left: 8,
+                        right: 8,
+                      ),
+                      // padding: const EdgeInsets.symmetric(
+                      //     horizontal: 8, vertical: 12),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        // mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '${AppLocale.lotteryDateAt.getString(context)} ${controller.lotteryHistoryList[index]["lotteryDate"]}',
+                                style: TextStyle(
+                                  fontSize: 14,
                                 ),
                               ),
-                              child: Center(
-                                child: Container(
-                                  width: double.maxFinite,
-                                  height: double.maxFinite,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(100),
+                              Row(
+                                children: [
+                                  Text(
+                                    "คัดลอกเลข",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      decoration: TextDecoration.underline,
+                                      decorationThickness: 1.4,
+                                      height: 1.4,
+                                    ),
                                   ),
-                                  child: Center(
-                                    child: Text(
-                                      e,
-                                      style: TextStyle(fontSize: 32),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                    height: 16,
+                                    child: SvgPicture.asset(
+                                      AppIcon.copy,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: (controller.lotteryHistoryList[index]
+                                    ["lottery"] as String)
+                                .split('')
+                                .map((e) {
+                              return Container(
+                                padding: EdgeInsets.all(3),
+                                width:
+                                    MediaQuery.of(context).size.width / 6 - 8,
+                                height:
+                                    MediaQuery.of(context).size.width / 6 - 8,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(100),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      AppColors.yellowGradient,
+                                      AppColors.redGradient,
+                                    ],
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.topCenter,
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Container(
+                                    width: double.maxFinite,
+                                    height: double.maxFinite,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(100),
+                                    ),
+                                    child: Center(
+                                      child: Text(
+                                        e,
+                                        style: TextStyle(fontSize: 32),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ],
+                              );
+                            }).toList(),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },

@@ -7,6 +7,7 @@ import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
+import 'package:lottery_ck/components/dialog_change_birthtime_v2.dart';
 import 'package:lottery_ck/components/dialog_promotion.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/model/buy_lottery_configs.dart';
@@ -37,6 +38,7 @@ class BuyLotteryController extends GetxController {
   TextEditingController lotteryTextController = TextEditingController();
   List<BuyLotteryConfigs> buyLotteryConfigs = [];
   Rx<InvoiceMetaData> invoiceMeta = InvoiceMetaData.empty().obs;
+  RxInt currentTab = 0.obs;
 
   RxBool isLoadingAddLottery = false.obs;
   RxList promotionList = [].obs;
@@ -57,6 +59,8 @@ class BuyLotteryController extends GetxController {
   late StreamSubscription<bool> keyboardSubscription;
   Map<String, dynamic>? quotaMap;
   RxBool disabledBuy = true.obs;
+  RxString horoscopeUrl = "".obs;
+  RxString luckyCardUrl = "".obs;
 
   void enableBuy() {
     disabledBuy.value = false;
@@ -342,7 +346,11 @@ class BuyLotteryController extends GetxController {
     );
   }
 
-  void submitAddLottery(String? lottery, int? price) async {
+  void submitAddLottery(
+    String? lottery,
+    int? price, [
+    bool? fromOtherPage,
+  ]) async {
     logger.d("formKey?.currentState: ${formKey?.currentState}");
     if (userApp == null) {
       showLoginDialog();
@@ -360,15 +368,38 @@ class BuyLotteryController extends GetxController {
       }
       final valid = validateLottery(lottery, price);
       if (valid) {
-        final lotteryData = Lottery(
-          lottery: lottery,
-          amount: price,
-          lotteryType: lottery.length,
-          quota: price,
-          totalAmount: price,
-        );
-        await createTransaction([lotteryData]);
-        lotteryNode.requestFocus();
+        if (fromOtherPage == true) {
+          Get.dialog(DialogApp(
+            title: Text(
+              "ยืนยันการซื้อหวย",
+            ),
+            details: Text(
+              "คุณต้องการซื้อหวยเลข $lottery ในราคา $price กีบ ใช่หรือไม่?",
+            ),
+            onConfirm: () async {
+              final lotteryData = Lottery(
+                lottery: lottery,
+                amount: price,
+                lotteryType: lottery.length,
+                quota: price,
+                totalAmount: price,
+              );
+              await createTransaction([lotteryData]);
+              lotteryNode.requestFocus();
+              Get.back();
+            },
+          ));
+        } else {
+          final lotteryData = Lottery(
+            lottery: lottery,
+            amount: price,
+            lotteryType: lottery.length,
+            quota: price,
+            totalAmount: price,
+          );
+          await createTransaction([lotteryData]);
+          lotteryNode.requestFocus();
+        }
       }
     }
   }
@@ -550,20 +581,21 @@ class BuyLotteryController extends GetxController {
     );
   }
 
-  void onClickAnimalBuy(List<Map<String, dynamic>> lotteryMapList) async {
+  Future<bool> onClickAnimalBuy(
+      List<Map<String, dynamic>> lotteryMapList) async {
     logger.d("callback");
-    if (disabledBuy.value) {
-      Future.delayed(const Duration(milliseconds: 250), () {
-        showDialogCloseSale();
-      });
-      return;
-    }
     if (userApp == null) {
       // delay after back from animal page
       Future.delayed(const Duration(milliseconds: 250), () {
         showLoginDialog();
       });
-      return;
+      return false;
+    }
+    if (disabledBuy.value) {
+      Future.delayed(const Duration(milliseconds: 250), () {
+        showDialogCloseSale();
+      });
+      return false;
     }
     final lotteryList = lotteryMapList
         .map(
@@ -576,7 +608,8 @@ class BuyLotteryController extends GetxController {
           ),
         )
         .toList();
-    createTransaction(lotteryList);
+    await createTransaction(lotteryList);
+    return true;
   }
 
   Future<void> createTransaction(List<Lottery> lotteryList) async {
@@ -1210,6 +1243,183 @@ class BuyLotteryController extends GetxController {
         getQuota();
       },
     );
+  }
+
+  void setLottery(String lottery) {
+    lotteryTextController.text = lottery;
+    final buyLotteryConfig = buyLotteryConfigs
+        .where(
+          (buyLotteryConfig) => buyLotteryConfig.lotteryType == lottery.length,
+        )
+        .toList();
+    logger.d(buyLotteryConfig);
+    if (buyLotteryConfig.isEmpty) {
+      logger.w('buyLotteryConfig is empty');
+      return;
+    }
+    final configByLotteryType = buyLotteryConfig.first;
+    this.lottery = lottery;
+    onChangePrice(configByLotteryType.min.toString());
+  }
+
+  Future<bool> openHoroscope(int index) async {
+    try {
+      isLoadingAddLottery.value = true;
+      final result = await createZZUrl(AppConst.horoScopeUrl);
+      logger.d("result: $result");
+      if (result == 'unknowBirthTime') {
+        Get.dialog(
+          DialogChangeBirthtimeComponentV2(
+            onSuccess: () async {
+              final result = await createZZUrl(AppConst.horoScopeUrl);
+              if (result == null) {
+                logger.e("result createZZUrl is: $result");
+                return;
+              }
+              horoscopeUrl.value = result;
+              currentTab.value = index;
+            },
+            onUnknowBirthDate: () async {
+              final result = await createZZUrl(AppConst.horoScopeUrl, true);
+              if (result == null) {
+                logger.e("result createZZUrl is: $result");
+                return;
+              }
+              StorageController.to.setUnknowBirthTime(true);
+              horoscopeUrl.value = result;
+              currentTab.value = index;
+            },
+          ),
+        );
+        return false;
+      } else if (result == null) {
+        logger.e("result createZZUrl is: $result");
+        return false;
+      }
+      horoscopeUrl.value = result;
+      return true;
+    } catch (e) {
+      logger.e("$e");
+      return false;
+    } finally {
+      isLoadingAddLottery.value = false;
+    }
+  }
+
+  Future<bool> openLuckyCard(int index) async {
+    try {
+      isLoadingAddLottery.value = true;
+      final result = await createZZUrl(AppConst.randomCardUrl);
+      logger.d("result: $result");
+      if (result == 'unknowBirthTime') {
+        Get.dialog(
+          DialogChangeBirthtimeComponentV2(
+            onSuccess: () async {
+              final result = await createZZUrl(AppConst.randomCardUrl);
+              if (result == null) {
+                logger.e("result createZZUrl is: $result");
+                return;
+              }
+              luckyCardUrl.value = result;
+              currentTab.value = index;
+            },
+            onUnknowBirthDate: () async {
+              final result = await createZZUrl(AppConst.randomCardUrl, true);
+              if (result == null) {
+                logger.e("result createZZUrl is: $result");
+                return;
+              }
+              StorageController.to.setUnknowBirthTime(true);
+              luckyCardUrl.value = result;
+              currentTab.value = index;
+            },
+          ),
+        );
+        return false;
+      } else if (result == null) {
+        logger.e("result createZZUrl is: $result");
+        return false;
+      }
+      luckyCardUrl.value = result;
+      return true;
+    } catch (e) {
+      logger.e("$e");
+      return false;
+    } finally {
+      isLoadingAddLottery.value = false;
+    }
+  }
+
+  void confirmOutTodayHoroscope(int index) async {
+    logger.d("message");
+    Get.dialog(
+      DialogApp(
+        title: Text("คุณต้องการออกจากดวงวันนี้?"),
+        onConfirm: () async {
+          changeTab(index);
+          Get.back();
+        },
+      ),
+    );
+  }
+
+  void confirmOutTodayLuckyCard(int index) async {
+    Get.dialog(
+      DialogApp(
+        title: Text("คุณต้องการออกจากไพ่นำโชค?"),
+        onConfirm: () async {
+          changeTab(index);
+          Get.back();
+        },
+      ),
+    );
+  }
+
+  void confirmOutAnimalBook(int index) async {
+    Get.dialog(
+      DialogApp(
+        title: Text("คุณต้องการออกจากตำรา?"),
+        onConfirm: () async {
+          changeTab(index);
+          Get.back();
+        },
+      ),
+    );
+  }
+
+  void onChangeTab(int index) {
+    if (currentTab.value != 0) {
+      switch (currentTab.value) {
+        case 1:
+          confirmOutTodayHoroscope(index);
+          break;
+        case 2:
+          confirmOutTodayLuckyCard(index);
+          break;
+        case 3:
+          confirmOutAnimalBook(index);
+          break;
+        default:
+      }
+      return;
+    }
+    changeTab(index);
+  }
+
+  void changeTab(int index) async {
+    if (index == 1) {
+      final isSuccess = await openHoroscope(index);
+      if (isSuccess == false) return;
+    } else if (index == 2) {
+      final isSuccess = await openLuckyCard(index);
+      if (isSuccess == false) return;
+    }
+    currentTab.value = index;
+    if (index == 0) {
+      LayoutController.to.resetPaddingBottom();
+    } else {
+      LayoutController.to.removePaddingBottom();
+    }
   }
 
   @override
