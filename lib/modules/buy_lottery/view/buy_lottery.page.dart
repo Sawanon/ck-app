@@ -180,31 +180,9 @@ class _BuyLotteryPageState extends State<BuyLotteryPage> {
                             );
                           } else if (controller.currentTab.value == 3) {
                             return AnimalComponent(
+                              padding: EdgeInsets.only(bottom: 122),
                               onClickBuy: (lotterise) async {
-                                final isSuccess = await controller
-                                    .onClickAnimalBuy(lotterise);
-                                final onlyLotteryList = lotterise.map(
-                                  (lottery) {
-                                    return lottery['lottery'] as String;
-                                  },
-                                ).toList();
-                                if (isSuccess) {
-                                  Get.rawSnackbar(
-                                    snackPosition: SnackPosition.TOP,
-                                    backgroundColor: Colors.green.shade200,
-                                    overlayColor: Colors.green.shade800,
-                                    margin: const EdgeInsets.all(16),
-                                    borderRadius: 16,
-                                    messageText: Text(
-                                      "เพิ่มเลข ${onlyLotteryList.join(",")} เรียบร้อย",
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.green.shade800,
-                                      ),
-                                    ),
-                                  );
-                                }
+                                await controller.onClickAnimalBuy(lotterise);
                               },
                               onBack: () {
                                 controller.confirmOutAnimalBook(0);

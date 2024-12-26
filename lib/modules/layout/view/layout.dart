@@ -120,7 +120,7 @@ class LayoutPage extends StatelessWidget {
             maintainAnimation: true,
             visible: !controller.isBlur,
             child: Scaffold(
-              backgroundColor: Colors.white,
+              // backgroundColor: Colors.white,
               resizeToAvoidBottomInset: false,
               body: SafeArea(
                 top: false,

@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottery_ck/components/dev/dialog_otp.dart';
 import 'package:lottery_ck/model/get_argument/otp.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
+import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
 import 'package:lottery_ck/route/route_name.dart';
@@ -32,8 +34,11 @@ class SettingController extends GetxController {
 
   Future<void> logout() async {
     await AppWriteController.to.logout();
+    user = null;
+    update();
+    HomeController.to.updateController();
     // Get.offAllNamed(RouteName.login);
-    LayoutController.to.changeTab(TabApp.home);
+    // LayoutController.to.changeTab(TabApp.home);
   }
 
   Future<void> getKYC() async {
@@ -180,10 +185,16 @@ class SettingController extends GetxController {
                 action: OTPAction.changePasscode,
                 phoneNumber: user!.phoneNumber,
                 onInit: () async {
-                  final responseOTPRef =
+                  final response =
                       await AppWriteController.to.getOTPUser(user!.phoneNumber);
-                  otpRef = responseOTPRef;
-                  return responseOTPRef;
+                  if (response == null) {
+                    return null;
+                  }
+                  Get.dialog(
+                    DialogOtpComponent(otp: response.otp),
+                  );
+                  otpRef = response.otpRef;
+                  return response.otpRef;
                 },
                 whenConfirmOTP: (otp) async {
                   final response = await AppWriteController.to

@@ -48,18 +48,24 @@ class SplashScreenPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 48),
                 Image.asset(
                   Logo.ck,
                   height: 40,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 24),
                 Text(
                   "v.2.0.0",
                   style: TextStyle(
                     fontSize: 12,
                     color: AppColors.textPrimary,
                   ),
+                ),
+                Container(
+                  width: 150,
+                  height: 150,
+                  // color: Colors.red,
+                  // child: Image.asset(Logo.lotto),
                 ),
               ],
             ),

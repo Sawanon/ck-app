@@ -4,15 +4,19 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/header.dart';
+import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/main.dart';
+import 'package:lottery_ck/modules/animal/view/dialog_animal.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
+import 'package:lottery_ck/utils.dart';
 import 'package:pinput/pinput.dart';
 
 class AnimalComponent extends StatefulWidget {
-  final void Function(List<Map<String, dynamic>> lotterise)? onClickBuy;
+  final EdgeInsets? padding;
+  final Future<void> Function(List<Map<String, dynamic>> lotterise)? onClickBuy;
   final bool? disableBuy;
   final void Function()? onBack;
   const AnimalComponent({
@@ -20,6 +24,7 @@ class AnimalComponent extends StatefulWidget {
     this.onClickBuy,
     this.disableBuy,
     this.onBack,
+    this.padding,
   });
 
   @override
@@ -351,6 +356,7 @@ class _AnimalComponentState extends State<AnimalComponent> {
       "lotteries": ["40", "80"],
     },
   ];
+  bool isLoading = false;
   final inputStyle = InputDecoration(
     contentPadding: const EdgeInsets.symmetric(
       horizontal: 16,
@@ -375,6 +381,12 @@ class _AnimalComponentState extends State<AnimalComponent> {
     TextEditingController(),
   ];
   List<String> listPrice = ["1000", "1000", "1000"];
+
+  void setIsLoading(bool value) {
+    setState(() {
+      isLoading = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -413,7 +425,7 @@ class _AnimalComponentState extends State<AnimalComponent> {
             Expanded(
               child: SingleChildScrollView(
                 child: Container(
-                  padding: EdgeInsets.all(10),
+                  padding: widget.padding,
                   // color: AppColors.borderGray,
                   width: double.infinity,
                   // height: MediaQuery.of(context).size.height * 0.6,
@@ -486,348 +498,24 @@ class _AnimalComponentState extends State<AnimalComponent> {
                                     ? null
                                     : () {
                                         // showSimpleNotification
-                                        final navigatorContext =
-                                            Navigator.of(context);
-                                        showDialog(
-                                          barrierDismissible: false,
-                                          context: context,
-                                          builder: (context) {
-                                            return Material(
-                                              color: Colors.transparent,
-                                              child: Wrap(
-                                                alignment: WrapAlignment.center,
-                                                runAlignment:
-                                                    WrapAlignment.center,
-                                                children: [
-                                                  Container(
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 16),
-                                                    padding: EdgeInsets.all(12),
-                                                    decoration: BoxDecoration(
-                                                      color: AppColors.primary,
-                                                    ),
-                                                    // color: Colors.amber,
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
-                                                      children: [
-                                                        SizedBox(),
-                                                        Text(
-                                                          AppLocale
-                                                              .pleaseEnterPrice
-                                                              .getString(
-                                                                  context),
-                                                          style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                          ),
-                                                        ),
-                                                        Container(
-                                                          width: 30,
-                                                          height: 30,
-                                                          child: Material(
-                                                            color: AppColors
-                                                                .errorBorder,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        100),
-                                                            child: InkWell(
-                                                              overlayColor:
-                                                                  WidgetStateProperty.all<
-                                                                          Color>(
-                                                                      Colors.red
-                                                                          .shade400),
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          100),
-                                                              onTap: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child: Icon(
-                                                                Icons.close,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Container(
-                                                    height: 240,
-                                                    padding: EdgeInsets.only(
-                                                        bottom: 16),
-                                                    margin:
-                                                        EdgeInsets.symmetric(
-                                                            horizontal: 16),
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                            .size
-                                                            .width,
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.white,
-                                                    ),
-                                                    child: ListView.separated(
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        final list =
-                                                            animal['lotteries']
-                                                                as List<String>;
-                                                        final lottery =
-                                                            list[index];
-                                                        return Container(
-                                                          margin:
-                                                              EdgeInsets.only(
-                                                                  top: 16),
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .symmetric(
-                                                                  horizontal:
-                                                                      12),
-                                                          child: Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .spaceBetween,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Container(
-                                                                // padding: EdgeInsets.symmetric(horizontal: 12),
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                width: 40,
-                                                                height: 48,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  border: Border
-                                                                      .all(
-                                                                    color: AppColors
-                                                                        .primary,
-                                                                    width: 1,
-                                                                  ),
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              2),
-                                                                ),
-                                                                child: Text(
-                                                                  '${lottery}',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        16,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              Expanded(
-                                                                child: Padding(
-                                                                  padding: const EdgeInsets
-                                                                      .symmetric(
-                                                                      horizontal:
-                                                                          8.0),
-                                                                  child:
-                                                                      TextFormField(
-                                                                    decoration:
-                                                                        inputStyle,
-                                                                    controller:
-                                                                        listController[
-                                                                            index],
-                                                                    keyboardType:
-                                                                        TextInputType
-                                                                            .number,
-                                                                    onChanged:
-                                                                        (value) {
-                                                                      print(
-                                                                          'animal index: $index');
-                                                                      final animalList = animal[
-                                                                              "lotteries"]
-                                                                          as List<
-                                                                              String>;
-                                                                      final animalThisLoop =
-                                                                          animalList[
-                                                                              index];
-                                                                      print(
-                                                                          'lottery is: $animalThisLoop');
-                                                                      print(
-                                                                          'value is $value');
-                                                                      setState(
-                                                                          () {
-                                                                        listPrice[index] =
-                                                                            value;
-                                                                      });
-                                                                    },
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        );
-                                                        // listController
-                                                      },
-                                                      separatorBuilder:
-                                                          (context, index) =>
-                                                              SizedBox(),
-                                                      itemCount: (animal[
-                                                                  'lotteries']
-                                                              as List<String>)
-                                                          .length,
-                                                    ),
-                                                    // child: Column(
-                                                    //   children: (animal['lotteries'] as List<String>).map((e) {
-                                                    //     return Container(
-                                                    //       margin: EdgeInsets.only(top: 16),
-                                                    //       padding: const EdgeInsets.symmetric(horizontal: 12),
-                                                    //       child: Row(
-                                                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    //         crossAxisAlignment: CrossAxisAlignment.center,
-                                                    //         children: [
-                                                    //           Container(
-                                                    //             // padding: EdgeInsets.symmetric(horizontal: 12),
-                                                    //             alignment: Alignment.center,
-                                                    //             width: 40,
-                                                    //             decoration: BoxDecoration(
-                                                    //               border: Border.all(
-                                                    //                 color: AppColors.primary,
-                                                    //                 width: 1,
-                                                    //               ),
-                                                    //               borderRadius: BorderRadius.circular(2),
-                                                    //             ),
-                                                    //             child: Text(
-                                                    //               '$e',
-                                                    //               style: TextStyle(
-                                                    //                 fontSize: 16,
-                                                    //                 fontWeight: FontWeight.bold,
-                                                    //               ),
-                                                    //             ),
-                                                    //           ),
-                                                    //           Expanded(
-                                                    //             child: Padding(
-                                                    //               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                                    //               child: TextFormField(
-                                                    //                 decoration: inputStyle,
-                                                    //               ),
-                                                    //             ),
-                                                    //           )
-                                                    //         ],
-                                                    //       ),
-                                                    //     );
-                                                    //   }).toList(),
-                                                    // ),
-                                                  ),
-                                                  Container(
-                                                    // alignment: Alignment.center,
-                                                    margin: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 16),
-                                                    height: 50,
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                            .size
-                                                            .width,
-                                                    child: Material(
-                                                      color: AppColors.primary,
-                                                      child: InkWell(
-                                                        overlayColor:
-                                                            WidgetStateProperty
-                                                                .all<
-                                                                        Color>(
-                                                                    AppColors
-                                                                        .primary),
-                                                        onTap: () {
-                                                          final listLottery =
-                                                              animal['lotteries']
-                                                                  as List<
-                                                                      String>;
-                                                          List<
-                                                                  Map<String,
-                                                                      dynamic>>
-                                                              lotteryWithPrice =
-                                                              [];
-                                                          bool invalidPrice =
-                                                              false;
-                                                          listLottery
-                                                              .asMap()
-                                                              .forEach((index,
-                                                                  element) {
-                                                            final price =
-                                                                int.parse(
-                                                                    listPrice[
-                                                                        index]);
-                                                            if (price % 1000 !=
-                                                                0) {
-                                                              invalidPrice =
-                                                                  true;
-                                                            }
-                                                            lotteryWithPrice
-                                                                .add({
-                                                              "lottery":
-                                                                  element,
-                                                              "price":
-                                                                  listPrice[
-                                                                      index],
-                                                            });
-                                                          });
-                                                          if (invalidPrice) {
-                                                            BuyLotteryController
-                                                                .to
-                                                                .showInvalidPrice();
-                                                            return;
-                                                          }
-                                                          if (widget
-                                                                  .onClickBuy ==
-                                                              null) {
-                                                            return;
-                                                          }
-                                                          widget.onClickBuy!(
-                                                              lotteryWithPrice);
-                                                          Navigator.of(context)
-                                                              .pop();
-                                                          // navigatorContext
-                                                          //     .pop();
-                                                        },
-                                                        child: Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          child: Text(
-                                                            AppLocale.confirm
-                                                                .getString(
-                                                                    context),
-                                                            style: TextStyle(
-                                                              fontSize: 20,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
+                                        Get.dialog(
+                                          DialogAnimal(
+                                            animal: animal,
+                                            onClickBuy: (lotterise) async {
+                                              logger.d("lotterise: $lotterise");
+                                              await Future.delayed(
+                                                const Duration(seconds: 2),
+                                              );
+                                              if (widget.onClickBuy == null) {
+                                                return;
+                                              }
+                                              widget.onClickBuy!(lotterise);
+                                            },
+                                          ),
                                         );
                                         for (var element in listController) {
                                           element.setText('1000');
                                         }
-                                        // onClickBuy(animal['lotteries'] as List<String>);
-                                        // Navigator.of(context).pop();
                                       },
                                 child: Container(
                                   alignment: Alignment.center,

@@ -68,6 +68,7 @@ class AppWriteController extends GetxController {
 
   Future<void> getAuthJWTToken() async {
     try {
+      logger.w("apiUrl: ${AppConst.apiUrl}");
       final dio = Dio();
       final jwt = JWT({
         "token": AppConst.publicToken,
@@ -1508,10 +1509,12 @@ class AppWriteController extends GetxController {
         },
       );
       final result = response.data;
+      logger.w("result: $result");
       if (result['isError'] == true) throw "Error OTP service";
       logger.d("result: $result");
       final otpRef = result['data']['otpRef'];
-      return ResponseGetOTP(otpRef: otpRef);
+      final otp = result['data']['otp'];
+      return ResponseGetOTP(otpRef: otpRef, otp: otp);
     } on DioException catch (e) {
       if (e.response != null) {
         logger.e(e.response?.statusCode);
@@ -1580,7 +1583,7 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<String?> getOTPUser(String phoneNumber) async {
+  Future<ResponseGetOTP?> getOTPUser(String phoneNumber) async {
     try {
       final dio = Dio();
       final response = await dio.post(
@@ -1600,7 +1603,10 @@ class AppWriteController extends GetxController {
         );
         return null;
       }
-      return result['data']['otpRef'];
+      return ResponseGetOTP(
+        otpRef: result['data']['otpRef'],
+        otp: result['data']['otp'],
+      );
     } on DioException catch (e) {
       if (e.response != null) {
         logger.e(e.response?.statusCode);

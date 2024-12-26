@@ -21,10 +21,13 @@ class SignupController extends GetxController {
   bool unknowBirthTime = false;
   GlobalKey<FormState> keyForm = GlobalKey<FormState>();
   final argument = Get.arguments;
+  RxBool isLoading = false.obs;
 
   Future<void> register(BuildContext context) async {
     if (keyForm.currentState != null && keyForm.currentState!.validate()) {
-      createUserAppwrite();
+      isLoading.value = true;
+      await createUserAppwrite();
+      isLoading.value = false;
     }
   }
 

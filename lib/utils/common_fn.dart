@@ -141,7 +141,7 @@ class CommonFn {
 
   static String hidePhoneNumber(String? phoneNumber) {
     if (phoneNumber == null) {
-      return "";
+      return "-";
     }
     if (phoneNumber.length < 14) {
       // other country phone number

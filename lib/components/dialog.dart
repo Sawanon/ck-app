@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/route_manager.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 
 class DialogApp extends StatefulWidget {
@@ -85,7 +87,14 @@ class _DialogAppState extends State<DialogApp> {
                         color: AppColors.primary,
                       ),
                       onPressed: onClose,
-                      child: widget.cancelText,
+                      child: widget.disableConfirm == true
+                          ? Text(
+                              AppLocale.close.getString(context),
+                              style: const TextStyle(
+                                color: AppColors.primary,
+                              ),
+                            )
+                          : widget.cancelText,
                     ),
                   ),
                   if (!widget.disableConfirm) const SizedBox(width: 8),

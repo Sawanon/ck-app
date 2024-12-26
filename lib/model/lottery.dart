@@ -91,4 +91,9 @@ class Lottery {
         "quota": quota,
         "discount": discount,
       };
+
+  void remove() {
+    quota = 0;
+    amount = 0;
+  }
 }

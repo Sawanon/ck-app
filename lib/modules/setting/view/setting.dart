@@ -7,6 +7,7 @@ import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/rating.dart';
 import 'package:lottery_ck/components/traslate.dart';
+import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -57,6 +58,10 @@ class SettingPage extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () {
+                              if (controller.user == null) {
+                                LayoutController.to.showDialogLogin();
+                                return;
+                              }
                               Get.toNamed(RouteName.profile);
                             },
                             child: Container(
@@ -344,6 +349,10 @@ class SettingPage extends StatelessWidget {
                           const SizedBox(height: 4),
                           GestureDetector(
                             onTap: () {
+                              if (controller.user == null) {
+                                LayoutController.to.showDialogLogin();
+                                return;
+                              }
                               showModalBottomSheet(
                                 context: context,
                                 isScrollControlled: true,
@@ -563,6 +572,10 @@ class SettingPage extends StatelessWidget {
                           // const SizedBox(height: 4),
                           GestureDetector(
                             onTap: () {
+                              if (controller.user == null) {
+                                LayoutController.to.showDialogLogin();
+                                return;
+                              }
                               // request scan face
                               Get.toNamed(RouteName.security);
                             },
@@ -659,6 +672,7 @@ class SettingPage extends StatelessWidget {
                             onConfirm: () async {
                               await controller.logout();
                               Get.back();
+                              Get.back();
                             },
                             confirmText: Text(
                               AppLocale.logout.getString(Get.context!),
@@ -666,7 +680,7 @@ class SettingPage extends StatelessWidget {
                                 color: Colors.white,
                               ),
                             ),
-                            onCancel: () => Get.back(),
+                            // onCancel: () => Get.back(),
                             cancelText: Text(
                               AppLocale.cancel.getString(Get.context!),
                               style: const TextStyle(

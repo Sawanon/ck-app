@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:lottery_ck/components/gender_radio.dart';
+import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/signup/controller/signup.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -393,29 +394,21 @@ class SignupPage extends StatelessWidget {
                                   },
                                 ),
                                 const SizedBox(height: 24),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 0,
-                                    shadowColor: Colors.transparent,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
+                                Obx(() {
+                                  return LongButton(
+                                    isLoading: controller.isLoading.value,
+                                    onPressed: () {
+                                      controller.register(context);
+                                    },
+                                    child: Text(
+                                      'ລົງທະບຽນ',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700,
+                                      ),
                                     ),
-                                    fixedSize: Size(
-                                        MediaQuery.of(context).size.width, 48),
-                                    backgroundColor: AppColors.primary,
-                                    foregroundColor: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    controller.register(context);
-                                  },
-                                  child: Text(
-                                    'ລົງທະບຽນ',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
+                                  );
+                                }),
                               ],
                             ),
                           ),

@@ -19,6 +19,7 @@ import 'package:lottery_ck/modules/history/controller/history_win.controller.dar
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
 import 'package:lottery_ck/modules/notification/view/news.dart';
+import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/webview/view/webview.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -604,6 +605,8 @@ class HomeController extends GetxController {
     await listContent();
     await setupMenu();
     await getWallpaperBackground();
+    await SettingController.to.setup();
+    update();
   }
 
   void gotoBuyLottery() {
@@ -897,6 +900,10 @@ class HomeController extends GetxController {
 
   void tryFunction() async {
     await AppWriteController.to.tryFunction();
+  }
+
+  void updateController() {
+    update();
   }
 
   @override

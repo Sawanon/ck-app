@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/dev/dialog_otp.dart';
 import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/model/get_argument/otp.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
@@ -83,8 +84,16 @@ class LoginController extends GetxController {
         phoneNumber: phoneNumber,
         onInit: () async {
           final result = await AppWriteController.to.getOTP(phoneNumber);
-          otpRef = result?.otpRef;
-          return result?.otpRef;
+          if (result == null) {
+            return null;
+          }
+          otpRef = result.otpRef;
+          Get.dialog(
+            DialogOtpComponent(
+              otp: result.otp,
+            ),
+          );
+          return result.otpRef;
         },
         whenConfirmOTP: (otp) async {
           final result =
@@ -118,9 +127,15 @@ class LoginController extends GetxController {
         action: OTPAction.signIn,
         phoneNumber: phoneNumber,
         onInit: () async {
-          final _otpRef = await AppWriteController.to.getOTPUser(phoneNumber);
-          otpRef = _otpRef;
-          return _otpRef;
+          final response = await AppWriteController.to.getOTPUser(phoneNumber);
+          if (response == null) {
+            return null;
+          }
+          Get.dialog(
+            DialogOtpComponent(otp: response.otp),
+          );
+          otpRef = response.otpRef;
+          return response.otpRef;
         },
         whenConfirmOTP: (otp) async {
           final result = await AppWriteController.to
@@ -144,10 +159,16 @@ class LoginController extends GetxController {
                     action: OTPAction.changePasscode,
                     phoneNumber: phoneNumber,
                     onInit: () async {
-                      final _otpRef =
+                      final response =
                           await AppWriteController.to.getOTPUser(phoneNumber);
-                      otpRef = _otpRef;
-                      return _otpRef;
+                      if (response == null) {
+                        return null;
+                      }
+                      Get.dialog(
+                        DialogOtpComponent(otp: otp),
+                      );
+                      otpRef = response.otpRef;
+                      return response.otpRef;
                     },
                     whenConfirmOTP: (otp) async {
                       final session = await AppWriteController.to.createSession(

@@ -283,8 +283,9 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                               )
                                             ]
                                           // : controller.lotteryList.map(
-                                          : controller
-                                              .invoiceMeta.value.transactions
+                                          : controller.invoiceMeta.value
+                                              .transactions.reversed
+                                              .toList()
                                               .map(
                                               (lotteryData) {
                                                 return Container(
@@ -836,6 +837,7 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                           controller.submitAddLottery(
                                             controller.lottery,
                                             controller.price,
+                                            true,
                                           );
                                         },
                                         child: Container(

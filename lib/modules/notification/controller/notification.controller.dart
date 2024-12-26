@@ -8,6 +8,7 @@ class NotificationController extends GetxController {
   static NotificationController get to => Get.find();
   RxList<News> newsList = <News>[].obs;
   RxList<Map> promotionList = <Map>[].obs;
+  RxList<Map> notificationList = <Map>[].obs;
 
   Future<void> listNews() async {
     final newsList = await AppWriteController.to.listNews();
