@@ -5,7 +5,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:lottery_ck/components/coupons.dart';
 import 'package:lottery_ck/components/dialog.dart';
+import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/model/bank.dart';
 import 'package:lottery_ck/model/bill.dart';
 import 'package:lottery_ck/model/invoice_meta.dart';
@@ -14,8 +16,11 @@ import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart'
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
+import 'package:lottery_ck/modules/payment/view/bank.dart';
+import 'package:lottery_ck/modules/payment/view/use_point.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
 import 'package:lottery_ck/modules/pin/view/verify_pin.dart';
+import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/route/route_name.dart';
@@ -31,7 +36,6 @@ class PaymentController extends GetxController {
   List<Bank> bankList = [];
   DateTime? lotteryDate;
   String? lotteryDateStrYMD;
-  int? totalAmount;
   Bank? selectedBank;
   bool isLoading = false;
   String? confirmOTP;
@@ -43,6 +47,8 @@ class PaymentController extends GetxController {
   int? pointMonney;
   StreamSubscription<String>? streamInvoice;
   Subscription? subscriptionPubnub;
+  int routeLevel = 0;
+  bool isOpenedDialog = false;
 
   void getPointRaio() async {
     final pointRatio = await AppWriteController.to.getPointRaio();
@@ -57,22 +63,20 @@ class PaymentController extends GetxController {
   Future<void> getBank() async {
     final appwriteController = AppWriteController.to;
     final bankDocuments = await appwriteController.listBank();
-    logger.d(bankDocuments?.documents);
-
     final bankList = bankDocuments?.documents.map(
       (document) {
         return Bank.fromJson(document.data);
       },
     ).toList();
     // TODO: develop remove on production
-    bankList?.add(
-      Bank(
-        $id: 'fake',
-        name: 'BCEL',
-        fullName: 'BCEL',
-        downtime: '21:00-00:00',
-      ),
-    );
+    // bankList?.add(
+    //   Bank(
+    //     $id: 'fake',
+    //     name: 'BCEL',
+    //     fullName: 'BCEL',
+    //     downtime: '21:00-00:00',
+    //   ),
+    // );
     if (bankList != null) {
       this.bankList = bankList;
       update();
@@ -109,14 +113,18 @@ class PaymentController extends GetxController {
   void setup() async {
     point = null;
     setLotteryDate();
-    getBank();
+    await getBank();
     listenInvoiceExpire();
+    listMyCoupons();
   }
 
   void listenInvoiceExpire() {
     streamInvoice = BuyLotteryController.to.invoiceRemainExpireStr.listen(
       (value) {
         if (value == "") {
+          if (isOpenedDialog) {
+            Get.back();
+          }
           Get.back();
         }
       },
@@ -124,16 +132,16 @@ class PaymentController extends GetxController {
   }
 
   void setLotteryDate() {
-    final buyLotteryController = BuyLotteryController.to;
+    // final buyLotteryController = BuyLotteryController.to;
     // lotteryList = buyLotteryController.lotteryList;
     final homeController = HomeController.to;
     lotteryDate = homeController.lotteryDate;
     final lotteryDateStrYMD = CommonFn.parseYMD(homeController.lotteryDate!);
     this.lotteryDateStrYMD = lotteryDateStrYMD.split("-").join("");
-    totalAmount = buyLotteryController.totalAmount.value;
+    // totalAmount = buyLotteryController.totalAmount.value;
   }
 
-  void payLottery(Bank bank, int amount, BuildContext context) async {
+  void payLottery(Bank bank, BuildContext context) async {
     if (bank.downtime != null) {
       final bankValid = validBank(bank);
       if (!bankValid) return;
@@ -378,6 +386,70 @@ class PaymentController extends GetxController {
   }
 
   bool get enablePay => selectedBank != null;
+
+  void showBottomModal(BuildContext context) {
+    final int myPoint = SettingController.to.user?.point != null
+        ? SettingController.to.user!.point
+        : 0;
+    isOpenedDialog = true;
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (context) {
+        return UsePointComponent(
+          myPoint: myPoint,
+          onSubmit: (usePoint) {
+            onChangePoint(usePoint);
+            Get.back();
+          },
+        );
+      },
+    ).whenComplete(
+      () {
+        isOpenedDialog = false;
+      },
+    );
+  }
+
+  Future<void> listMyCoupons() async {
+    final user = SettingController.to.user;
+    if (user == null) {
+      logger.w("user is empty");
+      return;
+    }
+    await AppWriteController.to.listMyCoupons(user.userId);
+  }
+
+  // level can be 1 or -1
+  void setRouteLevel(int level) {
+    routeLevel += level;
+  }
+
+  void gotoSelectPaymentMethod() {
+    isOpenedDialog = true;
+    Get.to(
+      () => const BankPage(),
+      transition: Transition.downToUp,
+    )!
+        .whenComplete(
+      () {
+        isOpenedDialog = false;
+      },
+    );
+  }
+
+  int get totalAmount =>
+      BuyLotteryController.to.invoiceMeta.value.totalAmount - (point ?? 0);
+
+  bool get enablePays => selectedBank != null;
+
+  void gotoCouponPage() {
+    Get.to(
+      () => const CouponsPage(),
+      transition: Transition.downToUp,
+    );
+  }
 
   @override
   void onInit() {

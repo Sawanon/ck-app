@@ -255,6 +255,7 @@ class LayoutController extends GetxController {
   void intialApp() async {
     try {
       await checkUser();
+      isUsedBiometrics = true;
     } catch (e) {
       logger.e("$e");
       Get.rawSnackbar(message: "$e");

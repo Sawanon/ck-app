@@ -6,7 +6,7 @@ class Bank {
   String fullName;
   String? logo;
   String? downtime;
-  // TODO: what is this - sawanon:20240813
+  String? detail;
 
   Bank({
     required this.$id,
@@ -14,6 +14,7 @@ class Bank {
     required this.fullName,
     this.logo,
     this.downtime,
+    this.detail,
   });
 
   static Bank fromJson(Map json) => Bank(
@@ -22,6 +23,7 @@ class Bank {
         logo: json['logo'],
         fullName: json['full_name'],
         downtime: json['downtime'],
+        detail: json['detail'],
       );
 
   Map<String, dynamic> toJson() => {
@@ -29,6 +31,7 @@ class Bank {
         "logo": logo,
         "fullName": fullName,
         "downtime": downtime,
+        "detail": detail,
       };
 
   @override

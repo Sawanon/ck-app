@@ -12,24 +12,42 @@ class Header extends StatelessWidget {
   final String title;
   final Color backgroundColor;
   final Color textColor;
+  final void Function()? onBack;
+  final EdgeInsets? padding;
   const Header({
     super.key,
     required this.title,
     this.backgroundColor = Colors.white,
     this.textColor = AppColors.textPrimary,
+    this.onBack,
+    this.padding,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: backgroundColor,
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
+      decoration: BoxDecoration(
+        color: backgroundColor,
+        border: Border(
+          bottom: BorderSide(
+            width: 0.5,
+            color: AppColors.shadow.withOpacity(0.2),
+          ),
+        ),
+      ),
+      padding:
+          padding ?? const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8),
       child: Row(
         children: [
           Align(
             alignment: Alignment.centerLeft,
             child: GestureDetector(
-              onTap: () => Get.back(),
+              onTap: () {
+                Get.back();
+                if (onBack != null) {
+                  onBack!();
+                }
+              },
               child: Container(
                 width: 48,
                 height: 48,

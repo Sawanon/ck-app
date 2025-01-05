@@ -25,22 +25,25 @@ class _BannerComponentState extends State<BannerComponent> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: const [
-              AppTheme.softShadow,
-            ],
-          ),
-          child: CarouselSlider(
-            carouselController: _controller,
-            items: widget.items,
-            options: widget.options.copyWith(onPageChanged: (index, reason) {
-              setState(() {
-                _current = index;
-              });
-            }),
+        AspectRatio(
+          aspectRatio: 21 / 9,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: const [
+                AppTheme.softShadow,
+              ],
+            ),
+            child: CarouselSlider(
+              carouselController: _controller,
+              items: widget.items,
+              options: widget.options.copyWith(onPageChanged: (index, reason) {
+                setState(() {
+                  _current = index;
+                });
+              }),
+            ),
           ),
         ),
         const SizedBox(height: 8),

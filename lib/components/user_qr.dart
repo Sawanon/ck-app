@@ -4,9 +4,12 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
@@ -80,7 +83,7 @@ class _UserQRState extends State<UserQR> {
             ],
           ),
           Padding(
-            padding: EdgeInsets.symmetric(vertical: 48),
+            padding: EdgeInsets.symmetric(vertical: 24),
             child: RepaintBoundary(
               key: globalKey,
               child: Container(
@@ -93,27 +96,35 @@ class _UserQRState extends State<UserQR> {
                 ),
                 width: 240,
                 height: 240,
-                child: QrImageView(
-                  data: 'This QR code has an embedded image as well',
-                  version: QrVersions.auto,
-                  embeddedImage: Image.asset(
-                    "assets/icon/icon.png",
-                    gaplessPlayback: true,
-                  ).image,
-                  embeddedImageStyle: QrEmbeddedImageStyle(
-                    size: Size(
-                      48,
-                      48,
-                    ),
-                  ),
-                  errorCorrectionLevel: QrErrorCorrectLevel.H,
-                ),
+                child: SettingController.to.user?.refCode != null
+                    ? QrImageView(
+                        data: SettingController.to.user!.refCode!,
+                        version: QrVersions.auto,
+                        embeddedImage: Image.asset(
+                          "assets/icon/icon.png",
+                          gaplessPlayback: true,
+                        ).image,
+                        embeddedImageStyle: QrEmbeddedImageStyle(
+                          size: Size(
+                            48,
+                            48,
+                          ),
+                        ),
+                        errorCorrectionLevel: QrErrorCorrectLevel.H,
+                      )
+                    : Center(
+                        child: Text(
+                          "You ref code is empty please contact user service",
+                        ),
+                      ),
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Text("แสดงรหัส QR นี้ให้เพื่อนเพื่อให้พวกเขาเพิ่มคุณ"),
+            child: Text(
+              AppLocale.scanQRCodeBeFriends.getString(context),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),

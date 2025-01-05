@@ -130,6 +130,23 @@ mixin AppLocale {
   static const String downtimeBank = "ບໍ່ສາມາດຊໍາລະໄດ້ໃນລະຫວ່າງໄລຍະເວລາ";
   static const String auspiciousWallpaper = "ຮູບວໍເປເປີທີ່ປະເສີດ";
   static const String login = "ເຂົ້າສູ່ລະບົບ";
+  static const String rateLimit =
+      "ທ່ານໄດ້ຮ້ອງຂໍຫຼາຍເກີນໄປໃນໄລຍະເວລາສັ້ນໆ, ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ";
+  static const String totalOrderAmount = "ຈໍານວນຄໍາສັ່ງທັງຫມົດ";
+  static const String lak = "ກີບ";
+  static const String paymentMethod = "ຊ່ອງທາງການຈ່າຍເງິນ";
+  static const String confirmLotteryPurchase = "ຢືນຢັນການຊື້ຫວຍ";
+  static const String confirmLotteryPurchaseText =
+      "ຕ້ອງການຊື້ຫວຍເລກ {lottery} ລາຄາ {price} ກີບບໍ?";
+  static const String addedLottery = "ເລກຫວຍ {lottery} ໄດ້ຖືກເພີ່ມ";
+  static const String pleaseSelectPaymentMethod = "ກະລຸນາເລືອກວິທີການຊໍາລະເງິນ";
+  static const String pleaseEnterPointsWantUse =
+      "ກະລຸນາໃສ່ point ທີ່ທ່ານຕ້ອງການໃຊ້";
+  static const String minimumAmount = "ຂັ້ນຕ່ຳ {price} ກີບ";
+  static const String scanQRCodeBeFriends =
+      "ສະແກນລະຫັດ QR ນີ້ເພື່ອກາຍເປັນເພື່ອນ";
+  static const String coupon = "ຄູປ໋ອງ";
+  static const String useCoupon = "ໃຊ້ຄູປ໋ອງ";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -254,6 +271,20 @@ mixin AppLocale {
     downtimeBank: "ບໍ່ສາມາດຊໍາລະໄດ້ໃນລະຫວ່າງໄລຍະເວລາ",
     auspiciousWallpaper: "ຮູບວໍເປເປີ ທີ່ປະເສີດ",
     login: "ເຂົ້າສູ່ລະບົບ",
+    rateLimit: "ທ່ານໄດ້ຮ້ອງຂໍຫຼາຍເກີນໄປໃນໄລຍະເວລາສັ້ນໆ, ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ",
+    totalOrderAmount: "ຈໍານວນຄໍາສັ່ງທັງຫມົດ",
+    lak: "ກີບ",
+    paymentMethod: "ຊ່ອງທາງການຈ່າຍເງິນ",
+    confirmLotteryPurchase: "ຢືນຢັນການຊື້ຫວຍ",
+    confirmLotteryPurchaseText:
+        "ຕ້ອງການຊື້ຫວຍເລກ {lottery} ລາຄາ {price} ກີບບໍ?",
+    addedLottery: "ເລກຫວຍ {lottery} ໄດ້ຖືກເພີ່ມ",
+    pleaseSelectPaymentMethod: "ກະລຸນາເລືອກວິທີການຊໍາລະເງິນ",
+    pleaseEnterPointsWantUse: "ກະລຸນາໃສ່ point ທີ່ທ່ານຕ້ອງການໃຊ້",
+    minimumAmount: "ຂັ້ນຕ່ຳ {price} ກີບ",
+    scanQRCodeBeFriends: "ສະແກນລະຫັດ QR ນີ້ເພື່ອກາຍເປັນເພື່ອນ",
+    coupon: "ຄູປ໋ອງ",
+    useCoupon: "ໃຊ້ຄູປ໋ອງ",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -276,7 +307,7 @@ mixin AppLocale {
     totalAmount: 'รวมทั้งหมด',
     confirm: 'ยืนยัน',
     totalAmountForPay: 'จำนวนเงินทั้งหมดที่ต้องชำระ',
-    pay: 'ชำระ',
+    pay: 'ชำระเงิน',
     titleBill: 'กระทรวงการคลังพัฒนาสลากกินแบ่งจำหน่ายโดย',
     buyerName: 'ชื่อผู้ซื้อ',
     date: 'วันที่',
@@ -378,6 +409,21 @@ mixin AppLocale {
     downtimeBank: "ไม่สามารถชำระเงินได้ในช่วงเวลา",
     auspiciousWallpaper: "วอลเปเปอร์ มงคล",
     login: "เข้าสู่ระบบ",
+    rateLimit:
+        "คุณทำการร้องขอมากเกินไปในช่วงเวลาสั้น ๆ โปรดลองใหม่อีกครั้งในภายหลัง",
+    totalOrderAmount: "รวมยอดสั่งซื้อ",
+    lak: "กีบ",
+    paymentMethod: "ช่องทางการชำระเงิน",
+    confirmLotteryPurchase: "ยืนยันการซื้อหวย",
+    confirmLotteryPurchaseText:
+        "คุณต้องการซื้อหวยเลข {lottery} ในราคา {price} กีบ ใช่หรือไม่?",
+    addedLottery: "เพิ่มหวยเลข {lottery} เรียบร้อย",
+    pleaseSelectPaymentMethod: "กรุณาเลือกวิธีการชำระเงิน",
+    pleaseEnterPointsWantUse: "กรุณากรอก point ที่ต้องการใช้",
+    minimumAmount: "ยอดขั้นต่ำ {price} กีบ",
+    scanQRCodeBeFriends: "สแกน QR code นี้เพื่อเป็นเพื่อนกัน",
+    coupon: "คูปอง",
+    useCoupon: "ใช้คูปอง",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -503,5 +549,20 @@ mixin AppLocale {
     downtimeBank: "Unable to pay during the period",
     auspiciousWallpaper: "Auspicious wallpaper",
     login: "Login",
+    rateLimit:
+        "You have made too many requests in a short period of time. Please try again later",
+    totalOrderAmount: "Total order amount",
+    lak: "LAK",
+    paymentMethod: "Payment method",
+    confirmLotteryPurchase: "Confirm lottery purchase",
+    confirmLotteryPurchaseText:
+        "Do you want to buy lottery number {lottery} for {price} LAK?",
+    addedLottery: "Added lottery number {lottery} successfully",
+    pleaseSelectPaymentMethod: "Please select a payment method",
+    pleaseEnterPointsWantUse: "Please enter the points you want to use",
+    minimumAmount: "Minimum amount {price} LAK",
+    scanQRCodeBeFriends: "Scan this QR code to be friends",
+    coupon: "Coupon",
+    useCoupon: "Use coupon",
   };
 }

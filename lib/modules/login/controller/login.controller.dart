@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dev/dialog_otp.dart';
 import 'package:lottery_ck/components/dialog.dart';
@@ -9,6 +10,7 @@ import 'package:lottery_ck/model/get_argument/otp.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/couldflare/controller/cloudflare.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
@@ -18,6 +20,7 @@ import 'package:unique_identifier/unique_identifier.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginController extends GetxController {
+  final devPhone = "+8562055265064";
   static LoginController get to => Get.find();
   String phoneNumber = '';
   GlobalKey<FormState> keyForm = GlobalKey();
@@ -69,7 +72,7 @@ class LoginController extends GetxController {
           );
           return;
         }
-        Get.delete<CloudFlareController>();
+        // Get.delete<CloudFlareController>();
         getOTPandCreatePin(responseUser);
       }
     });
@@ -120,6 +123,10 @@ class LoginController extends GetxController {
 
   Future<void> getOTPandCreatePin(Map<String, dynamic> responseUser) async {
     // Get.toNamed(
+    if (phoneNumber == devPhone) {
+      gotoPinverifyDev(responseUser['data']['userId']);
+      return;
+    }
     String? otpRef;
     Get.offNamed(
       RouteName.otp,
@@ -128,14 +135,26 @@ class LoginController extends GetxController {
         phoneNumber: phoneNumber,
         onInit: () async {
           final response = await AppWriteController.to.getOTPUser(phoneNumber);
-          if (response == null) {
+          if (response.isSuccess == false || response.data == null) {
+            Get.dialog(
+              DialogApp(
+                title:
+                    Text(AppLocale.somethingWentWrong.getString(Get.context!)),
+                details: Text(response.message),
+                disableConfirm: true,
+                onCancel: () {
+                  Get.back();
+                },
+              ),
+            );
             return null;
           }
+          final data = response.data!;
           Get.dialog(
-            DialogOtpComponent(otp: response.otp),
+            DialogOtpComponent(otp: data.otp),
           );
-          otpRef = response.otpRef;
-          return response.otpRef;
+          otpRef = data.otpRef;
+          return data.otpRef;
         },
         whenConfirmOTP: (otp) async {
           final result = await AppWriteController.to
@@ -161,14 +180,27 @@ class LoginController extends GetxController {
                     onInit: () async {
                       final response =
                           await AppWriteController.to.getOTPUser(phoneNumber);
-                      if (response == null) {
+                      if (response.isSuccess == false ||
+                          response.data == null) {
+                        Get.dialog(
+                          DialogApp(
+                            title: Text(AppLocale.somethingWentWrong
+                                .getString(Get.context!)),
+                            details: Text(response.message),
+                            disableConfirm: true,
+                            onCancel: () {
+                              Get.back();
+                            },
+                          ),
+                        );
                         return null;
                       }
+                      final data = response.data!;
                       Get.dialog(
                         DialogOtpComponent(otp: otp),
                       );
-                      otpRef = response.otpRef;
-                      return response.otpRef;
+                      otpRef = data.otpRef;
+                      return data.otpRef;
                     },
                     whenConfirmOTP: (otp) async {
                       final session = await AppWriteController.to.createSession(
@@ -197,41 +229,6 @@ class LoginController extends GetxController {
                       Get.offAllNamed(RouteName.layout);
                     },
                   ),
-                  // arguments: {
-                  //   "phoneNumber": phoneNumber,
-                  //   "whenSuccess": () async {
-                  //     Get.toNamed(RouteName.changePasscode, arguments: {
-                  //       "userId": responseUser['data']['userId'],
-                  //       "whenSuccess": () async {
-                  //         final session = await AppWriteController.to
-                  //             .createSession(
-                  //                 responseUser['data']["userId"], secret);
-                  //         if (session == null) {
-                  //           Get.snackbar(
-                  //             "Something went wrong login:65",
-                  //             "session is null Please try again later or plaese contact admin",
-                  //           );
-                  //           navigator?.pop();
-                  //           return;
-                  //         }
-                  //         final availableBiometrics =
-                  //             await CommonFn.availableBiometrics();
-                  //         if (availableBiometrics) {
-                  //           Get.toNamed(RouteName.enableBiometrics, arguments: {
-                  //             "whenSuccess": () async {
-                  //               LayoutController.to.intialApp();
-                  //               Get.offAllNamed(RouteName.layout);
-                  //               return;
-                  //             }
-                  //           });
-                  //           return;
-                  //         }
-                  //         LayoutController.to.intialApp();
-                  //         Get.offAllNamed(RouteName.layout);
-                  //       }
-                  //     });
-                  //   }
-                  // },
                 );
               },
               "whenSuccess": () async {
@@ -264,85 +261,6 @@ class LoginController extends GetxController {
           );
         },
       ),
-      // arguments: {
-      //   "phoneNumber": phoneNumber,
-      //   "whenSuccess": (String userId, String secret) async {
-      //     Get.snackbar("OTP verify successfully !", "");
-
-      //     // TODO: check has pin ? - sawanon:202409
-      //     Get.offNamed(
-      //       // RouteName.pin,
-      //       RouteName.pinVerify,
-      //       arguments: {
-      //         "userId": responseUser['data']["userId"],
-      //         "enableForgetPasscode": true,
-      //         "whenForgetPasscode": () async {
-      //           Get.rawSnackbar(message: "verify otp");
-      //           Get.toNamed(RouteName.otp, arguments: {
-      //             "phoneNumber": phoneNumber,
-      //             "whenSuccess": () async {
-      //               Get.toNamed(RouteName.changePasscode, arguments: {
-      //                 "userId": responseUser['data']['userId'],
-      //                 "whenSuccess": () async {
-      //                   final session = await AppWriteController.to
-      //                       .createSession(userId, secret);
-      //                   if (session == null) {
-      //                     Get.snackbar(
-      //                       "Something went wrong login:65",
-      //                       "session is null Please try again later or plaese contact admin",
-      //                     );
-      //                     navigator?.pop();
-      //                     return;
-      //                   }
-      //                   final availableBiometrics =
-      //                       await CommonFn.availableBiometrics();
-      //                   if (availableBiometrics) {
-      //                     Get.toNamed(RouteName.enableBiometrics, arguments: {
-      //                       "whenSuccess": () async {
-      //                         LayoutController.to.intialApp();
-      //                         Get.offAllNamed(RouteName.layout);
-      //                         return;
-      //                       }
-      //                     });
-      //                     return;
-      //                   }
-      //                   LayoutController.to.intialApp();
-      //                   Get.offAllNamed(RouteName.layout);
-      //                 }
-      //               });
-      //             }
-      //           });
-      //         },
-      //         "whenSuccess": () async {
-      //           final session =
-      //               await AppWriteController.to.createSession(userId, secret);
-      //           if (session == null) {
-      //             Get.snackbar(
-      //               "Something went wrong login:65",
-      //               "session is null Please try again later or plaese contact admin",
-      //             );
-      //             navigator?.pop();
-      //             return;
-      //           }
-      //           final availableBiometrics =
-      //               await CommonFn.availableBiometrics();
-      //           if (availableBiometrics) {
-      //             Get.toNamed(RouteName.enableBiometrics, arguments: {
-      //               "whenSuccess": () async {
-      //                 LayoutController.to.intialApp();
-      //                 Get.offAllNamed(RouteName.layout);
-      //                 return;
-      //               }
-      //             });
-      //             return;
-      //           }
-      //           LayoutController.to.intialApp();
-      //           Get.offAllNamed(RouteName.layout);
-      //         }
-      //       },
-      //     );
-      //   }
-      // },
     );
   }
 
@@ -350,6 +268,89 @@ class LoginController extends GetxController {
     logger.d("logout");
     final appwriteController = AppWriteController.to;
     await appwriteController.logout();
+  }
+
+  void gotoPinverifyDev(String userId) {
+    Get.offNamed(
+      // RouteName.pin,
+      RouteName.pinVerify,
+      arguments: {
+        "userId": userId,
+        "enableForgetPasscode": true,
+        "whenForgetPasscode": () async {
+          Get.rawSnackbar(message: "verify otp");
+          Get.toNamed(
+            RouteName.otp,
+            arguments: OTPArgument(
+              action: OTPAction.changePasscode,
+              phoneNumber: phoneNumber,
+              onInit: () async {
+                return "devacc";
+              },
+              whenConfirmOTP: (otp) async {
+                // final session =
+                //     await AppWriteController.to.createSession(userId, secret);
+                final session = await AppWriteController.to.login(
+                  "+8562055265064@ckmail.com",
+                  "+8562055265064",
+                );
+                if (session == null) {
+                  Get.snackbar(
+                    "Something went wrong login:65",
+                    "session is null Please try again later or plaese contact admin",
+                  );
+                  navigator?.pop();
+                  return;
+                }
+                final availableBiometrics =
+                    await CommonFn.availableBiometrics();
+                if (availableBiometrics) {
+                  Get.toNamed(RouteName.enableBiometrics, arguments: {
+                    "whenSuccess": () async {
+                      LayoutController.to.intialApp();
+                      Get.offAllNamed(RouteName.layout);
+                      return;
+                    }
+                  });
+                  return;
+                }
+                LayoutController.to.intialApp();
+                Get.offAllNamed(RouteName.layout);
+              },
+            ),
+          );
+        },
+        "whenSuccess": () async {
+          // final session = await AppWriteController.to
+          //     .createSession(responseUser['data']["userId"], secret);
+          final session = await AppWriteController.to.login(
+            "+8562055265064@ckmail.com",
+            "+8562055265064",
+          );
+          if (session == null) {
+            Get.snackbar(
+              "Something went wrong login:65",
+              "session is null Please try again later or plaese contact admin",
+            );
+            // navigator?.pop();
+            return;
+          }
+          final availableBiometrics = await CommonFn.availableBiometrics();
+          if (availableBiometrics) {
+            Get.toNamed(RouteName.enableBiometrics, arguments: {
+              "whenSuccess": () async {
+                LayoutController.to.intialApp();
+                Get.offAllNamed(RouteName.layout);
+                return;
+              }
+            });
+            return;
+          }
+          LayoutController.to.intialApp();
+          Get.offAllNamed(RouteName.layout);
+        }
+      },
+    );
   }
 
   void checkDevice() async {

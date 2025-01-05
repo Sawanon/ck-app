@@ -70,6 +70,9 @@ class AppIcon {
       "assets/png/video_today_horoscope.png";
   static const String videoLuckyNumber = "assets/png/video_lucky_number.png";
   static const String document = "assets/svg/vuesax/linear/document.svg";
+  static const String ticket = "assets/svg/vuesax/linear/ticket.svg";
+  static const String user = "assets/svg/vuesax/bold/user.svg";
+  static const String userTick = "assets/svg/vuesax/bold/user-tick.svg";
 
   static const String lo = "assets/laos1.png";
   static const String th = "assets/Th1.png";

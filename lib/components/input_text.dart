@@ -12,6 +12,8 @@ class InputText extends StatelessWidget {
   final int? maxLength;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
+  final Widget? label;
+  final int? maxValue;
 
   const InputText({
     super.key,
@@ -24,6 +26,8 @@ class InputText extends StatelessWidget {
     this.maxLength,
     this.inputFormatters,
     this.keyboardType,
+    this.label,
+    this.maxValue,
   });
 
   @override
@@ -37,9 +41,12 @@ class InputText extends StatelessWidget {
         FilteringTextInputFormatter.allow(
           RegExp(r'[ກ-ໝໜໞໟ໠-໽, 0-9]'), // ชุดตัวอักษรภาษาลาว
         ),
+        CustomRangeTextInputFormatter(maxValue ?? 1000000),
+        // CustomRangeTextInputFormatter(),
       ],
       maxLength: maxLength,
       decoration: InputDecoration(
+        label: label,
         errorText: errorText,
         contentPadding: EdgeInsets.symmetric(horizontal: 8),
         enabledBorder: OutlineInputBorder(
@@ -73,5 +80,22 @@ class InputText extends StatelessWidget {
       validator: validator,
       onChanged: onChanged,
     );
+  }
+}
+
+class CustomRangeTextInputFormatter extends TextInputFormatter {
+  final int maxValue;
+
+  CustomRangeTextInputFormatter(this.maxValue);
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.text.isEmpty) return newValue;
+    final int? value = int.tryParse(newValue.text);
+    if (value != null && value <= maxValue) {
+      return newValue;
+    }
+    return oldValue; // ย้อนกลับไปใช้ค่าก่อนหน้า
   }
 }

@@ -17,13 +17,18 @@ import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/model/lottery_date.dart';
 import 'package:lottery_ck/model/news.dart';
 import 'package:lottery_ck/model/respnose_verifypasscode.dart';
+import 'package:lottery_ck/model/response/get_my_friends.dart';
 import 'package:lottery_ck/model/response/get_otp.dart';
+import 'package:lottery_ck/model/response/get_user_by_ref_code.dart';
+import 'package:lottery_ck/model/response/list_my_friends_user.dart';
+import 'package:lottery_ck/model/response/response_api.dart';
 import 'package:lottery_ck/model/response/signup.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/model/user_point.dart';
 import 'package:lottery_ck/modules/appwrite/controller/savefile.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
@@ -52,6 +57,7 @@ class AppWriteController extends GetxController {
   static const String SETTINGS = 'settings';
   static const String BACKGROUND_THEME = '6768df870033004ee896';
   static const String APP_WALLPAPERS = 'appWallpapers';
+  static const String COUPON = '67762ef9003b9b51c763';
 
   static const String FN_SIGNIN = '6759aebe003c92a6fa81';
 
@@ -108,39 +114,43 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<bool> login(String email, String password) async {
+  Future<Session?> login(String email, String password) async {
     try {
       final session = await account.createEmailPasswordSession(
         email: email,
         password: password,
       );
-      await StorageController.to.setSessionId(session.$id);
-      final user = await account.get();
-      logger.d(user.name);
-      // final firebaseMessage = FirebaseMessagingController.to;
-      // logger.d(firebaseMessage.token);
-      logger.d(user.targets.length);
-      for (var element in user.targets) {
-        logger.d(element.name);
-        logger.d(element.providerType);
-      }
-      final pushTarget = user.targets
-          .where((element) => element.providerType == 'push')
-          .toList();
-      logger.d(pushTarget);
-      logger.d(pushTarget.length);
-      if (pushTarget.isEmpty) {
-        logger.w("create target is empty");
-        await createTarget();
-      }
-      return true;
+      await clearOtherSession(session.$id);
+      await createTarget();
+      final storageController = StorageController.to;
+      storageController.setSessionId(session.$id);
+      // await StorageController.to.setSessionId(session.$id);
+      // final user = await account.get();
+      // logger.d(user.name);
+      // // final firebaseMessage = FirebaseMessagingController.to;
+      // // logger.d(firebaseMessage.token);
+      // logger.d(user.targets.length);
+      // for (var element in user.targets) {
+      //   logger.d(element.name);
+      //   logger.d(element.providerType);
+      // }
+      // final pushTarget = user.targets
+      //     .where((element) => element.providerType == 'push')
+      //     .toList();
+      // logger.d(pushTarget);
+      // logger.d(pushTarget.length);
+      // if (pushTarget.isEmpty) {
+      //   logger.w("create target is empty");
+      //   await createTarget();
+      // }
+      return session;
     } on Exception catch (e) {
       logger.e(e.toString());
       Get.snackbar(
         "Something went wrong appwrite:74",
         "Please try again later or plaese contact admin",
       );
-      return false;
+      return null;
     }
     // setState(() {
     //   loggedInUser = user;
@@ -1583,7 +1593,7 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<ResponseGetOTP?> getOTPUser(String phoneNumber) async {
+  Future<ResponseApi<ResponseGetOTP?>> getOTPUser(String phoneNumber) async {
     try {
       final dio = Dio();
       final response = await dio.post(
@@ -1594,36 +1604,47 @@ class AppWriteController extends GetxController {
       );
       final result = response.data;
       logger.d(result);
+
       if (result['isError'] == true) {
-        logger.d("in if");
-        DialogApp(
-          title: const Text("Network error"),
-          details: Text('code:${result['code']} message:${result['message']}'),
-          disableConfirm: true,
-        );
-        return null;
+        if (result['code'] == 409) {
+          return ResponseApi(
+              isSuccess: false,
+              message: AppLocale.rateLimit.getString(Get.context!));
+        }
+        return ResponseApi(
+            isSuccess: false,
+            message: result['message'] ?? "OTP request failed");
       }
-      return ResponseGetOTP(
-        otpRef: result['data']['otpRef'],
-        otp: result['data']['otp'],
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully request OTP",
+        data: ResponseGetOTP(
+          otpRef: result['data']['otpRef'],
+          otp: result['data']['otp'],
+        ),
       );
     } on DioException catch (e) {
       if (e.response != null) {
         logger.e(e.response?.statusCode);
         logger.e(e.response?.statusMessage);
         logger.e(e.response?.data);
-        logger.e(e.response?.headers);
-        logger.e(e.response?.requestOptions);
-        Get.dialog(
-          DialogApp(
-            title: const Text("Network error"),
-            details: Text(
-                'code:${e.response?.statusCode ?? '-'} message:${e.response?.statusMessage ?? '-'}'),
-            disableConfirm: true,
-          ),
+        // Get.dialog(
+        //   DialogApp(
+        //     title: const Text("Network error"),
+        //     details: Text(
+        //         'code:${e.response?.statusCode ?? '-'} message:${e.response?.statusMessage ?? '-'}'),
+        //     disableConfirm: true,
+        //   ),
+        // );
+        return ResponseApi(
+          isSuccess: false,
+          message: e.response?.statusMessage ?? "OTP request failed",
         );
       }
-      return null;
+      return ResponseApi(
+        isSuccess: false,
+        message: "OTP request failed",
+      );
     }
   }
 
@@ -1639,6 +1660,7 @@ class AppWriteController extends GetxController {
         },
       );
       final result = response.data;
+      logger.w(result);
       if (result['isError'] == true) {
         Get.dialog(
           DialogApp(
@@ -1731,6 +1753,222 @@ class AppWriteController extends GetxController {
     } catch (e) {
       logger.e("$e");
       return null;
+    }
+  }
+
+  Future<ResponseApi<ResponseGetUserByRefCode?>> getUserByRefCode(
+      String refCode) async {
+    try {
+      final dio = Dio();
+      final response =
+          await dio.get('${AppConst.apiUrl}/user/ref-code/$refCode');
+      final result = response.data;
+      return ResponseApi(
+        isSuccess: true,
+        message: 'Successfully get user by ref code',
+        data: ResponseGetUserByRefCode.fromJson(result['data']),
+      );
+    } on DioException catch (e) {
+      logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        logger.e(e.response?.headers);
+        logger.e(e.response?.requestOptions);
+        return ResponseApi(
+            isSuccess: false,
+            message:
+                e.response?.statusMessage ?? "failed to get user by ref code");
+      }
+      return ResponseApi(
+          isSuccess: false, message: "failed to get user by ref code");
+    }
+  }
+
+  Future<void> connectFriend(String referrer, String referee) async {
+    try {
+      final dio = Dio();
+      final response = await dio.post(
+        "${AppConst.apiUrl}/user/ref-code",
+        data: {
+          "referrer": referrer,
+          "referee": referee,
+        },
+      );
+      logger.w(response.data);
+    } catch (e) {
+      logger.e("$e");
+      // return null;
+    }
+  }
+
+  Future<ResponseApi<Map?>> acceptFriend(
+      String referrer, String referee) async {
+    try {
+      final dio = Dio();
+      final response = await dio.post(
+        "${AppConst.apiUrl}/user/ref-code/accept",
+        data: {
+          "referrer": referrer,
+          "referee": referee,
+        },
+      );
+      logger.w(response.data);
+      return ResponseApi(
+        isSuccess: true,
+        message: "Accept friend successfully",
+        data: response.data,
+      );
+    } on DioException catch (e) {
+      logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        return ResponseApi(
+            isSuccess: false,
+            message: e.response?.statusMessage ?? "failed to accept friend");
+      }
+      // return null;
+      return ResponseApi(isSuccess: false, message: "failed to accept friend");
+    }
+  }
+
+  Future<ResponseApi<GetMyFriends?>> getMyFriends(String refCode) async {
+    try {
+      final dio = Dio();
+      final response = await dio.get(
+        "${AppConst.apiUrl}/user/ref-code/my-friends/$refCode",
+      );
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully",
+        data: GetMyFriends.fromJson(
+          response.data['data'],
+        ),
+      );
+    } on DioException catch (e) {
+      logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        return ResponseApi(
+            isSuccess: false,
+            message: e.response?.statusMessage ?? "failed to get your friends");
+      }
+      // return null;
+      return ResponseApi(
+          isSuccess: false, message: "failed to get your friends");
+    }
+  }
+
+  Future<ResponseApi<List<ListMyFriendsUser>?>> listMyFriendsUser(
+      String refCode) async {
+    try {
+      final dio = Dio();
+      final response = await dio.get(
+        "${AppConst.apiUrl}/user/ref-code/my-friends/list-user/$refCode",
+      );
+      final resultList = response.data['data'] as List;
+      return ResponseApi(
+          isSuccess: true,
+          message: "Successfully list friends user",
+          data: resultList
+              .map((result) => ListMyFriendsUser.fromJson(result))
+              .toList());
+    } on DioException catch (e) {
+      logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        return ResponseApi(
+            isSuccess: false,
+            message: e.response?.statusMessage ?? "failed to get your friends");
+      }
+      // return null;
+      return ResponseApi(
+          isSuccess: false, message: "failed to get your friends");
+    }
+  }
+
+  Future<void> test() async {
+    // 20250103_invoice
+    final response = await databases.listDocuments(
+      databaseId: _databaseName,
+      collectionId: "20250103_invoice",
+    );
+    logger.w(response);
+  }
+
+  Future<ResponseApi<void>> collectCoupons(
+    String promotionId,
+    String userId,
+  ) async {
+    try {
+      final dio = Dio();
+      final token = await getCredential();
+      final response = await dio.post("${AppConst.apiUrl}/promotion/coupon",
+          data: {
+            "promotionId": promotionId,
+            "userId": userId,
+          },
+          options: Options(
+            headers: {"Authorization": "Bearer $token"},
+          ));
+      logger.w(response.data);
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully collect coupons",
+      );
+    } on DioException catch (e) {
+      logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        return ResponseApi(
+          isSuccess: false,
+          message: e.response?.statusMessage ?? "failed to collect coupons",
+        );
+      }
+      // return null;
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to collect coupons",
+      );
+    }
+  }
+
+  Future<ResponseApi<void>> listMyCoupons(String userId) async {
+    try {
+      // continue list coupon to show in payment page
+      final now = DateTime.now().toUtc().toIso8601String();
+      final response = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: COUPON,
+        queries: [
+          Query.equal("userId", userId),
+          Query.equal("is_use", false),
+          Query.greaterThanEqual("expire_date", now),
+        ],
+      );
+      logger.d("");
+      for (var document in response.documents) {
+        logger.w(document.data);
+      }
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully list my coupons",
+      );
+    } on AppwriteException catch (e) {
+      logger.e("$e");
+      return ResponseApi(
+        isSuccess: false,
+        message: e.message ?? "failed to list my coupongs",
+      );
     }
   }
 

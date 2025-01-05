@@ -4,7 +4,6 @@ import 'package:lottery_ck/modules/bill/controller/bill.controller.dart';
 import 'package:lottery_ck/modules/biometrics/controller/enable_biometrics.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/couldflare/controller/cloudflare.controller.dart';
-import 'package:lottery_ck/modules/firebase/controller/firebase_auth.controller.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
 import 'package:lottery_ck/modules/history/controller/history.controller.dart';
 import 'package:lottery_ck/modules/history/controller/history_win.controller.dart';
@@ -47,7 +46,6 @@ class LayoutBindings extends Bindings {
   void dependencies() {
     Get.put<StorageController>(StorageController());
     Get.put<FirebaseMessagingController>(FirebaseMessagingController());
-    Get.put<FirebaseAuthController>(FirebaseAuthController());
     Get.put<AppWriteController>(AppWriteController());
     Get.put<UserStore>(UserStore());
     Get.put<LayoutController>(LayoutController(), permanent: true);

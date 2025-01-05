@@ -5,7 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottery_ck/components/banner.dart';
+import 'package:lottery_ck/components/friends.dart';
 import 'package:lottery_ck/components/menu_card.dart';
+import 'package:lottery_ck/components/menu_grid.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -211,165 +213,205 @@ class HomePageV2 extends StatelessWidget {
                                         Row(
                                           children: [
                                             Expanded(
-                                              child: Container(
-                                                padding: const EdgeInsets.only(
-                                                  top: 4,
-                                                  bottom: 4,
-                                                  left: 6,
-                                                  right: 0,
-                                                ),
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
-                                                  gradient:
-                                                      const LinearGradient(
-                                                    colors: [
-                                                      Color.fromRGBO(
-                                                          225, 126, 61, 1),
-                                                      Color.fromRGBO(
-                                                          235, 157, 100, 1),
-                                                      Color.fromRGBO(
-                                                          235, 157, 100, 1),
-                                                      Color.fromRGBO(
-                                                          225, 126, 61, 1),
-                                                    ],
-                                                    begin: Alignment.centerLeft,
-                                                    end: Alignment.centerRight,
-                                                    stops: [
-                                                      0,
-                                                      0.28,
-                                                      0.72,
-                                                      1,
-                                                    ],
-                                                  ),
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Container(
-                                                      padding:
-                                                          EdgeInsets.all(1),
-                                                      decoration: BoxDecoration(
-                                                        color: const Color
-                                                            .fromRGBO(
-                                                            226, 129, 65, 1),
-                                                        shape: BoxShape.circle,
-                                                        border: Border.all(
-                                                          color: Colors.white,
-                                                          width: 1,
-                                                        ),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  // Get.toNamed(
+                                                  //     RouteName.friends);
+                                                  if (controller.myFriends !=
+                                                      null) {
+                                                    Get.to(
+                                                      () => FriendsPage(
+                                                        myFriends: controller
+                                                            .myFriends!,
+                                                        listMyFriends:
+                                                            controller
+                                                                .listMyFriends,
                                                       ),
-                                                      child: Container(
-                                                        width: 29,
-                                                        height: 29,
+                                                    );
+                                                  }
+                                                },
+                                                child: Container(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    top: 4,
+                                                    bottom: 4,
+                                                    left: 6,
+                                                    right: 0,
+                                                  ),
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                    gradient:
+                                                        const LinearGradient(
+                                                      colors: [
+                                                        Color.fromRGBO(
+                                                            225, 126, 61, 1),
+                                                        Color.fromRGBO(
+                                                            235, 157, 100, 1),
+                                                        Color.fromRGBO(
+                                                            235, 157, 100, 1),
+                                                        Color.fromRGBO(
+                                                            225, 126, 61, 1),
+                                                      ],
+                                                      begin:
+                                                          Alignment.centerLeft,
+                                                      end:
+                                                          Alignment.centerRight,
+                                                      stops: [
+                                                        0,
+                                                        0.28,
+                                                        0.72,
+                                                        1,
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Container(
                                                         padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                          right: 5,
-                                                        ),
-                                                        alignment: Alignment
-                                                            .centerRight,
+                                                            EdgeInsets.all(1),
                                                         decoration:
-                                                            const BoxDecoration(
-                                                          color: Colors.white,
+                                                            BoxDecoration(
+                                                          color: const Color
+                                                              .fromRGBO(
+                                                              226, 129, 65, 1),
                                                           shape:
                                                               BoxShape.circle,
+                                                          border: Border.all(
+                                                            color: Colors.white,
+                                                            width: 1,
+                                                          ),
                                                         ),
-                                                        child: SizedBox(
-                                                          width: 17,
-                                                          height: 17,
-                                                          child:
-                                                              SvgPicture.asset(
-                                                            AppIcon.groupAdd,
-                                                            colorFilter:
-                                                                ColorFilter
-                                                                    .mode(
-                                                              Color.fromRGBO(
-                                                                  226,
-                                                                  130,
-                                                                  67,
-                                                                  1),
-                                                              BlendMode.srcIn,
+                                                        child: Container(
+                                                          width: 29,
+                                                          height: 29,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                            right: 5,
+                                                          ),
+                                                          alignment: Alignment
+                                                              .centerRight,
+                                                          decoration:
+                                                              const BoxDecoration(
+                                                            color: Colors.white,
+                                                            shape:
+                                                                BoxShape.circle,
+                                                          ),
+                                                          child: SizedBox(
+                                                            width: 17,
+                                                            height: 17,
+                                                            child: SvgPicture
+                                                                .asset(
+                                                              AppIcon.groupAdd,
+                                                              colorFilter:
+                                                                  ColorFilter
+                                                                      .mode(
+                                                                Color.fromRGBO(
+                                                                    226,
+                                                                    130,
+                                                                    67,
+                                                                    1),
+                                                                BlendMode.srcIn,
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    Column(
-                                                      children: [
-                                                        Text(
-                                                          "แนะนำ",
-                                                          style: GoogleFonts
-                                                              .prompt(
-                                                            textStyle:
-                                                                TextStyle(
-                                                              fontSize: 10,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                      Column(
+                                                        children: [
+                                                          Text(
+                                                            "แนะนำ",
+                                                            style: GoogleFonts
+                                                                .prompt(
+                                                              textStyle:
+                                                                  TextStyle(
+                                                                fontSize: 10,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
+                                                            ),
+                                                            // style: TextStyle(
+                                                            //   fontSize: 10,
+                                                            //   fontWeight: FontWeight.w500,
+                                                            // ),
+                                                          ),
+                                                          Text(
+                                                            "เพื่อน",
+                                                            style: GoogleFonts
+                                                                .prompt(
+                                                              textStyle:
+                                                                  TextStyle(
+                                                                fontSize: 10,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
                                                             ),
                                                           ),
-                                                          // style: TextStyle(
-                                                          //   fontSize: 10,
-                                                          //   fontWeight: FontWeight.w500,
-                                                          // ),
-                                                        ),
-                                                        Text(
-                                                          "เพื่อน",
-                                                          style: GoogleFonts
-                                                              .prompt(
-                                                            textStyle:
-                                                                TextStyle(
-                                                              fontSize: 10,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                        ],
+                                                      ),
+                                                      Column(
+                                                        children: [
+                                                          Text(
+                                                            "ชวน/รับ",
+                                                            style: GoogleFonts
+                                                                .prompt(
+                                                              textStyle:
+                                                                  TextStyle(
+                                                                fontSize: 10,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Column(
-                                                      children: [
-                                                        Text(
-                                                          "ชวน/รับ",
-                                                          style: GoogleFonts
-                                                              .prompt(
-                                                            textStyle:
-                                                                TextStyle(
-                                                              fontSize: 10,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                          if (controller
+                                                                  .myFriends ==
+                                                              null)
+                                                            Text(
+                                                              "0/0",
+                                                              style: TextStyle(
+                                                                fontSize: 13,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                height: 1.1,
+                                                              ),
+                                                            )
+                                                          else
+                                                            Text(
+                                                              // TODO: continute dev share friend
+                                                              "${controller.myFriends!.total}/${controller.myFriends!.accepted}",
+                                                              style: TextStyle(
+                                                                fontSize: 13,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                height: 1.1,
+                                                              ),
                                                             ),
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        width: 16,
+                                                        height: 16,
+                                                        child: SvgPicture.asset(
+                                                          AppIcon.arrowRight,
+                                                          colorFilter:
+                                                              ColorFilter.mode(
+                                                            Colors.white,
+                                                            BlendMode.srcIn,
                                                           ),
-                                                        ),
-                                                        Text(
-                                                          "100/50",
-                                                          style: TextStyle(
-                                                            fontSize: 13,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            height: 1.1,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      width: 16,
-                                                      height: 16,
-                                                      child: SvgPicture.asset(
-                                                        AppIcon.arrowRight,
-                                                        colorFilter:
-                                                            ColorFilter.mode(
-                                                          Colors.white,
-                                                          BlendMode.srcIn,
                                                         ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
@@ -737,7 +779,8 @@ class HomePageV2 extends StatelessWidget {
                               );
                             }).toList(),
                             options: CarouselOptions(
-                              height: 120.0,
+                              // height: 120.0,
+                              // height: 242.0,
                               viewportFraction: 1,
                               autoPlay: true,
                               autoPlayInterval: Duration(
@@ -762,56 +805,7 @@ class HomePageV2 extends StatelessWidget {
                     // const SizedBox(height: 8),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 5,
-                          childAspectRatio: 3 / 4.9,
-                          crossAxisSpacing: 2,
-                          mainAxisSpacing: 0,
-                        ),
-                        padding: const EdgeInsets.all(0),
-                        itemBuilder: (context, index) {
-                          final menu = controller.menu[index];
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: AspectRatio(
-                                  aspectRatio: 1,
-                                  child: GestureDetector(
-                                    onTap: menu.ontab,
-                                    child: Container(
-                                      width: 48,
-                                      height: 48,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(8),
-                                        boxShadow: [
-                                          AppTheme.softShadow,
-                                        ],
-                                      ),
-                                      child: Container(
-                                        // alignment: Alignment.center,
-                                        child: menu.icon,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Align(
-                                child: menu.name,
-                              ),
-                            ],
-                          );
-                        },
-                        itemCount: controller.menu.length,
-                      ),
+                      child: MenuGrid(),
                     ),
                     // Padding(
                     //   padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -1002,14 +996,19 @@ class HomePageV2 extends StatelessWidget {
                           );
                         }),
                         const SizedBox(width: 8),
-                        SizedBox(
-                          width: 22,
-                          height: 22,
-                          child: SvgPicture.asset(
-                            AppIcon.notification,
-                            colorFilter: const ColorFilter.mode(
-                              Colors.white,
-                              BlendMode.srcIn,
+                        GestureDetector(
+                          onTap: () {
+                            controller.test();
+                          },
+                          child: SizedBox(
+                            width: 22,
+                            height: 22,
+                            child: SvgPicture.asset(
+                              AppIcon.notification,
+                              colorFilter: const ColorFilter.mode(
+                                Colors.white,
+                                BlendMode.srcIn,
+                              ),
                             ),
                           ),
                         ),

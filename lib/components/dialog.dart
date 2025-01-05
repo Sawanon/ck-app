@@ -8,8 +8,8 @@ import 'package:lottery_ck/res/color.dart';
 class DialogApp extends StatefulWidget {
   final Future<void> Function()? onConfirm;
   final void Function()? onCancel;
-  final Widget confirmText;
-  final Widget cancelText;
+  final Widget? confirmText;
+  final Widget? cancelText;
   final Widget title;
   final Widget? details;
   final bool disableConfirm;
@@ -17,13 +17,8 @@ class DialogApp extends StatefulWidget {
     super.key,
     this.onConfirm,
     this.onCancel,
-    this.confirmText = const Text("Confirm"),
-    this.cancelText = const Text(
-      "Cancel",
-      style: TextStyle(
-        color: AppColors.primary,
-      ),
-    ),
+    this.confirmText,
+    this.cancelText,
     this.title = const Text("Title"),
     this.details,
     this.disableConfirm = false,
@@ -94,7 +89,13 @@ class _DialogAppState extends State<DialogApp> {
                                 color: AppColors.primary,
                               ),
                             )
-                          : widget.cancelText,
+                          : widget.cancelText ??
+                              Text(
+                                AppLocale.cancel.getString(context),
+                                style: const TextStyle(
+                                  color: AppColors.primary,
+                                ),
+                              ),
                     ),
                   ),
                   if (!widget.disableConfirm) const SizedBox(width: 8),
@@ -103,7 +104,8 @@ class _DialogAppState extends State<DialogApp> {
                       child: LongButton(
                         isLoading: isLoading,
                         onPressed: onConfirm,
-                        child: widget.confirmText,
+                        child: widget.confirmText ??
+                            Text(AppLocale.confirm.getString(context)),
                       ),
                     ),
                 ],

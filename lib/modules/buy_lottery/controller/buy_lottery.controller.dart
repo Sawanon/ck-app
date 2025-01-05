@@ -140,14 +140,19 @@ class BuyLotteryController extends GetxController {
 
   void showSnackbarSuccess(List<Lottery> lotteryList) {
     final onlyLotteryList = lotteryList.map((lottery) => lottery.lottery);
+    String messageText = AppLocale.addedLottery.getString(Get.context!);
+    messageText =
+        messageText.replaceAll("{lottery}", onlyLotteryList.join(","));
     Get.rawSnackbar(
+      animationDuration: const Duration(milliseconds: 300),
       snackPosition: SnackPosition.TOP,
       backgroundColor: Colors.green.shade200,
       overlayColor: Colors.green.shade800,
       margin: const EdgeInsets.all(16),
       borderRadius: 16,
       messageText: Text(
-        "เพิ่มเลข ${onlyLotteryList.join(",")} เรียบร้อย",
+        messageText,
+        // "เพิ่มเลข ${onlyLotteryList.join(",")} เรียบร้อย",
         style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.bold,
@@ -463,18 +468,34 @@ class BuyLotteryController extends GetxController {
           totalAmount: price,
         );
         if (fromOtherPage == true) {
+          String detail =
+              AppLocale.confirmLotteryPurchaseText.getString(Get.context!);
+          detail = detail.replaceAll("{lottery}", lottery);
+          detail = detail.replaceAll("{price}", "$price");
           Get.dialog(DialogApp(
             title: Text(
-              "ยืนยันการซื้อหวย",
+              AppLocale.confirmLotteryPurchase.getString(Get.context!),
             ),
             details: Text(
-              "คุณต้องการซื้อหวยเลข $lottery ในราคา $price กีบ ใช่หรือไม่?",
+              detail,
+              // "คุณต้องการซื้อหวยเลข $lottery ในราคา $price กีบ ใช่หรือไม่?",
             ),
             onConfirm: () async {
               await createTransaction([lotteryData]);
               // lotteryNode.requestFocus();
-              Get.back();
-              showSnackbarSuccess([lotteryData]);
+              Get.closeAllSnackbars();
+
+              logger.w(Get.isSnackbarOpen);
+              // if (Get.isSnackbarOpen) {
+              //   Get.back();
+              // }
+              await Future.delayed(
+                const Duration(milliseconds: 500),
+                () {
+                  Get.back();
+                  showSnackbarSuccess([lotteryData]);
+                },
+              );
             },
           ));
         } else {
@@ -734,7 +755,7 @@ class BuyLotteryController extends GetxController {
         price: amount,
         quota: amount,
       );
-      calPrePromotion(invoicePayload);
+      // calPrePromotion(invoicePayload);
       logger.w(invoicePayload.toJson(userApp!.userId));
       // tag:create
       final responseCreateInvoice = await addTransaction(invoicePayload);
@@ -816,15 +837,15 @@ class BuyLotteryController extends GetxController {
           cloneInvoice.transactions.add(lotteryData);
         }
       }
-      for (var transaction in cloneInvoice.transactions) {
-        transaction.amount = transaction.quota;
-        transaction.totalAmount = transaction.quota;
-        transaction.discount = null;
-        transaction.discountType = null;
-        transaction.bonus = null;
-        transaction.bonusType = null;
-      }
-      cloneInvoice = calPrePromotion(cloneInvoice);
+      // for (var transaction in cloneInvoice.transactions) {
+      //   transaction.amount = transaction.quota;
+      //   transaction.totalAmount = transaction.quota;
+      //   transaction.discount = null;
+      //   transaction.discountType = null;
+      //   transaction.bonus = null;
+      //   transaction.bonusType = null;
+      // }
+      // cloneInvoice = calPrePromotion(cloneInvoice);
       // FIXME: clone all bonus to payload and new invoiceMeta.value !!!
       logger.w(cloneInvoice.toJson(userApp!.userId));
       final List<Lottery> newTransactions = [];
@@ -856,6 +877,7 @@ class BuyLotteryController extends GetxController {
       // tag:update
       final responseUpdateInvoice = await addTransaction(invoicePayload);
       if (responseUpdateInvoice == null) {
+        Get.rawSnackbar(message: "add transaction failed");
         return;
       }
       // if (responseUpdateInvoice == null ||
@@ -910,29 +932,30 @@ class BuyLotteryController extends GetxController {
           transactionFailed.add(transaction);
         }
       }
-      for (var transaction in cloneInvoiceForCheckValue.transactions) {
-        transaction.amount = transaction.quota;
-        transaction.totalAmount = transaction.quota;
-        transaction.discount = null;
-        transaction.discountType = null;
-        transaction.bonus = null;
-        transaction.bonusType = null;
-      }
+      // for (var transaction in cloneInvoiceForCheckValue.transactions) {
+      //   transaction.amount = transaction.quota;
+      //   transaction.totalAmount = transaction.quota;
+      //   transaction.discount = null;
+      //   transaction.discountType = null;
+      //   transaction.bonus = null;
+      //   transaction.bonusType = null;
+      // }
       cloneInvoiceForCheckValue.quota = 0;
       cloneInvoiceForCheckValue.discount = null;
       cloneInvoiceForCheckValue.amount = 0;
       cloneInvoiceForCheckValue.bonus = null;
       cloneInvoiceForCheckValue.totalAmount = 0;
-      cloneInvoiceForCheckValue = calPrePromotion(cloneInvoiceForCheckValue);
-      // for (var transaction in cloneInvoiceForCheckValue.transactions) {
-      //   cloneInvoiceForCheckValue.quota += transaction.quota;
-      //   cloneInvoiceForCheckValue.discount = (transaction.discount ?? 0) +
-      //       (cloneInvoiceForCheckValue.discount ?? 0);
-      //   cloneInvoiceForCheckValue.amount += transaction.amount;
-      //   cloneInvoiceForCheckValue.bonus =
-      //       (transaction.bonus ?? 0) + (cloneInvoiceForCheckValue.bonus ?? 0);
-      //   cloneInvoiceForCheckValue.totalAmount += transaction.totalAmount!;
-      // }
+      // cloneInvoiceForCheckValue = calPrePromotion(cloneInvoiceForCheckValue);
+
+      for (var transaction in cloneInvoiceForCheckValue.transactions) {
+        cloneInvoiceForCheckValue.quota += transaction.quota;
+        cloneInvoiceForCheckValue.discount = (transaction.discount ?? 0) +
+            (cloneInvoiceForCheckValue.discount ?? 0);
+        cloneInvoiceForCheckValue.amount += transaction.amount;
+        cloneInvoiceForCheckValue.bonus =
+            (transaction.bonus ?? 0) + (cloneInvoiceForCheckValue.bonus ?? 0);
+        cloneInvoiceForCheckValue.totalAmount += transaction.quota!;
+      }
       logger.d(cloneInvoiceForCheckValue.toJson(userApp!.userId));
       invoiceMeta.value = cloneInvoiceForCheckValue;
       if (transactionFailed.isNotEmpty) {

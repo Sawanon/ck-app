@@ -149,7 +149,8 @@ class CommonFn {
       if (phoneNumber.startsWith("+66")) {
         return '${phoneNumber.substring(0, 5)}XXX${phoneNumber.substring(8, 12)}';
       }
-      return phoneNumber;
+      final maxLength = phoneNumber.length;
+      return "${phoneNumber.substring(0, 6)}XXXX${phoneNumber.substring(10, maxLength)}";
     }
     return '${phoneNumber.substring(0, 6)}XXXX${phoneNumber.substring(10, 14)}';
   }

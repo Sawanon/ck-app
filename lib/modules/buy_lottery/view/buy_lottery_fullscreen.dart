@@ -13,6 +13,7 @@ import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:lottery_ck/utils/theme.dart';
 
 class BuyLotteryFullscreenPage extends StatelessWidget {
   const BuyLotteryFullscreenPage({super.key});
@@ -403,488 +404,280 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                  child: Text(AppLocale.totalAmount
-                                      .getString(context))),
-                              Text(
-                                // CommonFn.parseMoney(
-                                //     controller.totalAmount.value),
-                                CommonFn.parseMoney(
-                                    controller.invoiceMeta.value.quota),
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.textPrimary,
-                                ),
-                              ),
-                              if (controller.invoiceMeta.value.bonus != null &&
-                                  controller.invoiceMeta.value.bonus != 0)
-                                Text(
-                                  "+${CommonFn.parseMoney(controller.invoiceMeta.value.bonus!)}",
-                                  style: TextStyle(
-                                    color: Colors.green,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                            ],
-                          ),
-                        ),
-                        if (controller.promotionList.isNotEmpty)
-                          GestureDetector(
-                            onTap: () {
-                              logger.d("message");
-                              // controller.calPromotion();
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (context) {
-                                  return Container(
-                                    width: double.infinity,
-                                    height:
-                                        MediaQuery.of(context).size.height / 2,
-                                    color: Colors.white,
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Container(
-                                          padding: EdgeInsets.only(
-                                            top: 8,
-                                            left: 16,
-                                            right: 16,
-                                          ),
-                                          alignment: Alignment.centerRight,
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              controller.listPromotions(true);
-                                            },
-                                            child: const Icon(
-                                                Icons.refresh_rounded),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          child: Obx(() {
-                                            return ListView.separated(
-                                                padding:
-                                                    const EdgeInsets.all(16),
-                                                itemBuilder: (context, index) {
-                                                  return GestureDetector(
-                                                    onTap: () {
-                                                      final condition =
-                                                          jsonDecode(controller
-                                                                      .promotionList[
-                                                                  index]
-                                                              ['condition'][0]);
-                                                      logger.d(condition);
-                                                    },
-                                                    child: Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8),
-                                                      decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            width: 1,
-                                                            color: AppColors
-                                                                .borderGray),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8),
-                                                      ),
-                                                      // child: Text(
-                                                      //   '${controller.promotionList[index]['detail']}',
-                                                      //   // softWrap: false,
-                                                      //   maxLines: 2,
-                                                      //   overflow: TextOverflow.ellipsis,
-                                                      // ),
-                                                      child: Row(
-                                                        children: [
-                                                          SizedBox(
-                                                            width: 24,
-                                                            height: 24,
-                                                            child: SvgPicture
-                                                                .asset(AppIcon
-                                                                    .promotion),
-                                                          ),
-                                                          const SizedBox(
-                                                              width: 8),
-                                                          Expanded(
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Text(
-                                                                  '${controller.promotionList[index]['name']}',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        16,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: AppColors
-                                                                        .textPrimary,
-                                                                  ),
-                                                                  maxLines: 2,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                ),
-                                                                const SizedBox(
-                                                                    height: 4),
-                                                                Text(
-                                                                  '${controller.promotionList[index]['detail']}',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    color: AppColors
-                                                                        .textPrimary,
-                                                                  ),
-                                                                  maxLines: 2,
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                ),
-                                                                const SizedBox(
-                                                                    height: 4),
-                                                                Text(
-                                                                    '${AppLocale.promotionExpire.getString(context)}: ${CommonFn.parseDMY(DateTime.parse(controller.promotionList[index]['end_date']))}'),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                                separatorBuilder:
-                                                    (context, index) =>
-                                                        SizedBox(height: 8),
-                                                itemCount: controller
-                                                    .promotionList.length);
-                                          }),
-                                        ),
-                                      ],
-                                    ),
-                                    // child: ListView(
-                                    //   padding: const EdgeInsets.all(16),
-                                    //   children: controller.promotionList.map(
-                                    //     (promotion) {
-                                    //       return Container(
-                                    //         decoration: BoxDecoration(
-                                    //           border: Border.all(
-                                    //               width: 1,
-                                    //               color: AppColors.borderGray),
-                                    //           borderRadius:
-                                    //               BorderRadius.circular(8),
-                                    //         ),
-                                    //         child: Text('${promotion['name']}'),
-                                    //       );
-                                    //     },
-                                    //   ).toList(),
-                                    // ),
-                                  );
-                                },
-                              );
-                            },
-                            child: Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              padding: const EdgeInsets.all(8),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                    width: 1, color: AppColors.borderGray),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: SvgPicture.asset(AppIcon.promotion),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    AppLocale.promotion.getString(context),
-                                  ),
-                                  Expanded(
-                                    child: Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Container(
-                                        width: 24,
-                                        height: 24,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          color: Colors.red,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Text(
-                                          controller.promotionList.length
-                                              .toString(),
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
                         Container(
-                          margin: const EdgeInsets.only(
-                            left: 16.0,
-                            right: 16.0,
-                            top: 8,
-                            bottom: 26,
-                          ),
                           decoration: BoxDecoration(
                             color: Colors.white,
+                            // borderRadius: BorderRadius.circular(24),
+                            boxShadow: const [AppTheme.softShadow],
                           ),
-                          child: Form(
-                            key: controller.formKey,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
-                                      child: TextFormField(
-                                        textAlign: TextAlign.center,
-                                        decoration: InputDecoration(
-                                          hintText: AppLocale.purchaseNumber
-                                              .getString(context),
-                                          errorStyle: TextStyle(height: 0),
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 8),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            borderSide: const BorderSide(
-                                              color: AppColors.borderGray,
-                                            ),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            borderSide: const BorderSide(
-                                              color: AppColors.borderGray,
-                                              width: 1,
-                                            ),
-                                          ),
-                                          errorBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            borderSide: const BorderSide(
-                                              color: AppColors.errorBorder,
-                                              width: 2,
-                                            ),
-                                          ),
-                                          focusedErrorBorder:
-                                              OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            borderSide: const BorderSide(
-                                              color: AppColors.errorBorder,
-                                              width: 2,
-                                            ),
-                                          ),
-                                        ),
-                                        focusNode: controller.lotteryNode,
-                                        controller:
-                                            controller.lotteryTextController,
-                                        keyboardType: TextInputType.number,
-                                        inputFormatters: [
-                                          FilteringTextInputFormatter.digitsOnly
-                                        ],
-                                        validator: (value) {
-                                          logger.d("validator: $value");
-                                          if (value == null || value == "") {
-                                            controller.alertLotteryEmpty();
-                                            return "";
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (value) {
-                                          controller.lottery = value;
-                                        },
+                                        child: Text(AppLocale.totalAmount
+                                            .getString(context))),
+                                    Text(
+                                      // CommonFn.parseMoney(
+                                      //     controller.totalAmount.value),
+                                      CommonFn.parseMoney(
+                                          controller.invoiceMeta.value.quota),
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.textPrimary,
                                       ),
                                     ),
-                                    // const SizedBox(width: 4),
-                                    // GestureDetector(
-                                    //   onTap: () => controller.gotoAnimalPage(),
-                                    //   child: Container(
-                                    //     width: 48,
-                                    //     height: 48,
-                                    //     decoration: BoxDecoration(
-                                    //       color: AppColors.primary,
-                                    //       borderRadius:
-                                    //           BorderRadius.circular(8),
-                                    //     ),
-                                    //     child: Column(
-                                    //       mainAxisSize: MainAxisSize.min,
-                                    //       mainAxisAlignment:
-                                    //           MainAxisAlignment.center,
-                                    //       children: [
-                                    //         SizedBox(
-                                    //           width: 24,
-                                    //           height: 24,
-                                    //           child: SvgPicture.asset(
-                                    //             AppIcon.animal,
-                                    //             colorFilter: ColorFilter.mode(
-                                    //               Colors.white,
-                                    //               BlendMode.srcIn,
-                                    //             ),
-                                    //           ),
-                                    //         ),
-                                    //         Text(
-                                    //           AppLocale.animal
-                                    //               .getString(context),
-                                    //           style: TextStyle(
-                                    //             fontSize: 14,
-                                    //             color: Colors.white,
-                                    //           ),
-                                    //         ),
-                                    //       ],
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                    // const SizedBox(width: 4),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                Row(
-                                  children: [
-                                    Expanded(
-                                      child: TextFormField(
-                                        textAlign: TextAlign.center,
-                                        decoration: InputDecoration(
-                                          hintText: AppLocale.price
-                                              .getString(context),
-                                          errorStyle: TextStyle(height: 0),
-                                          contentPadding:
-                                              const EdgeInsets.symmetric(
-                                                  horizontal: 8),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            borderSide: const BorderSide(
-                                              color: AppColors.borderGray,
-                                            ),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            borderSide: const BorderSide(
-                                              color: AppColors.borderGray,
-                                              width: 1,
-                                            ),
-                                          ),
-                                          errorBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            borderSide: const BorderSide(
-                                              color: AppColors.errorBorder,
-                                              width: 2,
-                                            ),
-                                          ),
-                                          focusedErrorBorder:
-                                              OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            borderSide: const BorderSide(
-                                              color: AppColors.errorBorder,
-                                              width: 2,
-                                            ),
-                                          ),
+                                    if (controller.invoiceMeta.value.bonus !=
+                                            null &&
+                                        controller.invoiceMeta.value.bonus != 0)
+                                      Text(
+                                        "+${CommonFn.parseMoney(controller.invoiceMeta.value.bonus!)}",
+                                        style: TextStyle(
+                                          color: Colors.green,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        keyboardType: TextInputType.number,
-                                        inputFormatters: [
-                                          FilteringTextInputFormatter
-                                              .digitsOnly,
-                                        ],
-                                        focusNode: controller.priceNode,
-                                        controller:
-                                            controller.priceTextController,
-                                        validator: (value) {
-                                          if (value == null || value == "") {
-                                            controller.alertPrice();
-                                            return "";
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: controller.onChangePrice,
                                       ),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Obx(() {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          if (controller.disabledBuy.value) {
-                                            return;
-                                          }
-                                          controller.submitAddLottery(
-                                            controller.lottery,
-                                            controller.price,
-                                            true,
-                                          );
-                                        },
-                                        child: Container(
-                                          height: 48,
-                                          width: 48,
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            color: controller.disabledBuy.value
-                                                ? AppColors.disable
-                                                : AppColors.primary,
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                          ),
-                                          child: SvgPicture.asset(
-                                            AppIcon.add,
-                                            colorFilter: ColorFilter.mode(
-                                              controller.disabledBuy.value
-                                                  ? Colors.black
-                                                      .withOpacity(0.6)
-                                                  : Colors.white,
-                                              BlendMode.srcIn,
-                                            ),
-                                            width: 36,
-                                            height: 36,
-                                          ),
-                                        ),
-                                      );
-                                    }),
                                   ],
                                 ),
-                                const SizedBox(height: 8),
-                                LongButton(
-                                  onPressed: () {
-                                    controller.confirmLottery(
-                                        context); // lottery confirm
-                                  },
-                                  disabled: controller.disabledBuy.value,
-                                  child: Text(
-                                    AppLocale.confirmBuyLottery
-                                        .getString(context),
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                    ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.only(
+                                  left: 16.0,
+                                  right: 16.0,
+                                  top: 8,
+                                  bottom: 26,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                ),
+                                child: Form(
+                                  key: controller.formKey,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: TextFormField(
+                                              textAlign: TextAlign.center,
+                                              decoration: InputDecoration(
+                                                hintText: AppLocale
+                                                    .purchaseNumber
+                                                    .getString(context),
+                                                errorStyle:
+                                                    TextStyle(height: 0),
+                                                contentPadding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  borderSide: const BorderSide(
+                                                    color: AppColors.borderGray,
+                                                  ),
+                                                ),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  borderSide: const BorderSide(
+                                                    color: AppColors.borderGray,
+                                                    width: 1,
+                                                  ),
+                                                ),
+                                                errorBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  borderSide: const BorderSide(
+                                                    color:
+                                                        AppColors.errorBorder,
+                                                    width: 2,
+                                                  ),
+                                                ),
+                                                focusedErrorBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  borderSide: const BorderSide(
+                                                    color:
+                                                        AppColors.errorBorder,
+                                                    width: 2,
+                                                  ),
+                                                ),
+                                              ),
+                                              focusNode: controller.lotteryNode,
+                                              controller: controller
+                                                  .lotteryTextController,
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .digitsOnly
+                                              ],
+                                              validator: (value) {
+                                                logger.d("validator: $value");
+                                                if (value == null ||
+                                                    value == "") {
+                                                  controller
+                                                      .alertLotteryEmpty();
+                                                  return "";
+                                                }
+                                                return null;
+                                              },
+                                              onChanged: (value) {
+                                                controller.lottery = value;
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: TextFormField(
+                                              textAlign: TextAlign.center,
+                                              decoration: InputDecoration(
+                                                hintText: AppLocale.price
+                                                    .getString(context),
+                                                errorStyle:
+                                                    TextStyle(height: 0),
+                                                contentPadding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  borderSide: const BorderSide(
+                                                    color: AppColors.borderGray,
+                                                  ),
+                                                ),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  borderSide: const BorderSide(
+                                                    color: AppColors.borderGray,
+                                                    width: 1,
+                                                  ),
+                                                ),
+                                                errorBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  borderSide: const BorderSide(
+                                                    color:
+                                                        AppColors.errorBorder,
+                                                    width: 2,
+                                                  ),
+                                                ),
+                                                focusedErrorBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  borderSide: const BorderSide(
+                                                    color:
+                                                        AppColors.errorBorder,
+                                                    width: 2,
+                                                  ),
+                                                ),
+                                              ),
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              inputFormatters: [
+                                                FilteringTextInputFormatter
+                                                    .digitsOnly,
+                                              ],
+                                              focusNode: controller.priceNode,
+                                              controller: controller
+                                                  .priceTextController,
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value == "") {
+                                                  controller.alertPrice();
+                                                  return "";
+                                                }
+                                                return null;
+                                              },
+                                              onChanged:
+                                                  controller.onChangePrice,
+                                            ),
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Obx(() {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                if (controller
+                                                    .disabledBuy.value) {
+                                                  return;
+                                                }
+                                                controller.submitAddLottery(
+                                                  controller.lottery,
+                                                  controller.price,
+                                                  true,
+                                                );
+                                              },
+                                              child: Container(
+                                                height: 48,
+                                                width: 48,
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                  color: controller
+                                                          .disabledBuy.value
+                                                      ? AppColors.disable
+                                                      : AppColors.primary,
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                                child: SvgPicture.asset(
+                                                  AppIcon.add,
+                                                  colorFilter: ColorFilter.mode(
+                                                    controller.disabledBuy.value
+                                                        ? Colors.black
+                                                            .withOpacity(0.6)
+                                                        : Colors.white,
+                                                    BlendMode.srcIn,
+                                                  ),
+                                                  width: 36,
+                                                  height: 36,
+                                                ),
+                                              ),
+                                            );
+                                          }),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 8),
+                                      LongButton(
+                                        onPressed: () {
+                                          controller.confirmLottery(
+                                              context); // lottery confirm
+                                        },
+                                        disabled: controller.disabledBuy.value,
+                                        child: Text(
+                                          AppLocale.pay.getString(context),
+                                          // AppLocale.confirmBuyLottery
+                                          //     .getString(context),
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                )
-                              ],
-                            ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],

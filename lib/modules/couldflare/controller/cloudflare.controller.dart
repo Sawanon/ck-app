@@ -41,24 +41,32 @@ class CloudFlareController extends GetxController {
     ..loadRequest(Uri.parse("${AppConst.apiUrl}/verify"));
 
   Future<void> verifyToken(String token) async {
-    final dio = Dio();
-    final response = await dio.post(
-      // "${AppConst.cloudfareUrl}/verifyCloudflare",
-      "${AppConst.apiUrl}/verify",
-      data: {
-        "cf-turnstile-response": token,
-      },
-    );
-    // logger.d(response.data);
-    if (response.statusCode == 200 &&
-        response.data['data']['action'] == 'signin') {
-      if (argument != null && argument["whenSuccess"] is Function) {
-        argument["whenSuccess"]();
+    try {
+      final dio = Dio();
+      final response = await dio.post(
+        // "${AppConst.cloudfareUrl}/verifyCloudflare",
+        "${AppConst.apiUrl}/verify",
+        data: {
+          "cf-turnstile-response": token,
+        },
+      );
+      // logger.d(response.data);
+      if (response.statusCode == 200 &&
+          response.data['data']['action'] == 'signin') {
+        if (argument != null && argument["whenSuccess"] is Function) {
+          argument["whenSuccess"]();
+        }
+        return;
       }
-      return;
-    }
-    if (argument != null && argument["onFailed"] is Function) {
-      argument["onFailed"]();
+      if (argument != null && argument["onFailed"] is Function) {
+        argument["onFailed"]();
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+      }
     }
   }
 

@@ -33,6 +33,7 @@ class RouteName {
   static const String setting = '/setting';
   static const String videoMenu = '/videoMenu';
   static const String videoFullscreen = '/videoFullscreen';
+  static const String friends = '/friends';
 
   static const String cloudflare = '/cloudflare';
 }

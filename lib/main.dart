@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app_links/app_links.dart';
-import 'package:byteplus_vod/ve_vod.dart';
+// import 'package:byteplus_vod/ve_vod.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -43,36 +43,36 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 Future<void> initTTSDK() async {
-  // Enable logging
-  if (kDebugMode) {
-    FlutterTTSDKManager.openAllLog();
-  }
-  // Register plugin logs
-  TTFLogger.onLog = (logLevel, msg) {
-    logger.d(msg);
-  };
+  // // Enable logging
+  // if (kDebugMode) {
+  //   FlutterTTSDKManager.openAllLog();
+  // }
+  // // Register plugin logs
+  // TTFLogger.onLog = (logLevel, msg) {
+  //   logger.d(msg);
+  // };
 
-  // Provide a valid license file path, such as 'assets/VEVod.lic'
-  String licPath = 'assets/VEVod.lic';
-  // For Android, provide a valid channel ID for statistics; for iOS, it is optional and defaults to App Store
-  String channel = Platform.isAndroid ? 'Dev' : 'App Store';
-  // Initialize VOD configuration
-  TTSDKVodConfiguration vodConfig = TTSDKVodConfiguration();
-  // Set the maximum cache size, default is 100M, adjust according to your own business scenario, cache eviction is performed based on LRU rules when the cache size exceeds the maximum size
-  vodConfig.cacheMaxSize = 300 * 1024 * 1024;
+  // // Provide a valid license file path, such as 'assets/VEVod.lic'
+  // String licPath = 'assets/VEVod.lic';
+  // // For Android, provide a valid channel ID for statistics; for iOS, it is optional and defaults to App Store
+  // String channel = Platform.isAndroid ? 'Dev' : 'App Store';
+  // // Initialize VOD configuration
+  // TTSDKVodConfiguration vodConfig = TTSDKVodConfiguration();
+  // // Set the maximum cache size, default is 100M, adjust according to your own business scenario, cache eviction is performed based on LRU rules when the cache size exceeds the maximum size
+  // vodConfig.cacheMaxSize = 300 * 1024 * 1024;
 
-  // Provide the AppID obtained from the BytePlus VOD console
-  TTSDKConfiguration sdkConfig =
-      TTSDKConfiguration.defaultConfigurationWithAppIDAndLicPath(
-    appID: '678725',
-    licenseFilePath: licPath,
-    channel: channel,
-  );
-  sdkConfig.vodConfiguration = vodConfig;
-  FlutterTTSDKManager.startWithConfiguration(sdkConfig);
+  // // Provide the AppID obtained from the BytePlus VOD console
+  // TTSDKConfiguration sdkConfig =
+  //     TTSDKConfiguration.defaultConfigurationWithAppIDAndLicPath(
+  //   appID: '678725',
+  //   licenseFilePath: licPath,
+  //   channel: channel,
+  // );
+  // sdkConfig.vodConfiguration = vodConfig;
+  // FlutterTTSDKManager.startWithConfiguration(sdkConfig);
 
-  // If you need to support multiple regions, please submit a ticket to contact technical support
-  FlutterTTSDKManager.setCurrentUserUniqueID('devdevice');
+  // // If you need to support multiple regions, please submit a ticket to contact technical support
+  // FlutterTTSDKManager.setCurrentUserUniqueID('devdevice');
 }
 
 void main() async {

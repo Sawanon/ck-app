@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:lottery_ck/binding/initial.binding.dart';
+import 'package:lottery_ck/components/friends.dart';
 import 'package:lottery_ck/modules/address/view/change_address.dart';
 import 'package:lottery_ck/modules/animal/view/animal.dart';
 import 'package:lottery_ck/modules/bill/view/bill.dart';
@@ -223,5 +224,10 @@ class AppRoutes {
           page: () => const VideoFullscreen(),
           transition: Transition.rightToLeft,
         ),
+        // GetPage(
+        //   name: RouteName.friends,
+        //   page: () => const FriendsPage(),
+        //   transition: Transition.rightToLeft,
+        // ),
       ];
 }

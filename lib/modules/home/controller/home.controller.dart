@@ -12,6 +12,8 @@ import 'package:lottery_ck/components/dialog_change_birthtime.dart';
 import 'package:lottery_ck/components/user_qr.dart';
 import 'package:lottery_ck/model/lottery_date.dart';
 import 'package:lottery_ck/model/menu.dart';
+import 'package:lottery_ck/model/response/get_my_friends.dart';
+import 'package:lottery_ck/model/response/list_my_friends_user.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.page.dart';
@@ -34,7 +36,7 @@ import 'package:video_player/video_player.dart';
 
 class HomeController extends GetxController {
   static HomeController get to => Get.find();
-  List<MenuModel> menu = [];
+
   Timer? _timer;
   DateTime? lotteryDate;
 
@@ -49,6 +51,8 @@ class HomeController extends GetxController {
   RxList<Map> videoContent = <Map>[].obs;
   LotteryDate? lotteryDateData;
   RxString wallpaperUrl = ''.obs;
+  GetMyFriends? myFriends;
+  List<ListMyFriendsUser> listMyFriends = [];
 
   void lotteryFullScreen() {
     lotteryAlinment = Alignment.center;
@@ -305,289 +309,289 @@ class HomeController extends GetxController {
     //     ),
     //   ),
     // ),
-    menu.clear();
-    menu.addAll([
-      MenuModel(
-        ontab: () {
-          // Get.toNamed(RouteName.scanQR);
-          Get.toNamed(RouteName.horoscopeDaily);
-        },
-        icon: SizedBox(
-          height: 32,
-          width: 32,
-          child: Image.asset(
-            AppIcon.dialyHoroscope,
-          ),
-        ),
-        name: Align(
-          alignment: Alignment.center,
-          child: Text(
-            "โชคลาภ ประจำวัน",
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
-              height: 1.2,
-            ),
-            textAlign: TextAlign.center,
-            softWrap: true,
-          ),
-        ),
-      ),
-      MenuModel(
-        ontab: () {
-          showModalBottomSheet(
-            context: Get.context!,
-            isScrollControlled: true,
-            builder: (context) {
-              return const UserQR();
-            },
-          );
-        },
-        icon: SizedBox(
-          height: 32,
-          width: 32,
-          child: Image.asset(
-            AppIcon.invateFriends,
-          ),
-        ),
-        name: Align(
-          alignment: Alignment.center,
-          child: Text(
-            "แนะนำเพื่อน",
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
-              height: 1.2,
-            ),
-            textAlign: TextAlign.center,
-            softWrap: true,
-          ),
-        ),
-      ),
-      MenuModel(
-        ontab: gotoWallPaperPage,
-        icon: SizedBox(
-          height: 32,
-          width: 32,
-          child: Image.asset(
-            AppIcon.wallpapers,
-          ),
-        ),
-        name: Text(
-          AppLocale.auspiciousWallpaper.getString(Get.context!),
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 12,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ),
-      MenuModel(
-        disabled: true,
-        ontab: () {
-          logger.d("comming soon");
-        },
-        icon: SizedBox(
-          height: 32,
-          width: 32,
-          child: Image.asset(
-            AppIcon.wallet,
-          ),
-        ),
-        name: Align(
-          alignment: Alignment.center,
-          child: Text(
-            "Wallet",
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
-              height: 1.2,
-              color: AppColors.menuTextDisabled,
-            ),
-            textAlign: TextAlign.center,
-            softWrap: true,
-          ),
-        ),
-      ),
-      MenuModel(
-        disabled: true,
-        ontab: () {
-          logger.d("comming soon");
-        },
-        icon: SizedBox(
-          height: 32,
-          width: 32,
-          child: Image.asset(
-            AppIcon.community,
-          ),
-        ),
-        name: Align(
-          alignment: Alignment.center,
-          child: Text(
-            "คุยกับเพื่อน",
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
-              height: 1.2,
-              color: AppColors.menuTextDisabled,
-            ),
-            textAlign: TextAlign.center,
-            softWrap: true,
-          ),
-        ),
-      ),
-      MenuModel(
-        disabled: true,
-        ontab: () {
-          logger.d("comming soon");
-        },
-        icon: SizedBox(
-          height: 32,
-          width: 32,
-          child: SvgPicture.asset(
-            AppIcon.news,
-          ),
-        ),
-        name: Align(
-          alignment: Alignment.center,
-          child: Text(
-            AppLocale.news.getString(Get.context!),
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
-              height: 1.2,
-            ),
-            textAlign: TextAlign.center,
-            softWrap: true,
-          ),
-        ),
-      ),
-      MenuModel(
-        disabled: true,
-        ontab: () {
-          logger.d("comming soon");
-        },
-        icon: SizedBox(
-          height: 32,
-          width: 32,
-          child: SvgPicture.asset(
-            AppIcon.promotion,
-            colorFilter: const ColorFilter.mode(
-              AppColors.redGradient,
-              BlendMode.srcIn,
-            ),
-          ),
-        ),
-        name: Align(
-          alignment: Alignment.center,
-          child: Text(
-            AppLocale.promotion.getString(Get.context!),
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
-              height: 1.2,
-            ),
-            textAlign: TextAlign.center,
-            softWrap: true,
-          ),
-        ),
-      ),
-      MenuModel(
-        disabled: true,
-        ontab: () {
-          logger.d("comming soon");
-        },
-        icon: SizedBox(
-          height: 32,
-          width: 32,
-          // child: Image.asset(
-          //   AppIcon.news,
-          // ),
-          child: SvgPicture.asset(
-            AppIcon.aiChat,
-            colorFilter: ColorFilter.mode(
-              Colors.grey.shade700,
-              BlendMode.srcIn,
-            ),
-          ),
-        ),
-        name: Align(
-          alignment: Alignment.center,
-          child: Text(
-            'CK-AI Chat',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
-              height: 1.2,
-              color: AppColors.menuTextDisabled,
-            ),
-            textAlign: TextAlign.center,
-            softWrap: true,
-          ),
-        ),
-      ),
-      MenuModel(
-        disabled: true,
-        ontab: () {
-          logger.d("comming soon");
-        },
-        icon: SizedBox(
-          height: 32,
-          width: 32,
-          child: SvgPicture.asset(
-            AppIcon.registerAndVerify,
-            colorFilter: const ColorFilter.mode(
-              AppColors.redGradient,
-              BlendMode.srcIn,
-            ),
-          ),
-        ),
-        name: Align(
-          alignment: Alignment.center,
-          child: Text(
-            'ยืนยันตัวตน',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
-              height: 1.2,
-            ),
-            textAlign: TextAlign.center,
-            softWrap: true,
-          ),
-        ),
-      ),
-      MenuModel(
-        disabled: true,
-        ontab: () {
-          logger.d("comming soon");
-        },
-        icon: SizedBox(
-          height: 32,
-          width: 32,
-          child: SvgPicture.asset(
-            AppIcon.allMenu,
-            colorFilter: const ColorFilter.mode(
-              AppColors.redGradient,
-              BlendMode.srcIn,
-            ),
-          ),
-        ),
-        name: Align(
-          alignment: Alignment.center,
-          child: Text(
-            'ทั้งหมด',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 12,
-              height: 1.2,
-            ),
-            textAlign: TextAlign.center,
-            softWrap: true,
-          ),
-        ),
-      ),
-    ]);
-    update();
+    // menu.clear();
+    // menu.addAll([
+    //   MenuModel(
+    //     ontab: () {
+    //       // Get.toNamed(RouteName.scanQR);
+    //       Get.toNamed(RouteName.horoscopeDaily);
+    //     },
+    //     icon: SizedBox(
+    //       height: 32,
+    //       width: 32,
+    //       child: Image.asset(
+    //         AppIcon.dialyHoroscope,
+    //       ),
+    //     ),
+    //     name: Align(
+    //       alignment: Alignment.center,
+    //       child: Text(
+    //         "โชคลาภ ประจำวัน",
+    //         style: TextStyle(
+    //           fontWeight: FontWeight.w600,
+    //           fontSize: 12,
+    //           height: 1.2,
+    //         ),
+    //         textAlign: TextAlign.center,
+    //         softWrap: true,
+    //       ),
+    //     ),
+    //   ),
+    //   MenuModel(
+    //     ontab: () {
+    //       showModalBottomSheet(
+    //         context: Get.context!,
+    //         isScrollControlled: true,
+    //         builder: (context) {
+    //           return const UserQR();
+    //         },
+    //       );
+    //     },
+    //     icon: SizedBox(
+    //       height: 32,
+    //       width: 32,
+    //       child: Image.asset(
+    //         AppIcon.invateFriends,
+    //       ),
+    //     ),
+    //     name: Align(
+    //       alignment: Alignment.center,
+    //       child: Text(
+    //         AppLocale.shareAppToYourFriend.getString(Get.context!),
+    //         style: TextStyle(
+    //           fontWeight: FontWeight.w600,
+    //           fontSize: 12,
+    //           height: 1.2,
+    //         ),
+    //         textAlign: TextAlign.center,
+    //         softWrap: true,
+    //       ),
+    //     ),
+    //   ),
+    //   MenuModel(
+    //     ontab: gotoWallPaperPage,
+    //     icon: SizedBox(
+    //       height: 32,
+    //       width: 32,
+    //       child: Image.asset(
+    //         AppIcon.wallpapers,
+    //       ),
+    //     ),
+    //     name: Text(
+    //       AppLocale.auspiciousWallpaper.getString(Get.context!),
+    //       style: TextStyle(
+    //         fontWeight: FontWeight.w600,
+    //         fontSize: 12,
+    //       ),
+    //       textAlign: TextAlign.center,
+    //     ),
+    //   ),
+    //   MenuModel(
+    //     disabled: true,
+    //     ontab: () {
+    //       logger.d("comming soon");
+    //     },
+    //     icon: SizedBox(
+    //       height: 32,
+    //       width: 32,
+    //       child: Image.asset(
+    //         AppIcon.wallet,
+    //       ),
+    //     ),
+    //     name: Align(
+    //       alignment: Alignment.center,
+    //       child: Text(
+    //         "Wallet",
+    //         style: TextStyle(
+    //           fontWeight: FontWeight.w600,
+    //           fontSize: 12,
+    //           height: 1.2,
+    //           color: AppColors.menuTextDisabled,
+    //         ),
+    //         textAlign: TextAlign.center,
+    //         softWrap: true,
+    //       ),
+    //     ),
+    //   ),
+    //   MenuModel(
+    //     disabled: true,
+    //     ontab: () {
+    //       logger.d("comming soon");
+    //     },
+    //     icon: SizedBox(
+    //       height: 32,
+    //       width: 32,
+    //       child: Image.asset(
+    //         AppIcon.community,
+    //       ),
+    //     ),
+    //     name: Align(
+    //       alignment: Alignment.center,
+    //       child: Text(
+    //         "คุยกับเพื่อน",
+    //         style: TextStyle(
+    //           fontWeight: FontWeight.w600,
+    //           fontSize: 12,
+    //           height: 1.2,
+    //           color: AppColors.menuTextDisabled,
+    //         ),
+    //         textAlign: TextAlign.center,
+    //         softWrap: true,
+    //       ),
+    //     ),
+    //   ),
+    //   MenuModel(
+    //     disabled: true,
+    //     ontab: () {
+    //       logger.d("comming soon");
+    //     },
+    //     icon: SizedBox(
+    //       height: 32,
+    //       width: 32,
+    //       child: SvgPicture.asset(
+    //         AppIcon.news,
+    //       ),
+    //     ),
+    //     name: Align(
+    //       alignment: Alignment.center,
+    //       child: Text(
+    //         AppLocale.news.getString(Get.context!),
+    //         style: TextStyle(
+    //           fontWeight: FontWeight.w600,
+    //           fontSize: 12,
+    //           height: 1.2,
+    //         ),
+    //         textAlign: TextAlign.center,
+    //         softWrap: true,
+    //       ),
+    //     ),
+    //   ),
+    //   MenuModel(
+    //     disabled: true,
+    //     ontab: () {
+    //       logger.d("comming soon");
+    //     },
+    //     icon: SizedBox(
+    //       height: 32,
+    //       width: 32,
+    //       child: SvgPicture.asset(
+    //         AppIcon.promotion,
+    //         colorFilter: const ColorFilter.mode(
+    //           AppColors.redGradient,
+    //           BlendMode.srcIn,
+    //         ),
+    //       ),
+    //     ),
+    //     name: Align(
+    //       alignment: Alignment.center,
+    //       child: Text(
+    //         AppLocale.promotion.getString(Get.context!),
+    //         style: TextStyle(
+    //           fontWeight: FontWeight.w600,
+    //           fontSize: 12,
+    //           height: 1.2,
+    //         ),
+    //         textAlign: TextAlign.center,
+    //         softWrap: true,
+    //       ),
+    //     ),
+    //   ),
+    //   MenuModel(
+    //     disabled: true,
+    //     ontab: () {
+    //       logger.d("comming soon");
+    //     },
+    //     icon: SizedBox(
+    //       height: 32,
+    //       width: 32,
+    //       // child: Image.asset(
+    //       //   AppIcon.news,
+    //       // ),
+    //       child: SvgPicture.asset(
+    //         AppIcon.aiChat,
+    //         colorFilter: ColorFilter.mode(
+    //           Colors.grey.shade700,
+    //           BlendMode.srcIn,
+    //         ),
+    //       ),
+    //     ),
+    //     name: Align(
+    //       alignment: Alignment.center,
+    //       child: Text(
+    //         'CK-AI Chat',
+    //         style: TextStyle(
+    //           fontWeight: FontWeight.w600,
+    //           fontSize: 12,
+    //           height: 1.2,
+    //           color: AppColors.menuTextDisabled,
+    //         ),
+    //         textAlign: TextAlign.center,
+    //         softWrap: true,
+    //       ),
+    //     ),
+    //   ),
+    //   MenuModel(
+    //     disabled: true,
+    //     ontab: () {
+    //       logger.d("comming soon");
+    //     },
+    //     icon: SizedBox(
+    //       height: 32,
+    //       width: 32,
+    //       child: SvgPicture.asset(
+    //         AppIcon.registerAndVerify,
+    //         colorFilter: const ColorFilter.mode(
+    //           AppColors.redGradient,
+    //           BlendMode.srcIn,
+    //         ),
+    //       ),
+    //     ),
+    //     name: Align(
+    //       alignment: Alignment.center,
+    //       child: Text(
+    //         'ยืนยันตัวตน',
+    //         style: TextStyle(
+    //           fontWeight: FontWeight.w600,
+    //           fontSize: 12,
+    //           height: 1.2,
+    //         ),
+    //         textAlign: TextAlign.center,
+    //         softWrap: true,
+    //       ),
+    //     ),
+    //   ),
+    //   MenuModel(
+    //     disabled: true,
+    //     ontab: () {
+    //       logger.d("comming soon");
+    //     },
+    //     icon: SizedBox(
+    //       height: 32,
+    //       width: 32,
+    //       child: SvgPicture.asset(
+    //         AppIcon.allMenu,
+    //         colorFilter: const ColorFilter.mode(
+    //           AppColors.redGradient,
+    //           BlendMode.srcIn,
+    //         ),
+    //       ),
+    //     ),
+    //     name: Align(
+    //       alignment: Alignment.center,
+    //       child: Text(
+    //         'ทั้งหมด',
+    //         style: TextStyle(
+    //           fontWeight: FontWeight.w600,
+    //           fontSize: 12,
+    //           height: 1.2,
+    //         ),
+    //         textAlign: TextAlign.center,
+    //         softWrap: true,
+    //       ),
+    //     ),
+    //   ),
+    // ]);
+    // update();
   }
 
   Future<void> getWallpaperBackground() async {
@@ -603,9 +607,11 @@ class HomeController extends GetxController {
     await getLotteryDate();
     // await listArtworks();
     await listContent();
-    await setupMenu();
+    // await setupMenu();
     await getWallpaperBackground();
     await SettingController.to.setup();
+    await getMyFriends();
+    await listMyFriendsUser();
     update();
   }
 
@@ -905,6 +911,58 @@ class HomeController extends GetxController {
   void updateController() {
     update();
   }
+
+  Future<void> getMyFriends() async {
+    final user = SettingController.to.user;
+    if (user == null) {
+      return;
+    }
+    if (user.refCode == null) {
+      logger.e("refCode is ${user.refCode}");
+      return;
+    }
+    final response = await AppWriteController.to.getMyFriends(user.refCode!);
+    if (response.isSuccess) {
+      myFriends = response.data;
+      update();
+    } else {
+      Get.dialog(
+        DialogApp(
+          title: Text("Something went wrong"),
+          details: Text(response.message),
+          disableConfirm: true,
+        ),
+      );
+    }
+  }
+
+  Future<void> listMyFriendsUser() async {
+    final user = SettingController.to.user;
+    if (user == null) {
+      return;
+    }
+    if (user.refCode == null) {
+      logger.e("refCode is ${user.refCode}");
+      return;
+    }
+    final response =
+        await AppWriteController.to.listMyFriendsUser(user.refCode!);
+    if (response.isSuccess) {
+      listMyFriends.clear();
+      listMyFriends.addAll(response.data!);
+      update();
+    } else {
+      Get.dialog(
+        DialogApp(
+          title: Text("Something went wrong"),
+          details: Text(response.message),
+          disableConfirm: true,
+        ),
+      );
+    }
+  }
+
+  void test() async {}
 
   @override
   void onInit() {

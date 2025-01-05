@@ -12,6 +12,7 @@ class NotificationList extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<NotificationController>(builder: (controller) {
       return Scaffold(
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: RefreshIndicator(
             onRefresh: () async {

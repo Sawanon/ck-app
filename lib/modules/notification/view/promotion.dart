@@ -2,11 +2,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/notification/controller/promotion.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/theme.dart';
 
 class PromotionDetailPage extends StatelessWidget {
   const PromotionDetailPage({super.key});
@@ -70,6 +74,42 @@ class PromotionDetailPage extends StatelessWidget {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 16,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: [AppTheme.softShadow],
+                  ),
+                  child: LongButton(
+                    onPressed: () {
+                      controller.collectCoupons();
+                    },
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: SvgPicture.asset(
+                            AppIcon.ticket,
+                            colorFilter: const ColorFilter.mode(
+                                Colors.white, BlendMode.srcIn),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          "เก็บคูปอง",
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

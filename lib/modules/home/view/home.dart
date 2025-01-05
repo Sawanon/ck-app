@@ -134,51 +134,51 @@ class HomePage extends StatelessWidget {
                           // ),
                           ),
                       const SizedBox(height: 16),
-                      GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 5,
-                          childAspectRatio: 3 / 4,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 8,
-                        ),
-                        itemBuilder: (context, index) {
-                          final menu = controller.menu[index];
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              GestureDetector(
-                                onTap: menu.ontab,
-                                child: AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Container(
-                                    // width: 48,
-                                    // height: 48,
-                                    // alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(8),
-                                      boxShadow: [
-                                        AppTheme.softShadow,
-                                      ],
-                                    ),
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      child: menu.icon,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Align(
-                                child: menu.name,
-                              ),
-                            ],
-                          );
-                        },
-                        itemCount: controller.menu.length,
-                      ),
+                      // GridView.builder(
+                      //   physics: const NeverScrollableScrollPhysics(),
+                      //   shrinkWrap: true,
+                      //   gridDelegate:
+                      //       const SliverGridDelegateWithFixedCrossAxisCount(
+                      //     crossAxisCount: 5,
+                      //     childAspectRatio: 3 / 4,
+                      //     crossAxisSpacing: 16,
+                      //     mainAxisSpacing: 8,
+                      //   ),
+                      //   itemBuilder: (context, index) {
+                      //     final menu = controller.menu[index];
+                      //     return Column(
+                      //       crossAxisAlignment: CrossAxisAlignment.stretch,
+                      //       children: [
+                      //         GestureDetector(
+                      //           onTap: menu.ontab,
+                      //           child: AspectRatio(
+                      //             aspectRatio: 1,
+                      //             child: Container(
+                      //               // width: 48,
+                      //               // height: 48,
+                      //               // alignment: Alignment.center,
+                      //               decoration: BoxDecoration(
+                      //                 color: Colors.white,
+                      //                 borderRadius: BorderRadius.circular(8),
+                      //                 boxShadow: [
+                      //                   AppTheme.softShadow,
+                      //                 ],
+                      //               ),
+                      //               child: Container(
+                      //                 alignment: Alignment.center,
+                      //                 child: menu.icon,
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         ),
+                      //         Align(
+                      //           child: menu.name,
+                      //         ),
+                      //       ],
+                      //     );
+                      //   },
+                      //   itemCount: controller.menu.length,
+                      // ),
                       // horoscope
                       // Row(
                       //   mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -290,7 +290,7 @@ class LoginPage extends StatelessWidget {
                                   controller.login();
                                 },
                                 child: Text(
-                                  'เข้าสู่ระบบ',
+                                  AppLocale.login.getString(context),
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w700,

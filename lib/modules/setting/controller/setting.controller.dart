@@ -37,6 +37,7 @@ class SettingController extends GetxController {
     user = null;
     update();
     HomeController.to.updateController();
+    profileByte.value = null;
     // Get.offAllNamed(RouteName.login);
     // LayoutController.to.changeTab(TabApp.home);
   }
@@ -187,14 +188,15 @@ class SettingController extends GetxController {
                 onInit: () async {
                   final response =
                       await AppWriteController.to.getOTPUser(user!.phoneNumber);
-                  if (response == null) {
+                  if (response.isSuccess == false || response.data == null) {
                     return null;
                   }
+                  final data = response.data!;
                   Get.dialog(
-                    DialogOtpComponent(otp: response.otp),
+                    DialogOtpComponent(otp: data.otp),
                   );
-                  otpRef = response.otpRef;
-                  return response.otpRef;
+                  otpRef = data.otpRef;
+                  return data.otpRef;
                 },
                 whenConfirmOTP: (otp) async {
                   final response = await AppWriteController.to

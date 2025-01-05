@@ -34,7 +34,11 @@ dependencies:
   flutter_svg: ^2.0.10+1
   logger: ^2.3.0
   appwrite: ^12.0.4
-  intl_phone_number_input: ^0.7.4
+  # intl_phone_number_input: ^0.7.4
+  intl_phone_number_input:
+    git:
+      url: https://github.com/Shahidbangash/intl_phone_number_input.git
+      ref: develop
   pinput: ^5.0.0
   local_auth: ^2.2.0
   flutter_screen_lock: ^9.1.0
@@ -48,7 +52,6 @@ dependencies:
   cupertino_icons: ^1.0.6
   firebase_messaging: ^15.0.3
   firebase_core: ^3.2.0
-  firebase_auth: ^5.1.3
   dio: ^5.5.0+1
   # intl: ^0.19.0
   flutter_rating_bar: ^4.0.1
@@ -58,7 +61,7 @@ dependencies:
   url_launcher: ^6.3.0
   carousel_slider: ^5.0.0
   video_player: ^2.9.1
-  connectivity_plus: ^6.0.5
+  connectivity_plus: ^6.1.1
   argon2: ^1.0.1
   # flutter_localizations:
   #   sdk: flutter
@@ -70,10 +73,10 @@ dependencies:
   cached_network_image: ^3.4.0
   flutter_exif_rotation: ^0.5.2
   pubnub: 4.3.4
-  byteplus_vod: ^1.44.2-1
+  byteplus_vod: ^1.44.3-3
   google_fonts: ^6.2.1
   qr_flutter: ^4.1.0
-  mobile_scanner: ^6.0.2
+  mobile_scanner: ^5.2.3
   flutter_windowmanager: ^0.2.0
 
 byteplus_vod:

@@ -14,6 +14,7 @@ class UserApp {
   String? gender;
   String? idCard;
   bool? isKYC;
+  String? refCode;
 
   UserApp({
     required this.firstName,
@@ -31,6 +32,7 @@ class UserApp {
     this.gender,
     this.idCard,
     this.isKYC,
+    this.refCode,
   });
 
   static UserApp fromJson(Map json) {
@@ -50,6 +52,7 @@ class UserApp {
       gender: json['gender'] as String?,
       idCard: json['idCard'] as String?,
       isKYC: json['isKYC'] as bool?,
+      refCode: json['ref_code'] as String?,
     );
   }
 
