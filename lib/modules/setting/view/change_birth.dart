@@ -56,16 +56,18 @@ class _ChangeBirthPageState extends State<ChangeBirthPage> {
       body: SafeArea(
         child: Column(
           children: [
-            const Header(title: "Birth date"),
+            Header(
+              title: AppLocale.birthDate.getString(context),
+            ),
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.all(16),
                 children: [
-                  const Align(
+                  Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'ວັນເດືອນປີເກີດ',
-                      style: TextStyle(
+                      AppLocale.birthDate.getString(context),
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,

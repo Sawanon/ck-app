@@ -61,99 +61,110 @@ class _UserQRState extends State<UserQR> {
           )),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Stack(
+            alignment: Alignment.center,
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "QR code ของฉัน",
+                AppLocale.myQRcode.getString(context),
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              GestureDetector(
-                onTap: () => Get.back(),
-                child: SizedBox(
-                  width: 32,
-                  height: 32,
-                  child: SvgPicture.asset(AppIcon.x),
+              Positioned(
+                right: 0,
+                child: GestureDetector(
+                  onTap: () => Get.back(),
+                  child: SizedBox(
+                    width: 32,
+                    height: 32,
+                    child: SvgPicture.asset(AppIcon.x),
+                  ),
                 ),
               ),
             ],
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 24),
-            child: RepaintBoundary(
-              key: globalKey,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Colors.white,
-                  boxShadow: const [
-                    AppTheme.softShadow,
-                  ],
-                ),
-                width: 240,
-                height: 240,
-                child: SettingController.to.user?.refCode != null
-                    ? QrImageView(
-                        data: SettingController.to.user!.refCode!,
-                        version: QrVersions.auto,
-                        embeddedImage: Image.asset(
-                          "assets/icon/icon.png",
-                          gaplessPlayback: true,
-                        ).image,
-                        embeddedImageStyle: QrEmbeddedImageStyle(
-                          size: Size(
-                            48,
-                            48,
+          Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 24),
+              child: RepaintBoundary(
+                key: globalKey,
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    color: Colors.white,
+                    boxShadow: const [
+                      AppTheme.softShadow,
+                    ],
+                  ),
+                  width: 240,
+                  height: 240,
+                  child: SettingController.to.user?.refCode != null
+                      ? QrImageView(
+                          data: SettingController.to.user!.refCode!,
+                          version: QrVersions.auto,
+                          embeddedImage: Image.asset(
+                            "assets/icon/icon.png",
+                            gaplessPlayback: true,
+                          ).image,
+                          embeddedImageStyle: QrEmbeddedImageStyle(
+                            size: Size(
+                              48,
+                              48,
+                            ),
+                          ),
+                          errorCorrectionLevel: QrErrorCorrectLevel.H,
+                        )
+                      : Center(
+                          child: Text(
+                            "You ref code is empty please contact user service",
                           ),
                         ),
-                        errorCorrectionLevel: QrErrorCorrectLevel.H,
-                      )
-                    : Center(
-                        child: Text(
-                          "You ref code is empty please contact user service",
-                        ),
-                      ),
+                ),
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Text(
-              AppLocale.scanQRCodeBeFriends.getString(context),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              child: Text(
+                AppLocale.scanQRCodeBeFriends.getString(context),
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            child: GestureDetector(
-              onTap: () {
-                // QrImageView(data: data).
-                _saveQRCode();
-              },
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                decoration: BoxDecoration(
-                  gradient: AppColors.primayBtn,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SvgPicture.asset(
-                      AppIcon.share,
-                    ),
-                    const SizedBox(width: 12),
-                    Text(
-                      "แชร์รหัส QR",
-                      style: TextStyle(
-                        color: Colors.white,
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              child: GestureDetector(
+                onTap: () {
+                  // QrImageView(data: data).
+                  _saveQRCode();
+                },
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  decoration: BoxDecoration(
+                    gradient: AppColors.primayBtn,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(
+                        AppIcon.share,
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 12),
+                      Text(
+                        AppLocale.shareQRCode.getString(context),
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

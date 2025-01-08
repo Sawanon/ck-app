@@ -90,7 +90,7 @@ mixin AppLocale {
   static const String pleaseWait = "ກະລຸນາລໍຖ້າ";
   static const String pointRef = "ທີ່ມາຂອງຄະແນນ";
   static const String quantity = "ຈໍານວນ";
-  static const String score = "ຄະແນນ";
+  static const String point = "ຄະແນນ";
   static const String firstName = "ຊື່";
   static const String lastName = "ນາມສະກຸນ";
   static const String birthDate = "ວັນເດືອນປີເກີດ";
@@ -125,7 +125,7 @@ mixin AppLocale {
   static const String mrs = "ນາງ";
   static const String verified = "ຢັ້ງຢືນຕົວຕົນແລ້ວ";
   static const String notVerified = "ບໍ່ໄດ້ຢັ້ງຢືນຕົວຕົນ";
-  static const String verifyIdentity = "ຢືນຢັນຕົວຕົນຂອງທ່ານ";
+  static const String verifyYourIdentity = "ຢືນຢັນຕົວຕົນຂອງທ່ານ";
   static const String randomCard = "ບັດໂຊກ";
   static const String downtimeBank = "ບໍ່ສາມາດຊໍາລະໄດ້ໃນລະຫວ່າງໄລຍະເວລາ";
   static const String auspiciousWallpaper = "ຮູບວໍເປເປີທີ່ປະເສີດ";
@@ -141,12 +141,105 @@ mixin AppLocale {
   static const String addedLottery = "ເລກຫວຍ {lottery} ໄດ້ຖືກເພີ່ມ";
   static const String pleaseSelectPaymentMethod = "ກະລຸນາເລືອກວິທີການຊໍາລະເງິນ";
   static const String pleaseEnterPointsWantUse =
-      "ກະລຸນາໃສ່ point ທີ່ທ່ານຕ້ອງການໃຊ້";
+      "ກະລຸນາໃສ່ຄະແນນທີ່ທ່ານຕ້ອງການໃຊ້";
   static const String minimumAmount = "ຂັ້ນຕ່ຳ {price} ກີບ";
   static const String scanQRCodeBeFriends =
       "ສະແກນລະຫັດ QR ນີ້ເພື່ອກາຍເປັນເພື່ອນ";
   static const String coupon = "ຄູປ໋ອງ";
   static const String useCoupon = "ໃຊ້ຄູປ໋ອງ";
+  static const String pleaseEnterYourPhoneNumberToLogin =
+      "ກະລຸນາໃສ່ເບີໂທລະສັບຂອງທ່ານເພື່ອເຂົ້າສູ່ລະບົບ";
+  static const String phoneNumber = "ເບີໂທລະສັບ";
+  static const String minimumLengthDigits =
+      "ຄວາມຍາວຕໍ່າສຸດແມ່ນ {digits} ຕົວເລກ";
+  static const String pleaseFillPhoneNumber = "ກະລຸນາຕື່ມເບີໂທລະສັບ";
+  static const String invalidPhoneNumber = "ເບີໂທລະສັບບໍ່ຖືກຕ້ອງ";
+  static const String accept = "ຍອມຮັບ";
+  static const String hello = "ສະບາຍດີ";
+  static const String welcome = "ຍິນດີຕ້ອນຮັບ";
+  static const String inviteFriends = "ແນະນໍາຫມູ່";
+  static const String inviteAccept = "ເຊີນ/ຍອມຮັບ";
+  static const String youHaveScore = "ທ່ານມີ/ຈຸດ";
+  static const String amountInWallet = "ຈຳນວນເງິນໃນກະເປົາເງິນ";
+  static const String quickMenu = "ເມນູດ່ວນ";
+  static const String dailyFortune = "ໂຊກ​ປະ​ຈໍາ​ວັນ​";
+  static const String wallet = "ກະເປົາເງິນ";
+  static const String chatWithFriends = "ສົນທະນາກັບຫມູ່ເພື່ອນ";
+  static const String verifyIdentity = "ຢືນຢັນຕົວຕົນ";
+  static const String all = "ທັງໝົດ";
+  static const String save = "ບັນທຶກ";
+  static const String seeMore = "ເບິ່ງເພີ່ມເຕີມ";
+  static const String identityVerification = "ການລະບຸຕົວຕົນ";
+  static const String changePhoneNumber = "ປ່ຽນເບີໂທລະສັບ";
+  static const String noNotification = "ບໍ່ມີການແຈ້ງເຕືອນ";
+  static const String noNews = "ບໍ່ມີຂ່າວໃດໆໃນເວລານີ້";
+  static const String noPromotion = "ບໍ່ມີໂປຣໂມຊັນໃນເວລານີ້";
+  static const String personalData = "ຂໍ້ມູນສ່ວນຕົວ";
+  static const String leave = "ອອກ";
+  static const String statistics = "ສະຖິຕິ";
+  static const String scan = "ສະແກນ";
+  static const String privileges = "ສິດທິພິເສດ";
+  static const String specialForYou = "ພິເສດສຳລັບທ່ານ";
+  static const String socialMediaFamousTeachers =
+      "ສື່ມວນຊົນສັງຄົມ ຄູ​ອາ​ຈານ​ທີ່​ມີ​ຊື່​ສຽງ​";
+  static const String deleteAll = "ລຶບທັງໝົດ";
+  static const String areYouSureYouWantToDeleteAllLottery =
+      "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບລາຍການຫວຍທັງໝົດ?";
+  static const String thisInvoiceExpiresOn = "ໃບເກັບເງິນນີ້ໝົດອາຍຸໃນ";
+  static const String identityVerificationRequired = "ຕ້ອງການການຢັ້ງຢືນຕົວຕົນ";
+  static const String collectCoupons = "ເກັບກໍາຄູປ໋ອງ";
+  static const String expiresIn = "ໝົດອາຍຸໃນ";
+  static const String expiresOn = "ໝົດກຳນົດວັນທີ";
+  static const String promotionDetails = "ລາຍລະອຽດໂປຣໂມຊັນ";
+  static const String forgetPasscode = "ລືມລະຫັດຜ່ານ";
+  static const String changeName = "ປ່ຽນຊື່";
+  static const String pleaseEnterYourFirstName = "ກະລຸນາໃສ່ຊື່ຂອງທ່ານ";
+  static const String pleaseEnterYourLasttName = "ກະລຸນາໃສ່ນາມສະກຸນຂອງເຈົ້າ";
+  static const String pleaseEnterYourFirstNameAndLastName =
+      "ກະລຸນາໃສ່ຊື່ ແລະນາມສະກຸນຂອງເຈົ້າ";
+  static const String updateYourAddress = "ອັບເດດທີ່ຢູ່ຂອງເຈົ້າ";
+  static const String pleaseEnterTheAddressYouWantToUpdate =
+      "ກະລຸນາໃສ່ທີ່ຢູ່ທີ່ທ່ານຕ້ອງການອັບເດດ";
+  static const String updateAddress = "ອັບເດດທີ່ຢູ່";
+  static const String youHaveInvitedYourFriends = "ທ່ານໄດ້ເຊື້ອເຊີນເພື່ອນມິດ";
+  static const String clickToViewFriendsList = "ຄລິກເພື່ອເບິ່ງລາຍຊື່ໝູ່";
+  static const String people = "ຄົນ";
+  static const String yourFriendHasAccepted = "ໝູ່ຂອງເຈົ້າຕອບຮັບແລ້ວ";
+  static const String listOfFriendsYouHaveInvited =
+      "ລາຍຊື່ໝູ່ທີ່ທ່ານໄດ້ເຊີນແລ້ວ";
+  static const String myQRcode = "QR code ຂອງຂ້ອຍ";
+  static const String shareQRCode = "ແບ່ງປັນ QR code";
+  static const String pleaseAddLottery = "ກະລຸນາເພີ່ມຫວຍ";
+  static const String pleaseFillLottery = "ກະລຸນາໃສ່ເລກຫວຍ";
+  static const String pointDiscount = "ສ່ວນຫຼຸດຄະແນນ";
+  static const String theMaximumPointsYouCanUse =
+      "ຄະແນນທີ່ທ່ານສາມາດນໍາໃຊ້ສູງສຸດ";
+  static const String enterThePointsYouWantToUse = "ໃສ່ຄະແນນທີ່ທ່ານຕ້ອງການໃຊ້";
+  static const String pleaseCompleteYourIdentityVerification =
+      "ກະລຸນາຢັ້ງຢືນຕົວຕົນຂອງທ່ານສຳເລັດແລ້ວ";
+  static const String toTakeFullAdvantageOfTheBenefits =
+      "ໃນຄໍາສັ່ງທີ່ຈະນໍາໃຊ້ຜົນປະໂຫຍດຢ່າງເຕັມສ່ວນ";
+  static const String pressToConfirmYourIdentity =
+      "ກົດເພື່ອຢືນຢັນຕົວຕົນຂອງທ່ານ";
+  static const String later = "ຕໍ່ມາ";
+  static const String youWantToGetOutOf = "ເຈົ້າຕ້ອງການອອກຈາກ";
+  static const String pleaseFillInAllInformation = "ກະລຸນາຕື່ມຂໍ້ມູນໃຫ້ຄົບຖ້ວນ";
+  static const String pleaseProvideAPhotocopyAndProofOfIdentity =
+      "ກະລຸນາສຳເນົາເອກະສານ ແລະຮູບພາບເພື່ອຢັ້ງຢືນຕົວຕົນຂອງທ່ານ";
+  static const String pleaseCorrectYourName = "ກະລຸນາແກ້ໄຂຊື່ຂອງທ່ານ";
+  static const String pleaseCorrectYourLastName = "ກະລຸນາແກ້ໄຂນາມສະກຸນຂອງເຈົ້າ";
+  static const String pleaseCorrectYourGender = "ກະລຸນາແກ້ໄຂເພດຂອງທ່ານ";
+  static const String pleaseCorrectYourBirthDate =
+      "ກະລຸນາແກ້ໄຂວັນເດືອນປີເກີດຂອງທ່ານ";
+  static const String pleaseCorrectYourAddress = "ກະລຸນາແກ້ໄຂທີ່ຢູ່ຂອງເຈົ້າ";
+  static const String pleaseCorrectYourCity = "ກະລຸນາແກ້ໄຂເມືອງຂອງເຈົ້າ";
+  static const String pleaseCorrectYourDistrict = "ກະລຸນາແກ້ໄຂຄາວຕີ້ຂອງເຈົ້າ";
+  static const String pleaseCorrectYourIDCardNumber =
+      "ກະລຸນາແກ້ໄຂໝາຍເລກບັດປະຈຳຕົວຂອງທ່ານ";
+  static const String pleaseChangeYourDocumentImage =
+      "ກະລຸນາປ່ຽນຮູບຂອງເອກະສານຂອງເຈົ້າ";
+  static const String pleaseChangeYourVerificationPicture =
+      "ກະລຸນາປ່ຽນຮູບປະຈໍາຕົວຂອງທ່ານ";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -233,7 +326,7 @@ mixin AppLocale {
     pleaseWait: "ກະລຸນາລໍຖ້າ",
     pointRef: "ທີ່ມາຂອງຄະແນນ",
     quantity: "ຈໍານວນ",
-    score: "ຄະແນນ",
+    point: "ຄະແນນ",
     firstName: "ຊື່",
     lastName: "ນາມສະກຸນ",
     birthDate: "ວັນເດືອນປີເກີດ",
@@ -266,10 +359,10 @@ mixin AppLocale {
     mrs: "ນາງ",
     verified: "ຢັ້ງຢືນຕົວຕົນແລ້ວ",
     notVerified: "ບໍ່ໄດ້ຢັ້ງຢືນຕົວຕົນ",
-    verifyIdentity: "ຢືນຢັນຕົວຕົນຂອງທ່ານ",
+    verifyYourIdentity: "ຢືນຢັນຕົວຕົນຂອງທ່ານ",
     randomCard: "ບັດໂຊກ",
     downtimeBank: "ບໍ່ສາມາດຊໍາລະໄດ້ໃນລະຫວ່າງໄລຍະເວລາ",
-    auspiciousWallpaper: "ຮູບວໍເປເປີ ທີ່ປະເສີດ",
+    auspiciousWallpaper: "ຮູບວໍເປເປີທີ່ປະເສີດ",
     login: "ເຂົ້າສູ່ລະບົບ",
     rateLimit: "ທ່ານໄດ້ຮ້ອງຂໍຫຼາຍເກີນໄປໃນໄລຍະເວລາສັ້ນໆ, ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ",
     totalOrderAmount: "ຈໍານວນຄໍາສັ່ງທັງຫມົດ",
@@ -280,11 +373,93 @@ mixin AppLocale {
         "ຕ້ອງການຊື້ຫວຍເລກ {lottery} ລາຄາ {price} ກີບບໍ?",
     addedLottery: "ເລກຫວຍ {lottery} ໄດ້ຖືກເພີ່ມ",
     pleaseSelectPaymentMethod: "ກະລຸນາເລືອກວິທີການຊໍາລະເງິນ",
-    pleaseEnterPointsWantUse: "ກະລຸນາໃສ່ point ທີ່ທ່ານຕ້ອງການໃຊ້",
+    pleaseEnterPointsWantUse: "ກະລຸນາໃສ່ຄະແນນທີ່ທ່ານຕ້ອງການໃຊ້",
     minimumAmount: "ຂັ້ນຕ່ຳ {price} ກີບ",
     scanQRCodeBeFriends: "ສະແກນລະຫັດ QR ນີ້ເພື່ອກາຍເປັນເພື່ອນ",
     coupon: "ຄູປ໋ອງ",
     useCoupon: "ໃຊ້ຄູປ໋ອງ",
+    pleaseEnterYourPhoneNumberToLogin:
+        "ກະລຸນາໃສ່ເບີໂທລະສັບຂອງທ່ານເພື່ອເຂົ້າສູ່ລະບົບ",
+    phoneNumber: "ເບີໂທລະສັບ",
+    minimumLengthDigits: "ຄວາມຍາວຕໍ່າສຸດແມ່ນ {digits} ຕົວເລກ",
+    pleaseFillPhoneNumber: "ກະລຸນາຕື່ມເບີໂທລະສັບ",
+    invalidPhoneNumber: "ເບີໂທລະສັບບໍ່ຖືກຕ້ອງ",
+    accept: "ຍອມຮັບ",
+    hello: "ສະບາຍດີ",
+    welcome: "ຍິນດີຕ້ອນຮັບ",
+    inviteFriends: "ແນະນໍາຫມູ່",
+    inviteAccept: "ເຊີນ/ຍອມຮັບ",
+    youHaveScore: "ທ່ານມີ/ຈຸດ",
+    amountInWallet: "ຈຳນວນເງິນໃນກະເປົາເງິນ",
+    quickMenu: "ເມນູດ່ວນ",
+    dailyFortune: "ໂຊກ​ປະ​ຈໍາ​ວັນ​",
+    wallet: "ກະເປົາເງິນ",
+    chatWithFriends: "ສົນທະນາກັບຫມູ່ເພື່ອນ",
+    verifyIdentity: "ຢືນຢັນຕົວຕົນ",
+    all: "ທັງໝົດ",
+    save: "ບັນທຶກ",
+    seeMore: "ເບິ່ງເພີ່ມເຕີມ",
+    identityVerification: "ການລະບຸຕົວຕົນ",
+    changePhoneNumber: "ປ່ຽນເບີໂທລະສັບ",
+    noNotification: "ບໍ່ມີການແຈ້ງເຕືອນ",
+    noNews: "ບໍ່ມີຂ່າວໃດໆໃນເວລານີ້",
+    noPromotion: "ບໍ່ມີໂປຣໂມຊັນໃນເວລານີ້",
+    personalData: "ຂໍ້ມູນສ່ວນຕົວ",
+    leave: "ອອກ",
+    statistics: "ສະຖິຕິ",
+    scan: "ສະແກນ",
+    privileges: "ສິດທິພິເສດ",
+    specialForYou: "ພິເສດສຳລັບທ່ານ",
+    socialMediaFamousTeachers: "ສື່ມວນຊົນສັງຄົມ ຄູ​ອາ​ຈານ​ທີ່​ມີ​ຊື່​ສຽງ​",
+    deleteAll: "ລຶບທັງໝົດ",
+    areYouSureYouWantToDeleteAllLottery:
+        "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບລາຍການຫວຍທັງໝົດ?",
+    thisInvoiceExpiresOn: "ໃບເກັບເງິນນີ້ໝົດອາຍຸໃນ",
+    identityVerificationRequired: "ຕ້ອງການການຢັ້ງຢືນຕົວຕົນ",
+    collectCoupons: "ເກັບກໍາຄູປ໋ອງ",
+    expiresIn: "ໝົດອາຍຸໃນ",
+    expiresOn: "ໝົດກຳນົດວັນທີ",
+    promotionDetails: "ລາຍລະອຽດໂປຣໂມຊັນ",
+    forgetPasscode: "ລືມລະຫັດຜ່ານ",
+    changeName: "ປ່ຽນຊື່",
+    pleaseEnterYourFirstName: "ກະລຸນາໃສ່ຊື່ຂອງທ່ານ",
+    pleaseEnterYourLasttName: "ກະລຸນາໃສ່ນາມສະກຸນຂອງເຈົ້າ",
+    pleaseEnterYourFirstNameAndLastName: "ກະລຸນາໃສ່ຊື່ ແລະນາມສະກຸນຂອງເຈົ້າ",
+    updateYourAddress: "ອັບເດດທີ່ຢູ່ຂອງເຈົ້າ",
+    pleaseEnterTheAddressYouWantToUpdate: "ກະລຸນາໃສ່ທີ່ຢູ່ທີ່ທ່ານຕ້ອງການອັບເດດ",
+    updateAddress: "ອັບເດດທີ່ຢູ່",
+    youHaveInvitedYourFriends: "ທ່ານໄດ້ເຊື້ອເຊີນເພື່ອນມິດ",
+    clickToViewFriendsList: "ຄລິກເພື່ອເບິ່ງລາຍຊື່ໝູ່",
+    people: "ຄົນ",
+    yourFriendHasAccepted: "ໝູ່ຂອງເຈົ້າຕອບຮັບແລ້ວ",
+    listOfFriendsYouHaveInvited: "ລາຍຊື່ໝູ່ທີ່ທ່ານໄດ້ເຊີນແລ້ວ",
+    myQRcode: "QR code ຂອງຂ້ອຍ",
+    shareQRCode: "ແບ່ງປັນ QR code",
+    pleaseAddLottery: "ກະລຸນາເພີ່ມຫວຍ",
+    pleaseFillLottery: "ກະລຸນາໃສ່ເລກຫວຍ",
+    pointDiscount: "ສ່ວນຫຼຸດຄະແນນ",
+    theMaximumPointsYouCanUse: "ຄະແນນທີ່ທ່ານສາມາດນໍາໃຊ້ສູງສຸດ",
+    enterThePointsYouWantToUse: "ໃສ່ຄະແນນທີ່ທ່ານຕ້ອງການໃຊ້",
+    pleaseCompleteYourIdentityVerification:
+        "ກະລຸນາຢັ້ງຢືນຕົວຕົນຂອງທ່ານສຳເລັດແລ້ວ",
+    toTakeFullAdvantageOfTheBenefits:
+        "ໃນຄໍາສັ່ງທີ່ຈະນໍາໃຊ້ຜົນປະໂຫຍດຢ່າງເຕັມສ່ວນ",
+    pressToConfirmYourIdentity: "ກົດເພື່ອຢືນຢັນຕົວຕົນຂອງທ່ານ",
+    later: "ຕໍ່ມາ",
+    youWantToGetOutOf: "ເຈົ້າຕ້ອງການອອກຈາກ",
+    pleaseFillInAllInformation: "ກະລຸນາຕື່ມຂໍ້ມູນໃຫ້ຄົບຖ້ວນ",
+    pleaseProvideAPhotocopyAndProofOfIdentity:
+        "ກະລຸນາສຳເນົາເອກະສານ ແລະຮູບພາບເພື່ອຢັ້ງຢືນຕົວຕົນຂອງທ່ານ",
+    pleaseCorrectYourName: "ກະລຸນາແກ້ໄຂຊື່ຂອງທ່ານ",
+    pleaseCorrectYourLastName: "ກະລຸນາແກ້ໄຂນາມສະກຸນຂອງເຈົ້າ",
+    pleaseCorrectYourGender: "ກະລຸນາແກ້ໄຂເພດຂອງທ່ານ",
+    pleaseCorrectYourBirthDate: "ກະລຸນາແກ້ໄຂວັນເດືອນປີເກີດຂອງທ່ານ",
+    pleaseCorrectYourAddress: "ກະລຸນາແກ້ໄຂທີ່ຢູ່ຂອງເຈົ້າ",
+    pleaseCorrectYourCity: "ກະລຸນາແກ້ໄຂເມືອງຂອງເຈົ້າ",
+    pleaseCorrectYourDistrict: "ກະລຸນາແກ້ໄຂຄາວຕີ້ຂອງເຈົ້າ",
+    pleaseCorrectYourIDCardNumber: "ກະລຸນາແກ້ໄຂໝາຍເລກບັດປະຈຳຕົວຂອງທ່ານ",
+    pleaseChangeYourDocumentImage: "ກະລຸນາປ່ຽນຮູບຂອງເອກະສານຂອງເຈົ້າ",
+    pleaseChangeYourVerificationPicture: "ກະລຸນາປ່ຽນຮູບປະຈໍາຕົວຂອງທ່ານ",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -312,7 +487,7 @@ mixin AppLocale {
     buyerName: 'ชื่อผู้ซื้อ',
     date: 'วันที่',
     buyHistory: 'ประวัติการซื้อ',
-    winHistory: 'ประวัติถูกรางวัล',
+    winHistory: 'ประวัติรางวัล',
     reportAccountDeletion: 'แจ้งลบบัญชี',
     information: 'ข้อมูล',
     profile: 'โปรไฟล์',
@@ -371,7 +546,7 @@ mixin AppLocale {
     pleaseWait: "โปรดรอ",
     pointRef: "ที่มาของคะแนน",
     quantity: "จำนวน",
-    score: "คะแนน",
+    point: "คะแนน",
     firstName: "ชื่อ",
     lastName: "นามสกุล",
     birthDate: "วันเดือนปีเกิด",
@@ -404,10 +579,10 @@ mixin AppLocale {
     mrs: "นาง",
     verified: "ยืนยันตัวตนแล้ว",
     notVerified: "ไม่ได้ยืนยันตัวตน",
-    verifyIdentity: "ยืนยันตัวตนของคุณ",
+    verifyYourIdentity: "ยืนยันตัวตนของคุณ",
     randomCard: "ไพ่นำโชค",
     downtimeBank: "ไม่สามารถชำระเงินได้ในช่วงเวลา",
-    auspiciousWallpaper: "วอลเปเปอร์ มงคล",
+    auspiciousWallpaper: "วอลเปเปอร์มงคล",
     login: "เข้าสู่ระบบ",
     rateLimit:
         "คุณทำการร้องขอมากเกินไปในช่วงเวลาสั้น ๆ โปรดลองใหม่อีกครั้งในภายหลัง",
@@ -419,11 +594,91 @@ mixin AppLocale {
         "คุณต้องการซื้อหวยเลข {lottery} ในราคา {price} กีบ ใช่หรือไม่?",
     addedLottery: "เพิ่มหวยเลข {lottery} เรียบร้อย",
     pleaseSelectPaymentMethod: "กรุณาเลือกวิธีการชำระเงิน",
-    pleaseEnterPointsWantUse: "กรุณากรอก point ที่ต้องการใช้",
+    pleaseEnterPointsWantUse: "กรุณากรอกคะแนนที่ต้องการใช้",
     minimumAmount: "ยอดขั้นต่ำ {price} กีบ",
     scanQRCodeBeFriends: "สแกน QR code นี้เพื่อเป็นเพื่อนกัน",
     coupon: "คูปอง",
     useCoupon: "ใช้คูปอง",
+    pleaseEnterYourPhoneNumberToLogin:
+        "กรุณากรอกหมายเลขโทรศัพท์เพื่อเข้าสู่ระบบ",
+    phoneNumber: "หมายเลขโทรศัพท์",
+    minimumLengthDigits: "ความยาวขั้นต่ำ {digits} หลัก",
+    pleaseFillPhoneNumber: "กรุณากรอกเบอร์โทรศัพท์",
+    invalidPhoneNumber: "หมายเลขโทรศัพท์ไม่ถูกต้อง",
+    accept: "ยอมรับ",
+    hello: "สวัสดี",
+    welcome: "ยินดีต้อนรับ",
+    inviteFriends: "แนะนำเพื่อน",
+    inviteAccept: "ชวน/รับ",
+    youHaveScore: "คุณมี/คะแนน",
+    amountInWallet: "จำนวนเงินในกระเป๋าตัง",
+    quickMenu: "เมนูด่วน",
+    dailyFortune: "โชคลาภประจำวัน",
+    wallet: "กระเป๋าเงิน",
+    chatWithFriends: "คุยกับเพื่อน",
+    verifyIdentity: "ยืนยันตัวตน",
+    all: "ทั้งหมด",
+    save: "บันทึก",
+    seeMore: "ดูเพิ่มเติม",
+    identityVerification: "การยืนยันตัวตน",
+    changePhoneNumber: "เปลี่ยนเบอร์โทรศัพท์",
+    noNotification: "ไม่มีการแจ้งเตือน",
+    noNews: "ไม่มีข่าวในขณะนี้",
+    noPromotion: "ไม่มีโปรโมชั่นในขณะนี้",
+    personalData: "ช้อมูลส่วนตัว",
+    leave: "ออก",
+    statistics: "สถิติ",
+    scan: "สแกน",
+    privileges: "สิทธิพิเศษ",
+    specialForYou: "พิเศษสำหรับคุณ",
+    socialMediaFamousTeachers: "โซเชียลมีเดีย อาจารย์ดัง",
+    deleteAll: "ลบทั้งหมด",
+    areYouSureYouWantToDeleteAllLottery:
+        "คุณแน่ใจหรือไม่ว่าต้องการลบรายการลอตเตอรี่ทั้งหมด?",
+    thisInvoiceExpiresOn: "ใบแจ้งหนี้นี้จะหมดอายุใน",
+    identityVerificationRequired: "ต้องการการยืนยันตัวตน",
+    collectCoupons: "เก็บคูปอง",
+    expiresIn: "หมดอายุใน",
+    expiresOn: "หมดอายุวันที่",
+    promotionDetails: "รายละเอียดโปรโมชั่น",
+    forgetPasscode: "ลืมรหัสผ่าน",
+    changeName: "เปลี่ยนชื่อ",
+    pleaseEnterYourFirstName: "กรุณากรอกชื่อของคุณ",
+    pleaseEnterYourLasttName: "กรุณากรอกนามสกุลของคุณ",
+    pleaseEnterYourFirstNameAndLastName: "กรุณากรอกชื่อและนามสกุลของคุณ",
+    updateYourAddress: "อัปเดตที่อยู่ของคุณ",
+    pleaseEnterTheAddressYouWantToUpdate: "กรุณากรอกที่อยู่ที่ต้องการอัพเดท",
+    updateAddress: "อัปเดตที่อยู่",
+    youHaveInvitedYourFriends: "คุณได้ชวนเพื่อนแล้ว",
+    clickToViewFriendsList: "กดเพื่อดูรายชื่อเพื่อน",
+    people: "ราย",
+    yourFriendHasAccepted: "เพื่อนคุณตอบรับแล้ว",
+    listOfFriendsYouHaveInvited: "รายชื่อเพื่อนที่คุณได้ชวนแล้ว",
+    myQRcode: "QR code ของฉัน",
+    shareQRCode: "แชร์ QR code",
+    pleaseAddLottery: "กรุณาเพิ่มลอตเตอรี่",
+    pleaseFillLottery: "กรุณากรอกหวย",
+    pointDiscount: "ส่วนลดคะแนน",
+    theMaximumPointsYouCanUse: "คะแนนที่คุณใช้ได้สูงสุด",
+    enterThePointsYouWantToUse: "กรอกคะแนนที่คุณต้องการใช้",
+    pleaseCompleteYourIdentityVerification: "กรุณายืนยันตัวตนให้สำเร็จ",
+    toTakeFullAdvantageOfTheBenefits: "เพื่อใช้สิทธิประโยชน์ได้เต็มที่",
+    pressToConfirmYourIdentity: "กดเพื่อยืนยันตัวตนของคุณ",
+    later: "ภายหลัง",
+    youWantToGetOutOf: "คุณต้องการออกจาก",
+    pleaseFillInAllInformation: "กรุณากรอกข้อมูลให้ครบ",
+    pleaseProvideAPhotocopyAndProofOfIdentity:
+        "กรุณาถ่ายเอกสารและรูปภาพยืนยันตัวตน",
+    pleaseCorrectYourName: "โปรดแก้ไขชื่อของคุณ",
+    pleaseCorrectYourLastName: "โปรดแก้นามสกุลของคุณ",
+    pleaseCorrectYourGender: "โปรดแก้เพศของคุณ",
+    pleaseCorrectYourBirthDate: "โปรดแก้วันเกิดของคุณ",
+    pleaseCorrectYourAddress: "โปรดแก้ที่อยู่ของคุณ",
+    pleaseCorrectYourCity: "โปรดแก้เมืองของคุณ",
+    pleaseCorrectYourDistrict: "โปรดแก้แขวงของคุณ",
+    pleaseCorrectYourIDCardNumber: "โปรดแก้เลขบัตรประชาชนของคุณ",
+    pleaseChangeYourDocumentImage: "โปรดเปลี่ยนรูปเอกสารของคุณ",
+    pleaseChangeYourVerificationPicture: "โปรดเปลี่ยนรูปภาพยืนยันตัวตนของคุณ",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -481,7 +736,7 @@ mixin AppLocale {
     birthTimeHoroscope:
         'Please enter your birth date to get the best fortune telling experience.',
     feedback: 'Feedback',
-    shareAppToYourFriend: 'Recommend to my friends',
+    shareAppToYourFriend: 'Invite friends',
     myScore: 'My score',
     security: 'Security',
     randomTitle: 'Your lucky number for today',
@@ -511,7 +766,7 @@ mixin AppLocale {
     pleaseWait: "Please wait",
     pointRef: "Source of scores",
     quantity: "Quantity",
-    score: "Score",
+    point: "Point",
     firstName: "First name",
     lastName: "Last name",
     birthDate: "Birth date",
@@ -544,7 +799,7 @@ mixin AppLocale {
     mrs: "Mrs",
     verified: "Verified",
     notVerified: "Not verified",
-    verifyIdentity: "Verify your identity",
+    verifyYourIdentity: "Verify your identity",
     randomCard: "Lucky Cards",
     downtimeBank: "Unable to pay during the period",
     auspiciousWallpaper: "Auspicious wallpaper",
@@ -564,5 +819,89 @@ mixin AppLocale {
     scanQRCodeBeFriends: "Scan this QR code to be friends",
     coupon: "Coupon",
     useCoupon: "Use coupon",
+    pleaseEnterYourPhoneNumberToLogin:
+        "Please enter your phone number to log in",
+    phoneNumber: "Phone number",
+    minimumLengthDigits: "minimum length is {digits} digits",
+    pleaseFillPhoneNumber: "Please fill phone number",
+    invalidPhoneNumber: "Invalid phone number",
+    accept: "Accept",
+    hello: "Hello",
+    welcome: "Welcome",
+    inviteFriends: "Invite friends",
+    inviteAccept: "Invite/Accept",
+    youHaveScore: "You have/score",
+    amountInWallet: "Amount in wallet",
+    quickMenu: "Quick Menu",
+    dailyFortune: "Daily Fortune",
+    wallet: "Wallet",
+    chatWithFriends: "Chat with friends",
+    verifyIdentity: "Verify identity",
+    all: "All",
+    save: "Save",
+    seeMore: "See more",
+    identityVerification: "Identity verification",
+    changePhoneNumber: "Change phone number",
+    noNotification: "No notification",
+    noNews: "There is no news at this time",
+    noPromotion: "There are no promotions at this time",
+    personalData: "Personal data",
+    leave: "Leave",
+    statistics: "Statistics",
+    scan: "Scan",
+    privileges: "Privileges",
+    specialForYou: "Special for you",
+    socialMediaFamousTeachers: "Social media famous prophet",
+    deleteAll: "Delete all",
+    areYouSureYouWantToDeleteAllLottery:
+        "Are you sure you want to delete all lottery entries?",
+    thisInvoiceExpiresOn: "This invoice expires on",
+    identityVerificationRequired: "Identity verification required",
+    collectCoupons: "Collect coupons",
+    expiresIn: "Expires in",
+    expiresOn: "Expires on",
+    promotionDetails: "Promotion details",
+    forgetPasscode: "Forget password",
+    changeName: "Change name",
+    pleaseEnterYourFirstName: "Please enter your first name",
+    pleaseEnterYourLasttName: "Please enter your last name",
+    pleaseEnterYourFirstNameAndLastName:
+        "Please enter your first name and last name",
+    updateYourAddress: "Update your address",
+    pleaseEnterTheAddressYouWantToUpdate:
+        "Please enter the address you want to update",
+    updateAddress: "Update address",
+    youHaveInvitedYourFriends: "You have invited a friend",
+    clickToViewFriendsList: "Click to view friends list",
+    people: "People",
+    yourFriendHasAccepted: "Your friend has accepted",
+    listOfFriendsYouHaveInvited: "List of friends you have invited",
+    myQRcode: "My QR code",
+    shareQRCode: "Share QR code",
+    pleaseAddLottery: "Please add lottery",
+    pleaseFillLottery: "Please fill lottery",
+    pointDiscount: "Point discount",
+    theMaximumPointsYouCanUse: "The maximum points you can use",
+    enterThePointsYouWantToUse: "Enter the points you want to use",
+    pleaseCompleteYourIdentityVerification:
+        "Please complete your identity verification",
+    toTakeFullAdvantageOfTheBenefits: "To take full advantage of the benefits",
+    pressToConfirmYourIdentity: "Press to confirm your identity",
+    later: "Later",
+    youWantToGetOutOf: "You want to exit of",
+    pleaseFillInAllInformation: "Please fill in all information",
+    pleaseProvideAPhotocopyAndProofOfIdentity:
+        "Please provide a photocopy and proof of identity",
+    pleaseCorrectYourName: "Please correct your name",
+    pleaseCorrectYourLastName: "Please correct your last name",
+    pleaseCorrectYourGender: "Please correct your gender",
+    pleaseCorrectYourBirthDate: "Please correct your date of birth",
+    pleaseCorrectYourAddress: "Please correct your address",
+    pleaseCorrectYourCity: "Please correct your city",
+    pleaseCorrectYourDistrict: "Please correct your district",
+    pleaseCorrectYourIDCardNumber: "Please correct your ID card number",
+    pleaseChangeYourDocumentImage: "Please change your document format",
+    pleaseChangeYourVerificationPicture:
+        "Please change your verification picture",
   };
 }

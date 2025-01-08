@@ -74,7 +74,7 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                         color: Colors.amber.shade100,
                                       ),
                                       child: Text(
-                                        "ໃບເກັບເງິນນີ້ໝົດອາຍຸໃນ ${controller.invoiceRemainExpireStr.value}",
+                                        "${AppLocale.thisInvoiceExpiresOn.getString(context)} ${controller.invoiceRemainExpireStr.value}",
                                       ),
                                     );
                                   }),
@@ -148,12 +148,17 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                                     .min,
                                                             children: [
                                                               Text(
-                                                                'ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບລາຍການຫວຍທັງໝົດ?',
+                                                                AppLocale
+                                                                    .areYouSureYouWantToDeleteAllLottery
+                                                                    .getString(
+                                                                        context),
                                                                 style:
                                                                     TextStyle(
                                                                   fontSize: 16,
                                                                 ),
                                                               ),
+                                                              const SizedBox(
+                                                                  height: 12),
                                                               Row(
                                                                 mainAxisSize:
                                                                     MainAxisSize
@@ -182,7 +187,11 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                                           ?.pop();
                                                                     },
                                                                     child: Text(
-                                                                        "Cancel"),
+                                                                      AppLocale
+                                                                          .cancel
+                                                                          .getString(
+                                                                              context),
+                                                                    ),
                                                                   ),
                                                                   const SizedBox(
                                                                       width: 8),
@@ -218,7 +227,10 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                                           ?.pop();
                                                                     },
                                                                     child: Text(
-                                                                      "Delete all",
+                                                                      AppLocale
+                                                                          .deleteAll
+                                                                          .getString(
+                                                                              context),
                                                                     ),
                                                                   ),
                                                                 ],
@@ -263,22 +275,17 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                       children: controller.invoiceMeta.value
                                               .transactions.isEmpty
                                           ? [
-                                              GestureDetector(
-                                                onTap: () {
-                                                  controller.getQuota();
-                                                },
-                                                child: Container(
-                                                  margin: const EdgeInsets.only(
-                                                      top: 24),
-                                                  alignment: Alignment.center,
-                                                  child: Text(
-                                                    AppLocale
-                                                        .pleaseAddNumberWantToBuy
-                                                        .getString(context),
-                                                    style: TextStyle(
-                                                      color:
-                                                          AppColors.disableText,
-                                                    ),
+                                              Container(
+                                                margin: const EdgeInsets.only(
+                                                    top: 24),
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  AppLocale
+                                                      .pleaseAddNumberWantToBuy
+                                                      .getString(context),
+                                                  style: TextStyle(
+                                                    color:
+                                                        AppColors.disableText,
                                                   ),
                                                 ),
                                               )
@@ -289,110 +296,121 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                               .toList()
                                               .map(
                                               (lotteryData) {
-                                                return Container(
-                                                  margin: const EdgeInsets.only(
-                                                      bottom: 8),
-                                                  padding:
-                                                      const EdgeInsets.all(8),
-                                                  decoration: BoxDecoration(
-                                                    color: AppColors.foreground,
-                                                    boxShadow: const [
-                                                      BoxShadow(
-                                                        color: AppColors
-                                                            .foregroundBorder,
-                                                        offset: Offset(0, 0),
-                                                        spreadRadius: 1,
-                                                      )
-                                                    ],
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5),
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        lotteryData.lottery,
-                                                        style: TextStyle(
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    controller.editLottery(
+                                                      lotteryData.lottery,
+                                                      lotteryData.quota,
+                                                    );
+                                                  },
+                                                  child: Container(
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            bottom: 8),
+                                                    padding:
+                                                        const EdgeInsets.all(8),
+                                                    decoration: BoxDecoration(
+                                                      color:
+                                                          AppColors.foreground,
+                                                      boxShadow: const [
+                                                        BoxShadow(
                                                           color: AppColors
-                                                              .textPrimary,
-                                                          fontSize: 16,
-                                                          fontWeight:
-                                                              FontWeight.w500,
+                                                              .foregroundBorder,
+                                                          offset: Offset(0, 0),
+                                                          spreadRadius: 1,
+                                                        )
+                                                      ],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5),
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          lotteryData.lottery,
+                                                          style: TextStyle(
+                                                            color: AppColors
+                                                                .textPrimary,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            CommonFn.parseMoney(
-                                                                lotteryData
-                                                                    .quota),
-                                                            style: TextStyle(
-                                                              color: AppColors
-                                                                  .textPrimary,
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                            ),
-                                                          ),
-                                                          // TODO: this!
-                                                          const SizedBox(
-                                                            width: 12,
-                                                          ),
-                                                          if (lotteryData
-                                                                      .bonus !=
-                                                                  null &&
-                                                              lotteryData
-                                                                      .bonus !=
-                                                                  0) ...[
-                                                            const SizedBox(
-                                                                width: 16),
+                                                        Row(
+                                                          children: [
                                                             Text(
-                                                              '+${CommonFn.parseMoney(lotteryData.bonus!)}',
+                                                              CommonFn.parseMoney(
+                                                                  lotteryData
+                                                                      .quota),
                                                               style: TextStyle(
+                                                                color: AppColors
+                                                                    .textPrimary,
                                                                 fontSize: 16,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w500,
-                                                                color: Colors
-                                                                    .green,
+                                                              ),
+                                                            ),
+                                                            // TODO: this!
+                                                            const SizedBox(
+                                                              width: 12,
+                                                            ),
+                                                            if (lotteryData
+                                                                        .bonus !=
+                                                                    null &&
+                                                                lotteryData
+                                                                        .bonus !=
+                                                                    0) ...[
+                                                              const SizedBox(
+                                                                  width: 16),
+                                                              Text(
+                                                                '+${CommonFn.parseMoney(lotteryData.bonus!)}',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Colors
+                                                                      .green,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                            const SizedBox(
+                                                                width: 8),
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                controller
+                                                                    .removeLottery(
+                                                                        lotteryData);
+                                                              },
+                                                              child: Container(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(2),
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              4),
+                                                                  color: AppColors
+                                                                      .errorBorder,
+                                                                ),
+                                                                child: Icon(
+                                                                  Icons.close,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
                                                               ),
                                                             ),
                                                           ],
-                                                          const SizedBox(
-                                                              width: 8),
-                                                          GestureDetector(
-                                                            onTap: () {
-                                                              controller
-                                                                  .removeLottery(
-                                                                      lotteryData);
-                                                            },
-                                                            child: Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(2),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            4),
-                                                                color: AppColors
-                                                                    .errorBorder,
-                                                              ),
-                                                              child: Icon(
-                                                                Icons.close,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      )
-                                                    ],
+                                                        )
+                                                      ],
+                                                    ),
                                                   ),
                                                 );
                                               },
@@ -469,8 +487,10 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                         children: [
                                           Expanded(
                                             child: TextFormField(
+                                              maxLength: 6,
                                               textAlign: TextAlign.center,
                                               decoration: InputDecoration(
+                                                counterText: "",
                                                 hintText: AppLocale
                                                     .purchaseNumber
                                                     .getString(context),

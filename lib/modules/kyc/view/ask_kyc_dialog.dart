@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/route/route_name.dart';
@@ -42,7 +44,8 @@ class AskKycDialog extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      "กรุณายืนยันตัวตนให้สำเร็จ",
+                      AppLocale.pleaseCompleteYourIdentityVerification
+                          .getString(context),
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
@@ -51,7 +54,8 @@ class AskKycDialog extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      "เพื่อใช้สิธิประโยชน์ได้เต็มที่",
+                      AppLocale.toTakeFullAdvantageOfTheBenefits
+                          .getString(context),
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
@@ -60,7 +64,7 @@ class AskKycDialog extends StatelessWidget {
                       textAlign: TextAlign.center,
                     ),
                     Text(
-                      '"กดเพื่อยืนยันตัวตนของคุณ"',
+                      '"${AppLocale.pressToConfirmYourIdentity.getString(context)}"',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -84,7 +88,7 @@ class AskKycDialog extends StatelessWidget {
                         backgroundColor: AppColors.backButtonHover,
                         borderRadius: BorderRadius.circular(6),
                         child: Text(
-                          "ภายหลัง",
+                          AppLocale.later.getString(context),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -103,7 +107,7 @@ class AskKycDialog extends StatelessWidget {
                         },
                         borderRadius: BorderRadius.circular(6),
                         child: Text(
-                          "ยืนยันตัวตน",
+                          AppLocale.verifyIdentity.getString(context),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),

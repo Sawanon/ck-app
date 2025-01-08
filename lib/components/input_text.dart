@@ -14,6 +14,7 @@ class InputText extends StatelessWidget {
   final TextInputType? keyboardType;
   final Widget? label;
   final int? maxValue;
+  final String? initialValue;
 
   const InputText({
     super.key,
@@ -28,11 +29,13 @@ class InputText extends StatelessWidget {
     this.keyboardType,
     this.label,
     this.maxValue,
+    this.initialValue,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: initialValue,
       controller: controller,
       readOnly: disabled,
       keyboardType: keyboardType,

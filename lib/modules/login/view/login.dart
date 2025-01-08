@@ -7,8 +7,6 @@ import 'package:lottery_ck/modules/couldflare/view/cloudflare.dart';
 import 'package:lottery_ck/modules/login/controller/login.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
-import 'package:lottery_ck/route/route_name.dart';
-import 'package:lottery_ck/utils.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -45,7 +43,7 @@ class LoginPage extends StatelessWidget {
                       Align(
                         alignment: Alignment.topLeft,
                         child: Text(
-                          'ເຂົ້າສູ່ລະບົບ',
+                          AppLocale.login.getString(context),
                           style: TextStyle(
                             fontSize: 32,
                             fontWeight: FontWeight.w400,
@@ -57,7 +55,8 @@ class LoginPage extends StatelessWidget {
                       Align(
                         alignment: Alignment.topLeft,
                         child: Text(
-                          'ກະລຸນາຕື່ມເບີໂທລະສັບແລະລະຫັດຜ່ານເພື່ອເຂົ້າສູ່ລະບົບ',
+                          AppLocale.pleaseEnterYourPhoneNumberToLogin
+                              .getString(context),
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w400,
@@ -86,7 +85,7 @@ class LoginPage extends StatelessWidget {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                'ເບີໂທລະສັບ',
+                                AppLocale.phoneNumber.getString(context),
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w400,
@@ -139,112 +138,23 @@ class LoginPage extends StatelessWidget {
                                 formatInput: false,
                                 validator: (value) {
                                   if (value!.length < 7) {
-                                    return "minimum length is 7 digits";
+                                    String minimumText = AppLocale
+                                        .minimumLengthDigits
+                                        .getString(context)
+                                        .replaceAll("{digits}", "7");
+                                    return minimumText;
                                   }
                                   if (value == "") {
-                                    return "Plaese fill phone number";
+                                    return AppLocale.pleaseFillPhoneNumber
+                                        .getString(context);
                                   }
                                   if (!GetUtils.isPhoneNumber(value)) {
-                                    return "Invalid phone number";
+                                    return AppLocale.invalidPhoneNumber
+                                        .getString(context);
                                   }
                                   return null;
                                 },
                               ),
-                            ),
-                            // TextFormField(
-                            //   decoration: InputDecoration(
-                            //     enabledBorder: OutlineInputBorder(
-                            //       borderRadius: BorderRadius.circular(10),
-                            //       borderSide: BorderSide(
-                            //         color: AppColors.primary,
-                            //       ),
-                            //     ),
-                            //     focusedBorder: OutlineInputBorder(
-                            //       borderRadius: BorderRadius.circular(10),
-                            //       borderSide: BorderSide(
-                            //         color: AppColors.primary,
-                            //         width: 2,
-                            //       ),
-                            //     ),
-                            //   ),
-                            //   onChanged: (value) {
-                            //     controller.username = value;
-                            //   },
-                            // ),
-                            // const SizedBox(height: 16),
-                            // Align(
-                            //   alignment: Alignment.centerLeft,
-                            //   child: Text(
-                            //     'ລະຫັດຜ່ານ',
-                            //     style: TextStyle(
-                            //       fontSize: 20,
-                            //       fontWeight: FontWeight.w400,
-                            //     ),
-                            //   ),
-                            // ),
-                            // TextFormField(
-                            //   decoration: InputDecoration(
-                            //     enabledBorder: OutlineInputBorder(
-                            //       borderRadius: BorderRadius.circular(10),
-                            //       borderSide: BorderSide(
-                            //         color: AppColors.primary,
-                            //       ),
-                            //     ),
-                            //     focusedBorder: OutlineInputBorder(
-                            //       borderRadius: BorderRadius.circular(10),
-                            //       borderSide: BorderSide(
-                            //         color: AppColors.primary,
-                            //         width: 2,
-                            //       ),
-                            //     ),
-                            //   ),
-                            //   onChanged: (value) {
-                            //     controller.password = value;
-                            //   },
-                            // ),
-                            const SizedBox(height: 16),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                // Row(
-                                //   children: [
-                                //     SizedBox(
-                                //       width: 24,
-                                //       height: 24,
-                                //       child: Checkbox(
-                                //         value: false,
-                                //         onChanged: (value) {},
-                                //       ),
-                                //     ),
-                                //     const SizedBox(width: 8),
-                                //     const Text(
-                                //       'ບັນທຶກລະຫັດຜ່ານ',
-                                //       style: TextStyle(
-                                //         fontSize: 16,
-                                //         fontWeight: FontWeight.w700,
-                                //         color: AppColors.textPrimary,
-                                //       ),
-                                //     ),
-                                //   ],
-                                // ),
-                                // GestureDetector(
-                                //   onTap: () {
-                                //     Get.snackbar(
-                                //         'Forget password', "Coming soon");
-                                //   },
-                                //   child: const Text(
-                                //     'ລືມລະຫັດຜ່ານ',
-                                //     style: TextStyle(
-                                //       decoration: TextDecoration.underline,
-                                //       decorationThickness: 2,
-                                //       decorationColor: AppColors.textPrimary,
-                                //       fontSize: 16,
-                                //       fontWeight: FontWeight.w700,
-                                //       color: AppColors.textPrimary,
-                                //     ),
-                                //   ),
-                                // ),
-                              ],
                             ),
                             const SizedBox(height: 16),
                             SizedBox(
@@ -317,30 +227,6 @@ class LoginPage extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            // ElevatedButton(
-                            //   style: ElevatedButton.styleFrom(
-                            //     elevation: 0,
-                            //     shadowColor: Colors.transparent,
-                            //     shape: RoundedRectangleBorder(
-                            //       borderRadius: BorderRadius.circular(10),
-                            //     ),
-                            //     fixedSize:
-                            //         Size(MediaQuery.of(context).size.width, 48),
-                            //     backgroundColor: Colors.transparent,
-                            //     foregroundColor: AppColors.primary,
-                            //   ),
-                            //   onPressed: () {
-                            //     Get.toNamed(RouteName.signup);
-                            //   },
-                            //   child: Text(
-                            //     'ລົງທະບຽນ',
-                            //     style: TextStyle(
-                            //       fontSize: 16,
-                            //       fontWeight: FontWeight.w700,
-                            //       color: AppColors.textPrimary,
-                            //     ),
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),

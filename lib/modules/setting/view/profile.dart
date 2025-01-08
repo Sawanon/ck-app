@@ -176,7 +176,7 @@ class ProfilePage extends StatelessWidget {
                                     const SizedBox(width: 8),
                                     Expanded(
                                       child: Text(
-                                        AppLocale.verifyIdentity
+                                        AppLocale.identityVerification
                                             .getString(context),
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -318,11 +318,29 @@ class ProfilePage extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: SvgPicture.asset(AppIcon.arrowRight),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 4,
+                                    horizontal: 8,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primary,
+                                    borderRadius: BorderRadius.circular(24),
+                                  ),
+                                  child: Text(
+                                    AppLocale.changePhoneNumber
+                                        .getString(context),
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                    ),
+                                  ),
                                 ),
+                                // SizedBox(
+                                //   width: 24,
+                                //   height: 24,
+                                //   child: SvgPicture.asset(AppIcon.arrowRight),
+                                // ),
                               ],
                             ),
                           ),

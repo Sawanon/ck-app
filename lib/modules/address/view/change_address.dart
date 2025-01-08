@@ -1,11 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/loading.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 
@@ -27,15 +30,18 @@ class ChangeAddressPage extends StatelessWidget {
               SafeArea(
                 child: Column(
                   children: [
-                    HeaderCK(
-                      onTap: () => Get.back(),
+                    // HeaderCK(
+                    //   onTap: () => Get.back(),
+                    // ),
+                    Header(
+                      title: AppLocale.updateAddress.getString(context),
                     ),
                     Expanded(
                       child: ListView(
                         padding: EdgeInsets.all(16),
                         children: [
                           Text(
-                            "Update your address",
+                            AppLocale.updateYourAddress.getString(context),
                             style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 18,
@@ -43,7 +49,8 @@ class ChangeAddressPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            "Please enter the address you want to update",
+                            AppLocale.pleaseEnterTheAddressYouWantToUpdate
+                                .getString(context),
                             style: TextStyle(
                               fontWeight: FontWeight.w400,
                               fontSize: 14,
@@ -120,7 +127,7 @@ class ChangeAddressPage extends StatelessWidget {
                         onPressed: () {
                           controller.updateUserAddress();
                         },
-                        child: Text("Submit"),
+                        child: Text(AppLocale.confirm.getString(context)),
                       ),
                     ),
                   ],

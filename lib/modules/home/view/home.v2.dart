@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,9 +11,11 @@ import 'package:lottery_ck/components/menu_card.dart';
 import 'package:lottery_ck/components/menu_grid.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/route/route_name.dart';
+import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:lottery_ck/utils/theme.dart';
@@ -113,7 +116,7 @@ class HomePageV2 extends StatelessWidget {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 24.0),
                               child: Text(
-                                "สบายดี",
+                                AppLocale.hello.getString(context),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
@@ -125,7 +128,7 @@ class HomePageV2 extends StatelessWidget {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 24.0),
                               child: Text(
-                                "ยินดีต้อนรับ",
+                                AppLocale.welcome.getString(context),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 24,
@@ -189,7 +192,8 @@ class HomePageV2 extends StatelessWidget {
                                                 Text(
                                                   SettingController
                                                           .to.user?.firstName ??
-                                                      "First name",
+                                                      AppLocale.firstName
+                                                          .getString(context),
                                                   style: const TextStyle(
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.w500,
@@ -223,9 +227,9 @@ class HomePageV2 extends StatelessWidget {
                                                       () => FriendsPage(
                                                         myFriends: controller
                                                             .myFriends!,
-                                                        listMyFriends:
-                                                            controller
-                                                                .listMyFriends,
+                                                        // listMyFriends:
+                                                        //     controller
+                                                        //         .listMyFriends,
                                                       ),
                                                     );
                                                   }
@@ -322,44 +326,60 @@ class HomePageV2 extends StatelessWidget {
                                                           ),
                                                         ),
                                                       ),
-                                                      Column(
-                                                        children: [
-                                                          Text(
-                                                            "แนะนำ",
-                                                            style: GoogleFonts
-                                                                .prompt(
-                                                              textStyle:
-                                                                  TextStyle(
-                                                                fontSize: 10,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                              ),
-                                                            ),
-                                                            // style: TextStyle(
-                                                            //   fontSize: 10,
-                                                            //   fontWeight: FontWeight.w500,
-                                                            // ),
+                                                      SizedBox(
+                                                        width: 30,
+                                                        child: Text(
+                                                          AppLocale
+                                                              .inviteFriends
+                                                              .getString(
+                                                                  context),
+                                                          style: TextStyle(
+                                                            fontSize: 10,
                                                           ),
-                                                          Text(
-                                                            "เพื่อน",
-                                                            style: GoogleFonts
-                                                                .prompt(
-                                                              textStyle:
-                                                                  TextStyle(
-                                                                fontSize: 10,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ],
+                                                          softWrap: true,
+                                                        ),
                                                       ),
+                                                      // Column(
+                                                      //   children: [
+                                                      //     Text(
+                                                      //       "แนะนำ",
+                                                      //       style: GoogleFonts
+                                                      //           .prompt(
+                                                      //         textStyle:
+                                                      //             TextStyle(
+                                                      //           fontSize: 10,
+                                                      //           fontWeight:
+                                                      //               FontWeight
+                                                      //                   .w500,
+                                                      //         ),
+                                                      //       ),
+                                                      //       // style: TextStyle(
+                                                      //       //   fontSize: 10,
+                                                      //       //   fontWeight: FontWeight.w500,
+                                                      //       // ),
+                                                      //     ),
+                                                      //     Text(
+                                                      //       "เพื่อน",
+                                                      //       style: GoogleFonts
+                                                      //           .prompt(
+                                                      //         textStyle:
+                                                      //             TextStyle(
+                                                      //           fontSize: 10,
+                                                      //           fontWeight:
+                                                      //               FontWeight
+                                                      //                   .w500,
+                                                      //         ),
+                                                      //       ),
+                                                      //     ),
+                                                      //   ],
+                                                      // ),
                                                       Column(
                                                         children: [
                                                           Text(
-                                                            "ชวน/รับ",
+                                                            AppLocale
+                                                                .inviteAccept
+                                                                .getString(
+                                                                    context),
                                                             style: GoogleFonts
                                                                 .prompt(
                                                               textStyle:
@@ -505,7 +525,10 @@ class HomePageV2 extends StatelessWidget {
                                                       Column(
                                                         children: [
                                                           Text(
-                                                            "คุณมี/คะแนน",
+                                                            AppLocale
+                                                                .youHaveScore
+                                                                .getString(
+                                                                    context),
                                                             style: TextStyle(
                                                               fontSize: 12,
                                                               color:
@@ -575,7 +598,8 @@ class HomePageV2 extends StatelessWidget {
                                                     ),
                                                   ),
                                                   Text(
-                                                    "จำนวนเงินในกระเป๋าตัง",
+                                                    AppLocale.amountInWallet
+                                                        .getString(context),
                                                     style: TextStyle(
                                                       height: 1,
                                                       fontWeight:
@@ -617,7 +641,9 @@ class HomePageV2 extends StatelessWidget {
                                                               .center,
                                                       children: [
                                                         Text(
-                                                          "ซื้อหวย",
+                                                          AppLocale.buyLottery
+                                                              .getString(
+                                                                  context),
                                                           style: TextStyle(
                                                             fontSize: 14,
                                                             fontWeight:
@@ -669,19 +695,20 @@ class HomePageV2 extends StatelessWidget {
                                                     BorderRadius.circular(8),
                                                 gradient: AppColors.primayBtn,
                                               ),
-                                              child: const Row(
+                                              child: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
                                                 children: [
-                                                  Icon(
+                                                  const Icon(
                                                     Icons.lock_open_rounded,
                                                     color: Colors.white,
                                                   ),
-                                                  SizedBox(width: 12),
+                                                  const SizedBox(width: 12),
                                                   Text(
-                                                    "เข้าสู่ระบบ",
-                                                    style: TextStyle(
+                                                    AppLocale.login
+                                                        .getString(context),
+                                                    style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -794,9 +821,9 @@ class HomePageV2 extends StatelessWidget {
                     const SizedBox(height: 4),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                      child: const Text(
-                        "Quick Menu",
-                        style: TextStyle(
+                      child: Text(
+                        AppLocale.quickMenu.getString(context),
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
@@ -923,7 +950,7 @@ class HomePageV2 extends StatelessWidget {
                                     );
                                   },
                                   child: Text(
-                                    "พิเศษสำหรับคุณ",
+                                    AppLocale.specialForYou.getString(context),
                                     style: TextStyle(
                                       fontSize: 26,
                                       fontWeight: FontWeight.bold,
@@ -935,15 +962,17 @@ class HomePageV2 extends StatelessWidget {
                                   onTap: () {
                                     Get.toNamed(RouteName.videoMenu);
                                   },
-                                  child: const MenuCardComponent(
-                                    title: "โซเชียลมีเดีย อาจารย์ดัง",
+                                  child: MenuCardComponent(
+                                    title: AppLocale.socialMediaFamousTeachers
+                                        .getString(context),
                                     backgroundImageUrl:
                                         'https://baas.moevedigital.com/v1/storage/buckets/66fa748a001a67ac8a70/files/67628a9f0019f3d0086d/view?project=667afb24000fbd66b4df',
                                   ),
                                 ),
                                 const SizedBox(height: 8),
-                                const MenuCardComponent(
-                                  title: "เลขโชคดี",
+                                MenuCardComponent(
+                                  title: AppLocale.lotteryPredict
+                                      .getString(context),
                                   backgroundImageUrl:
                                       'https://baas.moevedigital.com/v1/storage/buckets/66fa748a001a67ac8a70/files/67628aaa001c11630759/view?project=667afb24000fbd66b4df',
                                 ),
@@ -998,7 +1027,7 @@ class HomePageV2 extends StatelessWidget {
                         const SizedBox(width: 8),
                         GestureDetector(
                           onTap: () {
-                            controller.test();
+                            controller.gotoNotification();
                           },
                           child: SizedBox(
                             width: 22,

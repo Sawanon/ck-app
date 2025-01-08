@@ -2,14 +2,19 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/notification/controller/promotion.controller.dart';
+import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:lottery_ck/utils/theme.dart';
 
 class PromotionDetailPage extends StatelessWidget {
@@ -24,10 +29,8 @@ class PromotionDetailPage extends StatelessWidget {
           body: SafeArea(
             child: Column(
               children: [
-                HeaderCK(
-                  onTap: () {
-                    navigator?.pop();
-                  },
+                Header(
+                  title: AppLocale.promotionDetails.getString(context),
                 ),
                 Expanded(
                   child: ListView(
@@ -67,6 +70,64 @@ class PromotionDetailPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 8),
+                      Builder(
+                        builder: (context) {
+                          final isNeedKYC =
+                              controller.promotion?['is_need_kyc'];
+                          final List<Widget> bage = [];
+                          if (isNeedKYC == true) {
+                            bage.add(
+                              Container(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 4),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(2),
+                                  border: Border.all(
+                                    width: 1,
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                                child: Text(
+                                  AppLocale.identityVerificationRequired
+                                      .getString(context),
+                                  style: const TextStyle(
+                                    fontSize: 10,
+                                    color: AppColors.primary,
+                                  ),
+                                ),
+                              ),
+                            );
+                            bage.add(const SizedBox(width: 8));
+                          }
+                          return Row(
+                            children: bage,
+                          );
+                          // Row(
+                          // children: [
+                          //   if(isNeedKYC == true)
+
+                          // ],
+                          // ),
+                        },
+                      ),
+                      Builder(builder: (context) {
+                        final String? endDate =
+                            controller.promotion?['end_date'];
+                        if (endDate == null) {
+                          return const SizedBox.shrink();
+                        }
+                        final endDateTime = DateTime.parse(endDate).toUtc();
+                        return Container(
+                          margin: const EdgeInsets.only(top: 8),
+                          child: Text(
+                            "${AppLocale.expiresOn.getString(context)} ${CommonFn.parseDMY(endDateTime)} ${CommonFn.parseHMS(endDateTime)}",
+                            style: TextStyle(
+                              color: AppColors.textPrimary,
+                              fontSize: 12,
+                            ),
+                          ),
+                        );
+                      }),
                       Text(
                         controller.promotion?['detail'] ?? "-",
                         style: TextStyle(
@@ -86,31 +147,44 @@ class PromotionDetailPage extends StatelessWidget {
                     color: Colors.white,
                     boxShadow: [AppTheme.softShadow],
                   ),
-                  child: LongButton(
-                    onPressed: () {
-                      controller.collectCoupons();
-                    },
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: SvgPicture.asset(
-                            AppIcon.ticket,
-                            colorFilter: const ColorFilter.mode(
-                                Colors.white, BlendMode.srcIn),
+                  child: Builder(builder: (context) {
+                    final isNeedKYC =
+                        controller.promotion?['is_need_kyc'] == true;
+                    final user = SettingController.to.user;
+                    final disabled = isNeedKYC && user?.isKYC == false;
+                    return LongButton(
+                      isLoading: controller.promotion == null,
+                      disabled: disabled,
+                      onPressed: () {
+                        if (controller.promotion == null) {
+                          return;
+                        }
+                        controller.collectCoupons();
+                      },
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: SvgPicture.asset(
+                              AppIcon.ticket,
+                              colorFilter: ColorFilter.mode(
+                                disabled ? AppColors.disableText : Colors.white,
+                                BlendMode.srcIn,
+                              ),
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        Text(
-                          "เก็บคูปอง",
-                          style: TextStyle(
-                            fontSize: 16,
+                          const SizedBox(width: 10),
+                          Text(
+                            AppLocale.collectCoupons.getString(context),
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        ],
+                      ),
+                    );
+                  }),
                 ),
               ],
             ),

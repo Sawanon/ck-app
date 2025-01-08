@@ -160,6 +160,18 @@ class StorageController extends GetxController {
     return await getValue("kycLater");
   }
 
+  Future<void> setPromotionLater() async {
+    await setValue("promotionLater", DateTime.now().toIso8601String());
+  }
+
+  Future<String?> getPromotionLater() async {
+    return await getValue("promotionLater");
+  }
+
+  Future<void> removePromotionLater() async {
+    await clearValue("promotionLater");
+  }
+
   @override
   void onInit() {
     storage = FlutterSecureStorage(

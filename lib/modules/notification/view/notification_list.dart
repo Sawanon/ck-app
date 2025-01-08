@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
+import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
 
@@ -29,18 +32,18 @@ class NotificationList extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        width: 140,
-                        height: 140,
+                        width: 120,
+                        height: 120,
                         child: SvgPicture.asset(
                           AppIcon.notification,
-                          colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(0.4),
+                          colorFilter: const ColorFilter.mode(
+                            AppColors.disableText,
                             BlendMode.srcIn,
                           ),
                         ),
                       ),
                       Text(
-                        "No Notification",
+                        AppLocale.noNotification.getString(context),
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w400,

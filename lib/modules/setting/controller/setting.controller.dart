@@ -322,8 +322,16 @@ class SettingController extends GetxController {
                     // return responseOTPRef;
                     final result =
                         await AppWriteController.to.getOTP(newPhoneNumber!);
-                    otpRef = result?.otpRef;
-                    return result?.otpRef;
+                    logger.d("otp: ${result?.otp}");
+                    logger.d("otpRef: ${result?.otpRef}");
+                    if (result == null) {
+                      return null;
+                    }
+                    Get.dialog(
+                      DialogOtpComponent(otp: result.otp),
+                    );
+                    otpRef = result.otpRef;
+                    return result.otpRef;
                   },
                   whenConfirmOTP: (otp) async {
                     // final response = await AppWriteController.to

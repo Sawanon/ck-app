@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 
@@ -78,7 +80,7 @@ class WallpaperFullscreenPage extends StatelessWidget {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            "Download",
+                            AppLocale.save.getString(context),
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,

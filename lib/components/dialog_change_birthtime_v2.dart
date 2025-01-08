@@ -79,7 +79,9 @@ class _DialogChangeBirthtimeComponentV2State
       body: SafeArea(
         child: Column(
           children: [
-            const Header(title: "Birth time"),
+            Header(
+              title: AppLocale.birthTime.getString(context),
+            ),
             const SizedBox(height: 16),
             Expanded(
               child: ListView(

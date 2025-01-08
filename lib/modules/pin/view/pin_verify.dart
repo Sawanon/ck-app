@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_screen_lock/flutter_screen_lock.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -7,6 +8,7 @@ import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/pin/controller/pin_verify.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
@@ -246,7 +248,7 @@ class PinVerifyPage extends StatelessWidget {
                       controller.forgetPasscode();
                     },
                     child: Text(
-                      "forget passcode?",
+                      "${AppLocale.forgetPasscode.getString(context)}?",
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

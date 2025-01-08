@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/blur_app.dart';
 import 'package:lottery_ck/components/cart.dart';
@@ -14,6 +15,7 @@ import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/lottery_history/view/lottery_history.dart';
 import 'package:lottery_ck/modules/notification/view/notification.dart';
 import 'package:lottery_ck/modules/setting/view/setting.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:upgrader/upgrader.dart';
@@ -80,7 +82,7 @@ class LayoutPage extends StatelessWidget {
                                   Get.back();
                                 },
                                 child: Text(
-                                  "ຍົກເລີກ",
+                                  AppLocale.cancel.getString(context),
                                 ),
                               ),
                             ),
@@ -97,7 +99,7 @@ class LayoutPage extends StatelessWidget {
                                   SystemNavigator.pop();
                                 },
                                 child: Text(
-                                  "ອອກ",
+                                  AppLocale.leave.getString(context),
                                   style: TextStyle(
                                     color: AppColors.errorBorder,
                                   ),

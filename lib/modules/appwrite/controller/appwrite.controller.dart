@@ -12,6 +12,7 @@ import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/gender_radio.dart';
 import 'package:lottery_ck/model/bank.dart';
 import 'package:lottery_ck/model/buy_lottery_configs.dart';
+import 'package:lottery_ck/model/coupon.dart';
 import 'package:lottery_ck/model/jwt.dart';
 import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/model/lottery_date.dart';
@@ -1910,11 +1911,15 @@ class AppWriteController extends GetxController {
     try {
       final dio = Dio();
       final token = await getCredential();
-      final response = await dio.post("${AppConst.apiUrl}/promotion/coupon",
-          data: {
-            "promotionId": promotionId,
-            "userId": userId,
-          },
+      final payload = {
+        "promotionId": promotionId,
+        "userId": userId,
+      };
+      logger.d(payload);
+      final url = "${AppConst.apiUrl}/promotion/coupon";
+      logger.d(url);
+      final response = await dio.post(url,
+          data: payload,
           options: Options(
             headers: {"Authorization": "Bearer $token"},
           ));
@@ -1942,8 +1947,22 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<ResponseApi<void>> listMyCoupons(String userId) async {
+  Future<ResponseApi<List<Coupon>?>> listMyCoupons(String userId) async {
     try {
+      // final test = {
+      //   "couponId": "88200855196680065061",
+      //   "userId": "676cda620026fd69cd20",
+      //   "promotionId": "67783d1c000bbeb9af2c",
+      //   "is_use": false,
+      //   "use_date": null,
+      //   "expire_date": "2025-01-31T13:00:00.000+00:00",
+      //   "\$id": "677e36ca0031c5975ead",
+      //   "\$createdAt": "2025-01-08T08:26:50.804+00:00",
+      //   "\$updatedAt": "2025-01-08T08:26:50.804+00:00",
+      //   "\$permissions": [],
+      //   "\$databaseId": "lottory",
+      //   "\$collectionId": "67762ef9003b9b51c763"
+      // };
       // continue list coupon to show in payment page
       final now = DateTime.now().toUtc().toIso8601String();
       final response = await databases.listDocuments(
@@ -1955,13 +1974,14 @@ class AppWriteController extends GetxController {
           Query.greaterThanEqual("expire_date", now),
         ],
       );
-      logger.d("");
-      for (var document in response.documents) {
-        logger.w(document.data);
-      }
+      logger.d("listMyCoupons");
+      final coupons = response.documents
+          .map((document) => Coupon.fromJson(document.data))
+          .toList();
       return ResponseApi(
         isSuccess: true,
         message: "Successfully list my coupons",
+        data: coupons,
       );
     } on AppwriteException catch (e) {
       logger.e("$e");
@@ -1969,6 +1989,163 @@ class AppWriteController extends GetxController {
         isSuccess: false,
         message: e.message ?? "failed to list my coupongs",
       );
+    }
+  }
+
+  Future<ResponseApi<List<Map>?>> listPromotionDetail(
+      List<String> promotionIdsList) async {
+    try {
+      final response = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: PROMOTION,
+        queries: [
+          Query.equal('\$id', promotionIdsList),
+          Query.select(
+            [
+              '\$id',
+              'name',
+              'start_date',
+              'end_date',
+              'detail',
+              'is_need_kyc',
+            ],
+          ),
+        ],
+      );
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully list promotion detail",
+        data: response.documents.map((document) => document.data).toList(),
+      );
+    } on AppwriteException catch (e) {
+      logger.e("$e");
+      return ResponseApi(
+        isSuccess: false,
+        message: "",
+      );
+    }
+  }
+
+  Future<ResponseApi<Map?>> applyCoupon({
+    required String lotteryDate,
+    required String invoiceId,
+    required List<String> couponIdsList,
+  }) async {
+//     api เลือกคูปอง
+// POST
+// header Bearer token
+// /api/payment/summary
+// {
+//           lotteryDate : string,
+//           invoiceId : string,
+//           couponId : string[]
+//          }
+    try {
+      final dio = Dio();
+      final token = await getCredential();
+      final response = await dio.post("${AppConst.apiUrl}/payment/summary",
+          data: {
+            "lotteryDate": lotteryDate,
+            "invoiceId": invoiceId,
+            "couponId": couponIdsList,
+          },
+          options: Options(
+            headers: {"Authorization": "Bearer $token"},
+          ));
+      logger.w(response.data);
+      final responseReal = {
+        "status": 200,
+        "message": "Success",
+        "data": {
+          "invoice": {
+            "status": null,
+            "phone": "+856333333333",
+            "totalAmount": 950,
+            "receive_point": 50,
+            "amount": 1000,
+            "pointMoney": null,
+            "point": null,
+            "bonus": 0,
+            "discount": 50,
+            "quota": 1000,
+            "totalTransfer": null,
+            "totalWin": null,
+            "specialWin": null,
+            "specialWintransactionId": [],
+            "is_win": false,
+            "is_buy_quota": false,
+            "is_transfer": false,
+            "transferBy": null,
+            "calBy": null,
+            "userId": "676cda620026fd69cd20",
+            "billNumber": null,
+            "bankId": null,
+            "billId": null,
+            "transactionId": ["677e5c52000bdb153128"],
+            "promotionPoint": [
+              "{\"id\":\"67783d1c000bbeb9af2c\",\"amount\":50}"
+            ],
+            "couponId": ["88200855196680065061"],
+            "\$id": "677e5c520008f260a61d",
+            "\$createdAt": "2025-01-08T11:06:58.240+00:00",
+            "\$updatedAt": "2025-01-08T11:07:21.118+00:00",
+            "\$permissions": [],
+            "\$databaseId": "lottory",
+            "\$collectionId": "20250110_invoice"
+          },
+          "transaction": [
+            {
+              "lottery": "14",
+              "digit_1": null,
+              "digit_2": null,
+              "digit_3": null,
+              "digit_4": null,
+              "digit_5": "1",
+              "digit_6": "4",
+              "paymentMethod": null,
+              "status": null,
+              "winAmount": null,
+              "discount": 50,
+              "lotteryType": 2,
+              "amount": 1000,
+              "quota": 1000,
+              "totalAmount": 950,
+              "bonus": 0,
+              "bankId": null,
+              "calBy": null,
+              "is_win": null,
+              "invoiceId": "677e5c520008f260a61d",
+              "lottery_history_id": null,
+              "transferBy": null,
+              "userId": "676cda620026fd69cd20",
+              "rewardId": null,
+              "\$id": "677e5c52000bdb153128",
+              "\$createdAt": "2025-01-08T11:06:58.211+00:00",
+              "\$updatedAt": "2025-01-08T11:07:21.100+00:00",
+              "\$permissions": [],
+              "\$databaseId": "lottory",
+              "\$collectionId": "20250110_transaction"
+            }
+          ],
+        }
+      };
+
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully apply coupon",
+        data: response.data,
+      );
+    } on DioException catch (e) {
+      logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        return ResponseApi(
+            isSuccess: false,
+            message: e.response?.statusMessage ?? "failed to apply coupon");
+      }
+      return ResponseApi(isSuccess: false, message: "failed to apply coupon");
     }
   }
 

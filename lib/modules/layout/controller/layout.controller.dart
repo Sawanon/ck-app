@@ -223,6 +223,10 @@ class LayoutController extends GetxController {
         break;
       case TabApp.notifications:
         // onChangeTabIndex(tab);
+        if (!isUserLogined) {
+          showDialogLogin();
+          return;
+        }
         Get.toNamed(RouteName.scanQR);
         break;
       case TabApp.settings:

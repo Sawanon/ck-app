@@ -21,7 +21,7 @@ class PointPage extends StatelessWidget {
           child: Column(
             children: [
               Header(
-                title: "Point",
+                title: AppLocale.point.getString(context),
               ),
               Container(
                 // color: Colors.amber,
@@ -71,7 +71,7 @@ class PointPage extends StatelessWidget {
                         Expanded(
                           child: Container(
                             child: Text(
-                              'Point',
+                              AppLocale.point.getString(context),
                               style: TextStyle(
                                 color: AppColors.secondary,
                                 height: 2,
@@ -180,14 +180,14 @@ class PointPage extends StatelessWidget {
                     Row(
                       children: [
                         Container(
-                          width: MediaQuery.of(context).size.width * 0.25,
+                          width: MediaQuery.of(context).size.width * 0.20,
                           alignment: Alignment.center,
                           child: Text(
                             AppLocale.day.getString(context),
                           ),
                         ),
                         Container(
-                          width: MediaQuery.of(context).size.width * 0.35,
+                          width: MediaQuery.of(context).size.width * 0.40,
                           alignment: Alignment.center,
                           child: Text(
                             AppLocale.pointRef.getString(context),
@@ -204,7 +204,7 @@ class PointPage extends StatelessWidget {
                           width: MediaQuery.of(context).size.width * 0.4,
                           alignment: Alignment.center,
                           child: Text(
-                            AppLocale.score.getString(context),
+                            AppLocale.point.getString(context),
                           ),
                         ),
                       ],
@@ -237,19 +237,26 @@ class PointPage extends StatelessWidget {
                             children: [
                               Container(
                                 padding: EdgeInsets.symmetric(vertical: 16),
-                                width: MediaQuery.of(context).size.width * 0.25,
+                                width: MediaQuery.of(context).size.width * 0.2,
                                 alignment: Alignment.center,
                                 child: Text(
                                   pointTransaction.createdDateStr,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ),
                               Container(
                                 padding: EdgeInsets.symmetric(vertical: 16),
-                                width: MediaQuery.of(context).size.width * 0.35,
+                                width: MediaQuery.of(context).size.width * 0.4,
                                 alignment: Alignment.center,
                                 child: Text(
                                   controller.renderType(
                                       pointTransaction.type, context),
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                  ),
+                                  softWrap: false,
                                 ),
                               ),
                               // Container(
@@ -262,7 +269,12 @@ class PointPage extends StatelessWidget {
                                 padding: EdgeInsets.symmetric(vertical: 16),
                                 width: MediaQuery.of(context).size.width * 0.4,
                                 alignment: Alignment.center,
-                                child: Text("${pointTransaction.point}"),
+                                child: Text(
+                                  "${pointTransaction.point}",
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                  ),
+                                ),
                               ),
                             ],
                           ),

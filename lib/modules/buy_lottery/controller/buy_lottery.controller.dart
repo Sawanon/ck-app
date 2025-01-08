@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/model/response_add_transaction.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
+import 'package:lottery_ck/modules/buy_lottery/view/dialog_edit_lottery.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/mmoney/controller/confirm_otp.controller.dart';
@@ -551,13 +553,13 @@ class BuyLotteryController extends GetxController {
     if (!Get.isSnackbarOpen) {
       Get.rawSnackbar(
         messageText: Text(
-          "Please enter lottery",
+          AppLocale.pleaseFillLottery.getString(Get.context!),
           style: TextStyle(
             color: Colors.white,
           ),
         ),
-        backgroundColor: AppColors.errorBorder,
-        overlayColor: Colors.white,
+        // backgroundColor: AppColors.errorBorder,
+        // overlayColor: Colors.white,
       );
     }
   }
@@ -617,7 +619,7 @@ class BuyLotteryController extends GetxController {
 
   void confirmLottery(BuildContext context) async {
     if (invoiceMeta.value.transactions.isEmpty) {
-      Get.rawSnackbar(message: "Please add lottery");
+      Get.rawSnackbar(message: AppLocale.pleaseAddLottery.getString(context));
       return;
     }
     try {
@@ -1291,6 +1293,15 @@ class BuyLotteryController extends GetxController {
 
 // TODO: get promotion
   void listPromotions([bool? isRefresh]) async {
+    final promotionLater = await StorageController.to.getPromotionLater();
+    final promotionLaterDate =
+        promotionLater != null ? DateTime.parse(promotionLater) : null;
+    final isShouldShow = promotionLaterDate == null
+        ? true
+        : promotionLaterDate.day != DateTime.now().day;
+    if (isShouldShow == false) {
+      return;
+    }
     final promotionList =
         await AppWriteController.to.listCurrentActivePromotions();
     // logger.d(promotionList);
@@ -1474,7 +1485,9 @@ class BuyLotteryController extends GetxController {
     logger.d("message");
     Get.dialog(
       DialogApp(
-        title: Text("คุณต้องการออกจากดวงวันนี้?"),
+        // title: Text("คุณต้องการออกจากดวงวันนี้?"),
+        title: Text(
+            "${AppLocale.youWantToGetOutOf.getString(Get.context!)} ${AppLocale.horoscopeToday.getString(Get.context!)}?"),
         onConfirm: () async {
           changeTab(index);
           Get.back();
@@ -1486,7 +1499,9 @@ class BuyLotteryController extends GetxController {
   void confirmOutTodayLuckyCard(int index) async {
     Get.dialog(
       DialogApp(
-        title: Text("คุณต้องการออกจากไพ่นำโชค?"),
+        title: Text(
+            "${AppLocale.youWantToGetOutOf.getString(Get.context!)} ${AppLocale.randomCard.getString(Get.context!)}?"),
+        // title: Text("คุณต้องการออกจากไพ่นำโชค?"),
         onConfirm: () async {
           changeTab(index);
           Get.back();
@@ -1498,7 +1513,9 @@ class BuyLotteryController extends GetxController {
   void confirmOutAnimalBook(int index) async {
     Get.dialog(
       DialogApp(
-        title: Text("คุณต้องการออกจากตำรา?"),
+        title: Text(
+            "${AppLocale.youWantToGetOutOf.getString(Get.context!)} ${AppLocale.animal.getString(Get.context!)}?"),
+        // title: Text("คุณต้องการออกจากตำรา?"),
         onConfirm: () async {
           changeTab(index);
           Get.back();
@@ -1540,6 +1557,22 @@ class BuyLotteryController extends GetxController {
     } else {
       LayoutController.to.removePaddingBottom();
     }
+  }
+
+  void editLottery(String lottery, int price) async {
+    logger.d("lottery: $lottery");
+    logger.d("price: $price");
+    Get.dialog(
+      DialogEditLottery(
+        lottery: lottery,
+        price: price,
+        onSubmit: (newPrice) async {
+          await Future.delayed(const Duration(seconds: 1), () {
+            logger.w("newPrice: $newPrice");
+          });
+        },
+      ),
+    );
   }
 
   @override

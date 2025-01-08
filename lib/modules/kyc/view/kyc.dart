@@ -25,17 +25,19 @@ class KYCPage extends StatelessWidget {
     return GetBuilder<KYCController>(
       builder: (controller) {
         return Scaffold(
-          backgroundColor: AppColors.kycBackground,
+          backgroundColor: AppColors.background,
           body: SafeArea(
             child: Column(
               children: [
-                Header(title: ""),
+                Header(
+                  title: AppLocale.identityVerification.getString(context),
+                ),
                 Expanded(
                   child: ListView(
                     children: [
                       // banner user
-                      UserBannerComponent(),
-                      const SizedBox(height: 24),
+                      // UserBannerComponent(),
+                      // const SizedBox(height: 24),
                       Container(
                         padding: const EdgeInsets.all(16),
                         child: Column(
@@ -43,7 +45,7 @@ class KYCPage extends StatelessWidget {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                AppLocale.detail.getString(context),
+                                AppLocale.personalData.getString(context),
                                 style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   color: AppColors.textPrimary,
@@ -51,6 +53,7 @@ class KYCPage extends StatelessWidget {
                                 ),
                               ),
                             ),
+                            const SizedBox(height: 8),
                             Container(
                               padding: EdgeInsets.all(16),
                               decoration: BoxDecoration(
@@ -212,6 +215,7 @@ class KYCPage extends StatelessWidget {
                                 ),
                               ),
                             ),
+                            const SizedBox(height: 8),
                             Container(
                               padding: EdgeInsets.all(16),
                               decoration: BoxDecoration(
@@ -301,6 +305,7 @@ class KYCPage extends StatelessWidget {
                                 ),
                               ),
                             ),
+                            const SizedBox(height: 8),
                             Container(
                               padding: EdgeInsets.all(16),
                               decoration: BoxDecoration(
@@ -510,6 +515,7 @@ class KYCPage extends StatelessWidget {
                                 ),
                               ),
                             ),
+                            const SizedBox(height: 8),
                             Container(
                               padding: EdgeInsets.all(16),
                               decoration: BoxDecoration(

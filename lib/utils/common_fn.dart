@@ -18,7 +18,8 @@ class CommonFn {
   }
 
   static String parseHMS(DateTime datetime) {
-    return "${datetime.hour.toString().padLeft(2, "0")}:${datetime.minute.toString().padLeft(2, "0")}:${datetime.second.toString().padLeft(2, "0")}";
+    final parseTimeZome = datetime.toLocal();
+    return "${parseTimeZome.hour.toString().padLeft(2, "0")}:${parseTimeZome.minute.toString().padLeft(2, "0")}:${parseTimeZome.second.toString().padLeft(2, "0")}";
   }
 
   static String parseTimeOfDayToHMS(TimeOfDay timeOfDay) {

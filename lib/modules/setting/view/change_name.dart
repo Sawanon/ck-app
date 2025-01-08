@@ -45,18 +45,20 @@ class _ChangeNamePageState extends State<ChangeNamePage> {
       body: SafeArea(
         child: Column(
           children: [
-            Header(title: "Change Name"),
+            Header(
+              title: AppLocale.changeName.getString(context),
+            ),
             Expanded(
               child: Form(
                 key: formKey,
                 child: ListView(
                   padding: const EdgeInsets.all(16),
                   children: [
-                    const Align(
+                    Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'ຊື່',
-                        style: TextStyle(
+                        AppLocale.firstName.getString(context),
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: AppColors.textPrimary,
@@ -98,7 +100,8 @@ class _ChangeNamePageState extends State<ChangeNamePage> {
                       ),
                       validator: (value) {
                         if (value == null || value == "") {
-                          return "Please enter your first name";
+                          return AppLocale.pleaseEnterYourFirstName
+                              .getString(context);
                         }
                         return null;
                       },
@@ -108,11 +111,11 @@ class _ChangeNamePageState extends State<ChangeNamePage> {
                       },
                     ),
                     const SizedBox(height: 16),
-                    const Align(
+                    Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'ນາມສະກຸນ',
-                        style: TextStyle(
+                        AppLocale.lastName.getString(context),
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: AppColors.textPrimary,
@@ -154,7 +157,8 @@ class _ChangeNamePageState extends State<ChangeNamePage> {
                       ),
                       validator: (value) {
                         if (value == null || value == "") {
-                          return "Please enter your last name";
+                          return AppLocale.pleaseEnterYourLasttName
+                              .getString(context);
                         }
                         return null;
                       },
@@ -175,8 +179,9 @@ class _ChangeNamePageState extends State<ChangeNamePage> {
                           }
                         }
                         Get.rawSnackbar(
-                            message:
-                                "Please enter your first name and last name");
+                            message: AppLocale
+                                .pleaseEnterYourFirstNameAndLastName
+                                .getString(context));
                       },
                       child: Text(AppLocale.confirm.getString(context)),
                     ),

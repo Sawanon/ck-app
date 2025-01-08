@@ -45,7 +45,8 @@ class _UsePointComponentState extends State<UsePointComponent> {
         bottom: MediaQuery.of(context).viewInsets.bottom + 20,
         left: 20,
       ),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(16),
         ),
@@ -55,7 +56,7 @@ class _UsePointComponentState extends State<UsePointComponent> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            "Point",
+            AppLocale.point.getString(context),
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -66,7 +67,7 @@ class _UsePointComponentState extends State<UsePointComponent> {
             children: [
               Expanded(
                 child: Text(
-                  "คุณมี point",
+                  AppLocale.theMaximumPointsYouCanUse.getString(context),
                 ),
               ),
               Text(
@@ -77,7 +78,7 @@ class _UsePointComponentState extends State<UsePointComponent> {
           const SizedBox(height: 10),
           InputText(
             label: Text(
-              "กรอก point ที่คุณต้องการใช้",
+              AppLocale.enterThePointsYouWantToUse.getString(context),
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.black.withOpacity(0.4),

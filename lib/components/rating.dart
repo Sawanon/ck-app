@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
@@ -31,7 +34,8 @@ class _RatingComponentState extends State<RatingComponent> {
         bottom: MediaQuery.of(context).viewInsets.bottom + 20,
         left: 20,
       ),
-      width: MediaQuery.of(context).size.width,
+      width: double.infinity,
+      // width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.only(
@@ -47,17 +51,31 @@ class _RatingComponentState extends State<RatingComponent> {
         //   )
         // ],
       ),
-      child: Wrap(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Center(
-            child: Text(
-              // 'แนะนำบริการ',
-              AppLocale.feedback.getString(context),
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              Text(
+                // 'แนะนำบริการ',
+                AppLocale.feedback.getString(context),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
+              Positioned(
+                right: 0,
+                child: GestureDetector(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: SvgPicture.asset(AppIcon.x),
+                ),
+              ),
+            ],
           ),
           Container(
             margin: EdgeInsets.only(top: 14),
@@ -110,28 +128,39 @@ class _RatingComponentState extends State<RatingComponent> {
           ),
           Container(
             margin: EdgeInsets.only(top: 24, bottom: 16),
-            child: Material(
-              color: Color.fromRGBO(0, 117, 255, 1),
-              borderRadius: BorderRadius.circular(16),
-              child: InkWell(
-                onTap: () {
-                  widget.onSubmit(_rating, _comment);
-                },
-                child: Container(
-                  alignment: Alignment.center,
-                  width: MediaQuery.of(context).size.width,
-                  height: 52,
-                  child: Text(
-                    AppLocale.confirm.getString(context),
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
+            child: LongButton(
+              onPressed: () {
+                widget.onSubmit(_rating, _comment);
+              },
+              child: Text(
+                AppLocale.confirm.getString(context),
+                style: TextStyle(
+                  fontSize: 14,
                 ),
               ),
             ),
+            // child: Material(
+            //   color: Color.fromRGBO(0, 117, 255, 1),
+            //   borderRadius: BorderRadius.circular(16),
+            //   child: InkWell(
+            //     onTap: () {
+            //       widget.onSubmit(_rating, _comment);
+            //     },
+            //     child: Container(
+            //       alignment: Alignment.center,
+            //       width: MediaQuery.of(context).size.width,
+            //       height: 52,
+            //       child: Text(
+            //         AppLocale.confirm.getString(context),
+            //         style: TextStyle(
+            //           fontSize: 20,
+            //           fontWeight: FontWeight.w600,
+            //           color: Colors.white,
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           )
         ],
       ),

@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils/theme.dart';
 
@@ -75,7 +77,7 @@ class MenuCardComponent extends StatelessWidget {
                     boxShadow: const [AppTheme.softShadow]),
                 child: Row(
                   children: [
-                    Text("See more"),
+                    Text(AppLocale.seeMore.getString(context)),
                     SizedBox(
                       width: 18,
                       height: 18,

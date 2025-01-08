@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart' as dio_class;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottery_ck/components/dialog.dart';
@@ -108,11 +109,15 @@ class KYCController extends GetxController {
         city == "" ||
         district == "" ||
         idCard == "") {
-      Get.rawSnackbar(message: "กรุณากรอกข้อมูลให้ครบ");
+      Get.rawSnackbar(
+          message:
+              AppLocale.pleaseFillInAllInformation.getString(Get.context!));
       return false;
     }
     if (documentImage == null || selfieWithDocumentImage == null) {
-      Get.rawSnackbar(message: "กรุณาถ่ายเอกสารและรูปภาพยืนยันตัวตน");
+      Get.rawSnackbar(
+          message: AppLocale.pleaseProvideAPhotocopyAndProofOfIdentity
+              .getString(Get.context!));
       return false;
     }
     return true;
@@ -121,36 +126,45 @@ class KYCController extends GetxController {
   bool validFormResendKYC() {
     try {
       if (remark?['firstName']['status'] == false && firstName == "") {
-        throw "โปรดแก้ชื่อของคุณ";
+        throw AppLocale.pleaseCorrectYourName.getString(Get.context!);
       }
       if (remark?['lastName']['status'] == false && lastName == "") {
-        throw "โปรดแก้นามสกุลของคุณ";
+        throw AppLocale.pleaseCorrectYourLastName.getString(Get.context!);
+        ;
       }
       if (remark?['gender']['status'] == false && gender == "") {
-        throw "โปรดแก้เพศของคุณ";
+        throw AppLocale.pleaseCorrectYourGender.getString(Get.context!);
+        ;
       }
       if (remark?['birthDate']['status'] == false && birthDate == "") {
-        throw "โปรดแก้วันเกิดของคุณ";
+        throw AppLocale.pleaseCorrectYourBirthDate.getString(Get.context!);
+        ;
       }
       if (remark?['address']['status'] == false && address == "") {
-        throw "โปรดแก้ที่อยู่ของคุณ";
+        throw AppLocale.pleaseCorrectYourAddress.getString(Get.context!);
+        ;
       }
       if (remark?['city']['status'] == false && city == "") {
-        throw "โปรดแก้เมืองของคุณ";
+        throw AppLocale.pleaseCorrectYourCity.getString(Get.context!);
+        ;
       }
       if (remark?['district']['status'] == false && district == "") {
-        throw "โปรดแก้แขวงของคุณ";
+        throw AppLocale.pleaseCorrectYourDistrict.getString(Get.context!);
+        ;
       }
       if (remark?['idCard']['status'] == false && idCard == "") {
-        throw "โปรดแก้เลขบัตรประชาชนของคุณ";
+        throw AppLocale.pleaseCorrectYourIDCardNumber.getString(Get.context!);
+        ;
       }
       if (remark?['documentImage']['status'] == false &&
           documentImage == null) {
-        throw "โปรดเปลี่ยนรูปเอกสารของคุณ";
+        throw AppLocale.pleaseChangeYourDocumentImage.getString(Get.context!);
       }
       if (remark?['verifySelfie']['status'] == false &&
           selfieWithDocumentImage == null) {
-        throw "โปรดเปลี่ยนรูปภาพยืนยันตัวตนของคุณ";
+        throw AppLocale.pleaseChangeYourVerificationPicture
+            .getString(Get.context!);
+        ;
       }
       // if (remark?['idCard']['status'] == false && idCard == "") {
       //   throw "Please edit your id card";
@@ -331,8 +345,8 @@ class KYCController extends GetxController {
 
   void setup() {
     final kycData = SettingController.to.kycData;
-    if (kycData == null) return;
     logger.d(kycData);
+    if (kycData == null) return;
     firstNameController.text = kycData['firstName'];
     lastNameController.text = kycData['lastName'];
     gender = kycData['gender'];

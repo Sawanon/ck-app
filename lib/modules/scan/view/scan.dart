@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
@@ -22,10 +25,10 @@ class ScanQR extends StatefulWidget {
   const ScanQR({super.key});
 
   @override
-  _ScanQRState createState() => _ScanQRState();
+  State<ScanQR> createState() => _ScanQRState();
 }
 
-class _ScanQRState extends State<ScanQR> {
+class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
   final MobileScannerController controller = MobileScannerController(
     formats: const [BarcodeFormat.qrCode],
   );
@@ -138,6 +141,41 @@ class _ScanQRState extends State<ScanQR> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // If the controller is not ready, do not try to start or stop it.
+    // Permission dialogs can trigger lifecycle changes before the controller is ready.
+    logger.w(state);
+    if (!controller.value.hasCameraPermission) {
+      return;
+    }
+
+    switch (state) {
+      case AppLifecycleState.detached:
+      case AppLifecycleState.hidden:
+      case AppLifecycleState.paused:
+        return;
+      case AppLifecycleState.resumed:
+        // Restart the scanner when the app is resumed.
+        // Don't forget to resume listening to the barcode events.
+        // _subscription = controller.barcodes.listen(_handleBarcode);
+        logger.d("resumed");
+        unawaited(controller.start());
+      case AppLifecycleState.inactive:
+        // Stop the scanner when the app is paused.
+        // Also stop the barcode events subscription.
+        // unawaited(_subscription?.cancel());
+        // _subscription = null;
+        unawaited(controller.stop());
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final scanWindow = Rect.fromCenter(
       center: MediaQuery.sizeOf(context).center(Offset.zero),
@@ -149,130 +187,128 @@ class _ScanQRState extends State<ScanQR> {
         marginTopMyQR;
 
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: Expanded(
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Center(
-              child: MobileScanner(
-                fit: BoxFit.cover,
-                controller: controller,
-                scanWindow: scanWindow,
-                errorBuilder: (context, error, child) {
-                  return ScannerErrorWidget(error: error);
-                },
-                onDetect: _onDetect,
-                // overlayBuilder: (context, constraints) {
-                //   return Padding(
-                //     padding: const EdgeInsets.all(16.0),
-                //     child: Align(
-                //       alignment: Alignment.bottomCenter,
-                //       // child: ScannedBarcodeLabel(barcodes: controller.barcodes),
-                //       child: Text(),
-                //     ),
-                //   );
-                // },
-              ),
-            ),
-            ValueListenableBuilder(
-              valueListenable: controller,
-              builder: (context, value, child) {
-                if (!value.isInitialized ||
-                    !value.isRunning ||
-                    value.error != null) {
-                  return const SizedBox();
-                }
-
-                return CustomPaint(
-                  painter: ScannerOverlay(scanWindow: scanWindow),
-                );
+      backgroundColor: Colors.white,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Center(
+            child: MobileScanner(
+              fit: BoxFit.cover,
+              controller: controller,
+              scanWindow: scanWindow,
+              errorBuilder: (context, error, child) {
+                return ScannerErrorWidget(error: error);
               },
+              onDetect: _onDetect,
+              // overlayBuilder: (context, constraints) {
+              //   return Padding(
+              //     padding: const EdgeInsets.all(16.0),
+              //     child: Align(
+              //       alignment: Alignment.bottomCenter,
+              //       // child: ScannedBarcodeLabel(barcodes: controller.barcodes),
+              //       child: Text(),
+              //     ),
+              //   );
+              // },
             ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    // ToggleFlashlightButton(controller: controller),
-                    // SwitchCameraButton(controller: controller),
-                  ],
-                ),
+          ),
+          ValueListenableBuilder(
+            valueListenable: controller,
+            builder: (context, value, child) {
+              if (!value.isInitialized ||
+                  !value.isRunning ||
+                  value.error != null) {
+                return const SizedBox();
+              }
+
+              return CustomPaint(
+                painter: ScannerOverlay(scanWindow: scanWindow),
+              );
+            },
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  // ToggleFlashlightButton(controller: controller),
+                  // SwitchCameraButton(controller: controller),
+                ],
               ),
             ),
-            Positioned(
-              top: bottomWindowY,
-              left: 0,
-              right: 0,
-              child: Container(
-                decoration: BoxDecoration(
-                    // color: Colors.white,
-                    ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                          context: context,
-                          isScrollControlled: true,
-                          builder: (context) {
-                            return const UserQR();
-                          },
-                        );
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 16,
-                        ),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(24),
-                            color: Colors.black,
-                            border: Border.all(
-                              width: 1,
-                              color: Colors.white.withOpacity(0.4),
-                            )),
-                        child: Text(
-                          'QR code ของฉัน',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SafeArea(
+          ),
+          Positioned(
+            top: bottomWindowY,
+            left: 0,
+            right: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                  // color: Colors.white,
+                  ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Header(
-                    title: 'Scan QR',
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        builder: (context) {
+                          return const UserQR();
+                        },
+                      );
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 8,
+                        horizontal: 16,
+                      ),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(24),
+                          color: Colors.black,
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.white.withOpacity(0.4),
+                          )),
+                      child: Text(
+                        AppLocale.myQRcode.getString(context),
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
-            if (isLoading == true)
-              Container(
-                color: Colors.black.withOpacity(0.85),
-                child: Center(
-                  child: SizedBox(
-                    width: 80,
-                    height: 80,
-                    child: CircularProgressIndicator(
-                      color: AppColors.primary,
-                      strokeWidth: 2,
-                    ),
+          ),
+          SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Header(
+                  title: AppLocale.scan.getString(context),
+                ),
+              ],
+            ),
+          ),
+          if (isLoading == true)
+            Container(
+              color: Colors.black.withOpacity(0.85),
+              child: Center(
+                child: SizedBox(
+                  width: 80,
+                  height: 80,
+                  child: CircularProgressIndicator(
+                    color: AppColors.primary,
+                    strokeWidth: 2,
                   ),
                 ),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
@@ -280,6 +316,7 @@ class _ScanQRState extends State<ScanQR> {
   @override
   Future<void> dispose() async {
     super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     await controller.dispose();
   }
 }

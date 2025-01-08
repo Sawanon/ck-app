@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/video/view/video.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/route/route_name.dart';
@@ -22,7 +24,7 @@ class VideoMenu extends StatelessWidget {
         child: Column(
           children: [
             Header(
-              title: "โซเชียลมีเดีย อาจารย์ดัง",
+              title: AppLocale.socialMediaFamousTeachers.getString(context),
             ),
             Container(
               padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -36,7 +38,7 @@ class VideoMenu extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                      "ทั้งหมด",
+                      AppLocale.all.getString(context),
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -55,7 +57,7 @@ class VideoMenu extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                      "ดวงวันนี้",
+                      AppLocale.horoscopeToday.getString(context),
                       style: TextStyle(
                         color: AppColors.primary,
                       ),
@@ -74,7 +76,7 @@ class VideoMenu extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                      "เลขนำโชค",
+                      AppLocale.luckyNumber.getString(context),
                       style: TextStyle(
                         color: AppColors.primary,
                       ),

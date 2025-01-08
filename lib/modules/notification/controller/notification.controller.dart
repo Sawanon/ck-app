@@ -9,6 +9,7 @@ class NotificationController extends GetxController {
   RxList<News> newsList = <News>[].obs;
   RxList<Map> promotionList = <Map>[].obs;
   RxList<Map> notificationList = <Map>[].obs;
+  int currentTab = 0;
 
   Future<void> listNews() async {
     final newsList = await AppWriteController.to.listNews();
@@ -71,6 +72,17 @@ class NotificationController extends GetxController {
         "promotionId": promotionPointsId,
       },
     );
+  }
+
+  void onChangeTab(int index) async {
+    currentTab = index;
+    update();
+    if (index != 0) {
+      await Future.delayed(const Duration(milliseconds: 250), () {
+        currentTab = 0;
+        update();
+      });
+    }
   }
 
   @override

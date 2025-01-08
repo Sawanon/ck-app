@@ -25,7 +25,7 @@ class HoroscopeDialyPage extends StatelessWidget {
         child: Column(
           children: [
             Header(
-              title: 'โชคลาภประจำวัน',
+              title: AppLocale.dailyFortune.getString(context),
             ),
             Expanded(
               child: Stack(
@@ -94,7 +94,7 @@ class HoroscopeDialyPage extends StatelessWidget {
                               const SizedBox(width: 10),
                               Expanded(
                                 child: Text(
-                                  "ดวงวันนี้",
+                                  AppLocale.horoscopeToday.getString(context),
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -143,7 +143,7 @@ class HoroscopeDialyPage extends StatelessWidget {
                               const SizedBox(width: 10),
                               Expanded(
                                 child: Text(
-                                  "ไพ่นำโชค",
+                                  AppLocale.randomCard.getString(context),
                                   style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,

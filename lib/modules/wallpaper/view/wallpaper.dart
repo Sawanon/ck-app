@@ -22,7 +22,7 @@ class WallpaperPage extends StatelessWidget {
             child: Column(
               children: [
                 Header(
-                  title: AppLocale.wallpaper.getString(context),
+                  title: AppLocale.auspiciousWallpaper.getString(context),
                 ),
                 Expanded(
                   child: GridView.builder(

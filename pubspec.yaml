@@ -76,7 +76,7 @@ dependencies:
   byteplus_vod: ^1.44.3-3
   google_fonts: ^6.2.1
   qr_flutter: ^4.1.0
-  mobile_scanner: ^5.2.3
+  mobile_scanner: ^6.0.2
   flutter_windowmanager: ^0.2.0
 
 byteplus_vod:

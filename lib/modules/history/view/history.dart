@@ -62,15 +62,26 @@ class HistoryPage extends StatelessWidget {
                           Tab(
                             child: Text(
                               AppLocale.buyHistory.getString(context),
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
                             ),
                           ),
                           Tab(
-                            child:
-                                Text(AppLocale.winHistory.getString(context)),
+                            child: Text(
+                              AppLocale.winHistory.getString(context),
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
                           ),
                           Tab(
                             child: Text(
-                                AppLocale.lotteryResult.getString(context)),
+                              AppLocale.lotteryResult.getString(context),
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
                           ),
                         ],
                       ),

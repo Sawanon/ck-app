@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
+import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 
 class DialogPromotion extends StatefulWidget {
@@ -21,7 +22,12 @@ class _DialogPromotionState extends State<DialogPromotion> {
   int _currentPage = 0;
   bool doNotShow = false;
 
-  void changeNotShowMessage(bool value) {
+  void changeNotShowMessage(bool value) async {
+    if (value) {
+      await StorageController.to.setPromotionLater();
+    } else {
+      await StorageController.to.removePromotionLater();
+    }
     setState(() {
       doNotShow = value;
     });

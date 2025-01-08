@@ -358,11 +358,11 @@ class PayMentPage extends StatelessWidget {
                             ),
                             child: Row(
                               children: [
-                                PointIcon(),
+                                const PointIcon(),
                                 const SizedBox(width: 8),
                                 Text(
-                                  "Point",
-                                  style: TextStyle(
+                                  AppLocale.point.getString(context),
+                                  style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
                                   ),
@@ -394,37 +394,42 @@ class PayMentPage extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        Container(
-                          padding: EdgeInsets.only(
-                            top: 16,
-                            left: 16,
-                            right: 16,
-                            bottom: 16,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  AppLocale.coupon.getString(context),
+                        GestureDetector(
+                          onTap: () {
+                            controller.gotoCouponPage();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.only(
+                              top: 16,
+                              left: 16,
+                              right: 16,
+                              bottom: 16,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    AppLocale.coupon.getString(context),
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                AppLocale.useCoupon.getString(context),
-                                style: TextStyle(
-                                  color: AppColors.disableText,
+                                Text(
+                                  AppLocale.useCoupon.getString(context),
+                                  style: TextStyle(
+                                    color: AppColors.disableText,
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: SvgPicture.asset(
-                                  AppIcon.arrowRight,
-                                ),
-                              )
-                            ],
+                                SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: SvgPicture.asset(
+                                    AppIcon.arrowRight,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -522,7 +527,8 @@ class PayMentPage extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        "Point discount",
+                                        AppLocale.pointDiscount
+                                            .getString(context),
                                         style: TextStyle(
                                           color: Colors.red,
                                         ),

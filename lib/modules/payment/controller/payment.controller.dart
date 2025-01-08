@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:lottery_ck/components/coupons.dart';
@@ -10,6 +11,7 @@ import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/model/bank.dart';
 import 'package:lottery_ck/model/bill.dart';
+import 'package:lottery_ck/model/coupon.dart';
 import 'package:lottery_ck/model/invoice_meta.dart';
 import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
@@ -21,6 +23,7 @@ import 'package:lottery_ck/modules/payment/view/use_point.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
 import 'package:lottery_ck/modules/pin/view/verify_pin.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/route/route_name.dart';
@@ -49,6 +52,7 @@ class PaymentController extends GetxController {
   Subscription? subscriptionPubnub;
   int routeLevel = 0;
   bool isOpenedDialog = false;
+  List<Coupon> couponsList = [];
 
   void getPointRaio() async {
     final pointRatio = await AppWriteController.to.getPointRaio();
@@ -56,7 +60,11 @@ class PaymentController extends GetxController {
   }
 
   void onChangePoint(int value) {
-    point = value;
+    if (value <= 0) {
+      point = null;
+    } else {
+      point = value;
+    }
     update();
   }
 
@@ -418,7 +426,55 @@ class PaymentController extends GetxController {
       logger.w("user is empty");
       return;
     }
-    await AppWriteController.to.listMyCoupons(user.userId);
+    final response = await AppWriteController.to.listMyCoupons(user.userId);
+    if (response.isSuccess == false) {
+      Get.dialog(DialogApp(
+        title: Text(
+          AppLocale.somethingWentWrong.getString(Get.context!),
+          style: const TextStyle(
+            fontSize: 16,
+          ),
+        ),
+        details: Text(
+          response.message,
+        ),
+      ));
+      return;
+    }
+    final coupons = response.data;
+    if (coupons == null) {
+      return;
+    }
+    final responsePromotionsList =
+        await AppWriteController.to.listPromotionDetail(
+      coupons.map((coupon) => coupon.promotionId).toList(),
+    );
+    if (responsePromotionsList.isSuccess == false ||
+        responsePromotionsList.data == null) {
+      Get.dialog(DialogApp(
+        title: Text(
+          AppLocale.somethingWentWrong.getString(Get.context!),
+          style: const TextStyle(
+            fontSize: 16,
+          ),
+        ),
+        details: Text(
+          responsePromotionsList.message,
+        ),
+      ));
+      return;
+    }
+    for (var coupon in coupons) {
+      final promotionMap = responsePromotionsList.data!.firstWhere(
+        (promotion) {
+          return promotion['\$id'] == coupon.promotionId;
+        },
+      );
+      coupon.promotion = promotionMap;
+    }
+    logger.d(responsePromotionsList.data);
+    couponsList = coupons;
+    update();
   }
 
   // level can be 1 or -1
@@ -445,10 +501,38 @@ class PaymentController extends GetxController {
   bool get enablePays => selectedBank != null;
 
   void gotoCouponPage() {
+    isOpenedDialog = true;
     Get.to(
-      () => const CouponsPage(),
+      () => CouponsPage(
+        couponsList: couponsList,
+      ),
       transition: Transition.downToUp,
+    )?.whenComplete(
+      () {
+        isOpenedDialog = false;
+      },
     );
+  }
+
+  Future<void> applyCoupon(List<String> couponIdsList) async {
+    logger.d(lotteryDateStrYMD);
+    final lotteryDate = lotteryDateStrYMD;
+    final invoiceId = BuyLotteryController.to.invoiceMeta.value.invoiceId;
+    if (lotteryDate == null) {
+      logger.e("lotteryDateStrYMD is empty");
+      return;
+    }
+    if (invoiceId == null) {
+      logger.e("invoiceId is empty");
+      return;
+    }
+
+    final response = await AppWriteController.to.applyCoupon(
+      lotteryDate: lotteryDate,
+      invoiceId: invoiceId,
+      couponIdsList: couponIdsList,
+    );
+    logger.d(response.data);
   }
 
   @override

@@ -5,6 +5,7 @@ import 'package:lottery_ck/modules/biometrics/controller/enable_biometrics.contr
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/couldflare/controller/cloudflare.controller.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
+import 'package:lottery_ck/modules/friends/controller/friends.controller.dart';
 import 'package:lottery_ck/modules/history/controller/history.controller.dart';
 import 'package:lottery_ck/modules/history/controller/history_win.controller.dart';
 import 'package:lottery_ck/modules/history/controller/win_bill.contoller.dart';
@@ -88,5 +89,6 @@ class LayoutBindings extends Bindings {
         fenix: true);
     Get.lazyPut<KYCController>(() => KYCController(), fenix: true);
     Get.lazyPut<TCController>(() => TCController(), fenix: true);
+    Get.lazyPut<FriendsController>(() => FriendsController(), fenix: true);
   }
 }

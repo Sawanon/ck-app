@@ -110,7 +110,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                   ),
                 ),
                 // label: AppLocale.history.getString(context),
-                label: 'สถิติ',
+                label: AppLocale.statistics.getString(context),
               ),
               // NavigationItem(
               //   tab: TabApp.lottery,
@@ -166,7 +166,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                   ),
                 ),
                 // label: AppLocale.notification.getString(context),
-                label: 'สแกน',
+                label: AppLocale.scan.getString(context),
               ),
               NavigationItem(
                 tab: TabApp.settings,
@@ -188,7 +188,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                   ),
                 ),
                 // label: AppLocale.setting.getString(context),
-                label: 'สิทธิ์พิเศษ',
+                label: AppLocale.privileges.getString(context),
               ),
             ],
           ),

@@ -30,8 +30,10 @@ class BuylotteryComponent extends StatelessWidget {
                     children: [
                       Expanded(
                         child: TextFormField(
+                          maxLength: 6,
                           textAlign: TextAlign.center,
                           decoration: InputDecoration(
+                            counterText: "",
                             hintText:
                                 AppLocale.purchaseNumber.getString(context),
                             errorStyle: TextStyle(height: 0),
@@ -187,7 +189,7 @@ class BuylotteryComponent extends StatelessWidget {
                     },
                     disabled: controller.disabledBuy.value,
                     child: Text(
-                      AppLocale.confirmBuyLottery.getString(context),
+                      AppLocale.pay.getString(context),
                       style: TextStyle(
                         fontSize: 16,
                       ),

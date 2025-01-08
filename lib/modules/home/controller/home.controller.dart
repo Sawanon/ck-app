@@ -52,7 +52,7 @@ class HomeController extends GetxController {
   LotteryDate? lotteryDateData;
   RxString wallpaperUrl = ''.obs;
   GetMyFriends? myFriends;
-  List<ListMyFriendsUser> listMyFriends = [];
+  // List<ListMyFriendsUser> listMyFriends = [];
 
   void lotteryFullScreen() {
     lotteryAlinment = Alignment.center;
@@ -611,7 +611,7 @@ class HomeController extends GetxController {
     await getWallpaperBackground();
     await SettingController.to.setup();
     await getMyFriends();
-    await listMyFriendsUser();
+    // await listMyFriendsUser();
     update();
   }
 
@@ -936,33 +936,36 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> listMyFriendsUser() async {
-    final user = SettingController.to.user;
-    if (user == null) {
-      return;
-    }
-    if (user.refCode == null) {
-      logger.e("refCode is ${user.refCode}");
-      return;
-    }
-    final response =
-        await AppWriteController.to.listMyFriendsUser(user.refCode!);
-    if (response.isSuccess) {
-      listMyFriends.clear();
-      listMyFriends.addAll(response.data!);
-      update();
-    } else {
-      Get.dialog(
-        DialogApp(
-          title: Text("Something went wrong"),
-          details: Text(response.message),
-          disableConfirm: true,
-        ),
-      );
-    }
-  }
+  // Future<void> listMyFriendsUser() async {
+  //   final user = SettingController.to.user;
+  //   if (user == null) {
+  //     return;
+  //   }
+  //   if (user.refCode == null) {
+  //     logger.e("refCode is ${user.refCode}");
+  //     return;
+  //   }
+  //   final response =
+  //       await AppWriteController.to.listMyFriendsUser(user.refCode!);
+  //   if (response.isSuccess) {
+  //     listMyFriends.clear();
+  //     listMyFriends.addAll(response.data!);
+  //     update();
+  //   } else {
+  //     Get.dialog(
+  //       DialogApp(
+  //         title: Text("Something went wrong"),
+  //         details: Text(response.message),
+  //         disableConfirm: true,
+  //       ),
+  //     );
+  //   }
+  // }
 
-  void test() async {}
+  void gotoNotification() async {
+    LayoutController.to.changeTab(TabApp.settings);
+    NotificationController.to.onChangeTab(2);
+  }
 
   @override
   void onInit() {
