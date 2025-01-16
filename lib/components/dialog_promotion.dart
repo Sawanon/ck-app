@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 
@@ -53,6 +55,11 @@ class _DialogPromotionState extends State<DialogPromotion> {
                 children: [
                   CarouselSlider(
                     items: widget.promotionList.map((promotion) {
+                      logger.d(promotion);
+                      final imageUrl = (promotion['banner_image'] == null ||
+                              promotion['banner_image'] == "")
+                          ? 'https://www.google.com'
+                          : promotion['banner_image'];
                       return GestureDetector(
                         onTap: () {
                           Get.back();
@@ -61,8 +68,30 @@ class _DialogPromotionState extends State<DialogPromotion> {
                           NotificationController.to
                               .openPromotionDetail(promotionId);
                         },
+                        // child: Text(imageUrl),
                         child: CachedNetworkImage(
-                          imageUrl: promotion['image'],
+                          imageUrl: imageUrl,
+                          errorWidget: (context, url, error) {
+                            return Container(
+                              alignment: Alignment.center,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.image,
+                                    size: 64,
+                                  ),
+                                  Text(
+                                    "Image not found",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
                       );
                     }).toList(),
@@ -120,7 +149,9 @@ class _DialogPromotionState extends State<DialogPromotion> {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Text("Do not show this message again"),
+                      Text(
+                        AppLocale.doNotShowThisMessageAgain.getString(context),
+                      ),
                     ],
                   ),
                 ],

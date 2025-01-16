@@ -38,6 +38,10 @@ android {
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
+        // Flag to enable support for the new language APIs
+        // for local notification library (flutter_local_notifications)
+        coreLibraryDesugaringEnabled true
+
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
@@ -51,6 +55,8 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
+        // for local notification library (flutter_local_notifications)
+        multiDexEnabled true
     }
 
     signingConfigs {
@@ -81,4 +87,9 @@ dependencies {
     // implementation 'com.bytedance.applog:RangersAppLog-Lite-global:6.15.4'
     implementation "com.bytedance.applog:RangersAppLog-Lite-global:6.14.3"
     implementation 'com.squareup.okhttp3:okhttp:4.2.1'
+    
+    // for local notification library (flutter_local_notifications)
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
+    implementation 'androidx.window:window:1.0.0'
+    implementation 'androidx.window:window-java:1.0.0'
 }

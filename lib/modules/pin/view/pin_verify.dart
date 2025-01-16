@@ -138,7 +138,7 @@ class PinVerifyPage extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              "ຢືນຢັນ Passcode ຂອງທ່ານ",
+                              AppLocale.confirmYourPasscode.getString(context),
                               style: TextStyle(
                                 fontSize: 28,
                                 fontWeight: FontWeight.w700,

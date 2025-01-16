@@ -37,7 +37,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
         Container(
           margin: EdgeInsets.symmetric(
             vertical: 16,
-            horizontal: 16,
+            horizontal: 8,
           ),
           width: double.infinity,
           padding: EdgeInsets.symmetric(vertical: 6, horizontal: 6),

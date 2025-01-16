@@ -17,6 +17,8 @@ import 'package:lottery_ck/model/jwt.dart';
 import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/model/lottery_date.dart';
 import 'package:lottery_ck/model/news.dart';
+import 'package:lottery_ck/model/notification.dart';
+import 'package:lottery_ck/model/point_can_use.dart';
 import 'package:lottery_ck/model/respnose_verifypasscode.dart';
 import 'package:lottery_ck/model/response/get_my_friends.dart';
 import 'package:lottery_ck/model/response/get_otp.dart';
@@ -585,13 +587,14 @@ class AppWriteController extends GetxController {
 
   Future<List<News>?> listNews() async {
     try {
+      final now = DateTime.now().toUtc();
       final newsDocumentList = await databases.listDocuments(
         databaseId: _databaseName,
         collectionId: NEWS,
         queries: [
           Query.equal("is_active", true),
           Query.equal("is_approve", "3"),
-          Query.greaterThanEqual("end_date", DateTime.now().toIso8601String()),
+          Query.greaterThanEqual("end_date", now.toIso8601String()),
           Query.orderDesc('start_date'),
           Query.limit(25),
         ],
@@ -611,13 +614,14 @@ class AppWriteController extends GetxController {
 
   Future<List<Map>?> listPromotionsPoints() async {
     try {
+      final now = DateTime.now().toUtc();
       final promotionsPointsDocumentList = await databases.listDocuments(
         databaseId: _databaseName,
         collectionId: POINTS,
         queries: [
           Query.equal("is_active", true),
           Query.equal("is_approve", "3"),
-          Query.greaterThanEqual("end_date", DateTime.now().toIso8601String()),
+          Query.greaterThanEqual("end_date", now.toIso8601String()),
           Query.orderDesc('start_date'),
           Query.limit(25),
         ],
@@ -636,13 +640,14 @@ class AppWriteController extends GetxController {
 
   Future<List<Map>?> listPromotions() async {
     try {
+      final now = DateTime.now().toUtc();
       final promotionsDocumentList = await databases.listDocuments(
         databaseId: _databaseName,
         collectionId: PROMOTION,
         queries: [
           Query.equal("is_active", true),
           Query.equal("is_approve", "3"),
-          Query.greaterThanEqual("end_date", DateTime.now().toIso8601String()),
+          Query.greaterThanEqual("end_date", now.toIso8601String()),
           Query.orderDesc('start_date'),
           Query.limit(25),
         ],
@@ -1041,6 +1046,14 @@ class AppWriteController extends GetxController {
       return ResponseSignup(
           user: User.fromMap(response.data["user"]),
           secret: response.data["secret"]);
+    } on DioException catch (e) {
+      logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+      }
+      return null;
     } catch (e) {
       logger.e("$e");
       return null;
@@ -1904,7 +1917,7 @@ class AppWriteController extends GetxController {
     logger.w(response);
   }
 
-  Future<ResponseApi<void>> collectCoupons(
+  Future<ResponseApi<Map?>> collectCoupons(
     String promotionId,
     String userId,
   ) async {
@@ -1927,6 +1940,7 @@ class AppWriteController extends GetxController {
       return ResponseApi(
         isSuccess: true,
         message: "Successfully collect coupons",
+        data: response.data,
       );
     } on DioException catch (e) {
       logger.e("$e");
@@ -1949,21 +1963,6 @@ class AppWriteController extends GetxController {
 
   Future<ResponseApi<List<Coupon>?>> listMyCoupons(String userId) async {
     try {
-      // final test = {
-      //   "couponId": "88200855196680065061",
-      //   "userId": "676cda620026fd69cd20",
-      //   "promotionId": "67783d1c000bbeb9af2c",
-      //   "is_use": false,
-      //   "use_date": null,
-      //   "expire_date": "2025-01-31T13:00:00.000+00:00",
-      //   "\$id": "677e36ca0031c5975ead",
-      //   "\$createdAt": "2025-01-08T08:26:50.804+00:00",
-      //   "\$updatedAt": "2025-01-08T08:26:50.804+00:00",
-      //   "\$permissions": [],
-      //   "\$databaseId": "lottory",
-      //   "\$collectionId": "67762ef9003b9b51c763"
-      // };
-      // continue list coupon to show in payment page
       final now = DateTime.now().toUtc().toIso8601String();
       final response = await databases.listDocuments(
         databaseId: _databaseName,
@@ -2021,7 +2020,7 @@ class AppWriteController extends GetxController {
       logger.e("$e");
       return ResponseApi(
         isSuccess: false,
-        message: "",
+        message: e.message ?? "failed to list promotion detail",
       );
     }
   }
@@ -2043,12 +2042,14 @@ class AppWriteController extends GetxController {
     try {
       final dio = Dio();
       final token = await getCredential();
+      final payload = {
+        "lotteryDate": lotteryDate,
+        "invoiceId": invoiceId,
+        "couponId": couponIdsList,
+      };
+      logger.d(payload);
       final response = await dio.post("${AppConst.apiUrl}/payment/summary",
-          data: {
-            "lotteryDate": lotteryDate,
-            "invoiceId": invoiceId,
-            "couponId": couponIdsList,
-          },
+          data: payload,
           options: Options(
             headers: {"Authorization": "Bearer $token"},
           ));
@@ -2146,6 +2147,112 @@ class AppWriteController extends GetxController {
             message: e.response?.statusMessage ?? "failed to apply coupon");
       }
       return ResponseApi(isSuccess: false, message: "failed to apply coupon");
+    }
+  }
+
+  Future<ResponseApi<List<NotificationModel>?>> listNotification(
+      String userId) async {
+    try {
+      final dio = Dio();
+      final response = await dio.post(
+        "${AppConst.apiUrl}/notification/get-noti",
+        data: {
+          "userId": userId,
+        },
+      );
+      logger.d(response.data);
+      final List<dynamic> result = response.data;
+
+      // final notificationList = response.data
+      return ResponseApi(
+        isSuccess: true,
+        message: "message",
+        data: result.map(
+          (notification) {
+            return NotificationModel.fromJson(notification);
+          },
+        ).toList(),
+      );
+    } on DioException catch (e) {
+      logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        return ResponseApi(
+          isSuccess: false,
+          message: e.response?.statusMessage ?? "failed to apply coupon",
+        );
+      }
+      return ResponseApi(isSuccess: false, message: "failed to apply coupon");
+    } catch (e) {
+      return ResponseApi(isSuccess: false, message: "$e");
+    }
+  }
+
+  Future<ResponseApi<PointCanUse?>> getPointCanUseOnInvoice() async {
+    try {
+      final pointRatioDocumentList = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: SETTINGS,
+        queries: [
+          Query.equal('type', 'pointUse'),
+          Query.limit(1),
+        ],
+      );
+      final setting =
+          jsonDecode(pointRatioDocumentList.documents.first.data['setting']);
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully to get point can use on invoice",
+        data: PointCanUse.fromJson(setting),
+      );
+    } on AppwriteException catch (e) {
+      return ResponseApi(
+        isSuccess: false,
+        message: e.message ?? "code: ${e.code}",
+      );
+    } catch (e) {
+      logger.e("$e");
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to get point can use on invoice",
+      );
+    }
+  }
+
+  Future<ResponseApi<Map?>> listCategories() async {
+    try {
+      final dio = Dio();
+      final response = await dio.get(
+        "${AppConst.apiUrl}/video/listCategories",
+      );
+
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully to list categories",
+        data: response.data,
+      );
+    } on DioException catch (e) {
+      logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        return ResponseApi(
+          isSuccess: false,
+          message: e.response?.statusMessage ?? "failed to apply coupon",
+        );
+      }
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to list categories",
+      );
+    } catch (e) {
+      return ResponseApi(
+        isSuccess: false,
+        message: "$e",
+      );
     }
   }
 

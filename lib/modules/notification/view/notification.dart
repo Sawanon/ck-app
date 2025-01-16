@@ -16,68 +16,70 @@ class NotificationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<NotificationController>(builder: (controller) {
-      return DefaultTabController(
-        length: 3,
-        initialIndex: controller.currentTab,
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: AppBar(
+    return GetBuilder<NotificationController>(
+      builder: (controller) {
+        return DefaultTabController(
+          length: 3,
+          initialIndex: controller.currentTab,
+          child: Scaffold(
             backgroundColor: Colors.white,
-            // bottom: PreferredSize(preferredSize: Size(0, 0), child: Container()),
-            automaticallyImplyLeading: false,
-            titleSpacing: 0,
-            toolbarHeight: 42,
-            title: TabBar(
-              unselectedLabelColor: Colors.grey,
-              dividerColor: Colors.transparent,
-              labelColor: Colors.white,
-              labelStyle: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              // bottom: PreferredSize(preferredSize: Size(0, 0), child: Container()),
+              automaticallyImplyLeading: false,
+              titleSpacing: 0,
+              toolbarHeight: 42,
+              title: TabBar(
+                unselectedLabelColor: Colors.grey,
+                dividerColor: Colors.transparent,
+                labelColor: Colors.white,
+                labelStyle: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+                indicatorSize: TabBarIndicatorSize.tab,
+                indicator: const BoxDecoration(
+                  color: AppColors.primary,
+                ),
+                tabs: [
+                  Tab(
+                    child: Text(
+                      AppLocale.promotion.getString(context),
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      AppLocale.news.getString(context),
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                  Tab(
+                    child: Text(
+                      AppLocale.notification.getString(context),
+                      style: TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicator: const BoxDecoration(
-                color: AppColors.primary,
-              ),
-              tabs: [
-                Tab(
-                  child: Text(
-                    AppLocale.promotion.getString(context),
-                    style: TextStyle(
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-                Tab(
-                  child: Text(
-                    AppLocale.news.getString(context),
-                    style: TextStyle(
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-                Tab(
-                  child: Text(
-                    AppLocale.notification.getString(context),
-                    style: TextStyle(
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
+            ),
+            body: TabBarView(
+              physics: const NeverScrollableScrollPhysics(),
+              children: [
+                PromotionListComponent(),
+                NewsListComponent(),
+                NotificationList(),
               ],
             ),
           ),
-          body: TabBarView(
-            physics: const NeverScrollableScrollPhysics(),
-            children: [
-              PromotionListComponent(),
-              NewsListComponent(),
-              NotificationList(),
-            ],
-          ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }

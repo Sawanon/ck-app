@@ -14,6 +14,7 @@ class InvoiceMetaData {
   String? expire;
   int price;
   int quota;
+  List? couponIds;
 
   InvoiceMetaData({
     required this.lotteryDateStr,
@@ -29,6 +30,7 @@ class InvoiceMetaData {
     this.expire,
     required this.price,
     required this.quota,
+    this.couponIds,
   });
 
   static InvoiceMetaData empty() => InvoiceMetaData(
@@ -57,6 +59,7 @@ class InvoiceMetaData {
         expire: expire,
         price: price,
         quota: quota,
+        couponIds: couponIds,
       );
 
   Map<String, dynamic> toJson(String userId) {
@@ -74,6 +77,7 @@ class InvoiceMetaData {
       'discount': discount,
       'billId': billId,
       'quota': quota,
+      'couponId': couponIds,
     };
   }
 }

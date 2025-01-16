@@ -23,6 +23,7 @@ import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/mmoney/controller/confirm_otp.controller.dart';
 import 'package:lottery_ck/modules/mmoney/view/confirm_otp.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
+import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/constant.dart';
@@ -254,6 +255,7 @@ class BuyLotteryController extends GetxController {
           headers: {"Authorization": "Bearer $token"},
         ),
       );
+      logger.f(response.data);
       return response.data;
     } on DioException catch (e) {
       if (e.response != null) {
@@ -312,7 +314,7 @@ class BuyLotteryController extends GetxController {
     calPrePromotion(invoiceMetaData);
   }
 
-  void removeLottery(Lottery lottery) async {
+  Future<void> removeLottery(Lottery lottery) async {
     logger.d(lottery.toJson());
     // lottery.remove();
     InvoiceMetaData cloneInvoice = invoiceMeta.value.copyWith();
@@ -429,7 +431,7 @@ class BuyLotteryController extends GetxController {
     );
   }
 
-  void submitAddLottery(
+  Future<void> submitAddLottery(
     String? lottery,
     int? price, [
     bool? fromOtherPage,
@@ -449,15 +451,16 @@ class BuyLotteryController extends GetxController {
         showInvalidPrice();
         return;
       }
-      final isMaxPerTimes = lotteryIsValid(
-        Lottery(
-          lottery: lottery,
-          amount: price,
-          lotteryType: lottery.length,
-          quota: price,
-        ),
-      );
-      if (isMaxPerTimes == false) {
+      // final isMaxPerTimes = lotteryIsValid(
+      //   Lottery(
+      //     lottery: lottery,
+      //     amount: price,
+      //     lotteryType: lottery.length,
+      //     quota: price,
+      //   ),
+      // );
+      // if (isMaxPerTimes == false) {
+      if (false) {
         return;
       }
       final valid = validateLottery(lottery, price);
@@ -582,15 +585,16 @@ class BuyLotteryController extends GetxController {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "ກະລຸນາເຂົ້າສູ່ລະບົບ",
-                    style: TextStyle(
+                    AppLocale.pleaseSignin.getString(context),
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                   Text(
-                    "ກະລຸນາເຂົ້າສູ່ລະບົບກ່ອນທີ່ຈະຊື້ຫວຍ.",
-                    style: TextStyle(
+                    AppLocale.pleaseLogInBeforePurchasingLottery
+                        .getString(context),
+                    style: const TextStyle(
                       color: AppColors.textPrimary,
                     ),
                   ),
@@ -602,8 +606,8 @@ class BuyLotteryController extends GetxController {
                       formKey = null;
                     },
                     child: Text(
-                      "ເຂົ້າສູ່ລະບົບ",
-                      style: TextStyle(
+                      AppLocale.login.getString(context),
+                      style: const TextStyle(
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -629,12 +633,14 @@ class BuyLotteryController extends GetxController {
       if (context.mounted) {
         showLoginDialog();
       }
-      Get.rawSnackbar(message: "Please sign in");
+      Get.rawSnackbar(message: AppLocale.pleaseSignin.getString(Get.context!));
       return;
     }
 
     if (HomeController.to.lotteryDateStr == null) {
-      Get.rawSnackbar(message: "ขณะนี้ยังไม่เปิดบริการให้ซือในขณะนี้");
+      Get.rawSnackbar(
+          message: AppLocale.notAvailableForPurchaseAtThisTime
+              .getString(Get.context!));
       return;
     }
     Get.toNamed(RouteName.payment);
@@ -1292,19 +1298,21 @@ class BuyLotteryController extends GetxController {
   }
 
 // TODO: get promotion
-  void listPromotions([bool? isRefresh]) async {
+  Future<void> listPromotions([bool? isRefresh]) async {
+    await StorageController.to.removePromotionLater();
     final promotionLater = await StorageController.to.getPromotionLater();
     final promotionLaterDate =
         promotionLater != null ? DateTime.parse(promotionLater) : null;
     final isShouldShow = promotionLaterDate == null
         ? true
         : promotionLaterDate.day != DateTime.now().day;
+    logger.w(isShouldShow);
     if (isShouldShow == false) {
       return;
     }
     final promotionList =
         await AppWriteController.to.listCurrentActivePromotions();
-    // logger.d(promotionList);
+    logger.d(promotionList);
     if (promotionList == null) return;
     logger.w("promotionList ${promotionList.length}");
     this.promotionList.value = promotionList;
@@ -1559,6 +1567,107 @@ class BuyLotteryController extends GetxController {
     }
   }
 
+  Future<void> editTransaction(String lottery, int price) async {
+    InvoiceMetaData cloneInvoice = invoiceMeta.value.copyWith();
+    final List<Lottery> updateTransactions = [];
+    for (var transaction in cloneInvoice.transactions) {
+      if (transaction.lottery == lottery) {
+        transaction.quota = price;
+        updateTransactions.add(transaction);
+        break;
+      }
+    }
+    cloneInvoice.transactions.clear();
+    cloneInvoice.transactions = updateTransactions;
+    final responseUpdateInvoice = await addTransaction(cloneInvoice);
+    if (responseUpdateInvoice == null) {
+      Get.rawSnackbar(message: "add transaction failed");
+      return;
+    }
+    final List<Lottery> transactionFailed = [];
+    final responseTransactionsList =
+        responseUpdateInvoice['transaction'] as Map;
+    InvoiceMetaData cloneInvoiceForCheckValue = invoiceMeta.value.copyWith();
+    for (var transaction in cloneInvoice.transactions) {
+      logger.w(transaction.toJson());
+      final responseTransaction = responseTransactionsList[transaction.lottery];
+      if (responseTransaction['status'] == true) {
+        // final findExistTransaction = updateTransactions
+        //     .where((transactionUpdate) =>
+        //         transactionUpdate.lottery == transaction.lottery)
+        //     .toList();
+        if (transaction.id != null) {
+          // update
+          final index = cloneInvoiceForCheckValue.transactions.indexWhere(
+              (transactionUpdate) =>
+                  transactionUpdate.lottery == transaction.lottery);
+          cloneInvoiceForCheckValue.transactions[index] = transaction;
+          logger.d(transaction.toJson());
+          // for (var transactionUpdate
+          //     in cloneInvoiceForCheckValue.transactions) {
+          //   if (transactionUpdate.lottery == transaction.lottery) {
+          //     transactionUpdate = transaction;
+          //     break;
+          //   }
+          // }
+        } else {
+          // add
+          transaction.id = responseTransaction['data']['\$id'];
+          cloneInvoiceForCheckValue.transactions.add(transaction);
+        }
+      } else {
+        transactionFailed.add(transaction);
+      }
+    }
+    // for (var transaction in cloneInvoiceForCheckValue.transactions) {
+    //   transaction.amount = transaction.quota;
+    //   transaction.totalAmount = transaction.quota;
+    //   transaction.discount = null;
+    //   transaction.discountType = null;
+    //   transaction.bonus = null;
+    //   transaction.bonusType = null;
+    // }
+    cloneInvoiceForCheckValue.quota = 0;
+    cloneInvoiceForCheckValue.discount = null;
+    cloneInvoiceForCheckValue.amount = 0;
+    cloneInvoiceForCheckValue.bonus = null;
+    cloneInvoiceForCheckValue.totalAmount = 0;
+    // cloneInvoiceForCheckValue = calPrePromotion(cloneInvoiceForCheckValue);
+
+    for (var transaction in cloneInvoiceForCheckValue.transactions) {
+      cloneInvoiceForCheckValue.quota += transaction.quota;
+      cloneInvoiceForCheckValue.discount = (transaction.discount ?? 0) +
+          (cloneInvoiceForCheckValue.discount ?? 0);
+      cloneInvoiceForCheckValue.amount += transaction.amount;
+      cloneInvoiceForCheckValue.bonus =
+          (transaction.bonus ?? 0) + (cloneInvoiceForCheckValue.bonus ?? 0);
+      cloneInvoiceForCheckValue.totalAmount += transaction.quota!;
+    }
+    logger.d(cloneInvoiceForCheckValue.toJson(userApp!.userId));
+    invoiceMeta.value = cloneInvoiceForCheckValue;
+    if (transactionFailed.isNotEmpty) {
+      Get.dialog(DialogApp(
+        title: Text(
+          AppLocale.someLotteryQuotaExceeded.getString(Get.context!),
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        details: Text(
+            '"${transactionFailed.map((e) => e.lottery).toList().join(",")}" ${AppLocale.pleaseBuyLessOrAnotherLottery.getString(Get.context!)}'),
+        disableConfirm: true,
+        cancelText: Text(
+          AppLocale.close.getString(Get.context!),
+          style: TextStyle(
+            color: AppColors.primary,
+          ),
+        ),
+      ));
+    }
+  }
+
   void editLottery(String lottery, int price) async {
     logger.d("lottery: $lottery");
     logger.d("price: $price");
@@ -1566,13 +1675,74 @@ class BuyLotteryController extends GetxController {
       DialogEditLottery(
         lottery: lottery,
         price: price,
-        onSubmit: (newPrice) async {
-          await Future.delayed(const Duration(seconds: 1), () {
-            logger.w("newPrice: $newPrice");
-          });
+        onSubmit: (newLottery, newPrice) async {
+          logger.d("lottery: $newLottery");
+          logger.d("newPrice: $newPrice");
+
+          if (newLottery == null && newPrice == null) {
+            return Get.back();
+          }
+
+          if (newPrice! % 1000 != 0) {
+            showInvalidPrice();
+            return;
+          }
+
+          if (newLottery == null) {
+            final isMaxPerTimes = lotteryIsValid(
+              Lottery(
+                lottery: lottery,
+                amount: newPrice,
+                lotteryType: lottery.length,
+                quota: newPrice,
+              ),
+            );
+            if (isMaxPerTimes == false) {
+              return;
+            }
+            final valid = validateLottery(lottery, price);
+            if (valid == false) {
+              return;
+            }
+            await editTransaction(lottery, newPrice);
+            Get.back();
+          } else {
+            final oldLotteryMap = {
+              "lottery": lottery,
+              "price": "0",
+            };
+            final newLotteryMap = {
+              "lottery": newLottery,
+              "price": "$newPrice",
+            };
+            logger.d(oldLotteryMap);
+            logger.d(newLotteryMap);
+            // return;
+            // await onClickAnimalBuy([oldLotteryMap, newLotteryMap]);
+            await removeLottery(Lottery(
+              lottery: lottery,
+              amount: 0,
+              lotteryType: lottery.length,
+              quota: 0,
+            ));
+            await submitAddLottery(
+              newLottery,
+              newPrice,
+              false,
+            );
+            Get.back();
+          }
+          // onClickAnimalBuy
+          // await Future.delayed(const Duration(seconds: 1), () {
+          //   logger.w("newPrice: $newPrice");
+          // });
         },
       ),
     );
+  }
+
+  void setInvoice(InvoiceMetaData value) {
+    invoiceMeta.value = value;
   }
 
   @override

@@ -167,13 +167,16 @@ class MenuGrid extends StatelessWidget {
             icon: SizedBox(
               height: 32,
               width: 32,
-              child: SvgPicture.asset(
+              child: Image.asset(
                 AppIcon.news,
-                colorFilter: const ColorFilter.mode(
-                  AppColors.primary,
-                  BlendMode.srcIn,
-                ),
               ),
+              // child: SvgPicture.asset(
+              //   AppIcon.news,
+              //   colorFilter: const ColorFilter.mode(
+              //     AppColors.primary,
+              //     BlendMode.srcIn,
+              //   ),
+              // ),
             ),
             name: Align(
               alignment: Alignment.center,
@@ -198,13 +201,16 @@ class MenuGrid extends StatelessWidget {
             icon: SizedBox(
               height: 32,
               width: 32,
-              child: SvgPicture.asset(
+              child: Image.asset(
                 AppIcon.promotion,
-                colorFilter: const ColorFilter.mode(
-                  AppColors.redGradient,
-                  BlendMode.srcIn,
-                ),
               ),
+              // child: SvgPicture.asset(
+              //   AppIcon.promotion,
+              //   colorFilter: const ColorFilter.mode(
+              //     AppColors.redGradient,
+              //     BlendMode.srcIn,
+              //   ),
+              // ),
             ),
             name: Align(
               alignment: Alignment.center,
@@ -263,13 +269,16 @@ class MenuGrid extends StatelessWidget {
             icon: SizedBox(
               height: 32,
               width: 32,
-              child: SvgPicture.asset(
-                AppIcon.registerAndVerify,
-                colorFilter: const ColorFilter.mode(
-                  AppColors.redGradient,
-                  BlendMode.srcIn,
-                ),
+              child: Image.asset(
+                AppIcon.kyc,
               ),
+              // child: SvgPicture.asset(
+              //   AppIcon.registerAndVerify,
+              //   colorFilter: const ColorFilter.mode(
+              //     AppColors.redGradient,
+              //     BlendMode.srcIn,
+              //   ),
+              // ),
             ),
             name: Align(
               alignment: Alignment.center,

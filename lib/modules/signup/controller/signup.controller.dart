@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/components/gender_radio.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
+import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/repository/user_repository/user.repository.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/route/route_name.dart';
@@ -92,6 +93,7 @@ class SignupController extends GetxController {
             Get.toNamed(RouteName.enableBiometrics, arguments: {
               "whenSuccess": () async {
                 Get.delete<UserStore>();
+                LayoutController.to.intialApp();
                 Get.offAllNamed(RouteName.layout);
               }
             });
@@ -99,6 +101,7 @@ class SignupController extends GetxController {
           }
           // Get.delete<BuyLotteryController>();
           Get.delete<UserStore>();
+          LayoutController.to.intialApp();
           Get.offAllNamed(RouteName.layout);
         }
       },

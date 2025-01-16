@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:get/get.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:lottery_ck/model/lottery.dart';
 import 'package:intl/intl.dart';
@@ -198,5 +199,19 @@ class CommonFn {
 
   static String renderCountdown(Duration remain) {
     return "${remain.inHours.toString().padLeft(2, '0')}:${remain.inMinutes.remainder(60).toString().padLeft(2, '0')}:${remain.inSeconds.remainder(60).toString().padLeft(2, '0')}";
+  }
+
+  static String renderAgo(DateTime datetime) {
+    final datetimeParsed = datetime.toLocal();
+    final different = DateTime.now().difference(datetimeParsed);
+    if (different.inSeconds < 60) {
+      return AppLocale.secondsAgo.getString(Get.context!);
+    } else if (different.inMinutes < 60) {
+      return "${different.inMinutes.remainder(60)} ${AppLocale.minuteAgo.getString(Get.context!)}";
+    } else if (different.inHours < 24) {
+      return "${different.inHours.remainder(24)} ${AppLocale.hourAgo.getString(Get.context!)}";
+    } else {
+      return "${different.inDays} ${AppLocale.dayAgo.getString(Get.context!)}";
+    }
   }
 }

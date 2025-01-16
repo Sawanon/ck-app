@@ -50,17 +50,18 @@ class SignupPage extends StatelessWidget {
                       padding: const EdgeInsets.all(16),
                       physics: BouncingScrollPhysics(),
                       children: [
-                        const Text(
-                          'ສ້າງບັນຊີໃໝ່',
-                          style: TextStyle(
+                        Text(
+                          AppLocale.createNewAccount.getString(context),
+                          style: const TextStyle(
                             fontSize: 36,
                             fontWeight: FontWeight.w700,
                             color: AppColors.textPrimary,
                           ),
                         ),
-                        const Text(
-                          'ກະລຸນາຕື່ມຂໍ້ມູນເພື່ອສ້າງບັນຊີ',
-                          style: TextStyle(
+                        Text(
+                          AppLocale.pleaseFillInTheInformationToCreateAnAccount
+                              .getString(context),
+                          style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w400,
                             color: AppColors.textPrimary,
@@ -77,6 +78,32 @@ class SignupPage extends StatelessWidget {
                             key: controller.keyForm,
                             child: Column(
                               children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      AppLocale.prefix.getString(context),
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.textPrimary,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    const Text(
+                                      "*",
+                                      style: TextStyle(
+                                        color: AppColors.errorBorder,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 4),
+                                GenderRadio(
+                                  onChange: (gender) {
+                                    controller.changeGender(gender);
+                                  },
+                                ),
+                                const SizedBox(height: 16),
                                 Row(
                                   children: [
                                     Text(
@@ -131,7 +158,8 @@ class SignupPage extends StatelessWidget {
                                   ),
                                   validator: (value) {
                                     if (value == null || value == "") {
-                                      return "Please enter your first name";
+                                      return AppLocale.pleaseEnterYourFirstName
+                                          .getString(context);
                                     }
                                     return null;
                                   },
@@ -194,38 +222,13 @@ class SignupPage extends StatelessWidget {
                                   ),
                                   validator: (value) {
                                     if (value == null || value == "") {
-                                      return "Please enter your last name";
+                                      return AppLocale.pleaseEnterYourLasttName
+                                          .getString(context);
                                     }
                                     return null;
                                   },
                                   onChanged: (value) {
                                     controller.lastName = value;
-                                  },
-                                ),
-                                const SizedBox(height: 16),
-                                Row(
-                                  children: [
-                                    Text(
-                                      AppLocale.gender.getString(context),
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700,
-                                        color: AppColors.textPrimary,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    const Text(
-                                      "*",
-                                      style: TextStyle(
-                                        color: AppColors.errorBorder,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 4),
-                                GenderRadio(
-                                  onChange: (gender) {
-                                    controller.changeGender(gender);
                                   },
                                 ),
                                 const SizedBox(height: 16),
@@ -330,70 +333,70 @@ class SignupPage extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(height: 16),
-                                Row(
-                                  children: [
-                                    Text(
-                                      AppLocale.address.getString(context),
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w700,
-                                        color: AppColors.textPrimary,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 4),
-                                    const Text(
-                                      "*",
-                                      style: TextStyle(
-                                        color: AppColors.errorBorder,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 4),
-                                TextFormField(
-                                  minLines: 4,
-                                  maxLines: 6,
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.all(8),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.errorBorder,
-                                        width: 4,
-                                      ),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.errorBorder,
-                                        width: 4,
-                                      ),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value == "") {
-                                      return "Please enter your last name";
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {
-                                    controller.address = value;
-                                  },
-                                ),
-                                const SizedBox(height: 24),
+                                // Row(
+                                //   children: [
+                                //     Text(
+                                //       AppLocale.address.getString(context),
+                                //       style: const TextStyle(
+                                //         fontSize: 14,
+                                //         fontWeight: FontWeight.w700,
+                                //         color: AppColors.textPrimary,
+                                //       ),
+                                //     ),
+                                //     const SizedBox(width: 4),
+                                //     const Text(
+                                //       "*",
+                                //       style: TextStyle(
+                                //         color: AppColors.errorBorder,
+                                //       ),
+                                //     ),
+                                //   ],
+                                // ),
+                                // const SizedBox(height: 4),
+                                // TextFormField(
+                                //   minLines: 4,
+                                //   maxLines: 6,
+                                //   decoration: InputDecoration(
+                                //     contentPadding: EdgeInsets.all(8),
+                                //     enabledBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         color: AppColors.primary,
+                                //       ),
+                                //     ),
+                                //     focusedBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         color: AppColors.primary,
+                                //         width: 2,
+                                //       ),
+                                //     ),
+                                //     errorBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         color: AppColors.errorBorder,
+                                //         width: 4,
+                                //       ),
+                                //     ),
+                                //     focusedErrorBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         color: AppColors.errorBorder,
+                                //         width: 4,
+                                //       ),
+                                //     ),
+                                //   ),
+                                //   validator: (value) {
+                                //     if (value == null || value == "") {
+                                //       return AppLocale.pleaseCorrectYourAddress;
+                                //     }
+                                //     return null;
+                                //   },
+                                //   onChanged: (value) {
+                                //     controller.address = value;
+                                //   },
+                                // ),
+                                // const SizedBox(height: 24),
                                 Obx(() {
                                   return LongButton(
                                     isLoading: controller.isLoading.value,
@@ -401,7 +404,7 @@ class SignupPage extends StatelessWidget {
                                       controller.register(context);
                                     },
                                     child: Text(
-                                      'ລົງທະບຽນ',
+                                      AppLocale.signup.getString(context),
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w700,
@@ -441,10 +444,10 @@ class HeaderCK extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Opacity(
-            opacity: enable ? 1 : 0,
-            child: Material(
+          if (enable)
+            Material(
               color: AppColors.backButton,
               borderRadius: BorderRadius.circular(10),
               clipBehavior: Clip.hardEdge,
@@ -460,7 +463,6 @@ class HeaderCK extends StatelessWidget {
                 ),
               ),
             ),
-          ),
           const SizedBox(width: 16),
           Image.asset(
             Logo.ck,

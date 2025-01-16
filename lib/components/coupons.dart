@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:lottery_ck/components/checkbox.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/long_button.dart';
@@ -14,9 +15,11 @@ import 'package:lottery_ck/utils/theme.dart';
 
 class CouponsPage extends StatefulWidget {
   final List<Coupon> couponsList;
+  final List? selectedCouponsList;
   const CouponsPage({
     super.key,
     required this.couponsList,
+    this.selectedCouponsList,
   });
 
   @override
@@ -24,7 +27,14 @@ class CouponsPage extends StatefulWidget {
 }
 
 class _CouponsPageState extends State<CouponsPage> {
+  bool isLoading = false;
   Map<String, bool?> selectedCoupon = {};
+
+  void setIsLoading(bool value) {
+    setState(() {
+      isLoading = value;
+    });
+  }
 
   void onClickCoupon(String couponId) {
     final _selectedCoupon = selectedCoupon[couponId];
@@ -52,7 +62,28 @@ class _CouponsPageState extends State<CouponsPage> {
       },
     );
     logger.d(couponIdsList);
+    setIsLoading(true);
     await PaymentController.to.applyCoupon(couponIdsList);
+    setIsLoading(false);
+    Get.back();
+  }
+
+  void setup() {
+    if (widget.selectedCouponsList != null) {
+      Map<String, bool?> _selectedCoupon = {};
+      for (var coupon in widget.selectedCouponsList!) {
+        _selectedCoupon[coupon] = true;
+      }
+      setState(() {
+        selectedCoupon = _selectedCoupon;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setup();
   }
 
   @override
@@ -153,6 +184,7 @@ class _CouponsPageState extends State<CouponsPage> {
             Padding(
               padding: const EdgeInsets.all(16),
               child: LongButton(
+                isLoading: isLoading,
                 onPressed: () {
                   onSubmit();
                 },

@@ -113,7 +113,7 @@ class SettingPage extends StatelessWidget {
                                                     ? Image.memory(
                                                         controller
                                                             .profileByte.value!,
-                                                        fit: BoxFit.fitHeight,
+                                                        fit: BoxFit.cover,
                                                       )
                                                     : const Icon(
                                                         Icons.person_2,
@@ -250,8 +250,12 @@ class SettingPage extends StatelessWidget {
                                     Expanded(
                                       child: Text(
                                         status == "pending"
-                                            ? "การยืนยันตัวตนอยู่ระว่างการตรวจสอบ"
-                                            : "การยืนยันตัวตนของคุณถูกปฏิเสธ",
+                                            ? AppLocale
+                                                .identityVerificationIsUnderReview
+                                                .getString(context)
+                                            : AppLocale
+                                                .yourIdentityVerificationHasBeenRejected
+                                                .getString(context),
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: status == "pending"

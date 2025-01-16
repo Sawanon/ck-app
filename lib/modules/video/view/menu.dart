@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
+import 'package:lottery_ck/modules/video/controller/video.controller.dart';
 import 'package:lottery_ck/modules/video/view/video.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -19,149 +20,176 @@ class VideoMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            Header(
-              title: AppLocale.socialMediaFamousTeachers.getString(context),
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-              child: Row(
-                children: [
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+    return GetBuilder<VideoController>(
+      builder: (controller) {
+        return Scaffold(
+          body: SafeArea(
+            child: Column(
+              children: [
+                Header(
+                  title: AppLocale.socialMediaFamousTeachers.getString(context),
+                ),
+                const SizedBox(height: 12),
+                GestureDetector(
+                  onTap: () {
+                    controller.listCategories();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.blue.shade100,
                     ),
-                    child: Text(
-                      AppLocale.all.getString(context),
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
+                    child: Text("Click"),
                   ),
-                  const SizedBox(width: 4),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        width: 1,
-                        color: AppColors.primary,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      AppLocale.horoscopeToday.getString(context),
-                      style: TextStyle(
-                        color: AppColors.primary,
-                      ),
-                    ),
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 16,
                   ),
-                  const SizedBox(width: 4),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(
-                        width: 1,
-                        color: AppColors.primary,
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 8,
+                          horizontal: 16,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.primary,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          AppLocale.all.getString(context),
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      AppLocale.luckyNumber.getString(context),
-                      style: TextStyle(
-                        color: AppColors.primary,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 8),
-            Expanded(
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Builder(
-                    builder: (context) {
-                      final backgroundTheme =
-                          LayoutController.to.randomBackgroundThemeUrl();
-                      if (backgroundTheme == null) {
-                        return const SizedBox.shrink();
-                      }
-                      return Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Opacity(
-                          opacity: 0.6,
-                          child: Container(
-                            clipBehavior: Clip.hardEdge,
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(52),
-                                topRight: Radius.circular(52),
-                              ),
+                      const SizedBox(width: 4),
+                      GestureDetector(
+                        onTap: () =>
+                            controller.onClickCategory("horoscopeToday"),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 16),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                              width: 1,
+                              color: AppColors.primary,
                             ),
-                            child: CachedNetworkImage(
-                              imageUrl: backgroundTheme,
-                              fit: BoxFit.fitWidth,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            AppLocale.horoscopeToday.getString(context),
+                            style: const TextStyle(
+                              color: AppColors.primary,
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
-                  Obx(() {
-                    final videoList = HomeController.to.videoContent.value;
-                    final onlyUrl = videoList
-                        .map((video) => video['videoUrl'] as String)
-                        .toList();
-                    return GridView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4,
-                        childAspectRatio: 8 / 16,
-                        crossAxisSpacing: 4,
-                        mainAxisSpacing: 4,
                       ),
-                      itemBuilder: (context, index) {
-                        final video = videoList[index];
-                        return GestureDetector(
-                          onTap: () {
-                            logger.d("message");
-                            logger.d(onlyUrl);
-                            Get.toNamed(
-                              RouteName.videoFullscreen,
-                              arguments: [
-                                onlyUrl,
-                              ],
+                      const SizedBox(width: 4),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                            width: 1,
+                            color: AppColors.primary,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          AppLocale.luckyNumber.getString(context),
+                          style: const TextStyle(
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Expanded(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      Builder(
+                        builder: (context) {
+                          final backgroundTheme =
+                              LayoutController.to.randomBackgroundThemeUrl();
+                          if (backgroundTheme == null) {
+                            return const SizedBox.shrink();
+                          }
+                          return Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Opacity(
+                              opacity: 0.6,
+                              child: Container(
+                                clipBehavior: Clip.hardEdge,
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(52),
+                                    topRight: Radius.circular(52),
+                                  ),
+                                ),
+                                child: CachedNetworkImage(
+                                  imageUrl: backgroundTheme,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      Obx(() {
+                        final videoList = HomeController.to.videoContent.value;
+                        final onlyUrl = videoList
+                            .map((video) => video['videoUrl'] as String)
+                            .toList();
+                        return GridView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            childAspectRatio: 8 / 16,
+                            crossAxisSpacing: 4,
+                            mainAxisSpacing: 4,
+                          ),
+                          itemBuilder: (context, index) {
+                            final video = videoList[index];
+                            return GestureDetector(
+                              onTap: () {
+                                logger.d("message");
+                                logger.d(onlyUrl);
+                                Get.toNamed(
+                                  RouteName.videoFullscreen,
+                                  arguments: [
+                                    onlyUrl,
+                                  ],
+                                );
+                              },
+                              child: VideComponents(
+                                url: video['videoUrl'],
+                              ),
                             );
                           },
-                          child: VideComponents(
-                            url: video['videoUrl'],
-                          ),
+                          itemCount: videoList.length,
                         );
-                      },
-                      itemCount: videoList.length,
-                    );
-                  }),
-                ],
-              ),
+                      }),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

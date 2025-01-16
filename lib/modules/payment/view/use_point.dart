@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:lottery_ck/components/input_text.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
@@ -20,6 +21,7 @@ class UsePointComponent extends StatefulWidget {
 }
 
 class _UsePointComponentState extends State<UsePointComponent> {
+  TextEditingController inputPointController = TextEditingController();
   int pointUse = 0;
 
   void setPoint(int point) {
@@ -31,8 +33,19 @@ class _UsePointComponentState extends State<UsePointComponent> {
     });
   }
 
+  void setup() async {
+    inputPointController.text = "${widget.myPoint}";
+    setPoint(widget.myPoint);
+  }
+
   void submitUsePoint() async {
     widget.onSubmit(pointUse);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setup();
   }
 
   @override
@@ -64,19 +77,32 @@ class _UsePointComponentState extends State<UsePointComponent> {
           ),
           const SizedBox(height: 12),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                AppLocale.yourScoreIs.getString(context),
+              ),
+              Text(
+                "${CommonFn.parseMoney(SettingController.to.user?.point ?? 0)} ${AppLocale.point.getString(context)}",
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
             children: [
               Expanded(
                 child: Text(
                   AppLocale.theMaximumPointsYouCanUse.getString(context),
                 ),
               ),
-              Text(
-                CommonFn.parseMoney(widget.myPoint),
-              ),
+              // Text(
+              //   CommonFn.parseMoney(widget.myPoint),
+              // ),
             ],
           ),
           const SizedBox(height: 10),
           InputText(
+            controller: inputPointController,
             label: Text(
               AppLocale.enterThePointsYouWantToUse.getString(context),
               style: TextStyle(

@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:io' as io;
 
 import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:image/image.dart' as img;
 
 class SettingController extends GetxController {
   static SettingController get to => Get.find();
@@ -31,6 +33,7 @@ class SettingController extends GetxController {
   String? newAddress;
   Rx<Uint8List?> profileByte = Rx<Uint8List?>(null);
   Map? kycData;
+  RxBool isLoadingProfile = false.obs;
 
   Future<void> logout() async {
     await AppWriteController.to.logout();
@@ -249,6 +252,15 @@ class SettingController extends GetxController {
     }
   }
 
+  Future<io.File> resizeImage(io.File imageFile, int newWidth) async {
+    imageFile.readAsBytes();
+    final image = img.decodeImage(imageFile.readAsBytesSync());
+    final resizedImage = img.copyResize(image!, width: newWidth);
+    final resizedFile = io.File(imageFile.path)
+      ..writeAsBytesSync(img.encodeJpg(resizedImage));
+    return resizedFile;
+  }
+
   Future<void> pickImage() async {
     final pickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
@@ -257,10 +269,18 @@ class SettingController extends GetxController {
       const Duration(seconds: 1),
       () async {
         if (pickedFile != null) {
+          isLoadingProfile.value = true;
           final originImage =
               await FlutterExifRotation.rotateImage(path: pickedFile.path);
+          final resizeImaged = await resizeImage(originImage, 400);
+
+          final ogLength = originImage.lengthSync();
+          final resizeLength = resizeImaged.lengthSync();
+          logger.d("ogLength: $ogLength");
+          logger.d("resizeLength: $resizeLength");
+
           final bucketAndId =
-              await AppWriteController.to.changeProfileImage(originImage.path);
+              await AppWriteController.to.changeProfileImage(resizeImaged.path);
           logger.d(bucketAndId);
           Get.snackbar(
             "Change profile image success",
@@ -270,6 +290,7 @@ class SettingController extends GetxController {
           );
           getLostData();
           getUser(true);
+          isLoadingProfile.value = false;
           // getProfileImage(user!, true);
         }
       },

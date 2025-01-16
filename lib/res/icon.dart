@@ -28,7 +28,8 @@ class AppIcon {
   static const String animalMenu = "assets/svg/animal_menu.svg";
   static const String phone = "assets/svg/vuesax/linear/call.svg";
   static const String location = "assets/svg/vuesax/linear/location.svg";
-  static const String promotion = "assets/svg/vuesax/bulk/ticket-discount.svg";
+  // static const String promotion = "assets/svg/vuesax/bulk/ticket-discount.svg";
+  static const String promotion = "assets/png/promotion.png";
   static const String promotionBold =
       "assets/svg/vuesax/bold/ticket-discount.svg";
   static const String download = "assets/svg/vuesax/linear/receive-square.svg";
@@ -64,7 +65,9 @@ class AppIcon {
   static const String shoppingCart =
       "assets/svg/vuesax/linear/shopping-cart.svg";
   // static const String news = "assets/svg/news.svg";
-  static const String news = "assets/svg/vuesax/bulk/subtitle.svg";
+  // static const String news = "assets/svg/vuesax/bulk/subtitle.svg";
+  static const String news = "assets/png/news.png";
+  static const String newsBold = "assets/svg/vuesax/bold/subtitle.svg";
   static const String aiChat = "assets/svg/vuesax/bulk/cpu-charge.svg";
   static const String registerAndVerify =
       "assets/svg/vuesax/bulk/document-download.svg";
@@ -77,6 +80,7 @@ class AppIcon {
   static const String user = "assets/svg/vuesax/bold/user.svg";
   static const String userTick = "assets/svg/vuesax/bold/user-tick.svg";
   static const String tickCircle = "assets/svg/vuesax/linear/tick-circle.svg";
+  static const String kyc = "assets/png/KYC.png";
 
   static const String lo = "assets/laos1.png";
   static const String th = "assets/Th1.png";

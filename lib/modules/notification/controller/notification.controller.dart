@@ -1,6 +1,13 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/model/news.dart';
+import 'package:lottery_ck/model/notification.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
+import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
 
@@ -8,7 +15,7 @@ class NotificationController extends GetxController {
   static NotificationController get to => Get.find();
   RxList<News> newsList = <News>[].obs;
   RxList<Map> promotionList = <Map>[].obs;
-  RxList<Map> notificationList = <Map>[].obs;
+  RxList<NotificationModel> notificationList = <NotificationModel>[].obs;
   int currentTab = 0;
 
   Future<void> listNews() async {
@@ -85,10 +92,58 @@ class NotificationController extends GetxController {
     }
   }
 
+  Future<void> listNotification() async {
+    final user = await AppWriteController.to.getUserApp();
+    if (user == null) {
+      return;
+    }
+
+    final response = await AppWriteController.to.listNotification(user.userId);
+    // logger.d(response.data);
+    if (response.isSuccess == false || response.data == null) {
+      Get.dialog(
+        DialogApp(
+          title: Text(
+            AppLocale.somethingWentWrong.getString(Get.context!),
+          ),
+          details: Text(
+            response.message,
+          ),
+          disableConfirm: true,
+        ),
+      );
+      return;
+    }
+    notificationList.value = response.data!;
+    // response.data?.forEach((notification) {
+    //   logger.w("$notification");
+    // });
+  }
+
+  void onClickNotification(String link) {
+    if (link.contains("/news")) {
+      final newsId = link.split("/").last;
+      openNewsDetail(newsId);
+    } else if (link.contains("/promotion")) {
+      final promotionId = link.split("/").last;
+      openPromotionDetail(promotionId);
+    }
+  }
+
+  void intitialNotification() async {
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestNotificationsPermission();
+  }
+
   @override
   void onInit() {
     listNews();
     listPromotions();
+    listNotification();
     super.onInit();
   }
 }

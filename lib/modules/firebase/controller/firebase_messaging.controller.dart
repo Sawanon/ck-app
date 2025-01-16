@@ -28,6 +28,7 @@ class FirebaseMessagingController extends GetxController {
         provisional: true,
         sound: true,
       );
+
       // logger.d(notificationSettings);
 
       // For apple platforms, ensure the APNS token is available before making any FCM plugin API calls

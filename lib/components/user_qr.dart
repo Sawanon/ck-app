@@ -54,11 +54,12 @@ class _UserQRState extends State<UserQR> {
       padding: const EdgeInsets.all(16),
       width: double.infinity,
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(16),
-            topRight: Radius.circular(16),
-          )),
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(16),
+          topRight: Radius.circular(16),
+        ),
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -141,12 +142,16 @@ class _UserQRState extends State<UserQR> {
               child: GestureDetector(
                 onTap: () {
                   // QrImageView(data: data).
+                  if (SettingController.to.user?.refCode == null) {
+                    return;
+                  }
                   _saveQRCode();
                 },
                 child: Container(
                   padding:
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   decoration: BoxDecoration(
+                    // disable color
                     gradient: AppColors.primayBtn,
                     borderRadius: BorderRadius.circular(12),
                   ),

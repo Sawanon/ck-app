@@ -28,23 +28,26 @@ class ChangePhonePage extends StatelessWidget {
           body: SafeArea(
             child: Column(
               children: [
-                HeaderCK(
-                  onTap: () => Get.back(),
+                Header(
+                  title: AppLocale.changePhoneNumber.getString(context),
                 ),
+                // HeaderCK(
+                //   onTap: () => Get.back(),
+                // ),
                 Expanded(
                   child: ListView(
                     padding: const EdgeInsets.all(16),
                     children: [
                       Text(
-                        "Change Phone Number",
-                        style: TextStyle(
+                        AppLocale.changePhoneNumber.getString(context),
+                        style: const TextStyle(
                           fontWeight: FontWeight.w700,
                           fontSize: 18,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "Please fill up phone number change to your account",
+                        AppLocale.changePhoneTitle.getString(context),
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 14,
@@ -122,7 +125,7 @@ class ChangePhonePage extends StatelessWidget {
                       logger.d("message");
                       argument["whenSuccess"]();
                     },
-                    child: Text("Submit"),
+                    child: Text(AppLocale.confirm.getString(context)),
                   ),
                 ),
               ],

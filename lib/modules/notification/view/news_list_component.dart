@@ -34,13 +34,16 @@ class NewsListComponent extends StatelessWidget {
                       SizedBox(
                         width: 120,
                         height: 120,
-                        child: SvgPicture.asset(
+                        child: Image.asset(
                           AppIcon.news,
-                          colorFilter: const ColorFilter.mode(
-                            AppColors.disableText,
-                            BlendMode.srcIn,
-                          ),
                         ),
+                        // child: SvgPicture.asset(
+                        //   AppIcon.news,
+                        //   colorFilter: const ColorFilter.mode(
+                        //     AppColors.disableText,
+                        //     BlendMode.srcIn,
+                        //   ),
+                        // ),
                       ),
                       Text(
                         AppLocale.noNews.getString(context),
@@ -149,8 +152,7 @@ class NewsListComponent extends StatelessWidget {
                                                 : "-",
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              color: Color.fromRGBO(
-                                                  0, 117, 255, 1),
+                                              color: AppColors.secondary,
                                             ),
                                           ),
                                         ],

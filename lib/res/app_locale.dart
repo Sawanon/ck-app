@@ -240,6 +240,67 @@ mixin AppLocale {
       "ກະລຸນາປ່ຽນຮູບຂອງເອກະສານຂອງເຈົ້າ";
   static const String pleaseChangeYourVerificationPicture =
       "ກະລຸນາປ່ຽນຮູບປະຈໍາຕົວຂອງທ່ານ";
+  static const String secondsAgo = "ວິນາທີກ່ອນ";
+  static const String minuteAgo = "ນາທີກ່ອນ";
+  static const String hourAgo = "ຊົ່ວໂມງກ່ອນ";
+  static const String dayAgo = "ມື້ກ່ອນຫນ້ານີ້";
+  static const String listOfFriendsInvited = "ລາຍຊື່ເພື່ອນເຊີນ";
+  static const String listOfFriendsWhoHaveAccepted = "ລາຍຊື່ເພື່ອນທີ່ຍອມຮັບ";
+  static const String doNotShowThisMessageAgain = "ຢ່າສະແດງຂໍ້ຄວາມນີ້ອີກ";
+  static const String editLottery = "ແກ້ໄຂຫວຍ";
+  static const String lottery = "ຫວຍ";
+  static const String discount = "ສ່ວນຫຼຸດ";
+  static const String bonusDesTitle = "ອະທິບາຍງ່າຍໆ ກ່ຽວກັບການຊື້ຫວຍ + ໂບນັດ";
+  static const String bonusDes1 =
+      "ເມື່ອທ່ານຊື້ຫວຍ 1,000 ກີບ ທ່ານຈະໄດ້ຮັບໂບນັດເພີ່ມອີກ 100 ກີບ (ລວມເປັນ 1,100 ກີບໃນລະບົບ) ແຕ່ເຈົ້າຈ່າຍເງິນຈິງພຽງ 1,000 ກີບເທົ່ານັ້ນ. ໂບນັດນີ້ແມ່ນສິ່ງທີ່ເຮົາເພີ່ມໃຫ້ຟຣີ!";
+  static const String bonusDes2 =
+      "ເມື່ອທ່ານຖືກລາງວັນ ການຄໍານວນເງິນລາງວັນຈະອິງຕາມຍອດລວມຂອງ ເງິນທີ່ຊື້ + ໂບນັດ ນັ້ນແມ່ນ 1,000 + 100 = 1,100 ກີບ";
+  static const String bonusDes3 = "ຕົວຢ່າງ:";
+  static const String bonusDes3_1 =
+      "ຖ້າລາງວັນທີ່ທ່ານຖືກມີອັດຕາຈ່າຍ 1:90 ແລະທ່ານຊື້ຫວຍ 1,000 ກີບ";
+  static const String bonusDes3_2 =
+      "ລາງວັນທີ່ທ່ານຈະໄດ້ຮັບຄື 1,100 x 90 = 99,000 ກີບ (ເພາະເຮົາໃຊ້ຍອດລວມ 1,100 ກີບໃນການຄໍານວນ)";
+  static const String bonusDesSummary = "ສະຫຼຸບ";
+  static const String bonusDesSummaryDetail_1 =
+      "ທ່ານຈ່າຍເງິນພຽງ 1,000 ກີບ ແຕ່ໄດ້ໂບນັດເພີ່ມຟຣີ 100 ກີບ ທໍາໃຫ້ມີໂອກາດໄດ້ຮັບເງິນລາງວັນຫຼາຍຂື້ນ (ອິງຈາກຍອດ 1,100 ກີບ)";
+  static const String bonusDesSummaryDetail_2 =
+      "ໂບນັດນີ້ເປັນຂໍ້ດີທີ່ຊ່ວຍເພີ່ມຄຸ້ນຄ່າໃຫ້ກັບການລົງທຶນຂອງທ່ານ!";
+  static const String paymentInformation = "ຂໍ້ມູນການຈ່າຍເງິນ";
+  static const String totalPayment = "ການຈ່າຍເງິນທັງໝົດ";
+  static const String createNewAccount = "ສ້າງບັນຊີໃໝ່";
+  static const String pleaseFillInTheInformationToCreateAnAccount =
+      "ກະລຸນາຕື່ມຂໍ້ມູນເພື່ອສ້າງບັນຊີ";
+  static const String signup = "ລົງທະບຽນ";
+  static const String createYourPasscode = "ສ້າງ Passcode ຂອງທ່ານ";
+  static const String confirmYourPasscode = "ຢືນຢັນ Passcode ຂອງທ່ານ";
+  static const String returnToTheHomepage = "ກັບໄປທີ່ຫນ້າທໍາອິດ";
+  static const String time = "ເວລາ";
+  static const String lotteryDate = "ງວດ";
+  static const String dateOfIssue = "ອອກວັນທີี่";
+  static const String billPurchaseNumber = "ເລກທີຊື້";
+  static const String billId = "ເລກທີບິນຫວຍ";
+  static const String paidBy = "ຊໍາລະໂດຍ";
+  static const String contact = "ຕິດຕໍ່";
+  static const String pleaseSignin = "ກະລຸນາເຂົ້າສູ່ລະບົບ";
+  static const String notAvailableForPurchaseAtThisTime =
+      "ບໍ່ສາມາດຊື້ໄດ້ໃນເວລານີ້";
+  static const String pleaseLogInBeforePurchasingLottery =
+      "ກະລຸນາເຂົ້າສູ່ລະບົບກ່ອນທີ່ຈະຊື້ຫວຍ";
+  static const String titleKYCSuccess =
+      "ພວກເຮົາໄດ້ຮັບຂໍ້ມູນຂອງທ່ານ ມັນອາດໃຊ້ເວລາ 1-2 ມື້ເພື່ອໃຫ້ທີມງານຂອງພວກເຮົາທົບທວນຄືນ";
+  static const String acknowledge = "ຮັບຮູ້";
+  static const String dateAndTimeOfBirth = "ວັນທີແລະເວລາເກີດ";
+  static const String changePhoneTitle =
+      "ກະລຸນາໃສ່ເບີໂທລະສັບທີ່ທ່ານຕ້ອງການປ່ຽນໃນບັນຊີຂອງທ່ານ";
+  static const String yourScoreIs = "ຄະແນນຂອງທ່ານແມ່ນ";
+  static const String collectedTheCouponSuccessfully =
+      "ເກັບກໍາຄູປ໋ອງສົບຜົນສໍາເລັດ";
+  static const String theNationalIdentificationNumberMustContainDigits =
+      "ໝາຍເລກປະຈຳຕົວແຫ່ງຊາດຕ້ອງມີ 10 ຕົວເລກ";
+  static const String identityVerificationIsUnderReview =
+      "ກຳລັງກວດສອບການຢັ້ງຢືນຕົວຕົນ";
+  static const String yourIdentityVerificationHasBeenRejected =
+      "ການຢັ້ງຢືນຕົວຕົນຂອງທ່ານໄດ້ຖືກປະຕິເສດ";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -460,6 +521,61 @@ mixin AppLocale {
     pleaseCorrectYourIDCardNumber: "ກະລຸນາແກ້ໄຂໝາຍເລກບັດປະຈຳຕົວຂອງທ່ານ",
     pleaseChangeYourDocumentImage: "ກະລຸນາປ່ຽນຮູບຂອງເອກະສານຂອງເຈົ້າ",
     pleaseChangeYourVerificationPicture: "ກະລຸນາປ່ຽນຮູບປະຈໍາຕົວຂອງທ່ານ",
+    secondsAgo: "ວິນາທີກ່ອນ",
+    minuteAgo: "ນາທີກ່ອນ",
+    hourAgo: "ຊົ່ວໂມງກ່ອນ",
+    dayAgo: "ມື້ກ່ອນຫນ້ານີ້",
+    listOfFriendsInvited: "ລາຍຊື່ໝູ່ທີ່ທ່ານໄດ້ເຊີນແລ້ວ",
+    doNotShowThisMessageAgain: "ຢ່າສະແດງຂໍ້ຄວາມນີ້ອີກ",
+    editLottery: "ແກ້ໄຂຫວຍ",
+    lottery: "ຫວຍ",
+    listOfFriendsWhoHaveAccepted: "ລາຍຊື່ເພື່ອນທີ່ຍອມຮັບແລ້ວ",
+    discount: "ສ່ວນຫຼຸດ",
+    bonusDesTitle: "ອະທິບາຍງ່າຍໆ ກ່ຽວກັບການຊື້ຫວຍ + ໂບນັດ",
+    bonusDes1:
+        "ເມື່ອທ່ານຊື້ຫວຍ 1,000 ກີບ ທ່ານຈະໄດ້ຮັບໂບນັດເພີ່ມອີກ 100 ກີບ (ລວມເປັນ 1,100 ກີບໃນລະບົບ) ແຕ່ເຈົ້າຈ່າຍເງິນຈິງພຽງ 1,000 ກີບເທົ່ານັ້ນ. ໂບນັດນີ້ແມ່ນສິ່ງທີ່ເຮົາເພີ່ມໃຫ້ຟຣີ!",
+    bonusDes2:
+        "ເມື່ອທ່ານຖືກລາງວັນ ການຄໍານວນເງິນລາງວັນຈະອິງຕາມຍອດລວມຂອງ ເງິນທີ່ຊື້ + ໂບນັດ ນັ້ນແມ່ນ 1,000 + 100 = 1,100 ກີບ",
+    bonusDes3: "ຕົວຢ່າງ:",
+    bonusDes3_1: "ຖ້າລາງວັນທີ່ທ່ານຖືກມີອັດຕາຈ່າຍ 1:60 ແລະທ່ານຊື້ຫວຍ 1,000 ກີບ",
+    bonusDes3_2:
+        "ລາງວັນທີ່ທ່ານຈະໄດ້ຮັບຄື 1,100 x 60 = 66,000 ກີບ (ເພາະເຮົາໃຊ້ຍອດລວມ 1,100 ກີບໃນການຄໍານວນ)",
+    bonusDesSummary: "ສະຫຼຸບ",
+    bonusDesSummaryDetail_1:
+        "ທ່ານຈ່າຍເງິນພຽງ 1,000 ກີບ ແຕ່ໄດ້ໂບນັດເພີ່ມຟຣີ 100 ກີບ ທໍາໃຫ້ມີໂອກາດໄດ້ຮັບເງິນລາງວັນຫຼາຍຂື້ນ (ອິງຈາກຍອດ 1,100 ກີບ)",
+    bonusDesSummaryDetail_2:
+        "ໂບນັດນີ້ເປັນຂໍ້ດີທີ່ຊ່ວຍເພີ່ມຄຸ້ນຄ່າໃຫ້ກັບການລົງທຶນຂອງທ່ານ!",
+    paymentInformation: "ຂໍ້ມູນການຈ່າຍເງິນ",
+    totalPayment: "ການຈ່າຍເງິນທັງໝົດ",
+    createNewAccount: "ສ້າງບັນຊີໃໝ່",
+    pleaseFillInTheInformationToCreateAnAccount:
+        "ກະລຸນາຕື່ມຂໍ້ມູນເພື່ອສ້າງບັນຊີ",
+    signup: "ລົງທະບຽນ",
+    createYourPasscode: "ສ້າງ Passcode ຂອງທ່ານ",
+    confirmYourPasscode: "ຢືນຢັນ Passcode ຂອງທ່ານ",
+    returnToTheHomepage: "ກັບໄປທີ່ຫນ້າທໍາອິດ",
+    time: "ເວລາ",
+    lotteryDate: "ງວດ",
+    dateOfIssue: "ອອກວັນທີี่",
+    billPurchaseNumber: "ເລກທີຊື້",
+    billId: "ເລກທີບິນຫວຍ",
+    paidBy: "ຊໍາລະໂດຍ",
+    contact: "ຕິດຕໍ່",
+    pleaseSignin: "ກະລຸນາເຂົ້າສູ່ລະບົບ",
+    notAvailableForPurchaseAtThisTime: "ບໍ່ສາມາດຊື້ໄດ້ໃນເວລານີ້",
+    pleaseLogInBeforePurchasingLottery: "ກະລຸນາເຂົ້າສູ່ລະບົບກ່ອນທີ່ຈະຊື້ຫວຍ",
+    titleKYCSuccess:
+        "ພວກເຮົາໄດ້ຮັບຂໍ້ມູນຂອງທ່ານ ມັນອາດໃຊ້ເວລາ 1-2 ມື້ເພື່ອໃຫ້ທີມງານຂອງພວກເຮົາທົບທວນຄືນ",
+    acknowledge: "ຮັບຮູ້",
+    dateAndTimeOfBirth: "ວັນທີແລະເວລາເກີດ",
+    changePhoneTitle: "ກະລຸນາໃສ່ເບີໂທລະສັບທີ່ທ່ານຕ້ອງການປ່ຽນໃນບັນຊີຂອງທ່ານ",
+    yourScoreIs: "ຄະແນນຂອງທ່ານມີ",
+    collectedTheCouponSuccessfully: "ເກັບກໍາຄູປ໋ອງສົບຜົນສໍາເລັດ",
+    theNationalIdentificationNumberMustContainDigits:
+        "ໝາຍເລກປະຈຳຕົວແຫ່ງຊາດຕ້ອງມີ 10 ຕົວເລກ",
+    identityVerificationIsUnderReview: "ກຳລັງກວດສອບການຢັ້ງຢືນຕົວຕົນ",
+    yourIdentityVerificationHasBeenRejected:
+        "ການຢັ້ງຢືນຕົວຕົນຂອງທ່ານໄດ້ຖືກປະຕິເສດ",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -679,6 +795,62 @@ mixin AppLocale {
     pleaseCorrectYourIDCardNumber: "โปรดแก้เลขบัตรประชาชนของคุณ",
     pleaseChangeYourDocumentImage: "โปรดเปลี่ยนรูปเอกสารของคุณ",
     pleaseChangeYourVerificationPicture: "โปรดเปลี่ยนรูปภาพยืนยันตัวตนของคุณ",
+    secondsAgo: "วินาทีที่แล้ว",
+    minuteAgo: "นาทีที่แล้ว",
+    hourAgo: "ชั่วโมงที่แล้ว",
+    dayAgo: "วันที่แล้ว",
+    listOfFriendsInvited: "รายชื่อเพื่อนที่คุณชวนไปแล้ว",
+    doNotShowThisMessageAgain: "อย่าแสดงข้อความนี้อีก",
+    editLottery: "แก้ไขหวย",
+    lottery: "หวย",
+    listOfFriendsWhoHaveAccepted: "รายชื่อเพื่อนที่ตอบรับแล้ว",
+    discount: "ส่วนลด",
+    bonusDesTitle: "อธิบายง่ายๆ เกี่ยวกับการซื้อหวย + โบนัส",
+    bonusDes1:
+        "เมื่อคุณซื้อหวย 1,000 กีบ คุณจะได้รับโบนัสเพิ่มอีก 100 กีบ (รวมเป็น 1,100 กีบในระบบ) แต่คุณจ่ายเงินจริงเพียง 1,000 กีบเท่านั้น โบนัสนี้คือสิ่งที่เราเพิ่มให้ฟรี!",
+    bonusDes2:
+        "เมื่อคุณถูกรางวัล การคำนวณเงินรางวัลจะอิงจากยอดรวมของ เงินที่ซื้อ + โบนัส นั่นคือ 1,000 + 100 = 1,100 กีบ",
+    bonusDes3: "ตัวอย่าง:",
+    bonusDes3_1:
+        "หากรางวัลที่คุณถูกรางวัลมีอัตราจ่าย 1:60 และคุณซื้อหวย 1,000 กีบ",
+    bonusDes3_2:
+        "รางวัลที่คุณจะได้รับคือ 1,100 x 60 = 66,000 กีบ (เพราะเราใช้ยอดรวม 1,100 กีบในการคำนวณ)",
+    bonusDesSummary: "สรุป",
+    bonusDesSummaryDetail_1:
+        "คุณจ่ายเงินแค่ 1,000 กีบ แต่ได้รับโบนัสเพิ่มฟรี 100 กีบ ซึ่งทำให้คุณมีโอกาสได้รับเงินรางวัลมากขึ้น (อิงจากยอด 1,100 กีบ)",
+    bonusDesSummaryDetail_2:
+        "โบนัสนี้เป็นข้อได้เปรียบที่ช่วยเพิ่มมูลค่าให้การลงทุนของคุณ!",
+    paymentInformation: "ข้อมูลการชำระเงิน",
+    totalPayment: "ยอดชำระเงินทั้งหมด",
+    createNewAccount: "สร้างบัญชีใหม่",
+    pleaseFillInTheInformationToCreateAnAccount:
+        "กรุณากรอกข้อมูลเพื่อสร้างบัญชี",
+    signup: "ลงทะเบียน",
+    createYourPasscode: "สร้าง Passcode ของคุณ",
+    confirmYourPasscode: "ยืนยัน Passcode ของคุณ",
+    returnToTheHomepage: "กลับสู่หน้าแรก",
+    time: "เวลา",
+    lotteryDate: "งวด",
+    dateOfIssue: "ออกวันที่",
+    billPurchaseNumber: "เลขที่ซื้อ",
+    billId: "เลขที่บิลหวย",
+    paidBy: "ชำระโดย",
+    contact: "ติดต่อ",
+    pleaseSignin: "กรุณาลงชื่อเข้าใช้",
+    notAvailableForPurchaseAtThisTime: "ขณะนี้ยังไม่เปิดให้ซือในขณะนี้",
+    pleaseLogInBeforePurchasingLottery: "กรุณาเข้าสู่ระบบก่อนซื้อลอตเตอรี่",
+    titleKYCSuccess:
+        "เราได้รับข้อมูลของท่านแล้ว ทีมงานของเราอาจใช้เวลา 1- 2 วัน ในการตรวจสอบ",
+    acknowledge: "รับทราบ",
+    dateAndTimeOfBirth: "วันที่และเวลาเกิด",
+    changePhoneTitle:
+        "กรุณากรอกเบอร์โทรศัพท์ที่คุณต้องการจะเปลี่ยนในบัญชีของคุณ",
+    yourScoreIs: "คะแนนของคุณมี",
+    collectedTheCouponSuccessfully: "เก็บคูปองเรียบร้อย",
+    theNationalIdentificationNumberMustContainDigits:
+        "เลขประจําตัวประชาชนจะต้องมี 10 หลัก",
+    identityVerificationIsUnderReview: "การยืนยันตัวตนอยู่ระหว่างการตรวจสอบ",
+    yourIdentityVerificationHasBeenRejected: "การยืนยันตัวตนของคุณถูกปฏิเสธ",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -903,5 +1075,64 @@ mixin AppLocale {
     pleaseChangeYourDocumentImage: "Please change your document format",
     pleaseChangeYourVerificationPicture:
         "Please change your verification picture",
+    secondsAgo: "Seconds ago",
+    minuteAgo: "Minute ago",
+    hourAgo: "Hour ago",
+    dayAgo: "Days ago",
+    listOfFriendsInvited: "List of friends you have already invited",
+    doNotShowThisMessageAgain: "Do not show this message again",
+    editLottery: "Edit lottery",
+    lottery: "Lottery",
+    listOfFriendsWhoHaveAccepted: "List of friends who have accepted",
+    discount: "Discount",
+    bonusDesTitle: "Easy Explanation About Buying Lottery + Bonus",
+    bonusDes1:
+        "When you buy a lottery for 1,000 LAK, you get an additional 100 LAK as a bonus (making a total of 1,100 LAK in the system). However, you only pay 1,000 LAK in real money. The bonus is free and given to you as an extra benefit!",
+    bonusDes2:
+        "When you win a prize, the calculation for the reward is based on the total amount of your purchase + the bonus, which is 1,000 + 100 = 1,100 LAK",
+    bonusDes3: "Example:",
+    bonusDes3_1:
+        "If the prize payout rate is 1:60 and you bought a lottery for 1,000 LAK",
+    bonusDes3_2:
+        "Your reward will be calculated as 1,100 x 60 = 66,000 LAK (because the total amount of 1,100 LAK is used for the calculation)",
+    bonusDesSummary: "Summary",
+    bonusDesSummaryDetail_1:
+        "You pay only 1,000 LAK but get a free bonus of 100 LAK, increasing your chances of receiving a higher reward (calculated from the total of 1,100 LAK)",
+    bonusDesSummaryDetail_2:
+        "This bonus is a great advantage that boosts the value of your investment!",
+    paymentInformation: "Payment information",
+    totalPayment: "Total Payment",
+    createNewAccount: "Create a new account",
+    pleaseFillInTheInformationToCreateAnAccount:
+        "Please fill in the information to create an account",
+    signup: "Sign up",
+    createYourPasscode: "Create your Passcode",
+    confirmYourPasscode: "Confirm your Passcode",
+    returnToTheHomepage: "Return to the homepage",
+    time: "Time",
+    lotteryDate: "On",
+    dateOfIssue: "Date of issue",
+    billPurchaseNumber: "Purchase number",
+    billId: "Bill ID",
+    paidBy: "Paid by",
+    contact: "Contact",
+    pleaseSignin: "Please sign in",
+    notAvailableForPurchaseAtThisTime:
+        "Not available for purchase at this time",
+    pleaseLogInBeforePurchasingLottery:
+        "Please log in before purchasing a lottery ticket",
+    titleKYCSuccess:
+        "We have received your information. It may take our team 1-2 days to verify it.",
+    acknowledge: "OK",
+    dateAndTimeOfBirth: "Date and time of birth",
+    changePhoneTitle:
+        "Please enter the phone number you wish to change in your account",
+    yourScoreIs: "Your score is",
+    collectedTheCouponSuccessfully: "Collected the coupon successfully",
+    theNationalIdentificationNumberMustContainDigits:
+        "The national identification number must contain 10 digits",
+    identityVerificationIsUnderReview: "Identity verification is under review",
+    yourIdentityVerificationHasBeenRejected:
+        "Your identity verification has been rejected",
   };
 }

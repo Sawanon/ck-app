@@ -25,7 +25,7 @@ class NavigationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 56,
+      width: 60,
       height: 62,
       clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(

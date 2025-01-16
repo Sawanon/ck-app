@@ -43,22 +43,43 @@ class PromotionDetailPage extends StatelessWidget {
                                 height: 100,
                                 width: double.infinity,
                               )
-                            : CachedNetworkImage(
-                                imageUrl: controller.promotion!['image']!,
-                                fit: BoxFit.fitHeight,
-                                progressIndicatorBuilder: (
-                                  context,
-                                  url,
-                                  downloadProgress,
-                                ) =>
-                                    Center(
-                                  child: CircularProgressIndicator(
-                                    value: downloadProgress.progress,
+                            : Builder(builder: (context) {
+                                final promotion = controller.promotion!;
+                                final imageUrl =
+                                    (promotion['banner_image'] != null ||
+                                            promotion['banner_image'] != "")
+                                        ? promotion['banner_image']
+                                        : 'https://www.google.com';
+                                return CachedNetworkImage(
+                                  imageUrl: imageUrl,
+                                  fit: BoxFit.fitHeight,
+                                  progressIndicatorBuilder: (
+                                    context,
+                                    url,
+                                    downloadProgress,
+                                  ) =>
+                                      Center(
+                                    child: CircularProgressIndicator(
+                                      value: downloadProgress.progress,
+                                    ),
                                   ),
-                                ),
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
-                              ),
+                                  errorWidget: (context, url, error) => Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(
+                                        Icons.image,
+                                        size: 52,
+                                      ),
+                                      Text(
+                                        "Image not found",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              }),
                       ),
                       const SizedBox(height: 16),
                       Text(
@@ -152,9 +173,11 @@ class PromotionDetailPage extends StatelessWidget {
                         controller.promotion?['is_need_kyc'] == true;
                     final user = SettingController.to.user;
                     final disabled = isNeedKYC && user?.isKYC == false;
+                    final alreadyExist = controller
+                        .disabledCoupon(controller.promotion?['\$id']);
                     return LongButton(
                       isLoading: controller.promotion == null,
-                      disabled: disabled,
+                      disabled: disabled || alreadyExist,
                       onPressed: () {
                         if (controller.promotion == null) {
                           return;

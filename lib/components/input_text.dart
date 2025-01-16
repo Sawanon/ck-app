@@ -15,6 +15,8 @@ class InputText extends StatelessWidget {
   final Widget? label;
   final int? maxValue;
   final String? initialValue;
+  final String? counterText;
+  final bool onlyLaos;
 
   const InputText({
     super.key,
@@ -30,10 +32,17 @@ class InputText extends StatelessWidget {
     this.label,
     this.maxValue,
     this.initialValue,
+    this.counterText,
+    this.onlyLaos = true,
   });
 
   @override
   Widget build(BuildContext context) {
+    // TODO:
+    List<TextInputFormatter> _inputFormatters = [];
+    if (keyboardType == TextInputType.number) {
+      // _inputFormatters.addAll(iterable)
+    }
     return TextFormField(
       initialValue: initialValue,
       controller: controller,
@@ -41,14 +50,17 @@ class InputText extends StatelessWidget {
       keyboardType: keyboardType,
       inputFormatters: [
         ...inputFormatters ?? [],
-        FilteringTextInputFormatter.allow(
-          RegExp(r'[ກ-ໝໜໞໟ໠-໽, 0-9]'), // ชุดตัวอักษรภาษาลาว
-        ),
-        CustomRangeTextInputFormatter(maxValue ?? 1000000),
+        if (onlyLaos)
+          FilteringTextInputFormatter.allow(
+            RegExp(r'[ກ-ໝໜໞໟ໠-໽, 0-9, /]'), // ชุดตัวอักษรภาษาลาว
+          ),
+        if (keyboardType == TextInputType.number)
+          CustomRangeTextInputFormatter(maxValue ?? 1000000),
         // CustomRangeTextInputFormatter(),
       ],
       maxLength: maxLength,
       decoration: InputDecoration(
+        counterText: counterText,
         label: label,
         errorText: errorText,
         contentPadding: EdgeInsets.symmetric(horizontal: 8),

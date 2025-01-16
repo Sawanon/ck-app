@@ -53,9 +53,10 @@ class HistoryBuyPage extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             margin: const EdgeInsets.only(left: 10),
                             decoration: const BoxDecoration(
-                                // color: Colors.lime,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
+                              // color: Colors.lime,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
                             child: Text(
                               CommonFn.parseDMY(lotteryDate.dateTime),
                               style: const TextStyle(

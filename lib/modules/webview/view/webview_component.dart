@@ -13,12 +13,14 @@ class WebviewPageV2 extends StatefulWidget {
   final String url;
   final void Function() onBack;
   final EdgeInsetsGeometry? padding;
+  final void Function(JavaScriptMessage data) onMessageReceived;
 
   const WebviewPageV2({
     super.key,
     required this.url,
     required this.onBack,
     this.padding,
+    required this.onMessageReceived,
   });
 
   @override
@@ -82,6 +84,14 @@ class _WebviewPageV2State extends State<WebviewPageV2> {
     setIsLoading(true);
     logger.w(widget.url);
     configWebview(widget.url);
+
+    controllerWebview.addJavaScriptChannel(
+      "zinzae",
+      onMessageReceived: widget.onMessageReceived,
+      // onMessageReceived: (data) {
+      //   logger.d(jsonEncode(data.message));
+      // },
+    );
   }
 
   void onBack() {

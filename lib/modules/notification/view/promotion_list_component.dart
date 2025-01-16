@@ -27,31 +27,39 @@ class PromotionListComponent extends StatelessWidget {
             },
             child: Obx(() {
               if (controller.promotionList.isEmpty) {
-                return Container(
-                  alignment: Alignment.center,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 120,
-                        height: 120,
-                        child: SvgPicture.asset(
-                          AppIcon.promotion,
-                          colorFilter: const ColorFilter.mode(
-                            AppColors.disableText,
-                            BlendMode.srcIn,
+                return ListView(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height / 1.5,
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 120,
+                            height: 120,
+                            child: Image.asset(
+                              AppIcon.promotion,
+                            ),
+                            // child: SvgPicture.asset(
+                            //   AppIcon.promotion,
+                            //   colorFilter: const ColorFilter.mode(
+                            //     AppColors.disableText,
+                            //     BlendMode.srcIn,
+                            //   ),
+                            // ),
                           ),
-                        ),
+                          Text(
+                            AppLocale.noPromotion.getString(context),
+                            style: const TextStyle(
+                              color: AppColors.disableText,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        AppLocale.noPromotion.getString(context),
-                        style: const TextStyle(
-                          color: AppColors.disableText,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 );
               }
               return ListView.separated(

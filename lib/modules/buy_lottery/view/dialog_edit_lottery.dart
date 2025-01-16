@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:get/get.dart';
 import 'package:lottery_ck/components/input_text.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/res/app_locale.dart';
@@ -7,7 +8,7 @@ import 'package:lottery_ck/res/app_locale.dart';
 class DialogEditLottery extends StatefulWidget {
   final String lottery;
   final int price;
-  final Future<void> Function(int? newPrice) onSubmit;
+  final Future<void> Function(String? lottery, int? newPrice) onSubmit;
   const DialogEditLottery({
     super.key,
     required this.lottery,
@@ -21,6 +22,7 @@ class DialogEditLottery extends StatefulWidget {
 
 class _DialogEditLotteryState extends State<DialogEditLottery> {
   bool isLoading = false;
+  String? newLottery;
   int? newPrice;
 
   void setIsLoading(bool value) {
@@ -30,14 +32,36 @@ class _DialogEditLotteryState extends State<DialogEditLottery> {
   }
 
   void onChangePrice(String value) {
+    if (value == "") {
+      setState(() {
+        newPrice = null;
+      });
+      return;
+    }
     setState(() {
       newPrice = int.parse(value);
     });
   }
 
+  void onChangeLottery(String value) {
+    setState(() {
+      newLottery = value;
+    });
+  }
+
   Future<void> onSubmit() async {
+    if (newLottery == "") {
+      Get.rawSnackbar(message: AppLocale.pleaseFillLottery.getString(context));
+      return;
+    }
+    if (newLottery == null && newPrice == null) {
+      Get.rawSnackbar(message: AppLocale.pleaseEnterPrice.getString(context));
+      return;
+    }
+    final priceValue =
+        (newLottery != null && newPrice == null) ? widget.price : newPrice;
     setIsLoading(true);
-    await widget.onSubmit(newPrice);
+    await widget.onSubmit(newLottery, priceValue);
     setIsLoading(false);
   }
 
@@ -57,28 +81,44 @@ class _DialogEditLotteryState extends State<DialogEditLottery> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                "Edit lottery",
-                style: TextStyle(
+                AppLocale.editLottery.getString(context),
+                style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 16),
-              Text(
-                widget.lottery,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+              InputText(
+                maxLength: 6,
+                counterText: "",
+                label: Text(
+                  AppLocale.lottery.getString(context),
                 ),
+                initialValue: widget.lottery,
+                onChanged: onChangeLottery,
+                keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 8),
-              InputText(
-                label: Text(
-                  AppLocale.price.getString(context),
-                ),
-                initialValue: "${widget.price}",
-                onChanged: onChangePrice,
-                keyboardType: TextInputType.number,
+              Stack(
+                alignment: Alignment.center,
+                // mainAxisSize: MainAxisSize.min,
+                children: [
+                  InputText(
+                    maxValue: 999999999,
+                    label: Text(
+                      AppLocale.price.getString(context),
+                    ),
+                    initialValue: "${widget.price}",
+                    onChanged: onChangePrice,
+                    keyboardType: TextInputType.number,
+                  ),
+                  Positioned(
+                    right: 8,
+                    child: Text(
+                      AppLocale.lak.getString(context),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 16),
               LongButton(

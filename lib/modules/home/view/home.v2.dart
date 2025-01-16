@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +8,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottery_ck/components/banner.dart';
+import 'package:lottery_ck/components/dev/dialog_change_url.dart';
 import 'package:lottery_ck/components/friends.dart';
+import 'package:lottery_ck/components/input_text.dart';
 import 'package:lottery_ck/components/menu_card.dart';
 import 'package:lottery_ck/components/menu_grid.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
@@ -124,15 +128,23 @@ class HomePageV2 extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 24.0),
-                              child: Text(
-                                AppLocale.welcome.getString(context),
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
+                            GestureDetector(
+                              onDoubleTap: () {
+                                logger.d("message");
+                                Get.dialog(
+                                  DialogChangeUrl(),
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 24.0),
+                                child: Text(
+                                  AppLocale.welcome.getString(context),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
@@ -969,13 +981,13 @@ class HomePageV2 extends StatelessWidget {
                                         'https://baas.moevedigital.com/v1/storage/buckets/66fa748a001a67ac8a70/files/67628a9f0019f3d0086d/view?project=667afb24000fbd66b4df',
                                   ),
                                 ),
-                                const SizedBox(height: 8),
-                                MenuCardComponent(
-                                  title: AppLocale.lotteryPredict
-                                      .getString(context),
-                                  backgroundImageUrl:
-                                      'https://baas.moevedigital.com/v1/storage/buckets/66fa748a001a67ac8a70/files/67628aaa001c11630759/view?project=667afb24000fbd66b4df',
-                                ),
+                                // const SizedBox(height: 8),
+                                // MenuCardComponent(
+                                //   title: AppLocale.lotteryPredict
+                                //       .getString(context),
+                                //   backgroundImageUrl:
+                                //       'https://baas.moevedigital.com/v1/storage/buckets/66fa748a001a67ac8a70/files/67628aaa001c11630759/view?project=667afb24000fbd66b4df',
+                                // ),
                               ],
                             ),
                           ),

@@ -94,7 +94,7 @@ class _GenderRadioState extends State<GenderRadio> {
                           ),
                         ),
                         Text(
-                          "ผู้ชาย",
+                          AppLocale.mr.getString(context),
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -141,7 +141,7 @@ class _GenderRadioState extends State<GenderRadio> {
                           ),
                         ),
                         Text(
-                          "ผู้หญิง",
+                          AppLocale.mrs.getString(context),
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,

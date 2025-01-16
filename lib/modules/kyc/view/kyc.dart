@@ -9,6 +9,7 @@ import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/input_text.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/prefix_radio.dart';
+import 'package:lottery_ck/main.dart';
 import 'package:lottery_ck/modules/kyc/controller/kyc.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
@@ -108,9 +109,7 @@ class KYCPage extends StatelessWidget {
                                         ['message'],
                                     controller: controller.firstNameController,
                                     disabled: controller.isLoading,
-                                    onChanged: (value) {
-                                      controller.firstName = value;
-                                    },
+                                    onChanged: controller.onChangeFirstName,
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
@@ -129,9 +128,7 @@ class KYCPage extends StatelessWidget {
                                         ['message'],
                                     controller: controller.lastNameController,
                                     disabled: controller.isLoading,
-                                    onChanged: (value) {
-                                      controller.lastName = value;
-                                    },
+                                    onChanged: controller.onChangeLastName,
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
@@ -246,8 +243,7 @@ class KYCPage extends StatelessWidget {
                                         : null,
                                     controller: controller.addressController,
                                     disabled: controller.isLoading,
-                                    onChanged: (value) =>
-                                        controller.address = value,
+                                    onChanged: controller.onChangeAddress,
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
@@ -266,8 +262,7 @@ class KYCPage extends StatelessWidget {
                                         : null,
                                     controller: controller.cityController,
                                     disabled: controller.isLoading,
-                                    onChanged: (value) =>
-                                        controller.city = value,
+                                    onChanged: controller.onChangeCity,
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
@@ -278,18 +273,46 @@ class KYCPage extends StatelessWidget {
                                       fontSize: 14,
                                     ),
                                   ),
-                                  InputText(
-                                    errorText: controller.remark?['district']
-                                                ['status'] ==
-                                            false
-                                        ? controller.remark!['district']
-                                            ['message']
-                                        : null,
-                                    controller: controller.districtController,
-                                    disabled: controller.isLoading,
-                                    onChanged: (value) =>
-                                        controller.district = value,
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: Border.all(
+                                        width: 1,
+                                        color: AppColors.inputBorder,
+                                      ),
+                                    ),
+                                    child: DropdownButton(
+                                      value: controller.district == ""
+                                          ? null
+                                          : controller.district,
+                                      isExpanded: true,
+                                      underline: const SizedBox.shrink(),
+                                      borderRadius: BorderRadius.circular(8),
+                                      padding: const EdgeInsets.only(
+                                        left: 6,
+                                      ),
+                                      items: controller.districtList["lo"]!
+                                          .map((district) {
+                                        return DropdownMenuItem(
+                                          value: district,
+                                          child: Text(district),
+                                        );
+                                      }).toList(),
+                                      onChanged: controller.onChangeDistrict,
+                                    ),
                                   ),
+                                  // InputText(
+                                  //   errorText: controller.remark?['district']
+                                  //               ['status'] ==
+                                  //           false
+                                  //       ? controller.remark!['district']
+                                  //           ['message']
+                                  //       : null,
+                                  //   controller: controller.districtController,
+                                  //   disabled: controller.isLoading,
+                                  //   onChanged: (value) =>
+                                  //       controller.district = value,
+                                  // ),
                                 ],
                               ),
                             ),
@@ -342,15 +365,15 @@ class KYCPage extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  Text(
-                                    "(${AppLocale.example.getString(context)})",
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.w600,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: Colors.red,
-                                    ),
-                                  ),
+                                  // Text(
+                                  //   "(${AppLocale.example.getString(context)})",
+                                  //   style: TextStyle(
+                                  //     color: Colors.red,
+                                  //     fontWeight: FontWeight.w600,
+                                  //     decoration: TextDecoration.underline,
+                                  //     decorationColor: Colors.red,
+                                  //   ),
+                                  // ),
                                   // const SizedBox(height: 8),
                                   // Row(
                                   //   children: [
@@ -390,6 +413,7 @@ class KYCPage extends StatelessWidget {
                                   const SizedBox(height: 8),
                                   InputText(
                                     maxLength: 10,
+                                    maxValue: 9999999999,
                                     inputFormatters: [
                                       FilteringTextInputFormatter.digitsOnly,
                                     ],
@@ -402,8 +426,7 @@ class KYCPage extends StatelessWidget {
                                         : null,
                                     controller: controller.idCardController,
                                     disabled: controller.isLoading,
-                                    onChanged: (value) =>
-                                        controller.idCard = value,
+                                    onChanged: controller.onChangeIdCard,
                                   ),
                                   const SizedBox(height: 8),
                                   Container(
@@ -552,15 +575,15 @@ class KYCPage extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  Text(
-                                    "(${AppLocale.example.getString(context)})",
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.w600,
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: Colors.red,
-                                    ),
-                                  ),
+                                  // Text(
+                                  //   "(${AppLocale.example.getString(context)})",
+                                  //   style: TextStyle(
+                                  //     color: Colors.red,
+                                  //     fontWeight: FontWeight.w600,
+                                  //     decoration: TextDecoration.underline,
+                                  //     decorationColor: Colors.red,
+                                  //   ),
+                                  // ),
                                   const SizedBox(height: 8),
                                   Container(
                                     decoration: BoxDecoration(
@@ -670,6 +693,7 @@ class KYCPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: LongButton(
+                    disabled: controller.disableConfirm(),
                     isLoading: controller.isLoading,
                     onPressed: () {
                       controller.sendKYC();
@@ -764,7 +788,8 @@ class UserBannerComponent extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  LayoutController.to.userApp?.fullName ?? "firstName lastName",
+                  LayoutController.to.userApp?.fullName ??
+                      "${AppLocale.firstName.getString(context)} ${AppLocale.lastName.getString(context)}",
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     color: Colors.white,

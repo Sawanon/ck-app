@@ -377,7 +377,7 @@ class _AnimalPageState extends State<AnimalPage> {
         child: Column(
           children: [
             Header(
-              title: AppLocale.animalNumber.getString(context),
+              title: AppLocale.animal.getString(context),
               backgroundColor: AppColors.primary,
               textColor: Colors.white,
             ),

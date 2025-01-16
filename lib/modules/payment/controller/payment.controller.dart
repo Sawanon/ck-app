@@ -19,6 +19,7 @@ import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/payment/view/bank.dart';
+import 'package:lottery_ck/modules/payment/view/bonus_detail.dart';
 import 'package:lottery_ck/modules/payment/view/use_point.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
 import 'package:lottery_ck/modules/pin/view/verify_pin.dart';
@@ -53,6 +54,7 @@ class PaymentController extends GetxController {
   int routeLevel = 0;
   bool isOpenedDialog = false;
   List<Coupon> couponsList = [];
+  int maxPercentPointCanuse = 0;
 
   void getPointRaio() async {
     final pointRatio = await AppWriteController.to.getPointRaio();
@@ -124,6 +126,7 @@ class PaymentController extends GetxController {
     await getBank();
     listenInvoiceExpire();
     listMyCoupons();
+    await getPoinCanUseOnInvoice();
   }
 
   void listenInvoiceExpire() {
@@ -202,6 +205,21 @@ class PaymentController extends GetxController {
         bankName: selectedBank!.fullName,
         customerId: userApp.customerId!,
       );
+      // final bill = Bill(
+      //   firstName: userApp!.firstName,
+      //   lastName: userApp.lastName,
+      //   phoneNumber: userApp.phoneNumber,
+      //   dateTime: DateTime.parse(invoiceDocuments!.$createdAt),
+      //   lotteryDateStr: lotteryDateStrYMD!,
+      //   lotteryList: invoiceMeta.transactions,
+      //   totalAmount: invoiceMeta.totalAmount.toString(),
+      //   amount: invoiceMeta.amount,
+      //   billId: "2025011349fk9499f9",
+      //   // invoiceId: invoiceMeta,
+      //   // bankName: selectedBank!.fullName,
+      //   bankName: "Lao Development Bank (LDB)",
+      //   customerId: userApp.customerId!,
+      // );
       Get.offNamed(
         RouteName.bill,
         arguments: {"bill": bill, "onClose": () {}},
@@ -330,6 +348,16 @@ class PaymentController extends GetxController {
       }
       isLoading = true;
       update();
+      if (bank.name == "ldb") {
+        final canLaunch = await canLaunchUrl(Uri.parse("ldbpay://ldblao.la"));
+        logger.w(canLaunch);
+        if (canLaunch == false) {
+          logger.d("in if");
+          await launchUrl(Uri.parse(
+              'https://play.google.com/store/apps/details?id=com.ldb.wallet'));
+          return;
+        }
+      }
       // final user = await AppWriteController.to.user;
       final userApp = LayoutController.to.userApp;
       if (userApp == null) throw "not found user please login";
@@ -366,8 +394,15 @@ class PaymentController extends GetxController {
       logger.w(result);
       final payment = result['payment'];
       final deeplink = payment['dataResponse']['link'];
-
-      await launchUrl(Uri.parse('$deeplink'));
+      if (bank.name == "ldb") {
+        try {
+          await launchUrl(Uri.parse('$deeplink'));
+        } catch (e) {
+          logger.e("$e");
+          await launchUrl(Uri.parse(
+              'https://play.google.com/store/apps/details?id=com.ldb.wallet'));
+        }
+      }
     } on DioException catch (e) {
       if (e.response != null) {
         logger.e(e.response?.statusCode);
@@ -395,10 +430,21 @@ class PaymentController extends GetxController {
 
   bool get enablePay => selectedBank != null;
 
-  void showBottomModal(BuildContext context) {
+  void showBottomModalPoint(BuildContext context) {
     final int myPoint = SettingController.to.user?.point != null
         ? SettingController.to.user!.point
         : 0;
+    int maxPointCanUse = 0;
+    final invoice = BuyLotteryController.to.invoiceMeta.value;
+
+    if (maxPercentPointCanuse != 0) {
+      final valueCanUse = invoice.amount * (maxPercentPointCanuse / 100);
+      if (myPoint < valueCanUse) {
+        maxPointCanUse = myPoint;
+      } else {
+        maxPointCanUse = valueCanUse.toInt();
+      }
+    }
     isOpenedDialog = true;
     showModalBottomSheet(
       context: context,
@@ -406,7 +452,7 @@ class PaymentController extends GetxController {
       useSafeArea: true,
       builder: (context) {
         return UsePointComponent(
-          myPoint: myPoint,
+          myPoint: maxPointCanUse,
           onSubmit: (usePoint) {
             onChangePoint(usePoint);
             Get.back();
@@ -442,7 +488,7 @@ class PaymentController extends GetxController {
       return;
     }
     final coupons = response.data;
-    if (coupons == null) {
+    if (coupons == null || coupons.isEmpty) {
       return;
     }
     final responsePromotionsList =
@@ -505,6 +551,8 @@ class PaymentController extends GetxController {
     Get.to(
       () => CouponsPage(
         couponsList: couponsList,
+        selectedCouponsList:
+            BuyLotteryController.to.invoiceMeta.value.couponIds,
       ),
       transition: Transition.downToUp,
     )?.whenComplete(
@@ -533,6 +581,96 @@ class PaymentController extends GetxController {
       couponIdsList: couponIdsList,
     );
     logger.d(response.data);
+    if (response.data == null || response.isSuccess == false) {
+      Get.dialog(
+        DialogApp(
+          title: Text(
+            AppLocale.somethingWentWrong.getString(Get.context!),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          details: Text(
+            response.message,
+          ),
+        ),
+      );
+      return;
+    }
+    final result = response.data!['data'];
+    final invoiceRes = result['invoice'];
+    final InvoiceMetaData invoice =
+        BuyLotteryController.to.invoiceMeta.value.copyWith();
+    invoice.amount = invoiceRes['amount'];
+    invoice.quota = invoiceRes['quota'];
+    invoice.bonus = invoiceRes['bonus'];
+    invoice.discount = invoiceRes['discount'];
+    invoice.totalAmount = invoiceRes['totalAmount'];
+    invoice.transactions.clear();
+    invoice.couponIds = invoiceRes['couponId'];
+    final List transactions = result['transaction'];
+    for (var transaction in transactions) {
+      invoice.transactions.add(
+        Lottery(
+          lottery: transaction['lottery'],
+          amount: transaction['amount'],
+          lotteryType: transaction['lotteryType'],
+          quota: transaction['quota'],
+          bonus: transaction['bonus'],
+          discount: transaction['discount'],
+          totalAmount: transaction['totalAmount'],
+        ),
+      );
+    }
+    BuyLotteryController.to.setInvoice(invoice);
+  }
+
+  void showBonusDetail(BuildContext context) {
+    isOpenedDialog = true;
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      builder: (context) {
+        return const BonusDetailComponent();
+      },
+    ).whenComplete(
+      () {
+        isOpenedDialog = false;
+      },
+    );
+  }
+
+  Future<void> getPoinCanUseOnInvoice() async {
+    final response = await AppWriteController.to.getPointCanUseOnInvoice();
+    if (response.isSuccess == false) {
+      Get.dialog(
+        DialogApp(
+          title: Text(
+            AppLocale.somethingWentWrong.getString(Get.context!),
+          ),
+          details: Text(
+            response.message,
+          ),
+        ),
+      );
+      return;
+    }
+    if (response.data == null) {
+      Get.dialog(
+        DialogApp(
+          title: Text(
+            AppLocale.somethingWentWrong.getString(Get.context!),
+          ),
+          details: const Text(
+            "point can use on invoice is empty",
+          ),
+        ),
+      );
+      return;
+    }
+    maxPercentPointCanuse = response.data!.percent;
+    update();
   }
 
   @override

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_screen_lock/flutter_screen_lock.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/pin/controller/pin.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 
@@ -30,7 +32,7 @@ class PinPage extends StatelessWidget {
                       controller.createPasscode(value);
                     },
                     confirmTitle: Text(
-                      "ຢືນຢັນ Passcode ຂອງທ່ານ",
+                      AppLocale.confirmYourPasscode.getString(context),
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.w700,
@@ -40,7 +42,7 @@ class PinPage extends StatelessWidget {
                     digits: 6,
                     useBlur: false,
                     title: Text(
-                      "ສ້າງ Passcode ຂອງທ່ານ",
+                      AppLocale.createYourPasscode.getString(context),
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.w700,

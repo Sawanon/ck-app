@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
-import 'package:lottery_ck/res/icon.dart';
 
 class SuccessKycDialog extends StatelessWidget {
   const SuccessKycDialog({super.key});
@@ -32,10 +32,10 @@ class SuccessKycDialog extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.all(24),
+                padding: const EdgeInsets.all(24),
                 child: Text(
-                  "เราได้รับข้อมูลของท่านแล้ว ทีมงานของเราอาจใช้เวลา 1- 2 วัน ในการตรวจสอบ !",
-                  style: TextStyle(
+                  "${AppLocale.titleKYCSuccess.getString(context)} !",
+                  style: const TextStyle(
                     height: 1.3,
                     fontSize: 20,
                     color: AppColors.textPrimary,
@@ -51,8 +51,8 @@ class SuccessKycDialog extends StatelessWidget {
                     Get.back();
                   },
                   child: Text(
-                    "รับทราบ !",
-                    style: TextStyle(
+                    "${AppLocale.acknowledge.getString(context)} !",
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),

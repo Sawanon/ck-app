@@ -88,15 +88,15 @@ class BillComponent extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        "ວັນທີ ",
-                        style: TextStyle(
+                        "${AppLocale.date.getString(context)} ",
+                        style: const TextStyle(
                           fontSize: 14,
                           color: AppColors.secondary,
                         ),
                       ),
                       Text(
                         CommonFn.parseDMY(bill.dateTime.toLocal()),
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           color: AppColors.secondary,
                         ),
@@ -112,7 +112,7 @@ class BillComponent extends StatelessWidget {
                     children: [
                       Text(
                         bill.customerId.replaceAll("+", ""),
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           color: AppColors.secondary,
                         ),
@@ -137,15 +137,15 @@ class BillComponent extends StatelessWidget {
                   Row(
                     children: [
                       Text(
-                        "ເວລາ ",
-                        style: TextStyle(
+                        "${AppLocale.time.getString(context)} ",
+                        style: const TextStyle(
                           fontSize: 14,
                           color: AppColors.secondary,
                         ),
                       ),
                       Text(
                         CommonFn.parseHMS(bill.dateTime.toLocal()),
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 14,
                           color: AppColors.secondary,
                         ),
@@ -161,7 +161,7 @@ class BillComponent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "ງວດ: ${bill.lotteryDateStr}",
+                "${AppLocale.lotteryDate.getString(context)}: ${bill.lotteryDateStr}",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 18,
@@ -170,7 +170,7 @@ class BillComponent extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                "ອອກວັນທີี่ ${CommonFn.parseCollectionToDate(bill.lotteryDateStr)}",
+                "${AppLocale.dateOfIssue.getString(context)} ${CommonFn.parseCollectionToDate(bill.lotteryDateStr)}",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 18,
@@ -198,14 +198,14 @@ class BillComponent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'ເລກທີຊື້',
+                  AppLocale.billPurchaseNumber.getString(context),
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 Text(
-                  'ຈໍານວນເງິນ',
+                  AppLocale.amount.getString(context),
                   style: TextStyle(
                     fontSize: 14,
                   ),
@@ -234,21 +234,27 @@ class BillComponent extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Point discount"),
+                Text(AppLocale.pointDiscount.getString(context)),
                 Text("-${bill.pointMoney?.toString() ?? '-'}"),
               ],
             ),
           ],
           const SizedBox(height: 8),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Discount"),
-              Text(CommonFn.parseMoney(bill.lotteryList.fold(0,
-                  (prev, transaction) => prev + (transaction.discount ?? 0)))),
-            ],
-          ),
-          const SizedBox(height: 8),
+          if (bill.lotteryList.fold(0,
+                  (prev, transaction) => prev + (transaction.discount ?? 0)) !=
+              0) ...[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(AppLocale.discount.getString(context)),
+                Text(CommonFn.parseMoney(bill.lotteryList.fold(
+                    0,
+                    (prev, transaction) =>
+                        prev + (transaction.discount ?? 0)))),
+              ],
+            ),
+            const SizedBox(height: 8),
+          ],
           Container(
             padding: EdgeInsets.symmetric(vertical: 8),
             decoration: BoxDecoration(
@@ -266,7 +272,7 @@ class BillComponent extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("ລວມເງິນ"),
+                Text(AppLocale.totalAmount.getString(context)),
                 Builder(builder: (context) {
                   final pointMonney = bill.pointMoney ?? 0;
                   return Text(
@@ -282,21 +288,21 @@ class BillComponent extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            "ເລກທີບິນຫວຍ: ${bill.billId}",
+            "${AppLocale.billId.getString(context)}: ${bill.billId}",
             style: TextStyle(
               fontSize: 12,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            "ຊໍາລະໂດຍ: ${bill.bankName}",
+            "${AppLocale.paidBy.getString(context)}: ${bill.bankName}",
             style: TextStyle(
               fontSize: 12,
             ),
           ),
           const SizedBox(height: 8),
           Text(
-            "ຕິດຕໍ່ CK GROUP: 0865446524",
+            "${AppLocale.contact.getString(context)} CK GROUP: 0865446524",
             style: TextStyle(
               fontSize: 12,
             ),

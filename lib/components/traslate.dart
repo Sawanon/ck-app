@@ -54,14 +54,15 @@ class TranslateComponent extends StatelessWidget {
                         //   Locale('lo'),
                         // );
                       },
-                      child: Image(
+                      child: const Image(
                         image: AssetImage(AppIcon.lo),
                       ),
                     ),
-                    SizedBox(height: 12),
-                    Text(
-                      AppLocale.laoLanguage.getString(context),
-                      style: const TextStyle(
+                    const SizedBox(height: 12),
+                    const Text(
+                      // AppLocale.laoLanguage.getString(context),
+                      "ລາວ",
+                      style: TextStyle(
                         color: AppColors.textPrimary,
                       ),
                     ),
@@ -84,7 +85,8 @@ class TranslateComponent extends StatelessWidget {
                     ),
                     SizedBox(height: 12),
                     Text(
-                      AppLocale.thaiLanguage.getString(context),
+                      "ไทย",
+                      // AppLocale.thaiLanguage.getString(context),
                       style: const TextStyle(
                         color: AppColors.textPrimary,
                       ),
@@ -102,13 +104,14 @@ class TranslateComponent extends StatelessWidget {
                         //   Locale('en'),
                         // );
                       },
-                      child: Image(
+                      child: const Image(
                         image: AssetImage(AppIcon.en),
                       ),
                     ),
-                    SizedBox(height: 12),
-                    Text(
-                      AppLocale.englishLanguage.getString(context),
+                    const SizedBox(height: 12),
+                    const Text(
+                      "English",
+                      // AppLocale.englishLanguage.getString(context),
                       style: const TextStyle(
                         color: AppColors.textPrimary,
                       ),

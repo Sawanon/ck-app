@@ -752,7 +752,7 @@ class HomeController extends GetxController {
             wallpaperContent.add(content);
             break;
           case 'banner':
-            // logger.d(content);
+            logger.w(content);
             final contentData = getContentUrlAndLink(content);
             // logger.d(contentData);
             bannerContent.add(contentData);
@@ -786,7 +786,11 @@ class HomeController extends GetxController {
       case 'promotions':
         final promotions = content['promotions'];
         cloneContent['name'] = promotions['name'];
-        cloneContent['imageUrl'] = promotions['image'];
+        if (promotions['banner_image'] != null) {
+          cloneContent['imageUrl'] = promotions['banner_image'];
+        } else {
+          cloneContent['imageUrl'] = promotions['image'];
+        }
         cloneContent['getLink'] = '/promotion/${promotions['\$id']}';
         break;
       case 'points':

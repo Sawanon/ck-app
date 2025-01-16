@@ -20,6 +20,68 @@ import 'package:image/image.dart' as img;
 import 'package:path/path.dart';
 
 class KYCController extends GetxController {
+  Map<String, List<String>> districtList = {
+    "th": [
+      "คำม่วน",
+      "จำปาศักดิ์",
+      "เชียงขวาง",
+      "ไชยบุรี",
+      "ไชยสมบูรณ์",
+      "เซกอง",
+      "บอลิคำไซ",
+      "บ่อแก้ว",
+      "พงสาลี",
+      "เวียงจันทน์",
+      "สาละวัน",
+      "สุวรรณเขต",
+      "หลวงน้ำทา",
+      "หลวงพระบาง",
+      "หัวพัน",
+      "อัตตะปือ",
+      "อุดมไซ",
+      "นครหลวงเวียงจันทน์",
+    ],
+    "lo": [
+      "ຄໍາມ່ວນ",
+      "ຈໍາປາສັກ",
+      "ຊຽງຂວາງ",
+      "ໄຊຍະບູລີ",
+      "ໄຊສົມບູນ",
+      "ເຊກອງ",
+      "ບໍລິຄໍາໄຊ",
+      "ບໍ່ແກ້ວ",
+      "ຜົ້ງສາລີ",
+      "ວຽງຈັນ",
+      "ສາລະວັນ",
+      "ສະຫວັນນະເຂດ",
+      "ຫລວງນໍ້າທາ",
+      "ຫລວງພະບາງ",
+      "ຫົວພັນ",
+      "ອັດຕະປື",
+      "ອຸດົມໄຊ",
+      "ນະຄອນຫຼວງວຽງຈັນ",
+    ],
+    "en": [
+      "Khammouane",
+      "Champasak",
+      "Xiangkhouang",
+      "Sainyabuli",
+      "Xaisomboun",
+      "Sekong",
+      "Bolikhamsai",
+      "Bokeo",
+      "Phongsaly",
+      "Vientiane",
+      "Salavan",
+      "Savannakhet",
+      "Luang Namtha",
+      "Luang Prabang",
+      "Houaphanh",
+      "Attapeu",
+      "Oudomxay",
+      "Vientiane Prefecture",
+    ],
+  };
   File? documentImage;
   File? selfieWithDocumentImage;
   String? documentImageUrl;
@@ -100,7 +162,35 @@ class KYCController extends GetxController {
     update();
   }
 
+  bool disableConfirm() {
+    if (firstName == "" ||
+        lastName == "" ||
+        gender == "" ||
+        birthDate == "" ||
+        address == "" ||
+        city == "" ||
+        district == "" ||
+        idCard == "") {
+      return true;
+    }
+    if (idCard.length < 10) {
+      return true;
+    }
+    if (documentImage == null || selfieWithDocumentImage == null) {
+      return true;
+    }
+    return false;
+  }
+
   bool validFormKYC() {
+    logger.d("firstName: $firstName");
+    logger.d("lastName: $lastName");
+    logger.d("gender: $gender");
+    logger.d("birthDate: $birthDate");
+    logger.d("address: $address");
+    logger.d("city: $city");
+    logger.d("district: $district");
+    logger.d("idCard: $idCard");
     if (firstName == "" ||
         lastName == "" ||
         gender == "" ||
@@ -112,6 +202,13 @@ class KYCController extends GetxController {
       Get.rawSnackbar(
           message:
               AppLocale.pleaseFillInAllInformation.getString(Get.context!));
+      return false;
+    }
+    if (idCard.length < 10) {
+      Get.rawSnackbar(
+        message: AppLocale.theNationalIdentificationNumberMustContainDigits
+            .getString(Get.context!),
+      );
       return false;
     }
     if (documentImage == null || selfieWithDocumentImage == null) {
@@ -130,31 +227,25 @@ class KYCController extends GetxController {
       }
       if (remark?['lastName']['status'] == false && lastName == "") {
         throw AppLocale.pleaseCorrectYourLastName.getString(Get.context!);
-        ;
       }
       if (remark?['gender']['status'] == false && gender == "") {
         throw AppLocale.pleaseCorrectYourGender.getString(Get.context!);
-        ;
       }
       if (remark?['birthDate']['status'] == false && birthDate == "") {
         throw AppLocale.pleaseCorrectYourBirthDate.getString(Get.context!);
-        ;
       }
       if (remark?['address']['status'] == false && address == "") {
         throw AppLocale.pleaseCorrectYourAddress.getString(Get.context!);
-        ;
       }
       if (remark?['city']['status'] == false && city == "") {
         throw AppLocale.pleaseCorrectYourCity.getString(Get.context!);
-        ;
       }
       if (remark?['district']['status'] == false && district == "") {
         throw AppLocale.pleaseCorrectYourDistrict.getString(Get.context!);
-        ;
       }
-      if (remark?['idCard']['status'] == false && idCard == "") {
+      if (remark?['idCard']['status'] == false &&
+          (idCard == "" || idCard.length < 10)) {
         throw AppLocale.pleaseCorrectYourIDCardNumber.getString(Get.context!);
-        ;
       }
       if (remark?['documentImage']['status'] == false &&
           documentImage == null) {
@@ -164,7 +255,6 @@ class KYCController extends GetxController {
           selfieWithDocumentImage == null) {
         throw AppLocale.pleaseChangeYourVerificationPicture
             .getString(Get.context!);
-        ;
       }
       // if (remark?['idCard']['status'] == false && idCard == "") {
       //   throw "Please edit your id card";
@@ -280,7 +370,7 @@ class KYCController extends GetxController {
         Get.rawSnackbar(message: "Please enter info");
         return;
       }
-      final userApp = LayoutController.to.userApp;
+      final userApp = SettingController.to.user;
       final data = {
         "userId": userApp!.userId,
         "idCard": idCard,
@@ -308,7 +398,6 @@ class KYCController extends GetxController {
       var dio = dio_class.Dio();
       var response = await dio.post(
         '${AppConst.apiUrl}/user/kyc',
-        // 'http://192.168.1.153:3010/api/user/kyc',
         data: payload,
       );
       logger.d(response);
@@ -344,19 +433,55 @@ class KYCController extends GetxController {
   }
 
   void setup() {
+    final user = SettingController.to.user;
+    if (user == null) {
+      return;
+    }
     final kycData = SettingController.to.kycData;
+    if (user.isKYC == false && kycData == null) {
+      firstNameController.text = user.firstName;
+      firstName = user.firstName;
+      lastNameController.text = user.lastName;
+      lastName = user.lastName;
+      handleChangeGender(user.gender == "male" ? Prefix.mr : Prefix.mrs);
+      changeBirthDate(user.birthDate);
+      addressController.text = user.address ?? "";
+      address = user.address ?? "";
+      return;
+    }
     logger.d(kycData);
     if (kycData == null) return;
-    firstNameController.text = kycData['firstName'];
-    lastNameController.text = kycData['lastName'];
-    gender = kycData['gender'];
-    changeBirthDate(DateTime.parse(kycData['date']));
-    addressController.text = kycData['address'];
-    cityController.text = kycData['city'];
-    districtController.text = kycData['district'];
-    idCardController.text = kycData['idCard'];
-    documentImageUrl = kycData['documentImage'];
-    selfieWithDocumentImageUrl = kycData['verifySelfie'];
+    final Map remark = jsonDecode(kycData['remark']);
+    if (remark['data']['firstName']['status'] != false) {
+      firstNameController.text = kycData['firstName'];
+    }
+    if (remark['data']['lastName']['status'] != false) {
+      lastNameController.text = kycData['lastName'];
+    }
+    if (remark['data']['gender']['status'] != false) {
+      handleChangeGender(kycData['gender'] == "male" ? Prefix.mr : Prefix.mrs);
+    }
+    if (remark['data']['date']['status'] != false) {
+      changeBirthDate(DateTime.parse(kycData['date']));
+    }
+    if (remark['data']['address']['status'] != false) {
+      addressController.text = kycData['address'];
+    }
+    if (remark['data']['city']['status'] != false) {
+      cityController.text = kycData['city'];
+    }
+    if (remark['data']['district']['status'] != false) {
+      districtController.text = kycData['district'];
+    }
+    if (remark['data']['idCard']['status'] != false) {
+      idCardController.text = kycData['idCard'];
+    }
+    if (remark['data']['documentImage']['status'] != false) {
+      documentImageUrl = kycData['documentImage'];
+    }
+    if (remark['data']['verifySelfie']['status'] != false) {
+      selfieWithDocumentImageUrl = kycData['verifySelfie'];
+    }
     idKYC = kycData["\$id"];
     handleReject(kycData);
     update();
@@ -372,6 +497,38 @@ class KYCController extends GetxController {
     logger.d("prefix: $prefix");
     this.prefix = prefix.name;
     gender = prefix == Prefix.mr ? Gender.male.name : Gender.female.name;
+    // update();
+  }
+
+  void onChangeDistrict(String? value) {
+    if (value == null) return;
+    district = value;
+    update();
+  }
+
+  void onChangeFirstName(String value) {
+    firstName = value;
+    update();
+  }
+
+  void onChangeLastName(String value) {
+    lastName = value;
+    update();
+  }
+
+  void onChangeAddress(String value) {
+    address = value;
+    update();
+  }
+
+  void onChangeCity(String value) {
+    city = value;
+    update();
+  }
+
+  void onChangeIdCard(String value) {
+    idCard = value;
+    update();
   }
 
   @override

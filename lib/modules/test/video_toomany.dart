@@ -1,6 +1,6 @@
 import 'dart:io';
 
-// import 'package:byteplus_vod/ve_vod.dart';
+import 'package:byteplus_vod/ve_vod.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lottery_ck/utils.dart';
@@ -26,31 +26,31 @@ class VideoToomany extends StatefulWidget {
 }
 
 class _VideoToomanyState extends State<VideoToomany> {
-  // TTVideoPlayerView? playerView;
-  // VodPlayerFlutter player = VodPlayerFlutter();
-  // Future<void> setup() async {
-  //   await player.createPlayer();
-  //   setState(() {
-  //     playerView = TTVideoPlayerView(
-  //       onPlatformViewCreated: (viewId) {
-  //         logger.d(viewId);
-  //         player.setPlayerContainerView(viewId);
-  //       },
-  //     );
-  //   });
-  // }
+  TTVideoPlayerView? playerView;
+  VodPlayerFlutter player = VodPlayerFlutter();
+  Future<void> setup() async {
+    await player.createPlayer();
+    setState(() {
+      playerView = TTVideoPlayerView(
+        onPlatformViewCreated: (viewId) {
+          logger.d(viewId);
+          player.setPlayerContainerView(viewId);
+        },
+      );
+    });
+  }
 
   void setSource() async {
-    // TTVideoEngineUrlSource source = TTVideoEngineUrlSource.initWithURL(
-    //   'https://demovod.mylaos.life/83b83759f2264edeaf0e62cffd250028/master.m3u8?auth_key=1734513020-273789e165ac460ea98a9d622b5b4a87-0-c543a2e77dc2fc81913a50b1fbf157e8',
-    //   'horoscope',
-    // );
+    TTVideoEngineUrlSource source = TTVideoEngineUrlSource.initWithURL(
+      'https://demovod.mylaos.life/83b83759f2264edeaf0e62cffd250028/master.m3u8?auth_key=1734513020-273789e165ac460ea98a9d622b5b4a87-0-c543a2e77dc2fc81913a50b1fbf157e8',
+      'horoscope',
+    );
     // TTVideoEngineVidSource source = TTVideoEngineVidSource.init(
     //   vid: 'v11263g50000ctba40vak5v37c0epvlg',
     //   playAuthToken: '',
     // );
-    // await player.setMediaSource(source);
-    // await player.play();
+    await player.setMediaSource(source);
+    await player.play();
   }
 
   @override

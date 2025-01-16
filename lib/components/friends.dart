@@ -25,7 +25,7 @@ class FriendsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<FriendsController>(
       builder: (controller) {
-        final listMyFriends = controller.listMyFriends;
+        final listMyFriends = controller.listMyFriendsFiltered;
         return Scaffold(
           backgroundColor: Colors.white,
           body: SafeArea(
@@ -50,148 +50,186 @@ class FriendsPage extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 8,
-                            right: 16,
-                            bottom: 8,
-                            left: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Colors.white,
-                            boxShadow: const [AppTheme.softShadow],
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  // color: Colors.orange.shade200,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: SizedBox(
-                                  width: 40,
-                                  height: 40,
-                                  child: SvgPicture.asset(
-                                    AppIcon.user,
-                                    colorFilter: ColorFilter.mode(
-                                      Colors.orange,
-                                      BlendMode.srcIn,
+                        GestureDetector(
+                          onTap: () {
+                            controller.onClickFilter("invited");
+                          },
+                          child: Obx(() {
+                            return Container(
+                              padding: const EdgeInsets.only(
+                                top: 8,
+                                right: 16,
+                                bottom: 8,
+                                left: 8,
+                              ),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Colors.white,
+                                  boxShadow: const [AppTheme.softShadow],
+                                  border: Border.all(
+                                    width: 1,
+                                    color: controller.filter.value == "invited"
+                                        ? AppColors.primary
+                                        : Colors.transparent,
+                                  )),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      // color: Colors.orange.shade200,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: SizedBox(
+                                      width: 40,
+                                      height: 40,
+                                      child: SvgPicture.asset(
+                                        AppIcon.user,
+                                        colorFilter: ColorFilter.mode(
+                                          Colors.orange,
+                                          BlendMode.srcIn,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      AppLocale.youHaveInvitedYourFriends
-                                          .getString(context),
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          AppLocale.youHaveInvitedYourFriends
+                                              .getString(context),
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        Text(
+                                          AppLocale.clickToViewFriendsList
+                                              .getString(context),
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: AppColors.disableText,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      AppLocale.clickToViewFriendsList
-                                          .getString(context),
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: AppColors.disableText,
-                                      ),
+                                  ),
+                                  Text(
+                                    "${myFriends.total} ${AppLocale.people.getString(context)}",
+                                    // "2 ราย",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "${myFriends.total} ${AppLocale.people.getString(context)}",
-                                // "2 ราย",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
+                            );
+                          }),
                         ),
                         const SizedBox(height: 8),
-                        Container(
-                          padding: const EdgeInsets.only(
-                            top: 8,
-                            right: 16,
-                            bottom: 8,
-                            left: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            color: Colors.white,
-                            boxShadow: const [AppTheme.softShadow],
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  // color: Colors.green.shade200,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: SizedBox(
-                                  width: 40,
-                                  height: 40,
-                                  child: SvgPicture.asset(
-                                    AppIcon.userTick,
-                                    colorFilter: ColorFilter.mode(
-                                      Colors.green,
-                                      BlendMode.srcIn,
+                        GestureDetector(
+                          onTap: () {
+                            controller.onClickFilter("accepted");
+                          },
+                          child: Obx(() {
+                            return Container(
+                              padding: const EdgeInsets.only(
+                                top: 8,
+                                right: 16,
+                                bottom: 8,
+                                left: 8,
+                              ),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: Colors.white,
+                                  boxShadow: const [AppTheme.softShadow],
+                                  border: Border.all(
+                                    width: 1,
+                                    color: controller.filter.value == "accepted"
+                                        ? AppColors.primary
+                                        : Colors.transparent,
+                                  )),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      // color: Colors.green.shade200,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: SizedBox(
+                                      width: 40,
+                                      height: 40,
+                                      child: SvgPicture.asset(
+                                        AppIcon.userTick,
+                                        colorFilter: ColorFilter.mode(
+                                          Colors.green,
+                                          BlendMode.srcIn,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      AppLocale.yourFriendHasAccepted
-                                          .getString(context),
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                      ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          AppLocale.yourFriendHasAccepted
+                                              .getString(context),
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        Text(
+                                          AppLocale.clickToViewFriendsList
+                                              .getString(context),
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: AppColors.disableText,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      AppLocale.clickToViewFriendsList
-                                          .getString(context),
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: AppColors.disableText,
-                                      ),
+                                  ),
+                                  Text(
+                                    "${myFriends.accepted} ${AppLocale.people.getString(context)}",
+                                    // "1 ราย",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                "${myFriends.accepted} ${AppLocale.people.getString(context)}",
-                                // "1 ราย",
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
+                            );
+                          }),
                         ),
                         const SizedBox(height: 16),
-                        Text(
-                          "รายชื่อที่เป็นเพื่อนกับคุณ",
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
+                        Obx(
+                          () {
+                            if (controller.filter.value == "") {
+                              return const SizedBox.shrink();
+                            }
+                            final text = controller.filter.value == "invited"
+                                ? AppLocale.listOfFriendsInvited
+                                    .getString(context)
+                                : AppLocale.listOfFriendsWhoHaveAccepted
+                                    .getString(context);
+                            return Text(
+                              text,
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            );
+                          },
                         ),
                         const SizedBox(height: 16),
                         Expanded(
@@ -211,15 +249,7 @@ class FriendsPage extends StatelessWidget {
                                       width: 24,
                                       height: 24,
                                       child: SvgPicture.asset(
-                                        myFriends.isAccept
-                                            ? AppIcon.userTick
-                                            : AppIcon.user,
-                                        colorFilter: ColorFilter.mode(
-                                          myFriends.isAccept
-                                              ? Colors.green
-                                              : Colors.orange,
-                                          BlendMode.srcIn,
-                                        ),
+                                        AppIcon.user,
                                       ),
                                     ),
                                     const SizedBox(width: 12),

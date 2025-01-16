@@ -10,6 +10,8 @@ import 'package:lottery_ck/utils.dart';
 
 class FriendsController extends GetxController {
   List<ListMyFriendsUser> listMyFriends = [];
+  List<ListMyFriendsUser> listMyFriendsFiltered = [];
+  RxString filter = "".obs;
 
   Future<void> listMyFriendsUser() async {
     final user = SettingController.to.user;
@@ -35,6 +37,19 @@ class FriendsController extends GetxController {
         ),
       );
     }
+  }
+
+  void onClickFilter(String value) async {
+    filter.value = value;
+    listMyFriendsFiltered = listMyFriends.where(
+      (friend) {
+        if (value == "accepted") {
+          return friend.isAccept;
+        }
+        return true;
+      },
+    ).toList();
+    update();
   }
 
   void setup() async {

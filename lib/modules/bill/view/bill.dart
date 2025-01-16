@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/bill/controller/bill.controller.dart';
 import 'package:lottery_ck/modules/bill/view/bill_component.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 
 class BillPage extends StatelessWidget {
@@ -37,7 +39,7 @@ class BillPage extends StatelessWidget {
                     controller.backToHome();
                   },
                   child: Text(
-                    "ກັບໄປທີ່ຫນ້າທໍາອິດ",
+                    AppLocale.returnToTheHomepage.getString(context),
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w700,

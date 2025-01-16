@@ -54,7 +54,7 @@ class _BuyLotteryPageState extends State<BuyLotteryPage> {
                                 Text(
                                   AppLocale.horoscopeToday.getString(context),
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     fontWeight: FontWeight.bold,
                                     color: controller.currentTab.value == 1
                                         ? Colors.white
@@ -87,7 +87,7 @@ class _BuyLotteryPageState extends State<BuyLotteryPage> {
                                 Text(
                                   AppLocale.randomCard.getString(context),
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     fontWeight: FontWeight.bold,
                                     color: controller.currentTab.value == 2
                                         ? Colors.white
@@ -120,7 +120,7 @@ class _BuyLotteryPageState extends State<BuyLotteryPage> {
                                 Text(
                                   AppLocale.animal.getString(context),
                                   style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 13,
                                     fontWeight: FontWeight.bold,
                                     color: controller.currentTab.value == 3
                                         ? Colors.white
@@ -159,6 +159,9 @@ class _BuyLotteryPageState extends State<BuyLotteryPage> {
                                 //   ),
                                 // );
                               },
+                              onMessageReceived: (data) {
+                                logger.w(data);
+                              },
                             );
                           } else if (controller.currentTab.value == 2 &&
                               controller.luckyCardUrl.value != "") {
@@ -176,6 +179,9 @@ class _BuyLotteryPageState extends State<BuyLotteryPage> {
                                 //     },
                                 //   ),
                                 // );
+                              },
+                              onMessageReceived: (data) {
+                                logger.w(data);
                               },
                             );
                           } else if (controller.currentTab.value == 3) {
