@@ -264,12 +264,15 @@ class SettingPage extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    Icon(
-                                      Icons.arrow_forward_ios_rounded,
-                                      color: status == "pending"
-                                          ? Colors.amber.shade900
-                                          : Colors.red.shade900,
-                                    )
+                                    Builder(builder: (context) {
+                                      if (status == "pending") {
+                                        return const SizedBox.shrink();
+                                      }
+                                      return Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        color: Colors.red.shade900,
+                                      );
+                                    })
                                   ],
                                 ),
                               ),

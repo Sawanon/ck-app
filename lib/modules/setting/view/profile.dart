@@ -87,9 +87,6 @@ class ProfilePage extends StatelessWidget {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  // Get.dialog(
-                                  //   UploadImageComponent(),
-                                  // );
                                   controller.pickImage();
                                 },
                                 child: Container(
@@ -107,15 +104,18 @@ class ProfilePage extends StatelessWidget {
                                     ),
                                     shape: BoxShape.circle,
                                   ),
-                                  child: Obx(() {
-                                    return Container(
-                                      clipBehavior: Clip.hardEdge,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child:
-                                          controller.profileByte.value != null
+                                  child: Stack(
+                                    fit: StackFit.expand,
+                                    children: [
+                                      Obx(() {
+                                        return Container(
+                                          clipBehavior: Clip.hardEdge,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: controller.profileByte.value !=
+                                                  null
                                               ? Image.memory(
                                                   controller.profileByte.value!,
                                                   fit: BoxFit.cover,
@@ -124,8 +124,26 @@ class ProfilePage extends StatelessWidget {
                                                   Icons.person_2,
                                                   size: 40,
                                                 ),
-                                    );
-                                  }),
+                                        );
+                                      }),
+                                      Positioned(
+                                        bottom: 0,
+                                        right: 0,
+                                        child: Container(
+                                          padding: EdgeInsets.all(4),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.primary,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: Icon(
+                                            Icons.edit,
+                                            size: 16,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 8),
@@ -242,12 +260,15 @@ class ProfilePage extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    color: status == "pending"
-                                        ? Colors.amber.shade900
-                                        : Colors.red.shade900,
-                                  )
+                                  Builder(builder: (context) {
+                                    if (status == "pending") {
+                                      return const SizedBox.shrink();
+                                    }
+                                    return Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      color: Colors.red.shade900,
+                                    );
+                                  })
                                 ],
                               ),
                             ),
@@ -327,7 +348,8 @@ class ProfilePage extends StatelessWidget {
                                         ),
                                         const SizedBox(width: 8),
                                         Text(
-                                          "${controller.user?.phoneNumber}",
+                                          CommonFn.hidePhoneNumber(
+                                              controller.user?.phoneNumber),
                                         ),
                                       ],
                                     ),

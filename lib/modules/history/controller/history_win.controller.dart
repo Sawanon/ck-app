@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
+import 'package:lottery_ck/modules/lottery_history/controller/lottery_history.controller.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
 
@@ -40,6 +41,30 @@ class HistoryWinController extends GetxController {
         this.winInvoice.value = [...this.winInvoice, ...winInvoice];
       }
     }
+  }
+
+  String getLotteryDateFromCollection(String collectionId) {
+    final lotteryDateStr = collectionId.split("_").first;
+    final lotteryDate =
+        "${lotteryDateStr.substring(6, 8)}-${lotteryDateStr.substring(4, 6)}-${lotteryDateStr.substring(0, 4)}";
+    return lotteryDate;
+  }
+
+  String findWinLottery(String collectionId) {
+    // lotteryHistoryList // 20250122_invoice
+    final lotteryDate = getLotteryDateFromCollection(collectionId);
+    final lotteryHistoryList =
+        LotteryHistoryController.to.lotteryHistoryList.value;
+    logger.w(lotteryHistoryList);
+    final result = lotteryHistoryList.where(
+      (lottery) {
+        return lottery['lotteryDate'] == lotteryDate;
+      },
+    ).toList();
+    if (result.isEmpty) {
+      return "";
+    }
+    return result.first['lottery'];
   }
 
   String? findWinNumber(List transactionList) {

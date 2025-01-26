@@ -34,7 +34,7 @@ class SplashScreenPage extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                       child: Image.asset(
-                        "assets/icon/icon.png",
+                        Logo.app,
                         fit: BoxFit.none,
                         width: 200,
                         height: 200,

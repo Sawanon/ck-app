@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
@@ -181,7 +183,24 @@ class _BuyLotteryPageState extends State<BuyLotteryPage> {
                                 // );
                               },
                               onMessageReceived: (data) {
-                                logger.w(data);
+                                try {
+                                  logger.w(data.message);
+                                  // {number: 123}
+                                  final dataMap = jsonDecode(data.message);
+                                  logger.w(dataMap);
+                                  // controller.setLottery(dataMap['number']);
+                                  final lottery = dataMap['number'];
+                                  final minPrice =
+                                      controller.getMinPrice(lottery);
+                                  controller.addLottery(
+                                    minPrice,
+                                    lottery,
+                                    true,
+                                  );
+                                } catch (e) {
+                                  logger.e("$e");
+                                }
+                                // controller.submitAddLottery(lottery, price)
                               },
                             );
                           } else if (controller.currentTab.value == 3) {

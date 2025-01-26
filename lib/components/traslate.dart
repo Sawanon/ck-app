@@ -112,7 +112,7 @@ class TranslateComponent extends StatelessWidget {
                     const Text(
                       "English",
                       // AppLocale.englishLanguage.getString(context),
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: AppColors.textPrimary,
                       ),
                     ),

@@ -7,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
@@ -81,7 +82,18 @@ void main() async {
   await checkDeeplink();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   initTTSDK();
+  setupLocalNotification();
   runApp(const MyApp());
+}
+
+Future<void> setupLocalNotification() async {
+  // ตั้งค่า Notification สำหรับ Android
+  const AndroidInitializationSettings initializationSettingsAndroid =
+      AndroidInitializationSettings('@mipmap/launcher_icon');
+
+  const InitializationSettings initializationSettings =
+      InitializationSettings(android: initializationSettingsAndroid);
+  await FlutterLocalNotificationsPlugin().initialize(initializationSettings);
 }
 
 Future checkDeeplink() async {
@@ -94,6 +106,7 @@ Future checkDeeplink() async {
         // if (uri.path == "/payment") {
         // final invoiceId = uri.queryParameters['invoiceId'];
         // if (invoiceId == null) return;
+        Get.put(SplashScreenController());
         SplashScreenController.to.updateUrlPath(uri);
         // Get.lazyPut<PaymentController>(
         //   () => PaymentController(),

@@ -173,11 +173,15 @@ class PromotionDetailPage extends StatelessWidget {
                         controller.promotion?['is_need_kyc'] == true;
                     final user = SettingController.to.user;
                     final disabled = isNeedKYC && user?.isKYC == false;
-                    final alreadyExist = controller
-                        .disabledCoupon(controller.promotion?['\$id']);
+                    // final alreadyExist = controller
+                    //     .disabledCoupon(controller.promotion?['\$id']);
+                    // logger.d("alreadyExist: $alreadyExist");
                     return LongButton(
-                      isLoading: controller.promotion == null,
-                      disabled: disabled || alreadyExist,
+                      isLoading:
+                          controller.promotion == null || controller.isLoading,
+                      disabled: disabled ||
+                          controller.alreadyCollectedCoupon ||
+                          user == null,
                       onPressed: () {
                         if (controller.promotion == null) {
                           return;
@@ -199,7 +203,10 @@ class PromotionDetailPage extends StatelessWidget {
                           ),
                           const SizedBox(width: 10),
                           Text(
-                            AppLocale.collectCoupons.getString(context),
+                            controller.alreadyCollectedCoupon
+                                ? AppLocale.collectedTheCoupon
+                                    .getString(context)
+                                : AppLocale.collectCoupons.getString(context),
                             style: TextStyle(
                               fontSize: 16,
                             ),

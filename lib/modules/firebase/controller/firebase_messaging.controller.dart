@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ import 'package:lottery_ck/utils.dart';
 class FirebaseMessagingController extends GetxController {
   static FirebaseMessagingController get to => Get.find();
   late String? token;
+  StreamSubscription<RemoteMessage>? stream;
   void initialFirebase() async {
     try {
       // You may set the permission requests to "provisional" which allows the user to choose what type
@@ -38,7 +41,7 @@ class FirebaseMessagingController extends GetxController {
         // APNS token is available, make FCM plugin API requests...
       }
 
-      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      stream = FirebaseMessaging.onMessage.listen((RemoteMessage message) {
         // logger.d("message: ${message.notification?.title}");
         // logger.d("message: ${message.notification?.body}");
         print('Got a message whilst in the foreground!');
@@ -178,5 +181,11 @@ class FirebaseMessagingController extends GetxController {
     // listenOpenNotifications();
     // listenBackgroundNotifications();
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    stream?.cancel();
+    super.onClose();
   }
 }

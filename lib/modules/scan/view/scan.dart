@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/friend_confirm.dart';
 import 'package:lottery_ck/components/header.dart';
@@ -43,6 +45,38 @@ class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
     });
   }
 
+  Future<void> _analyzeImageFromFile() async {
+    try {
+      final XFile? file =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+
+      if (!mounted) {
+        return;
+      }
+
+      if (file == null) {
+        // setState(() {
+        //   _barcodeCapture = null;
+        // });
+        return;
+      }
+
+      final BarcodeCapture? barcodeCapture =
+          await controller.analyzeImage(file.path);
+      if (mounted) {
+        logger.w(barcodeCapture?.barcodes.first.displayValue);
+        if (barcodeCapture != null) {
+          _onDetect(barcodeCapture);
+        }
+        // setState(() {
+        //   _barcodeCapture = barcodeCapture;
+        // });
+      }
+    } catch (e) {
+      logger.e("$e");
+    }
+  }
+
   void _onDetect(BarcodeCapture barcodes) async {
     if (mounted) {
       final refCode = barcodes.barcodes.first.displayValue;
@@ -51,29 +85,11 @@ class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
           setIsLoading(true);
           controller.stop();
           final userApp = SettingController.to.user;
-          final response =
-              await AppWriteController.to.getUserByRefCode(refCode);
-          if (response.isSuccess == false) {
-            Get.dialog(
-              DialogApp(
-                title: const Text("Error"),
-                details: Text(response.message),
-                disableConfirm: true,
-                onCancel: () {
-                  controller.start();
-                },
-              ),
-            );
-            return;
-          }
-          logger.d(response.data);
-          logger.d(response.data?.toJson());
-          final user = response.data!;
           if (userApp == null) {
             Get.dialog(
               DialogApp(
-                title: Text("User not found"),
-                details: Text("Please login"),
+                title: Text(AppLocale.userNotFound.getString(context)),
+                // details: Text("Please login"),
               ),
             );
             return;
@@ -81,16 +97,77 @@ class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
           if (userApp.refCode == null) {
             Get.dialog(
               DialogApp(
-                title: Text("Your ref code is empty"),
-                details: Text("Please contact user service"),
+                title:
+                    Text(AppLocale.yourReferralCodeIsEmpty.getString(context)),
+                details:
+                    Text(AppLocale.pleaseContactUserService.getString(context)),
               ),
             );
+          }
+          final response =
+              await AppWriteController.to.getUserByRefCode(refCode);
+          if (response.isSuccess == false) {
+            if (mounted) {
+              Get.dialog(
+                DialogApp(
+                  title: Text(AppLocale.somethingWentWrong.getString(context)),
+                  details: Text(response.message),
+                  disableConfirm: true,
+                  onCancel: () {
+                    controller.start();
+                  },
+                ),
+              );
+            } else {
+              Get.dialog(
+                DialogApp(
+                  title: const Text("Error"),
+                  details: Text(response.message),
+                  disableConfirm: true,
+                  onCancel: () {
+                    controller.start();
+                  },
+                ),
+              );
+            }
+            return;
+          }
+          logger.d(response.data);
+          logger.d(response.data?.toJson());
+          final user = response.data!;
+          final profile = user.profile;
+
+          Uint8List? profileByte;
+          if (profile != null) {
+            final fileId = profile.split(":").last;
+            profileByte = await AppWriteController.to.getProfileImage(fileId);
+          }
+          final responseConnectFriend = await AppWriteController.to
+              .connectFriend(refCode, userApp.refCode!);
+          if (responseConnectFriend.isSuccess == false) {
+            // Can't connect the same ref code
+            String message = responseConnectFriend.message;
+            if (message == "Can't connect the same ref code") {
+              if (mounted) {
+                message =
+                    AppLocale.youCannotUseYourOwnQRCode.getString(context);
+              }
+            }
+            Get.dialog(DialogApp(
+              title: Text(message),
+              disableConfirm: true,
+              onCancel: () {
+                controller.start();
+              },
+            ));
+            return;
           }
           Get.dialog(
             FriendConfirm(
                 firstName: user.firstName,
                 lastName: user.lastName,
                 phone: user.phone,
+                profileByte: profileByte,
                 onConfirm: () async {
                   final response = await AppWriteController.to
                       .acceptFriend(refCode, userApp.refCode!);
@@ -100,7 +177,8 @@ class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
                         title: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text("Successfully"),
+                            Text(AppLocale.youAreNowFriends.getString(context)),
+                            const SizedBox(width: 12),
                             Icon(
                               Icons.check,
                               color: Colors.green,
@@ -117,7 +195,8 @@ class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
                   } else {
                     Get.dialog(
                       DialogApp(
-                        title: Text("Somethig went wrong"),
+                        title: Text(
+                            AppLocale.somethingWentWrong.getString(context)),
                         details: Text(response.message),
                         disableConfirm: true,
                       ),
@@ -132,7 +211,6 @@ class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
                   controller.start();
                 }),
           );
-          await AppWriteController.to.connectFriend(refCode, userApp.refCode!);
         } finally {
           setIsLoading(false);
         }
@@ -140,9 +218,16 @@ class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
     }
   }
 
+  void setup() async {
+    await Future.delayed(const Duration(seconds: 1), () {
+      controller.switchCamera();
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    // setup();
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -281,6 +366,25 @@ class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
                     ),
                   ),
                 ],
+              ),
+            ),
+          ),
+          Positioned(
+            right: 24,
+            bottom: 24,
+            child: GestureDetector(
+              onTap: _analyzeImageFromFile,
+              child: Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Icon(
+                  Icons.image,
+                  size: 40,
+                ),
               ),
             ),
           ),

@@ -33,7 +33,7 @@ class SignupController extends GetxController {
   }
 
   Future<void> createUserAppwrite() async {
-    // TODO: go to OTP when sucecess run function - sawanon:20240806
+    // go to OTP when sucecess run function - sawanon:20240806
     logger.d("birthDate: $birthDate");
     if (birthDate == null) {
       Get.rawSnackbar(

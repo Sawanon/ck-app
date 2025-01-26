@@ -193,7 +193,6 @@ class LoginPage extends StatelessWidget {
                                         foregroundColor: Colors.white,
                                       ),
                                 onPressed: () {
-                                  // TODO: comment for dev
                                   if (controller.disableLogin.value) {
                                     return;
                                   }

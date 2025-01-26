@@ -26,9 +26,7 @@ class SplashScreenController extends GetxController {
   bool stop = false;
 
   void gotoLayout() {
-    // TODO: uncomment for production
-    // Get.offNamed(RouteName.layout);
-    Get.toNamed(RouteName.layout);
+    Get.offNamed(RouteName.layout);
   }
 
   void checkTimeZone() {
@@ -120,6 +118,8 @@ class SplashScreenController extends GetxController {
     await Future.delayed(
       const Duration(seconds: 1),
       () async {
+        Get.put<NotificationController>(NotificationController());
+        NotificationController.to.listNotification();
         if (event.data['link'] != null) {
           logger.w("open with notification: $event");
           logger.w("data: ${event.data}");
@@ -150,8 +150,10 @@ class SplashScreenController extends GetxController {
             NotificationController.to
                 .openPromotionPointsDetail(promotionPointId);
           } else if (link.contains("/kyc")) {
-            LayoutController.to.changeTab(TabApp.settings);
+            // LayoutController.to.changeTab(TabApp.settings);
             SettingController.to.setup();
+            Get.toNamed(RouteName.setting);
+            Get.toNamed(RouteName.profile);
           }
         }
       },

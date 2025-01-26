@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:lottery_ck/components/input_text.dart';
 import 'package:lottery_ck/components/long_button.dart';
@@ -9,7 +10,7 @@ import 'package:lottery_ck/utils/common_fn.dart';
 
 class UsePointComponent extends StatefulWidget {
   final int myPoint;
-  final void Function(int usePoint) onSubmit;
+  final Future<void> Function(int usePoint) onSubmit;
   const UsePointComponent({
     super.key,
     required this.myPoint,
@@ -23,13 +24,22 @@ class UsePointComponent extends StatefulWidget {
 class _UsePointComponentState extends State<UsePointComponent> {
   TextEditingController inputPointController = TextEditingController();
   int pointUse = 0;
+  bool isLoading = false;
 
   void setPoint(int point) {
+    logger.d(point);
     if (point > widget.myPoint) {
       return;
     }
+    inputPointController.text = CommonFn.parseMoney(point);
     setState(() {
       pointUse = point;
+    });
+  }
+
+  void setLoading(bool value) {
+    setState(() {
+      isLoading = value;
     });
   }
 
@@ -39,7 +49,12 @@ class _UsePointComponentState extends State<UsePointComponent> {
   }
 
   void submitUsePoint() async {
-    widget.onSubmit(pointUse);
+    try {
+      setLoading(true);
+      await widget.onSubmit(pointUse);
+    } finally {
+      setLoading(false);
+    }
   }
 
   @override
@@ -112,13 +127,19 @@ class _UsePointComponentState extends State<UsePointComponent> {
             ),
             maxValue: widget.myPoint,
             keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+            ],
             onChanged: (value) {
+              logger.d(value);
               final point = value == "" ? "0" : value;
-              setPoint(int.parse(point));
+              final pointString = point.replaceAll(",", "");
+              setPoint(int.parse(pointString));
             },
           ),
           const SizedBox(height: 8),
           LongButton(
+            isLoading: isLoading,
             onPressed: () {
               submitUsePoint();
             },

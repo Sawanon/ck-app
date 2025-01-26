@@ -4,6 +4,7 @@ import 'dart:io' as io;
 import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_exif_rotation/flutter_exif_rotation.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottery_ck/components/dev/dialog_otp.dart';
@@ -13,6 +14,7 @@ import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart'
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
@@ -214,8 +216,9 @@ class SettingController extends GetxController {
                         Get.back();
                         logger.d("change passcode successful");
                         Get.snackbar(
-                          "Change passcode success",
-                          "message",
+                          AppLocale.passcodeChangedSuccessfully
+                              .getString(Get.context!),
+                          "",
                           backgroundColor: Colors.green.shade700,
                           colorText: Colors.white,
                         );
@@ -283,7 +286,7 @@ class SettingController extends GetxController {
               await AppWriteController.to.changeProfileImage(resizeImaged.path);
           logger.d(bucketAndId);
           Get.snackbar(
-            "Change profile image success",
+            AppLocale.profilePictureChangedSuccessfully.getString(Get.context!),
             "",
             backgroundColor: Colors.green.shade700,
             colorText: Colors.white,
@@ -367,22 +370,27 @@ class SettingController extends GetxController {
                       final response = await AppWriteController.to
                           .updateUserPhone(newPhoneNumber!);
                       if (response == null) {
-                        Get.snackbar(
-                          "Update phone number failed",
-                          "please try again later",
-                          margin: const EdgeInsets.all(8),
-                          backgroundColor: Colors.red,
-                          colorText: Colors.white,
-                        );
                         Get.back();
                         Get.back();
+                        await Future.delayed(const Duration(milliseconds: 350),
+                            () {
+                          // Get.snackbar(
+                          //   "Update phone number failed",
+                          //   AppLocale.pleaseContactUserService
+                          //       .getString(Get.context!),
+                          //   margin: const EdgeInsets.all(8),
+                          //   backgroundColor: Colors.red,
+                          //   colorText: Colors.white,
+                          // );
+                        });
                         return;
                       }
                       Get.back();
                       Get.back();
                       Get.snackbar(
-                        "Change phone number success",
-                        "message",
+                        AppLocale.successfullyChangedPhoneNumber
+                            .getString(Get.context!),
+                        "",
                         margin: const EdgeInsets.all(8),
                         backgroundColor: Colors.green.shade700,
                         colorText: Colors.white,
@@ -527,7 +535,7 @@ class SettingController extends GetxController {
   void viewKYCDetail() {
     if (kycData == null) return;
     if (kycData!['status'] == "pending") {
-      // TODO: goto detail process
+      // do not thing
       return;
     }
     gotoKYC();

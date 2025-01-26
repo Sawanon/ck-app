@@ -13,6 +13,7 @@ import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/route/route_name.dart';
+import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/theme.dart';
 
 class HoroscopeDialyPage extends StatelessWidget {
@@ -35,6 +36,7 @@ class HoroscopeDialyPage extends StatelessWidget {
                     builder: (context) {
                       final backgroundTheme =
                           LayoutController.to.randomBackgroundThemeUrl();
+                      logger.w("backgroundTheme: $backgroundTheme");
                       if (backgroundTheme == null) {
                         return const SizedBox.shrink();
                       }
@@ -43,7 +45,7 @@ class HoroscopeDialyPage extends StatelessWidget {
                         left: 0,
                         right: 0,
                         child: Opacity(
-                          opacity: 0.6,
+                          opacity: 0.4,
                           child: Container(
                             clipBehavior: Clip.hardEdge,
                             decoration: const BoxDecoration(

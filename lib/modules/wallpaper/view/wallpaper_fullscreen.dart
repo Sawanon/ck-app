@@ -4,12 +4,13 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/header.dart';
+import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 
-class WallpaperFullscreenPage extends StatelessWidget {
+class WallpaperFullscreenPage extends StatefulWidget {
   final String url;
   final String fileId;
   final String bucketId;
@@ -24,6 +25,20 @@ class WallpaperFullscreenPage extends StatelessWidget {
   });
 
   @override
+  State<WallpaperFullscreenPage> createState() =>
+      _WallpaperFullscreenPageState();
+}
+
+class _WallpaperFullscreenPageState extends State<WallpaperFullscreenPage> {
+  bool isLoading = false;
+
+  void setIsLoading(bool value) {
+    setState(() {
+      isLoading = value;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
       builder: (controller) {
@@ -34,12 +49,12 @@ class WallpaperFullscreenPage extends StatelessWidget {
               child: Column(
                 children: [
                   Header(
-                    title: name,
+                    title: widget.name,
                   ),
                   Center(
                     // child: Image.network(url),
                     child: CachedNetworkImage(
-                      imageUrl: url,
+                      imageUrl: widget.url,
                       progressIndicatorBuilder: (
                         context,
                         url,
@@ -54,43 +69,79 @@ class WallpaperFullscreenPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  GestureDetector(
-                    onTap: () {
-                      controller.downloadWallpaper(url);
+                  LongButton(
+                    isLoading: isLoading,
+                    disabled: isLoading,
+                    onPressed: () async {
+                      setIsLoading(true);
+                      await controller.downloadWallpaper(
+                          widget.fileId, widget.bucketId);
+                      setIsLoading(false);
                     },
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: AppColors.primary,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: SvgPicture.asset(
-                              AppIcon.download,
-                              colorFilter: const ColorFilter.mode(
-                                Colors.white,
-                                BlendMode.srcIn,
-                              ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: SvgPicture.asset(
+                            AppIcon.download,
+                            colorFilter: const ColorFilter.mode(
+                              Colors.white,
+                              BlendMode.srcIn,
                             ),
                           ),
-                          const SizedBox(width: 8),
-                          Text(
-                            AppLocale.save.getString(context),
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          AppLocale.save.getString(context),
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     controller.downloadWallpaper(
+                  //         widget.fileId, widget.bucketId);
+                  //   },
+                  //   child: Container(
+                  //     padding: const EdgeInsets.all(8),
+                  //     decoration: BoxDecoration(
+                  //       color: AppColors.primary,
+                  //       borderRadius: BorderRadius.circular(8),
+                  //     ),
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         SizedBox(
+                  //           width: 24,
+                  //           height: 24,
+                  //           child: SvgPicture.asset(
+                  //             AppIcon.download,
+                  //             colorFilter: const ColorFilter.mode(
+                  //               Colors.white,
+                  //               BlendMode.srcIn,
+                  //             ),
+                  //           ),
+                  //         ),
+                  //         const SizedBox(width: 8),
+                  //         Text(
+                  //           AppLocale.save.getString(context),
+                  //           style: TextStyle(
+                  //             fontSize: 16,
+                  //             fontWeight: FontWeight.bold,
+                  //             color: Colors.white,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

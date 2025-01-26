@@ -81,13 +81,14 @@ class PinVerifyController extends GetxController {
     if (!enableBiometrics) {
       Get.dialog(
         DialogApp(
-          title: Text("Biometrics are disabled"),
+          title: Text(AppLocale.biometricsAreDisabled.getString(Get.context!)),
           details: Text(
-              'Biometrics is disabled, please enable it in "Settings -> Security"'),
+            AppLocale.biometricsAreDisabledDetail.getString(Get.context!),
+          ),
           disableConfirm: true,
           cancelText: Text(
             AppLocale.close.getString(Get.context!),
-            style: TextStyle(
+            style: const TextStyle(
               color: AppColors.errorBorder,
             ),
           ),

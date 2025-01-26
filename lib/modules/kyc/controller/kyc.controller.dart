@@ -163,6 +163,53 @@ class KYCController extends GetxController {
   }
 
   bool disableConfirm() {
+    // logger.w(remark);
+    if (remark != null) {
+      if (remark?['firstName']['status'] == false && firstName == "") {
+        logger.e("firstName");
+        return true;
+      }
+      if (remark?['lastName']['status'] == false && lastName == "") {
+        logger.e("lastName");
+        return true;
+      }
+      if (remark?['gender']['status'] == false && gender == "") {
+        logger.e("gender");
+        return true;
+      }
+      if (remark?['birthDate']['status'] == false && birthDate == "") {
+        logger.e("birthDate");
+        return true;
+      }
+      if (remark?['address']['status'] == false && address == "") {
+        logger.e("address");
+        return true;
+      }
+      if (remark?['city']['status'] == false && city == "") {
+        logger.e("city");
+        return true;
+      }
+      if (remark?['district']['status'] == false && district == "") {
+        logger.e("district");
+        return true;
+      }
+      if (remark?['idCard']['status'] == false &&
+          (idCard == "" || idCard.length < 10)) {
+        logger.e("idCard");
+        return true;
+      }
+      if (remark?['documentImage']['status'] == false &&
+          documentImage == null) {
+        logger.e("documentImage");
+        return true;
+      }
+      if (remark?['verifySelfie']['status'] == false &&
+          selfieWithDocumentImage == null) {
+        logger.e("verifySelfie");
+        return true;
+      }
+      return false;
+    }
     if (firstName == "" ||
         lastName == "" ||
         gender == "" ||
@@ -274,6 +321,7 @@ class KYCController extends GetxController {
       gender = Gender.female.name;
       this.prefix = Prefix.mrs.name;
     }
+    update();
   }
 
   void resendKYC() async {
@@ -394,7 +442,6 @@ class KYCController extends GetxController {
         ),
         'data': jsonEncode(data),
       });
-
       var dio = dio_class.Dio();
       var response = await dio.post(
         '${AppConst.apiUrl}/user/kyc',
@@ -413,10 +460,11 @@ class KYCController extends GetxController {
         logger.e(e.response!.statusCode);
         logger.e(e.response!.statusMessage);
         logger.e(e.response!.data);
+        final String? message = e.response!.data['message'];
         Get.dialog(DialogApp(
           title: Text('Server error ${e.response?.statusCode}'),
           disableConfirm: true,
-          details: Text("${e.response!.statusMessage}"),
+          details: Text("${message ?? e.response!.statusMessage}"),
         ));
       }
     } catch (e) {
@@ -443,7 +491,8 @@ class KYCController extends GetxController {
       firstName = user.firstName;
       lastNameController.text = user.lastName;
       lastName = user.lastName;
-      handleChangeGender(user.gender == "male" ? Prefix.mr : Prefix.mrs);
+      changePrefix(user.gender == "male" ? Prefix.mr : Prefix.mrs);
+      // handleChangeGender(user.gender == "male" ? Prefix.mr : Prefix.mrs);
       changeBirthDate(user.birthDate);
       addressController.text = user.address ?? "";
       address = user.address ?? "";
@@ -452,6 +501,7 @@ class KYCController extends GetxController {
     logger.d(kycData);
     if (kycData == null) return;
     final Map remark = jsonDecode(kycData['remark']);
+    logger.w(remark);
     if (remark['data']['firstName']['status'] != false) {
       firstNameController.text = kycData['firstName'];
     }
@@ -459,10 +509,11 @@ class KYCController extends GetxController {
       lastNameController.text = kycData['lastName'];
     }
     if (remark['data']['gender']['status'] != false) {
-      handleChangeGender(kycData['gender'] == "male" ? Prefix.mr : Prefix.mrs);
+      changePrefix(kycData['gender'] == "male" ? Prefix.mr : Prefix.mrs);
+      // handleChangeGender(kycData['gender'] == "male" ? Prefix.mr : Prefix.mrs);
     }
-    if (remark['data']['date']['status'] != false) {
-      changeBirthDate(DateTime.parse(kycData['date']));
+    if (remark['data']['birthDate']['status'] != false) {
+      changeBirthDate(DateTime.parse(kycData['birthDate']));
     }
     if (remark['data']['address']['status'] != false) {
       addressController.text = kycData['address'];
@@ -471,7 +522,8 @@ class KYCController extends GetxController {
       cityController.text = kycData['city'];
     }
     if (remark['data']['district']['status'] != false) {
-      districtController.text = kycData['district'];
+      // districtController.text = kycData['district'];
+      onChangeDistrict(kycData['district']);
     }
     if (remark['data']['idCard']['status'] != false) {
       idCardController.text = kycData['idCard'];
@@ -493,12 +545,12 @@ class KYCController extends GetxController {
     this.remark = remark['data'];
   }
 
-  void handleChangeGender(Prefix prefix) {
-    logger.d("prefix: $prefix");
-    this.prefix = prefix.name;
-    gender = prefix == Prefix.mr ? Gender.male.name : Gender.female.name;
-    // update();
-  }
+  // void handleChangeGender(Prefix prefix) {
+  //   logger.d("prefix: $prefix");
+  //   this.prefix = prefix.name;
+  //   gender = prefix == Prefix.mr ? Gender.male.name : Gender.female.name;
+  //   update();
+  // }
 
   void onChangeDistrict(String? value) {
     if (value == null) return;

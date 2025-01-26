@@ -4,6 +4,7 @@ class AppColors {
   // static const Color primary = Color.fromRGBO(0, 209, 255, 1);
   static const Color background = Color.fromRGBO(245, 245, 245, 1);
   static const Color primary = Color.fromRGBO(242, 49, 55, 1);
+  static const Color primaryOpacity = Color.fromRGBO(253, 233, 228, 1);
   static const Color primaryEnd = Color.fromRGBO(253, 150, 153, 1);
   static const Color backgroundGradientEnd = Color.fromRGBO(232, 242, 255, 1);
   static const Color backgroundGradientStart = Color.fromRGBO(255, 255, 255, 1);

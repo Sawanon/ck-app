@@ -8,13 +8,15 @@ enum Prefix { mr, mrs }
 class PrefixRadio extends StatefulWidget {
   final void Function(Prefix prefix) onChange;
   final bool disabled;
-  final String? defaultValue;
+  // final String? defaultValue;
+  final String value;
   final String? errorText;
   const PrefixRadio({
     super.key,
     required this.onChange,
     this.disabled = false,
-    this.defaultValue,
+    // this.defaultValue,
+    required this.value,
     this.errorText,
   });
 
@@ -32,16 +34,16 @@ class PrefixRadioState extends State<PrefixRadio> {
     });
   }
 
-  @override
-  void initState() {
-    if (widget.defaultValue == null) return;
-    if (widget.defaultValue == "mr") {
-      onChange(Prefix.mr);
-    } else if (widget.defaultValue == "mrs") {
-      onChange(Prefix.mrs);
-    }
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   // if (widget.defaultValue == null) return;
+  //   // if (widget.defaultValue == "mr") {
+  //   //   onChange(Prefix.mr);
+  //   // } else if (widget.defaultValue == "mrs") {
+  //   //   onChange(Prefix.mrs);
+  //   // }
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +65,12 @@ class PrefixRadioState extends State<PrefixRadio> {
             children: [
               Expanded(
                 child: GestureDetector(
-                  onTap: () => widget.disabled ? () {} : onChange(Prefix.mr),
+                  onTap: () {
+                    if (widget.disabled) {
+                      return;
+                    }
+                    onChange(Prefix.mr);
+                  },
                   child: Container(
                     padding: EdgeInsets.all(14),
                     decoration: BoxDecoration(
@@ -83,7 +90,7 @@ class PrefixRadioState extends State<PrefixRadio> {
                             height: 16,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: valueGender == Prefix.mr
+                              color: widget.value == Prefix.mr.name
                                   ? Colors.red
                                   : Colors.white,
                               border: Border.all(
@@ -109,7 +116,12 @@ class PrefixRadioState extends State<PrefixRadio> {
               const SizedBox(width: 4),
               Expanded(
                 child: GestureDetector(
-                  onTap: () => widget.disabled ? () {} : onChange(Prefix.mrs),
+                  onTap: () {
+                    if (widget.disabled) {
+                      return;
+                    }
+                    onChange(Prefix.mrs);
+                  },
                   child: Container(
                     padding: EdgeInsets.all(14),
                     decoration: BoxDecoration(
@@ -129,7 +141,7 @@ class PrefixRadioState extends State<PrefixRadio> {
                             height: 16,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: valueGender == Prefix.mrs
+                              color: widget.value == Prefix.mrs.name
                                   ? Colors.red
                                   : Colors.white,
                               border: Border.all(

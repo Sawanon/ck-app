@@ -6,6 +6,7 @@ import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/model/news.dart';
 import 'package:lottery_ck/model/notification.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
+import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/route/route_name.dart';
@@ -120,13 +121,33 @@ class NotificationController extends GetxController {
     // });
   }
 
-  void onClickNotification(String link) {
-    if (link.contains("/news")) {
-      final newsId = link.split("/").last;
-      openNewsDetail(newsId);
-    } else if (link.contains("/promotion")) {
-      final promotionId = link.split("/").last;
-      openPromotionDetail(promotionId);
+  void onClickNotification(NotificationModel notification) async {
+    final link = notification.link;
+    logger.d(link);
+    final user = SettingController.to.user;
+    if (link != null) {
+      if (link.contains("/news")) {
+        final newsId = link.split("/").last;
+        openNewsDetail(newsId);
+      } else if (link.contains("/promotion")) {
+        final promotionId = link.split("/").last;
+        openPromotionDetail(promotionId);
+      } else if (link.contains("/kyc")) {
+        // LayoutController.to.changeTab(TabApp.settings);
+        Get.toNamed(RouteName.setting);
+        Get.toNamed(RouteName.profile);
+        LayoutController.to.changeTab(TabApp.home);
+        SettingController.to.setup();
+      }
+    }
+    if (user == null) {
+      return;
+    }
+    final response = await AppWriteController.to
+        .readNotification([notification.id], user.userId);
+    logger.d(response.message);
+    if (response.isSuccess) {
+      listNotification();
     }
   }
 

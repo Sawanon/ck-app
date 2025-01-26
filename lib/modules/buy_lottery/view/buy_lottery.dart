@@ -459,7 +459,7 @@ class BuyLottery extends StatelessWidget {
                                           const SizedBox(width: 8),
                                           GestureDetector(
                                             onTap: () {
-                                              controller.submitAddLottery(
+                                              controller.submitFormAddLottery(
                                                 controller.lottery,
                                                 controller.price,
                                               );

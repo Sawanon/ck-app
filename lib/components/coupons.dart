@@ -11,6 +11,7 @@ import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:lottery_ck/utils/theme.dart';
 
 class CouponsPage extends StatefulWidget {
@@ -28,7 +29,8 @@ class CouponsPage extends StatefulWidget {
 
 class _CouponsPageState extends State<CouponsPage> {
   bool isLoading = false;
-  Map<String, bool?> selectedCoupon = {};
+  // Map<String, bool?> selectedCoupon = {};
+  String? selectedCouponId;
 
   void setIsLoading(bool value) {
     setState(() {
@@ -37,46 +39,55 @@ class _CouponsPageState extends State<CouponsPage> {
   }
 
   void onClickCoupon(String couponId) {
-    final _selectedCoupon = selectedCoupon[couponId];
-    if (_selectedCoupon == null || _selectedCoupon == false) {
-      setState(() {
-        selectedCoupon[couponId] = true;
-      });
-    } else {
-      setState(() {
-        selectedCoupon[couponId] = false;
-      });
-    }
+    setState(() {
+      selectedCouponId = couponId;
+    });
+    // final _selectedCoupon = selectedCoupon[couponId];
+    // if (_selectedCoupon == null || _selectedCoupon == false) {
+    //   setState(() {
+    //     selectedCoupon[couponId] = true;
+    //   });
+    // } else {
+    //   setState(() {
+    //     selectedCoupon[couponId] = false;
+    //   });
+    // }
   }
 
   void onSubmit() async {
-    logger.d(selectedCoupon);
-    final List<String> couponIdsList = [];
-    selectedCoupon.forEach(
-      (key, value) {
-        logger.d("key: $key");
-        logger.d("value: $value");
-        if (value == true) {
-          couponIdsList.add(key);
-        }
-      },
-    );
-    logger.d(couponIdsList);
+    // logger.d(selectedCoupon);
+    // final List<String> couponIdsList = [];
+    // selectedCoupon.forEach(
+    //   (key, value) {
+    //     logger.d("key: $key");
+    //     logger.d("value: $value");
+    //     if (value == true) {
+    //       couponIdsList.add(key);
+    //     }
+    //   },
+    // );
+    // logger.d(couponIdsList);
+    if (selectedCouponId == null) {
+      return;
+    }
     setIsLoading(true);
-    await PaymentController.to.applyCoupon(couponIdsList);
+    await PaymentController.to.applyCoupon([selectedCouponId!]);
     setIsLoading(false);
     Get.back();
   }
 
   void setup() {
     if (widget.selectedCouponsList != null) {
-      Map<String, bool?> _selectedCoupon = {};
-      for (var coupon in widget.selectedCouponsList!) {
-        _selectedCoupon[coupon] = true;
+      // Map<String, bool?> _selectedCoupon = {};
+      // for (var coupon in widget.selectedCouponsList!) {
+      //   _selectedCoupon[coupon] = true;
+      // }
+      if (widget.selectedCouponsList?.isNotEmpty == true) {
+        setState(() {
+          // selectedCoupon = _selectedCoupon;
+          selectedCouponId = widget.selectedCouponsList?.first;
+        });
       }
-      setState(() {
-        selectedCoupon = _selectedCoupon;
-      });
     }
   }
 
@@ -102,89 +113,256 @@ class _CouponsPageState extends State<CouponsPage> {
                   horizontal: 16,
                   vertical: 8,
                 ),
-                children: widget.couponsList.map((coupon) {
-                  return GestureDetector(
-                    onTap: () {
-                      onClickCoupon(coupon.couponId);
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(
-                        top: 8,
-                      ),
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: const [AppTheme.softShadow],
-                      ),
-                      child: IntrinsicHeight(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Container(
-                              width: 80,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: AppColors.primary,
-                              ),
-                              child: SizedBox(
-                                width: 48,
-                                height: 48,
+                children: [
+                  Builder(
+                    builder: (context) {
+                      if (widget.couponsList.isEmpty) {
+                        return Container(
+                          alignment: Alignment.center,
+                          height: MediaQuery.of(context).size.height / 2,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              SizedBox(
+                                width: 120,
+                                height: 120,
                                 child: SvgPicture.asset(
                                   AppIcon.promotionBold,
                                   colorFilter: const ColorFilter.mode(
-                                    Colors.white,
+                                    AppColors.disableText,
                                     BlendMode.srcIn,
                                   ),
                                 ),
                               ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                padding: EdgeInsets.only(
-                                  left: 12,
-                                  top: 16,
-                                  bottom: 16,
+                              Text(
+                                AppLocale.youDontHaveCoupon.getString(context),
+                                style: const TextStyle(
+                                  color: AppColors.disableText,
+                                  fontSize: 16,
                                 ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "${coupon.promotion?['name'] ?? "Not found promotion"}",
-                                      style: TextStyle(
-                                        fontSize: 16,
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: widget.couponsList.map((coupon) {
+                          final promotion = coupon.promotion;
+                          logger.w(promotion);
+                          final int currentUse = promotion?['current_use'];
+                          final int maxUser = promotion?['max_user'];
+                          final leftPercent = currentUse / maxUser;
+                          final percentStr = leftPercent * 100;
+                          return GestureDetector(
+                            onTap: () {
+                              if (leftPercent >= 1) {
+                                return;
+                              }
+                              onClickCoupon(coupon.couponId);
+                            },
+                            child: Opacity(
+                              opacity: leftPercent >= 1 ? 0.4 : 1,
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                  top: 8,
+                                ),
+                                clipBehavior: Clip.hardEdge,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8),
+                                  boxShadow: const [AppTheme.softShadow],
+                                ),
+                                child: IntrinsicHeight(
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      Container(
+                                        width: 80,
+                                        alignment: Alignment.center,
+                                        decoration: const BoxDecoration(
+                                          color: AppColors.primary,
+                                        ),
+                                        child: SizedBox(
+                                          width: 48,
+                                          height: 48,
+                                          child: SvgPicture.asset(
+                                            AppIcon.promotionBold,
+                                            colorFilter: const ColorFilter.mode(
+                                              Colors.white,
+                                              BlendMode.srcIn,
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      "${coupon.promotion?['detail'] ?? "Not found promotion"}",
-                                      style: TextStyle(
-                                        fontSize: 14,
+                                      Expanded(
+                                        child: Container(
+                                          padding: const EdgeInsets.only(
+                                            left: 12,
+                                            right: 16,
+                                            top: 16,
+                                            bottom: 16,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "${coupon.promotion?['name'] ?? "Not found promotion"}",
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                ),
+                                              ),
+                                              const SizedBox(height: 8),
+                                              Text(
+                                                "${coupon.promotion?['detail'] ?? "Not found promotion"}",
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                              Builder(
+                                                builder: (context) {
+                                                  if (promotion == null ||
+                                                      promotion['max_user'] ==
+                                                          null) {
+                                                    return const SizedBox
+                                                        .shrink();
+                                                  }
+
+                                                  return Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      const SizedBox(height: 4),
+                                                      Container(
+                                                        alignment: Alignment
+                                                            .centerLeft,
+                                                        width: double.infinity,
+                                                        height: 6,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(24),
+                                                          color: Colors
+                                                              .grey.shade300,
+                                                        ),
+                                                        child: LayoutBuilder(
+                                                          builder: (context,
+                                                              constraints) {
+                                                            double outerWidth =
+                                                                constraints
+                                                                    .maxWidth;
+                                                            logger
+                                                                .w(outerWidth);
+                                                            return Container(
+                                                              width: outerWidth *
+                                                                  leftPercent,
+                                                              // margin:
+                                                              //     const EdgeInsets
+                                                              //         .only(
+                                                              //   right: 24,
+                                                              // ),
+                                                              height: 6,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                // gradient: AppColors
+                                                                //     .primayBtn,
+                                                                gradient:
+                                                                    LinearGradient(
+                                                                  colors: [
+                                                                    AppColors
+                                                                        .redGradient,
+                                                                    AppColors
+                                                                        .yellowGradient,
+                                                                  ],
+                                                                ),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            24),
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
+                                                      ),
+                                                      const SizedBox(height: 8),
+                                                      Text(
+                                                        "${AppLocale.used.getString(context)} ${percentStr.toStringAsFixed(0)}%",
+                                                        style: const TextStyle(
+                                                          fontSize: 12,
+                                                          color: AppColors
+                                                              .textPrimary,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              ),
+                                              Builder(
+                                                builder: (context) {
+                                                  if (coupon.expireDate ==
+                                                      null) {
+                                                    return const SizedBox
+                                                        .shrink();
+                                                  }
+                                                  final expireDate =
+                                                      coupon.expireDate!;
+                                                  return Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      const SizedBox(height: 8),
+                                                      Text(
+                                                        "${AppLocale.validUntil.getString(context)} ${CommonFn.parseDMY(expireDate)} ${CommonFn.parseHMS(expireDate)}",
+                                                        style: const TextStyle(
+                                                          fontSize: 12,
+                                                          color: AppColors
+                                                              .textPrimary,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      CheckboxComponent(
+                                        value:
+                                            selectedCouponId == coupon.couponId,
+                                        onChange: (value) {
+                                          logger.d("value: $value");
+                                        },
+                                      ),
+                                      const SizedBox(width: 16),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                            CheckboxComponent(
-                              value: selectedCoupon[coupon.couponId] == true,
-                              onChange: (value) {
-                                logger.d("value: $value");
-                              },
-                            ),
-                            const SizedBox(width: 16),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }).toList(),
+                          );
+                        }).toList(),
+                      );
+                    },
+                  ),
+                ],
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(16),
               child: LongButton(
                 isLoading: isLoading,
+                disabled: selectedCouponId == null,
                 onPressed: () {
                   onSubmit();
                 },

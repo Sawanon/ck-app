@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/bill/view/bill_component.dart';
 import 'package:lottery_ck/modules/history/controller/win_bill.contoller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 
@@ -34,8 +36,9 @@ class WinBillPage extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        "ເຈົ້າເປັນຜູ້ໂຊກດີ ແລະໄດ້ຮັບລາງວັນ",
-                        style: TextStyle(
+                        AppLocale.youAreTheLuckyOneAndHaveWonPrize
+                            .getString(context),
+                        style: const TextStyle(
                           fontSize: 18,
                           color: AppColors.secondary,
                           fontWeight: FontWeight.bold,
@@ -43,8 +46,8 @@ class WinBillPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        CommonFn.parseMoney(controller.invoice!["totalWin"]),
-                        style: TextStyle(
+                        "${CommonFn.parseMoney(controller.invoice!["totalWin"])} ${AppLocale.lak.getString(context)}",
+                        style: const TextStyle(
                           fontSize: 24,
                           color: AppColors.primary,
                           fontWeight: FontWeight.bold,

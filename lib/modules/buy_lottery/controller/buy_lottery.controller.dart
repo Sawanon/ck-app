@@ -31,6 +31,7 @@ import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:intl/intl.dart';
 
 class BuyLotteryController extends GetxController {
   static BuyLotteryController get to => Get.find();
@@ -42,6 +43,7 @@ class BuyLotteryController extends GetxController {
   List<BuyLotteryConfigs> buyLotteryConfigs = [];
   Rx<InvoiceMetaData> invoiceMeta = InvoiceMetaData.empty().obs;
   RxInt currentTab = 0.obs;
+  bool disablePopup = false;
 
   RxBool isLoadingAddLottery = false.obs;
   RxList promotionList = [].obs;
@@ -165,7 +167,7 @@ class BuyLotteryController extends GetxController {
     );
   }
 
-  bool lotteryIsValid(Lottery lottery) {
+  bool lotteryIsValid(Lottery lottery, [bool isEdit = false]) {
     final buyLotteryConfig = buyLotteryConfigs
         .where(
           (buyLotteryConfig) =>
@@ -173,12 +175,12 @@ class BuyLotteryController extends GetxController {
         )
         .toList();
     logger.d("buyLotteryConfig: $buyLotteryConfig");
-    int total = lottery.amount;
+    int total = lottery.quota;
     final existTransaction = invoiceMeta.value.transactions
-        .where((element) => element.lottery == lottery.lottery)
+        .where((transaction) => transaction.lottery == lottery.lottery)
         .toList();
-    if (existTransaction.isNotEmpty) {
-      total = existTransaction.first.amount + total;
+    if (existTransaction.isNotEmpty && isEdit == false) {
+      total = existTransaction.first.quota + total;
     }
 
     if (buyLotteryConfig.isNotEmpty) {
@@ -200,7 +202,7 @@ class BuyLotteryController extends GetxController {
               details: Text(
                 AppLocale.pleaseBuyMax
                     .getString(Get.context!)
-                    .replaceAll("{max}", "${config.max}"),
+                    .replaceAll("{max}", CommonFn.parseMoney(config.max ?? 0)),
                 style: const TextStyle(
                   color: AppColors.textPrimary,
                 ),
@@ -224,7 +226,7 @@ class BuyLotteryController extends GetxController {
               details: Text(
                 AppLocale.pleaseBuyMin
                     .getString(Get.context!)
-                    .replaceAll("{min}", "${config.min}"),
+                    .replaceAll("{min}", CommonFn.parseMoney(config.min ?? 0)),
                 style: const TextStyle(
                   color: AppColors.textPrimary,
                 ),
@@ -247,8 +249,11 @@ class BuyLotteryController extends GetxController {
       final token = await AppWriteController.to.getCredential();
       logger.d("payload");
       final payload = invoiceMeta.toJson(userApp!.userId);
-      logger.d(payload);
+      logger.w(payload);
+      // TODO: dev
+      // const url = "http://192.168.1.108:3000/api/transaction";
       final response = await dio.post(
+        // url,
         "${AppConst.apiUrl}/transaction",
         data: payload,
         options: Options(
@@ -283,9 +288,9 @@ class BuyLotteryController extends GetxController {
       HomeController.to.getLotteryDate();
       Get.dialog(
         DialogApp(
-          title: const Text(
-            "Error",
-            style: TextStyle(
+          title: Text(
+            AppLocale.somethingWentWrong.getString(Get.context!),
+            style: const TextStyle(
               fontSize: 18,
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w600,
@@ -431,53 +436,48 @@ class BuyLotteryController extends GetxController {
     );
   }
 
-  Future<void> submitAddLottery(
-    String? lottery,
-    int? price, [
+  Future<bool> addLottery(
+    int? price,
+    String? lottery, [
     bool? fromOtherPage,
   ]) async {
-    logger.d("formKey?.currentState: ${formKey?.currentState}");
-    if (userApp == null) {
-      showLoginDialog();
-      return;
+    if (lottery == null || price == null) {
+      alertLotteryEmpty();
+      alertPrice();
+      return false;
     }
-    if (formKey?.currentState != null && formKey!.currentState!.validate()) {
-      if (lottery == null || price == null) {
-        alertLotteryEmpty();
-        alertPrice();
-        return;
-      }
-      if (price % 1000 != 0) {
-        showInvalidPrice();
-        return;
-      }
-      // final isMaxPerTimes = lotteryIsValid(
-      //   Lottery(
-      //     lottery: lottery,
-      //     amount: price,
-      //     lotteryType: lottery.length,
-      //     quota: price,
-      //   ),
-      // );
-      // if (isMaxPerTimes == false) {
-      if (false) {
-        return;
-      }
-      final valid = validateLottery(lottery, price);
-      if (valid) {
-        final lotteryData = Lottery(
-          lottery: lottery,
-          amount: price,
-          lotteryType: lottery.length,
-          quota: price,
-          totalAmount: price,
-        );
-        if (fromOtherPage == true) {
-          String detail =
-              AppLocale.confirmLotteryPurchaseText.getString(Get.context!);
-          detail = detail.replaceAll("{lottery}", lottery);
-          detail = detail.replaceAll("{price}", "$price");
-          Get.dialog(DialogApp(
+    if (price % 1000 != 0) {
+      showInvalidPrice();
+      return false;
+    }
+    final isMaxPerTimes = lotteryIsValid(
+      Lottery(
+        lottery: lottery,
+        amount: price,
+        lotteryType: lottery.length,
+        quota: price,
+      ),
+    );
+    if (isMaxPerTimes == false) {
+      return false;
+    }
+    final valid = validateLottery(lottery, price);
+    if (valid) {
+      final lotteryData = Lottery(
+        lottery: lottery,
+        amount: price,
+        lotteryType: lottery.length,
+        quota: price,
+        totalAmount: price,
+      );
+      if (fromOtherPage == true) {
+        String detail =
+            AppLocale.confirmLotteryPurchaseText.getString(Get.context!);
+        detail = detail.replaceAll("{lottery}", lottery);
+        detail = detail.replaceAll("{price}", CommonFn.parseMoney(price));
+        bool _isSuccess = true;
+        await Get.dialog(
+          DialogApp(
             title: Text(
               AppLocale.confirmLotteryPurchase.getString(Get.context!),
             ),
@@ -486,7 +486,12 @@ class BuyLotteryController extends GetxController {
               // "คุณต้องการซื้อหวยเลข $lottery ในราคา $price กีบ ใช่หรือไม่?",
             ),
             onConfirm: () async {
-              await createTransaction([lotteryData]);
+              final isSuccess = await createTransaction([lotteryData]);
+              logger.w("isSuccess: $isSuccess");
+              if (isSuccess == false) {
+                _isSuccess = false;
+                return;
+              }
               // lotteryNode.requestFocus();
               Get.closeAllSnackbars();
 
@@ -502,13 +507,44 @@ class BuyLotteryController extends GetxController {
                 },
               );
             },
-          ));
-        } else {
-          await createTransaction([lotteryData]);
-          lotteryNode.requestFocus();
-        }
+          ),
+        );
+        return _isSuccess;
+      } else {
+        final isSuccess = await createTransaction([lotteryData]);
+        lotteryNode.requestFocus();
+        return isSuccess;
       }
     }
+    return false;
+  }
+
+  Future<bool> submitFormAddLottery(
+    String? lottery,
+    int? price, [
+    bool? fromOtherPage,
+  ]) async {
+    if (lottery?.length == 1) {
+      Get.dialog(
+        DialogApp(
+          title: Text(
+            AppLocale.pleaseBuyLotteryNumbers.getString(Get.context!),
+          ),
+          disableConfirm: true,
+        ),
+      );
+      return false;
+    }
+    logger.d("formKey?.currentState: ${formKey?.currentState}");
+    if (userApp == null) {
+      showLoginDialog();
+      return false;
+    }
+    if (formKey?.currentState != null && formKey!.currentState!.validate()) {
+      final result = await addLottery(price, lottery, fromOtherPage);
+      return result;
+    }
+    return false;
   }
 
   bool validateLottery(String lottery, int price) {
@@ -738,7 +774,7 @@ class BuyLotteryController extends GetxController {
     return null;
   }
 
-  Future<void> createTransaction(List<Lottery> lotteryList) async {
+  Future<bool> createTransaction(List<Lottery> lotteryList) async {
     // logger.d("run in function");
     // lotteryList.forEach((e) {
     //   logger.w(e.toJson());
@@ -746,11 +782,13 @@ class BuyLotteryController extends GetxController {
     // return;
     if (lotteryList.isEmpty) {
       logger.e("lotteryList isEmpty length:${lotteryList.length}");
-      return;
+      return false;
     }
     if (invoiceMeta.value.invoiceId == null) {
       final lotteryDate = HomeController.to.lotteryDate;
-      if (lotteryDate == null) return;
+      if (lotteryDate == null) {
+        return false;
+      }
       final lotteryDateStr = CommonFn.parseLotteryDateCollection(lotteryDate);
       final amount = CommonFn.calculateTotalPrice(lotteryList);
       final invoicePayload = InvoiceMetaData(
@@ -769,7 +807,7 @@ class BuyLotteryController extends GetxController {
       final responseCreateInvoice = await addTransaction(invoicePayload);
       logger.w(responseCreateInvoice);
       if (responseCreateInvoice == null) {
-        return;
+        return false;
       }
       // handle expire invoice - sawanon:20241022
       final invoiceExpire = responseCreateInvoice['invoice']['expire'];
@@ -825,6 +863,7 @@ class BuyLotteryController extends GetxController {
             ),
           ),
         ));
+        return false;
       }
     } else {
       // update invoice when you have invoice - sawanon:20241022
@@ -838,6 +877,9 @@ class BuyLotteryController extends GetxController {
         if (transaction.isNotEmpty) {
           // update
           transaction.first.quota += lotteryData.quota;
+          transaction.first.amount += lotteryData.amount;
+          transaction.first.totalAmount = (transaction.first.totalAmount ?? 0) +
+              (lotteryData.totalAmount ?? 0);
           logger.w("update: ${lotteryData.quota}");
           lotteryUpdateLise.add(transaction.first);
         } else {
@@ -854,7 +896,7 @@ class BuyLotteryController extends GetxController {
       //   transaction.bonusType = null;
       // }
       // cloneInvoice = calPrePromotion(cloneInvoice);
-      // FIXME: clone all bonus to payload and new invoiceMeta.value !!!
+      // clone all bonus to payload and new invoiceMeta.value !!!
       logger.w(cloneInvoice.toJson(userApp!.userId));
       final List<Lottery> newTransactions = [];
       final List<Lottery> updateTransactions = [];
@@ -886,7 +928,7 @@ class BuyLotteryController extends GetxController {
       final responseUpdateInvoice = await addTransaction(invoicePayload);
       if (responseUpdateInvoice == null) {
         Get.rawSnackbar(message: "add transaction failed");
-        return;
+        return false;
       }
       // if (responseUpdateInvoice == null ||
       //     responseUpdateInvoice['invoice']['status'] == false) {
@@ -962,7 +1004,7 @@ class BuyLotteryController extends GetxController {
         cloneInvoiceForCheckValue.amount += transaction.amount;
         cloneInvoiceForCheckValue.bonus =
             (transaction.bonus ?? 0) + (cloneInvoiceForCheckValue.bonus ?? 0);
-        cloneInvoiceForCheckValue.totalAmount += transaction.quota!;
+        cloneInvoiceForCheckValue.totalAmount += transaction.quota;
       }
       logger.d(cloneInvoiceForCheckValue.toJson(userApp!.userId));
       invoiceMeta.value = cloneInvoiceForCheckValue;
@@ -986,6 +1028,7 @@ class BuyLotteryController extends GetxController {
             ),
           ),
         ));
+        return false;
       }
       // emptyInvoice.quota += transaction.quota;
       // emptyInvoice.discount =
@@ -996,6 +1039,7 @@ class BuyLotteryController extends GetxController {
       // emptyInvoice.totalAmount += transaction.totalAmount!;
     }
     logger.d(invoiceMeta.value.toJson(userApp!.userId));
+    return true;
   }
 
   void buyLotteryByRandom(String lotteryNumber) async {
@@ -1297,7 +1341,6 @@ class BuyLotteryController extends GetxController {
     }
   }
 
-// TODO: get promotion
   Future<void> listPromotions([bool? isRefresh]) async {
     await StorageController.to.removePromotionLater();
     final promotionLater = await StorageController.to.getPromotionLater();
@@ -1320,6 +1363,9 @@ class BuyLotteryController extends GetxController {
       return;
     }
     if (promotionList.isEmpty) return;
+    if (disablePopup) {
+      return;
+    }
     Get.dialog(
       DialogPromotion(
         promotionList: promotionList,
@@ -1399,6 +1445,22 @@ class BuyLotteryController extends GetxController {
     final configByLotteryType = buyLotteryConfig.first;
     this.lottery = lottery;
     onChangePrice(configByLotteryType.min.toString());
+  }
+
+  int getMinPrice(String lottery) {
+    const defaultMinPrice = 1000;
+    lotteryTextController.text = lottery;
+    final buyLotteryConfig = buyLotteryConfigs
+        .where(
+          (buyLotteryConfig) => buyLotteryConfig.lotteryType == lottery.length,
+        )
+        .toList();
+    logger.d(buyLotteryConfig);
+    if (buyLotteryConfig.isEmpty) {
+      return defaultMinPrice;
+    }
+    final configByLotteryType = buyLotteryConfig.first;
+    return configByLotteryType.min ?? defaultMinPrice;
   }
 
   Future<bool> openHoroscope(int index) async {
@@ -1567,12 +1629,14 @@ class BuyLotteryController extends GetxController {
     }
   }
 
-  Future<void> editTransaction(String lottery, int price) async {
+  Future<bool> editTransaction(String lottery, int price) async {
     InvoiceMetaData cloneInvoice = invoiceMeta.value.copyWith();
     final List<Lottery> updateTransactions = [];
     for (var transaction in cloneInvoice.transactions) {
       if (transaction.lottery == lottery) {
         transaction.quota = price;
+        transaction.amount = price;
+        transaction.totalAmount = price;
         updateTransactions.add(transaction);
         break;
       }
@@ -1582,7 +1646,7 @@ class BuyLotteryController extends GetxController {
     final responseUpdateInvoice = await addTransaction(cloneInvoice);
     if (responseUpdateInvoice == null) {
       Get.rawSnackbar(message: "add transaction failed");
-      return;
+      return false;
     }
     final List<Lottery> transactionFailed = [];
     final responseTransactionsList =
@@ -1665,7 +1729,9 @@ class BuyLotteryController extends GetxController {
           ),
         ),
       ));
+      return false;
     }
+    return true;
   }
 
   void editLottery(String lottery, int price) async {
@@ -1687,7 +1753,7 @@ class BuyLotteryController extends GetxController {
             showInvalidPrice();
             return;
           }
-
+          // change only price
           if (newLottery == null) {
             final isMaxPerTimes = lotteryIsValid(
               Lottery(
@@ -1696,6 +1762,7 @@ class BuyLotteryController extends GetxController {
                 lotteryType: lottery.length,
                 quota: newPrice,
               ),
+              true, // edit => true
             );
             if (isMaxPerTimes == false) {
               return;
@@ -1704,7 +1771,10 @@ class BuyLotteryController extends GetxController {
             if (valid == false) {
               return;
             }
-            await editTransaction(lottery, newPrice);
+            final isSuccess = await editTransaction(lottery, newPrice);
+            if (isSuccess == false) {
+              return;
+            }
             Get.back();
           } else {
             final oldLotteryMap = {
@@ -1717,19 +1787,23 @@ class BuyLotteryController extends GetxController {
             };
             logger.d(oldLotteryMap);
             logger.d(newLotteryMap);
-            // return;
-            // await onClickAnimalBuy([oldLotteryMap, newLotteryMap]);
+
+            // add before
+            final isSuccess = await submitFormAddLottery(
+              newLottery,
+              newPrice,
+              false,
+            );
+            if (isSuccess == false) {
+              return;
+            }
+            // remove after
             await removeLottery(Lottery(
               lottery: lottery,
               amount: 0,
               lotteryType: lottery.length,
               quota: 0,
             ));
-            await submitAddLottery(
-              newLottery,
-              newPrice,
-              false,
-            );
             Get.back();
           }
           // onClickAnimalBuy
@@ -1743,6 +1817,10 @@ class BuyLotteryController extends GetxController {
 
   void setInvoice(InvoiceMetaData value) {
     invoiceMeta.value = value;
+  }
+
+  void setDisablePopup(bool value) {
+    disablePopup = value;
   }
 
   @override

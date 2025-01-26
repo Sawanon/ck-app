@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/history/controller/history_win.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
@@ -29,49 +31,49 @@ class HistoryWinPage extends StatelessWidget {
       builder: (controller) {
         return Column(
           children: [
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  margin: EdgeInsets.only(left: 8),
+                  margin: const EdgeInsets.only(left: 8),
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
+                      borderRadius: const BorderRadius.all(Radius.circular(20)),
                       border: Border.all(
                         color: Colors.grey,
                         width: 2,
                       )),
                   width: 135,
                   child: DropdownButton<String>(
-                    padding: EdgeInsets.all(0),
+                    padding: const EdgeInsets.all(0),
                     isExpanded: true,
                     underline: Container(),
                     value: controller.selectedMonth,
-                    borderRadius: BorderRadius.all(
+                    borderRadius: const BorderRadius.all(
                       Radius.circular(20),
                     ),
                     isDense: true,
                     items: controller.lotteryMonthList
                         .map<DropdownMenuItem<String>>((e) {
                       return DropdownMenuItem(
+                        value: e,
                         child: Container(
                           width: 135,
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          margin: EdgeInsets.only(left: 10),
-                          decoration: BoxDecoration(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          margin: const EdgeInsets.only(left: 10),
+                          decoration: const BoxDecoration(
                               // color: Colors.lime,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10))),
                           child: Text(
                             e,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.grey,
                             ),
                           ),
                         ),
-                        value: e,
                       );
                     }).toList(),
                     onChanged: (e) {
@@ -82,7 +84,7 @@ class HistoryWinPage extends StatelessWidget {
                 )
               ],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Expanded(
               // height: MediaQuery.of(context).size.height,
               // decoration: BoxDecoration(color: Colors.black26),
@@ -93,16 +95,22 @@ class HistoryWinPage extends StatelessWidget {
                 },
                 child: Obx(() {
                   return ListView.separated(
-                    padding: EdgeInsets.only(bottom: 8),
+                    padding: const EdgeInsets.only(bottom: 8),
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
                           // TODO: hard code
-                          logger.d(
-                              controller.winInvoice[index]['\$collectionId']);
-                          return;
+                          // logger.d(
+                          //     controller.winInvoice[index]['\$collectionId']);
+                          // return;
+                          final winInvoice = controller.winInvoice[index];
+                          final lotteryDateStr = winInvoice['\$collectionId']
+                              .toString()
+                              .split("_")
+                              .first;
+                          logger.d(lotteryDateStr);
                           controller.openWinDetail(
-                              controller.winInvoice[index]["\$id"], "20240905");
+                              winInvoice["\$id"], lotteryDateStr);
                         },
                         child: Container(
                           padding: EdgeInsets.all(16),
@@ -120,15 +128,17 @@ class HistoryWinPage extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                    'งวดวันที่ ${CommonFn.parseCollectionToDate(controller.winInvoice[index]["\$collectionId"])}',
+                                    '${AppLocale.lotteryDateAt.getString(context)} ${CommonFn.parseCollectionToDate(controller.winInvoice[index]["\$collectionId"])}',
                                   )
                                 ],
                               ),
-                              SizedBox(height: 12),
+                              const SizedBox(height: 12),
                               Builder(builder: (context) {
-                                final winNumber = controller.findWinNumber(
-                                    controller.winInvoice[index]
-                                        ["transactionList"]);
+                                final winInvoice = controller.winInvoice[index];
+                                // $collectionId
+                                final winNumber = controller.findWinLottery(
+                                  winInvoice['\$collectionId'],
+                                );
                                 if (winNumber == null) {
                                   return Container(
                                     child: Text("-"),
@@ -137,7 +147,7 @@ class HistoryWinPage extends StatelessWidget {
                                 return Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: winNumber.split('').map((e) {
+                                  children: winNumber.split('').map((number) {
                                     return Container(
                                       padding: EdgeInsets.all(3),
                                       width: MediaQuery.of(context).size.width /
@@ -170,8 +180,8 @@ class HistoryWinPage extends StatelessWidget {
                                           ),
                                           child: Center(
                                             child: Text(
-                                              e,
-                                              style: TextStyle(
+                                              number,
+                                              style: const TextStyle(
                                                 fontSize: 24,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -225,11 +235,12 @@ class HistoryWinPage extends StatelessWidget {
                                     child: Wrap(
                                       spacing: 8.0,
                                       runSpacing: 6.0,
-                                      // TODO: transaction
                                       children: (controller.winInvoice[index]
                                               ["transactionList"] as List)
                                           .map((transaction) {
                                         return Builder(builder: (context) {
+                                          logger
+                                              .w(controller.winInvoice[index]);
                                           final winNumber =
                                               controller.findWinNumber(
                                                   controller.winInvoice[index]

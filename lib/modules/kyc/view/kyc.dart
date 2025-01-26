@@ -83,11 +83,12 @@ class KYCPage extends StatelessWidget {
                                         ? controller.remark!['gender']
                                             ['message']
                                         : null,
-                                    defaultValue: controller.gender,
+                                    value: controller.prefix,
+                                    // defaultValue: controller.prefix,
                                     disabled: controller.isLoading,
                                     onChange: (preFix) {
                                       logger.d(preFix);
-                                      controller.handleChangeGender(preFix);
+                                      controller.changePrefix(preFix);
                                       return;
                                       controller.gender = preFix.name;
                                     },
@@ -121,11 +122,15 @@ class KYCPage extends StatelessWidget {
                                     ),
                                   ),
                                   InputText(
-                                    isError: controller.remark?['lastName']
-                                            ['status'] ==
-                                        false,
+                                    // isError: controller.remark?['lastName']
+                                    //         ['status'] ==
+                                    //     false,
                                     errorText: controller.remark?['lastName']
-                                        ['message'],
+                                                ['status'] ==
+                                            false
+                                        ? controller.remark!['lastName']
+                                            ['message']
+                                        : null,
                                     controller: controller.lastNameController,
                                     disabled: controller.isLoading,
                                     onChanged: controller.onChangeLastName,

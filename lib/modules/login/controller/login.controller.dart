@@ -24,8 +24,6 @@ class LoginController extends GetxController {
   static LoginController get to => Get.find();
   String phoneNumber = '';
   GlobalKey<FormState> keyForm = GlobalKey();
-  // RxBool disableLogin = true.obs;
-  // TODO: for test only !! - sawanon:20240816
   RxBool disableLogin = true.obs;
   WebViewController? webviewController;
 
@@ -197,36 +195,53 @@ class LoginController extends GetxController {
                       }
                       final data = response.data!;
                       Get.dialog(
-                        DialogOtpComponent(otp: otp),
+                        DialogOtpComponent(otp: data.otp),
                       );
                       otpRef = data.otpRef;
                       return data.otpRef;
                     },
                     whenConfirmOTP: (otp) async {
-                      final session = await AppWriteController.to.createSession(
-                          responseUser['data']["userId"], secret);
-                      if (session == null) {
-                        Get.snackbar(
-                          "Something went wrong login:65",
-                          "session is null Please try again later or plaese contact admin",
-                        );
-                        navigator?.pop();
-                        return;
-                      }
-                      final availableBiometrics =
-                          await CommonFn.availableBiometrics();
-                      if (availableBiometrics) {
-                        Get.toNamed(RouteName.enableBiometrics, arguments: {
+                      //
+                      final result = await AppWriteController.to.confirmOTPUser(
+                          responseUser['data']['userId'], otp, otpRef!);
+                      logger.d(result);
+                      if (result == null) return;
+                      final secret = result['data']['secret'];
+                      Get.toNamed(
+                        RouteName.changePasscode,
+                        arguments: {
+                          "userId": responseUser['data']['userId'],
                           "whenSuccess": () async {
+                            final session = await AppWriteController.to
+                                .createSession(
+                                    responseUser['data']["userId"], secret);
+                            if (session == null) {
+                              Get.snackbar(
+                                "Something went wrong login:65",
+                                "session is null Please try again later or plaese contact admin",
+                              );
+                              // navigator?.pop();
+                              return;
+                            }
+                            final availableBiometrics =
+                                await CommonFn.availableBiometrics();
+                            if (availableBiometrics) {
+                              Get.toNamed(RouteName.enableBiometrics,
+                                  arguments: {
+                                    "whenSuccess": () async {
+                                      LayoutController.to.intialApp();
+                                      Get.offAllNamed(RouteName.layout);
+                                      return;
+                                    }
+                                  });
+                              return;
+                            }
                             LayoutController.to.intialApp();
                             Get.offAllNamed(RouteName.layout);
-                            return;
                           }
-                        });
-                        return;
-                      }
-                      LayoutController.to.intialApp();
-                      Get.offAllNamed(RouteName.layout);
+                        },
+                      );
+                      //
                     },
                   ),
                 );
@@ -239,7 +254,7 @@ class LoginController extends GetxController {
                     "Something went wrong login:65",
                     "session is null Please try again later or plaese contact admin",
                   );
-                  navigator?.pop();
+                  // navigator?.pop();
                   return;
                 }
                 final availableBiometrics =

@@ -5,18 +5,15 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/long_button.dart';
-import 'package:lottery_ck/components/pay_by_point_component.dart';
 import 'package:lottery_ck/components/point_icon.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
-import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
-import 'package:lottery_ck/utils/theme.dart';
 
 class PayMentPage extends StatelessWidget {
   const PayMentPage({super.key});
@@ -69,7 +66,7 @@ class PayMentPage extends StatelessWidget {
                         color: backgroundColor,
                       ),
                       child: Text(
-                        "ໃບເກັບເງິນນີ້ໝົດອາຍຸໃນ ${BuyLotteryController.to.invoiceRemainExpireStr.value}",
+                        "${AppLocale.thisInvoiceExpiresOn.getString(context)} ${BuyLotteryController.to.invoiceRemainExpireStr.value}",
                         style: TextStyle(
                           color: textColor,
                         ),
@@ -95,12 +92,9 @@ class PayMentPage extends StatelessWidget {
                             color: Colors.white,
                           ),
                           child: Builder(builder: (context) {
-                            final isHasBonus = BuyLotteryController
-                                    .to.invoiceMeta.value.bonus !=
-                                null;
                             return Table(
                               // border: TableBorder.all(color: Colors.blue),
-                              columnWidths: {
+                              columnWidths: const {
                                 0: FlexColumnWidth(50),
                                 1: FlexColumnWidth(50),
                                 // 2: FlexColumnWidth(25),
@@ -222,7 +216,7 @@ class PayMentPage extends StatelessWidget {
                                             .to.invoiceMeta.value.discount !=
                                         0)
                                   TableRow(
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       border: Border(
                                         top: BorderSide(
                                           width: 1,
@@ -341,18 +335,117 @@ class PayMentPage extends StatelessWidget {
                           }),
                         ),
                         const SizedBox(height: 8),
+                        Obx(() {
+                          return GestureDetector(
+                            onTap: () {
+                              final invoice =
+                                  BuyLotteryController.to.invoiceMeta.value;
+                              if (invoice.couponIds?.isNotEmpty == true) {
+                                controller.showCouponDetail(context);
+                                return;
+                              }
+                              controller.gotoCouponPage();
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.only(
+                                top: 16,
+                                left: 16,
+                                right: 16,
+                                bottom: 16,
+                              ),
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      AppLocale.coupon.getString(context),
+                                    ),
+                                  ),
+                                  if (BuyLotteryController.to.invoiceMeta.value
+                                          .couponResponse?.status ==
+                                      false) ...[
+                                    const Icon(
+                                      Icons.info,
+                                      color: Colors.red,
+                                    ),
+                                    const SizedBox(width: 4),
+                                  ],
+                                  Builder(builder: (context) {
+                                    final invoice = BuyLotteryController
+                                        .to.invoiceMeta.value;
+                                    final List<String> selectedCoupons = [];
+                                    if (invoice.couponIds != null &&
+                                        controller.couponsList.isNotEmpty) {
+                                      for (var selectedCoupon
+                                          in invoice.couponIds!) {
+                                        final couponDetail = controller
+                                            .couponsList
+                                            .firstWhere((coupon) {
+                                          return coupon.couponId ==
+                                              selectedCoupon;
+                                        });
+                                        selectedCoupons.add(
+                                            couponDetail.promotion!['name']);
+                                      }
+                                    }
+                                    return Text(
+                                      selectedCoupons.isEmpty
+                                          ? AppLocale.useCoupon
+                                              .getString(context)
+                                          : selectedCoupons.join(","),
+                                      style: TextStyle(
+                                        color: selectedCoupons.isEmpty
+                                            ? AppColors.disableText
+                                            : AppColors.textPrimary,
+                                      ),
+                                    );
+                                  }),
+                                  Builder(builder: (context) {
+                                    final invoice = BuyLotteryController
+                                        .to.invoiceMeta.value;
+                                    if (invoice.couponIds?.isNotEmpty == true) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          controller
+                                              .showRemoveCouponModal(context);
+                                        },
+                                        child: SizedBox(
+                                          width: 24,
+                                          height: 24,
+                                          child: SvgPicture.asset(
+                                            AppIcon.x,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    return SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: SvgPicture.asset(
+                                        AppIcon.arrowRight,
+                                      ),
+                                    );
+                                  })
+                                ],
+                              ),
+                            ),
+                          );
+                        }),
+                        const SizedBox(height: 8),
                         GestureDetector(
                           onTap: () {
                             controller.showBottomModalPoint(context);
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                               vertical: 8,
                               horizontal: 16,
                             ),
                             // margin:
                             //     const EdgeInsets.symmetric(horizontal: 16.0),
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.white,
                               // borderRadius: BorderRadius.circular(12),
                             ),
@@ -374,7 +467,7 @@ class PayMentPage extends StatelessWidget {
                                       controller.point == null
                                           ? AppLocale.pleaseEnterPointsWantUse
                                               .getString(context)
-                                          : "${controller.point} ${AppLocale.point.getString(context)}",
+                                          : "${CommonFn.parseMoney(controller.point ?? 0)} ${AppLocale.point.getString(context)}",
                                       style: TextStyle(
                                         fontWeight: FontWeight.w500,
                                         fontSize: 14,
@@ -399,68 +492,6 @@ class PayMentPage extends StatelessWidget {
                         const SizedBox(height: 8),
                         GestureDetector(
                           onTap: () {
-                            controller.gotoCouponPage();
-                          },
-                          child: Container(
-                            padding: EdgeInsets.only(
-                              top: 16,
-                              left: 16,
-                              right: 16,
-                              bottom: 16,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                            ),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    AppLocale.coupon.getString(context),
-                                  ),
-                                ),
-                                Obx(() {
-                                  final invoice =
-                                      BuyLotteryController.to.invoiceMeta.value;
-                                  final List<String> selectedCoupons = [];
-                                  if (invoice.couponIds != null &&
-                                      controller.couponsList.isNotEmpty) {
-                                    for (var selectedCoupon
-                                        in invoice.couponIds!) {
-                                      final couponDetail = controller
-                                          .couponsList
-                                          .firstWhere((coupon) {
-                                        return coupon.couponId ==
-                                            selectedCoupon;
-                                      });
-                                      selectedCoupons
-                                          .add(couponDetail.promotion!['name']);
-                                    }
-                                  }
-                                  return Text(
-                                    selectedCoupons.isEmpty
-                                        ? AppLocale.useCoupon.getString(context)
-                                        : selectedCoupons.join(","),
-                                    style: TextStyle(
-                                      color: selectedCoupons.isEmpty
-                                          ? AppColors.disableText
-                                          : AppColors.textPrimary,
-                                    ),
-                                  );
-                                }),
-                                SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: SvgPicture.asset(
-                                    AppIcon.arrowRight,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        GestureDetector(
-                          onTap: () {
                             controller.gotoSelectPaymentMethod();
                           },
                           child: Container(
@@ -470,7 +501,7 @@ class PayMentPage extends StatelessWidget {
                               top: 8,
                               bottom: 12,
                             ),
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Colors.white,
                             ),
                             child: Column(
@@ -479,7 +510,7 @@ class PayMentPage extends StatelessWidget {
                               children: [
                                 Text(
                                   AppLocale.paymentMethod.getString(context),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -497,7 +528,7 @@ class PayMentPage extends StatelessWidget {
                                               AppLocale
                                                   .pleaseSelectPaymentMethod
                                                   .getString(context),
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 color: AppColors.disableText,
                                               ),
                                             ),
@@ -516,6 +547,14 @@ class PayMentPage extends StatelessWidget {
                                                 Text(
                                                   selectedBank.fullName,
                                                 ),
+                                                if (controller.disableBank(
+                                                    selectedBank)) ...[
+                                                  const SizedBox(width: 8),
+                                                  const Icon(
+                                                    Icons.info,
+                                                    color: Colors.red,
+                                                  ),
+                                                ]
                                               ],
                                             ),
                                           );
@@ -542,7 +581,7 @@ class PayMentPage extends StatelessWidget {
                             right: 18,
                             bottom: 8,
                           ),
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: Colors.white,
                           ),
                           child: Obx(() {
@@ -550,6 +589,8 @@ class PayMentPage extends StatelessWidget {
                                 BuyLotteryController.to.invoiceMeta.value;
                             final amount =
                                 invoice.amount - (controller.point ?? 0);
+                            logger.w(invoice
+                                .toJson(SettingController.to.user!.userId));
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
@@ -569,14 +610,14 @@ class PayMentPage extends StatelessWidget {
                                       child: Text(
                                         AppLocale.totalPayment
                                             .getString(context),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: AppColors.textPrimary,
                                         ),
                                       ),
                                     ),
                                     Text(
                                       "${CommonFn.parseMoney(BuyLotteryController.to.invoiceMeta.value.quota)} ${AppLocale.lak.getString(context)}",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: AppColors.textPrimary,
                                       ),
                                     ),
@@ -590,14 +631,14 @@ class PayMentPage extends StatelessWidget {
                                         child: Text(
                                           AppLocale.pointDiscount
                                               .getString(context),
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.red,
                                           ),
                                         ),
                                       ),
                                       Text(
-                                        "-${controller.point ?? "0"} ${AppLocale.lak.getString(context)}",
-                                        style: TextStyle(
+                                        "-${CommonFn.parseMoney(controller.point ?? 0)} ${AppLocale.lak.getString(context)}",
+                                        style: const TextStyle(
                                           color: Colors.red,
                                         ),
                                       ),
@@ -612,14 +653,14 @@ class PayMentPage extends StatelessWidget {
                                       Expanded(
                                         child: Text(
                                           AppLocale.discount.getString(context),
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.red,
                                           ),
                                         ),
                                       ),
                                       Text(
-                                        "-${invoice.discount} ${AppLocale.lak.getString(context)}",
-                                        style: TextStyle(
+                                        "-${CommonFn.parseMoney(invoice.discount ?? 0)} ${AppLocale.lak.getString(context)}",
+                                        style: const TextStyle(
                                           color: Colors.red,
                                         ),
                                       ),
@@ -639,7 +680,7 @@ class PayMentPage extends StatelessWidget {
                                             Text(
                                               AppLocale.bonus
                                                   .getString(context),
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                 color: Colors.green,
                                               ),
                                             ),
@@ -649,7 +690,7 @@ class PayMentPage extends StatelessWidget {
                                                 controller
                                                     .showBonusDetail(context);
                                               },
-                                              child: Icon(
+                                              child: const Icon(
                                                 Icons.info_outline_rounded,
                                                 color: Colors.green,
                                               ),
@@ -658,8 +699,8 @@ class PayMentPage extends StatelessWidget {
                                         ),
                                       ),
                                       Text(
-                                        "+${invoice.bonus} ${AppLocale.lak.getString(context)}",
-                                        style: TextStyle(
+                                        "+${CommonFn.parseMoney(invoice.bonus ?? 0)} ${AppLocale.lak.getString(context)}",
+                                        style: const TextStyle(
                                           color: Colors.green,
                                         ),
                                       ),
@@ -667,7 +708,7 @@ class PayMentPage extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 8),
                                 ],
-                                Divider(
+                                const Divider(
                                   color: AppColors.disable,
                                   thickness: 1,
                                 ),
@@ -677,14 +718,14 @@ class PayMentPage extends StatelessWidget {
                                       child: Text(
                                         AppLocale.totalOrderAmount
                                             .getString(context),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ),
                                     Text(
                                       "${CommonFn.parseMoney(amount)} ${AppLocale.lak.getString(context)}",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
@@ -694,6 +735,63 @@ class PayMentPage extends StatelessWidget {
                               ],
                             );
                           }),
+                        ),
+                        const SizedBox(height: 8),
+                        Obx(
+                          () {
+                            final invoice =
+                                BuyLotteryController.to.invoiceMeta.value;
+                            if (invoice.receivePoint != null &&
+                                invoice.receivePoint != 0) {
+                              return Container(
+                                padding: const EdgeInsets.only(
+                                  top: 8,
+                                  left: 16,
+                                  right: 18,
+                                  bottom: 8,
+                                ),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      AppLocale.pointsToBeReceived
+                                          .getString(context),
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          AppLocale.couponApplied
+                                              .getString(context)
+                                              .getString(context),
+                                          style: const TextStyle(
+                                            color: AppColors.textPrimary,
+                                          ),
+                                        ),
+                                        Text(
+                                          "+${CommonFn.parseMoney(invoice.receivePoint ?? 0)} ${AppLocale.point.getString(context)}",
+                                          style: const TextStyle(
+                                            color: Colors.green,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                            return const SizedBox.shrink();
+                          },
                         ),
                       ],
                     ),
@@ -721,7 +819,7 @@ class PayMentPage extends StatelessWidget {
                               Text(
                                 AppLocale.totalOrderAmount.getString(context),
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: 4),
                               Builder(builder: (context) {
                                 int amount = BuyLotteryController
                                     .to.invoiceMeta.value.amount;
@@ -735,7 +833,7 @@ class PayMentPage extends StatelessWidget {
                                       invoice.amount - (controller.point ?? 0);
                                   return Text(
                                     "${CommonFn.parseMoney(amount)} ${AppLocale.lak.getString(context)}",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       color: AppColors.primary,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w700,
@@ -743,17 +841,36 @@ class PayMentPage extends StatelessWidget {
                                   );
                                 });
                               }),
+                              Obx(
+                                () {
+                                  final invoice =
+                                      BuyLotteryController.to.invoiceMeta.value;
+                                  return Text(
+                                    "+${CommonFn.parseMoney(invoice.receivePoint ?? 0)} ${AppLocale.point.getString(context)}",
+                                    style: const TextStyle(
+                                      color: Colors.green,
+                                      fontSize: 12,
+                                    ),
+                                  );
+                                },
+                              ),
                             ],
                           ),
                         ),
                         Obx(() {
                           final invoiceRemainExpireStr = BuyLotteryController
                               .to.invoiceRemainExpireStr.value;
+                          bool disableBank = false;
+                          if (controller.selectedBank != null) {
+                            disableBank = controller
+                                .disableBank(controller.selectedBank!);
+                          }
                           return LongButton(
-                            minimumSize: Size(100, 48),
-                            maximumSize: Size(110, 48),
+                            minimumSize: const Size(100, 48),
+                            maximumSize: const Size(110, 48),
                             disabled: !controller.enablePay ||
-                                invoiceRemainExpireStr == "",
+                                invoiceRemainExpireStr == "" ||
+                                disableBank,
                             onPressed: () {
                               if (controller.selectedBank == null) {
                                 return;
@@ -765,7 +882,7 @@ class PayMentPage extends StatelessWidget {
                             },
                             child: Text(
                               AppLocale.pay.getString(context),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
                               ),

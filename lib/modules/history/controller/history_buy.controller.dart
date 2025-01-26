@@ -110,7 +110,6 @@ class HistoryBuyController extends GetxController {
   }
 
   void makeBillDialog(BuildContext context, History history) async {
-    // TODO: creaet loading
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -146,7 +145,7 @@ class HistoryBuyController extends GetxController {
       lotteryList: transactionList,
       totalAmount: history.totalAmount.toString(),
       amount: history.amount,
-      billId: history.billId ?? "-",
+      billId: history.billNumber ?? "-",
       bankName: bank?.fullName ?? "-",
       customerId: userApp!.customerId!,
       point: history.point,

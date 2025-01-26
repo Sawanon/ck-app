@@ -39,8 +39,9 @@ class BankPage extends StatelessWidget {
                           : true;
                       int? minimumPrice;
                       if (bank.name.toLowerCase() == "mmoney") {
-                        final totalAmount = BuyLotteryController
-                            .to.invoiceMeta.value.totalAmount;
+                        final totalAmount =
+                            BuyLotteryController.to.invoiceMeta.value.amount -
+                                (controller.point ?? 0);
                         minimumPrice = 1000;
                         logger.d(totalAmount);
                         logger.d(minimumPrice);

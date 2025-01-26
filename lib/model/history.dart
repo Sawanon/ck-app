@@ -12,6 +12,7 @@ class History {
   String? bankId;
   String status;
   String? billId;
+  String? billNumber;
   int? point;
   int? pointMoney;
 
@@ -24,6 +25,7 @@ class History {
     this.bankId,
     required this.status,
     this.billId,
+    this.billNumber,
     this.point,
     this.pointMoney,
   }) {
@@ -41,6 +43,7 @@ class History {
       bankId: json['bankId'],
       status: json['status'],
       billId: json['billId'],
+      billNumber: json['billNumber'],
       point: json['point'],
       pointMoney: json['pointMoney'],
     );
@@ -64,6 +67,7 @@ class History {
         "bankId": bankId,
         "status": status,
         "billId": billId,
+        "billNumber": billNumber,
         "point": point,
         "pointMoney": pointMoney,
         "amount": amount,

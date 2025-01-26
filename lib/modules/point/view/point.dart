@@ -247,8 +247,11 @@ class PointPage extends StatelessWidget {
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.symmetric(vertical: 16),
-                                width: MediaQuery.of(context).size.width * 0.4,
+                                padding: const EdgeInsets.only(
+                                  top: 16,
+                                  bottom: 16,
+                                ),
+                                width: MediaQuery.of(context).size.width * 0.5,
                                 alignment: Alignment.center,
                                 child: Text(
                                   controller.renderType(
@@ -266,11 +269,12 @@ class PointPage extends StatelessWidget {
                               //   child: Text(pointTransaction.value ?? "-"),
                               // ),
                               Container(
-                                padding: EdgeInsets.symmetric(vertical: 16),
-                                width: MediaQuery.of(context).size.width * 0.4,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                width: MediaQuery.of(context).size.width * 0.3,
                                 alignment: Alignment.center,
                                 child: Text(
-                                  "${pointTransaction.point}",
+                                  CommonFn.parseMoney(pointTransaction.point),
                                   style: const TextStyle(
                                     fontSize: 12,
                                   ),

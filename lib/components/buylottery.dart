@@ -150,7 +150,7 @@ class BuylotteryComponent extends StatelessWidget {
                             if (controller.disabledBuy.value) {
                               return;
                             }
-                            controller.submitAddLottery(
+                            controller.submitFormAddLottery(
                               controller.lottery,
                               controller.price,
                               true,

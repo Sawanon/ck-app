@@ -73,7 +73,7 @@ class NotificationList extends StatelessWidget {
                       if (notification.link == null) {
                         return;
                       }
-                      controller.onClickNotification(notification.link!);
+                      controller.onClickNotification(notification);
                     },
                     child: Container(
                       padding: EdgeInsets.only(
@@ -83,7 +83,9 @@ class NotificationList extends StatelessWidget {
                         right: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: notification.isRead
+                            ? Colors.white
+                            : AppColors.primaryOpacity,
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(

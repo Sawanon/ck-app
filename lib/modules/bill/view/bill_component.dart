@@ -1,5 +1,7 @@
+import 'package:barcode/barcode.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:lottery_ck/model/bill.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -36,7 +38,7 @@ class BillComponent extends StatelessWidget {
             child: Text(
               '${AppLocale.titleBill.getString(context)} CK GROUP',
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 13,
                 color: AppColors.secodaryText,
               ),
             ),
@@ -222,7 +224,9 @@ class BillComponent extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(lottery.lottery),
-                      Text(CommonFn.parseMoney(lottery.quota)),
+                      Text(
+                        "${CommonFn.parseMoney(lottery.quota)} ${AppLocale.lak.getString(context)}",
+                      ),
                     ],
                   ),
                 );
@@ -247,10 +251,8 @@ class BillComponent extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(AppLocale.discount.getString(context)),
-                Text(CommonFn.parseMoney(bill.lotteryList.fold(
-                    0,
-                    (prev, transaction) =>
-                        prev + (transaction.discount ?? 0)))),
+                Text(
+                    "${CommonFn.parseMoney(bill.lotteryList.fold(0, (prev, transaction) => prev + (transaction.discount ?? 0)))} ${AppLocale.lak.getString(context)}"),
               ],
             ),
             const SizedBox(height: 8),
@@ -276,7 +278,7 @@ class BillComponent extends StatelessWidget {
                 Builder(builder: (context) {
                   final pointMonney = bill.pointMoney ?? 0;
                   return Text(
-                    CommonFn.parseMoney(bill.amount - pointMonney),
+                    "${CommonFn.parseMoney(bill.amount - pointMonney)} ${AppLocale.lak.getString(context)}",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
                       color: AppColors.primary,
@@ -307,6 +309,19 @@ class BillComponent extends StatelessWidget {
               fontSize: 12,
             ),
           ),
+          const SizedBox(height: 8),
+          Builder(
+            builder: (context) {
+              return SvgPicture.string(
+                CommonFn.generateBarcodeImage(
+                  Barcode.code128(),
+                  bill.billId,
+                  MediaQuery.of(context).size.width,
+                  100,
+                ),
+              );
+            },
+          )
         ],
       ),
     );

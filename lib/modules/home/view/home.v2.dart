@@ -14,7 +14,10 @@ import 'package:lottery_ck/components/input_text.dart';
 import 'package:lottery_ck/components/menu_card.dart';
 import 'package:lottery_ck/components/menu_grid.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
+import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
+import 'package:lottery_ck/modules/splash_screen/controller/splash_screen.controller.dart';
+import 'package:lottery_ck/modules/wallpaper/view/fake.wallpaper.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
@@ -418,7 +421,6 @@ class HomePageV2 extends StatelessWidget {
                                                             )
                                                           else
                                                             Text(
-                                                              // TODO: continute dev share friend
                                                               "${controller.myFriends!.total}/${controller.myFriends!.accepted}",
                                                               style: TextStyle(
                                                                 fontSize: 13,
@@ -1041,22 +1043,60 @@ class HomePageV2 extends StatelessWidget {
                           onTap: () {
                             controller.gotoNotification();
                           },
-                          child: SizedBox(
-                            width: 22,
-                            height: 22,
-                            child: SvgPicture.asset(
-                              AppIcon.notification,
-                              colorFilter: const ColorFilter.mode(
-                                Colors.white,
-                                BlendMode.srcIn,
-                              ),
+                          child: Container(
+                            alignment: Alignment.center,
+                            // decoration: BoxDecoration(
+                            //   color: Colors.red,
+                            // ),
+                            child: Stack(
+                              children: [
+                                SizedBox(
+                                  width: 22,
+                                  height: 22,
+                                  child: SvgPicture.asset(
+                                    AppIcon.notification,
+                                    colorFilter: const ColorFilter.mode(
+                                      Colors.white,
+                                      BlendMode.srcIn,
+                                    ),
+                                  ),
+                                ),
+                                Obx(
+                                  () {
+                                    final isUnReadNotification =
+                                        NotificationController
+                                            .to.notificationList.value
+                                            .where(
+                                      (notification) {
+                                        return notification.isRead == false;
+                                      },
+                                    );
+                                    if (isUnReadNotification.isNotEmpty) {
+                                      return Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: Container(
+                                          width: 8,
+                                          height: 8,
+                                          decoration: const BoxDecoration(
+                                            color: Colors.red,
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                    return const SizedBox.shrink();
+                                  },
+                                ),
+                              ],
                             ),
                           ),
                         ),
                         const SizedBox(width: 8),
                         GestureDetector(
-                          onTap: () {
-                            Get.toNamed(RouteName.setting);
+                          onTap: () async {
+                            controller.gotoSetting();
+                            // Get.to(() => const FakeWallpaper());
                           },
                           child: SizedBox(
                             width: 22,

@@ -164,7 +164,6 @@ class MonneyConfirmOTPController extends GetxController {
         payload['point'] = point;
       }
       logger.w(payload);
-      // TODO:
       final response = await dio.post(
         "${AppConst.apiUrl}/payment",
         data: payload,

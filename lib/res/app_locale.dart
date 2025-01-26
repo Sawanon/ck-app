@@ -20,7 +20,7 @@ mixin AppLocale {
   static const String confirm = 'ຢືນຢັນ';
   static const String totalAmountForPay = 'ລວມຈໍານວນເງິນທີ່ຕ້ອງຊໍາລະ';
   static const String pay = 'ຈ່າຍ';
-  static const String titleBill = 'ກະຊວງການເງິນ ຫວຍພັດທະນາ ຈັດຈໍາໜ່າຍໂດຍ';
+  static const String titleBill = 'ກະຊວງການເງິນ | ຫວຍພັດທະນາ | ຈັດຈໍາໜ່າຍໂດຍ';
   static const String buyerName = 'ຊື່ຜູ້ຊື້';
   static const String date = 'ວັນທີ';
   static const String buyHistory = 'ປະຫວັດການຊື້';
@@ -37,7 +37,7 @@ mixin AppLocale {
   static const String quotaExceeded = 'ໂຄຕ້າເລກ {lottery} ເຕັມແລ້ວ';
   static const String promotionExpire = 'ໝົດອາຍຸ';
   static const String random = 'ສຸ່ມ';
-  static const String someLotteryQuotaExceeded = 'ເກີນໂຄຕ້າຫວຍຈຳນວນໜຶ່ງ';
+  static const String someLotteryQuotaExceeded = 'ຫວຍບາງລາຍການເກີນໂຄຕ້າ';
   static const String pleaseBuyLessOrAnotherLottery =
       'ກະລຸນາຊື້ໜ້ອຍລົງ ຫຼືຊື້ເລກຫວຍອື່ນ.';
   static const String translate = 'ປ່ຽນພາສາ';
@@ -301,6 +301,49 @@ mixin AppLocale {
       "ກຳລັງກວດສອບການຢັ້ງຢືນຕົວຕົນ";
   static const String yourIdentityVerificationHasBeenRejected =
       "ການຢັ້ງຢືນຕົວຕົນຂອງທ່ານໄດ້ຖືກປະຕິເສດ";
+  static const String passcodeChangedSuccessfully = "ປ່ຽນ Passcode ສຳເລັດແລ້ວ";
+  static const String profilePictureChangedSuccessfully =
+      "ປ່ຽນຮູບໂປຣໄຟລ໌ສຳເລັດແລ້ວ";
+  static const String userNotFound = "ບໍ່ພົບຜູ້ໃຊ້";
+  static const String yourReferralCodeIsEmpty =
+      "ລະຫັດການອ້າງອີງຂອງທ່ານຫວ່າງເປົ່າ";
+  static const String pleaseContactUserService = "ກະລຸນາຕິດຕໍ່ບໍລິການຜູ້ໃຊ້";
+  static const String youAreNowFriends = "ດຽວນີ້ເຈົ້າເປັນໝູ່ກັນແລ້ວ";
+  static const String youAreBecomingFriendsWith = "ເຈົ້າກໍາລັງກາຍເປັນເພື່ອນກັບ";
+  static const String successfullyChangedPhoneNumber =
+      "ປ່ຽນເບີໂທລະສັບສຳເລັດແລ້ວ";
+  static const String pleaseBuyLotteryNumbers = "ກະລຸນາຊື້ຫວຍ 2-6 ໂຕ";
+  static const String collectedTheCoupon = "ເກັບຄູປ໋ອງແລ້ວ";
+  static const String youHaveUsedPoints = "ທ່ານໄດ້ໃຊ້ {point} ຄະແນນ";
+  static const String youCannotUseYourOwnQRCode =
+      "ທ່ານບໍ່ສາມາດໃຊ້ QR code ຂອງທ່ານເອງ";
+  static const String pointsFromFriendsPurchases =
+      "ຄະແນນຈາກການຊື້ຂອງຫມູ່ເພື່ອນ";
+  static const String invalidPaymentMethod = "ວິທີການຈ່າຍເງິນບໍ່ຖືກຕ້ອງ";
+  static const String removeThisCoupon = "ເອົາຄູປ໋ອງນີ້ອອກບໍ?";
+  static const String noProblemWeKeepThisCouponForYouLater =
+      "ບໍ່ມີບັນຫາ ພວກເຮົາຈະເກັບຄູປ໋ອງນີ້ໄວ້ໃຫ້ທ່ານໃນພາຍຫຼັງ";
+  static const String removeCoupon = "ເອົາຄູປ໋ອງອອກ";
+  static const String keepUsing = "ສືບຕໍ່ໃຊ້";
+  static const String pointsToBeReceived = "ຄະແນນທີ່ຈະໄດ້ຮັບ";
+  static const String couponApplied = "ນຳໃຊ້ຄູປ໋ອງແລ້ວ";
+  static const String confirmCode = "ຢືນຢັນລະຫັດ";
+  static const String pleaseEnterThe6Digit =
+      "ກະລຸນາຕື່ມລະຫັດ 6 ຫຼັກ ທີ່ໄດ້ຮັບຈາກ SMS ທີ່ສົ່ງໄປຍັງເບີ";
+  static const String resendOTP = "ສົ່ງ OTP ອີກຄັ້ງ";
+  static const String youDontHaveCoupon = "ເຈົ້າຍັງບໍ່ມີຄູປ໋ອງເທື່ອ";
+  static const String areYouSureYouWantExitApp =
+      "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການອອກຈາກແອັບ";
+  static const String biometricsAreDisabled = "Biometrics ຖືກປິດໃຊ້ງານ";
+  static const String biometricsAreDisabledDetail =
+      'Biometrics ຖືກປິດໃຊ້ງານ, ກະລຸນາເປີດໃຊ້ມັນຢູ່ໃນ "ການຕັ້ງຄ່າ -> ຄວາມປອດໄພ"';
+  static const String downloadCompletedSuccessfully = "ດາວໂຫຼດສຳເລັດແລ້ວ";
+  static const String theFileIsSavedIn = "ໄຟລ໌ຖືກບັນທຶກໄວ້ໃນອາລະບໍາ";
+  static const String downloadFile = "ດາວໂຫຼດໄຟລ໌";
+  static const String youAreTheLuckyOneAndHaveWonPrize =
+      "ເຈົ້າເປັນຜູ້ໂຊກດີ ແລະໄດ້ຮັບລາງວັນ";
+  static const String validUntil = "ໃຊ້ໄດ້ເຖິງ";
+  static const String used = "ໃຊ້ແລ້ວ";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -324,7 +367,7 @@ mixin AppLocale {
     confirm: 'ຢືນຢັນ',
     totalAmountForPay: 'ລວມຈໍານວນເງິນທີ່ຕ້ອງຊໍາລະ',
     pay: 'ຈ່າຍ',
-    titleBill: 'ກະຊວງການເງິນ ຫວຍພັດທະນາ ຈັດຈໍາໜ່າຍໂດຍ',
+    titleBill: 'ກະຊວງການເງິນ | ຫວຍພັດທະນາ | ຈັດຈໍາໜ່າຍໂດຍ',
     buyerName: 'ຊື່ຜູ້ຊື້',
     date: 'ວັນທີ',
     buyHistory: 'ປະຫວັດການຊື້',
@@ -340,7 +383,7 @@ mixin AppLocale {
     quotaExceeded: 'ໂຄຕ້າເລກ {lottery} ເຕັມແລ້ວ',
     promotionExpire: 'ໝົດອາຍຸ',
     random: 'ສຸ່ມ',
-    someLotteryQuotaExceeded: 'ເກີນໂຄຕ້າຫວຍຈຳນວນໜຶ່ງ',
+    someLotteryQuotaExceeded: 'ຫວຍບາງລາຍການເກີນໂຄຕ້າ',
     pleaseBuyLessOrAnotherLottery: 'ກະລຸນາຊື້ໜ້ອຍລົງ ຫຼືຊື້ເລກຫວຍອື່ນ.',
     translate: 'ປ່ຽນພາສາ',
     amountNotCorrect: 'ຈຳນວນບໍ່ຖືກຕ້ອງ',
@@ -475,7 +518,7 @@ mixin AppLocale {
     deleteAll: "ລຶບທັງໝົດ",
     areYouSureYouWantToDeleteAllLottery:
         "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບລາຍການຫວຍທັງໝົດ?",
-    thisInvoiceExpiresOn: "ໃບເກັບເງິນນີ້ໝົດອາຍຸໃນ",
+    thisInvoiceExpiresOn: "ໃບບິນເງິນນີ້ໝົດອາຍຸໃນ",
     identityVerificationRequired: "ຕ້ອງການການຢັ້ງຢືນຕົວຕົນ",
     collectCoupons: "ເກັບກໍາຄູປ໋ອງ",
     expiresIn: "ໝົດອາຍຸໃນ",
@@ -556,7 +599,7 @@ mixin AppLocale {
     returnToTheHomepage: "ກັບໄປທີ່ຫນ້າທໍາອິດ",
     time: "ເວລາ",
     lotteryDate: "ງວດ",
-    dateOfIssue: "ອອກວັນທີี่",
+    dateOfIssue: "ອອກວັນທີ",
     billPurchaseNumber: "ເລກທີຊື້",
     billId: "ເລກທີບິນຫວຍ",
     paidBy: "ຊໍາລະໂດຍ",
@@ -576,6 +619,42 @@ mixin AppLocale {
     identityVerificationIsUnderReview: "ກຳລັງກວດສອບການຢັ້ງຢືນຕົວຕົນ",
     yourIdentityVerificationHasBeenRejected:
         "ການຢັ້ງຢືນຕົວຕົນຂອງທ່ານໄດ້ຖືກປະຕິເສດ",
+    passcodeChangedSuccessfully: "ປ່ຽນ Passcode ສຳເລັດແລ້ວ",
+    profilePictureChangedSuccessfully: "ປ່ຽນຮູບໂປຣໄຟລ໌ສຳເລັດແລ້ວ",
+    userNotFound: "ບໍ່ພົບຜູ້ໃຊ້",
+    yourReferralCodeIsEmpty: "ລະຫັດການອ້າງອີງຂອງທ່ານຫວ່າງເປົ່າ",
+    pleaseContactUserService: "ກະລຸນາຕິດຕໍ່ບໍລິການຜູ້ໃຊ້",
+    youAreNowFriends: "ດຽວນີ້ເຈົ້າເປັນໝູ່ກັນແລ້ວ",
+    youAreBecomingFriendsWith: "ເຈົ້າກໍາລັງກາຍເປັນເພື່ອນກັບ",
+    successfullyChangedPhoneNumber: "ປ່ຽນເບີໂທລະສັບສຳເລັດແລ້ວ",
+    pleaseBuyLotteryNumbers: "ກະລຸນາຊື້ຫວຍ 2-6 ໂຕ",
+    collectedTheCoupon: "ເກັບຄູປ໋ອງແລ້ວ",
+    youHaveUsedPoints: "ທ່ານໄດ້ໃຊ້ {point} ຄະແນນ",
+    youCannotUseYourOwnQRCode: "ທ່ານບໍ່ສາມາດໃຊ້ QR code ຂອງທ່ານເອງ",
+    pointsFromFriendsPurchases: "ຄະແນນຈາກການຊື້ຂອງຫມູ່ເພື່ອນ",
+    invalidPaymentMethod: "ວິທີການຈ່າຍເງິນບໍ່ຖືກຕ້ອງ",
+    removeThisCoupon: "ເອົາຄູປ໋ອງນີ້ອອກບໍ?",
+    noProblemWeKeepThisCouponForYouLater:
+        "ບໍ່ມີບັນຫາ ພວກເຮົາຈະເກັບຄູປ໋ອງນີ້ໄວ້ໃຫ້ທ່ານໃນພາຍຫຼັງ",
+    removeCoupon: "ເອົາຄູປ໋ອງອອກ",
+    keepUsing: "ສືບຕໍ່ໃຊ້",
+    pointsToBeReceived: "ຄະແນນທີ່ຈະໄດ້ຮັບ",
+    couponApplied: "ນຳໃຊ້ຄູປ໋ອງແລ້ວ",
+    confirmCode: "ຢືນຢັນລະຫັດ",
+    pleaseEnterThe6Digit:
+        "ກະລຸນາຕື່ມລະຫັດ 6 ຫຼັກ ທີ່ໄດ້ຮັບຈາກ SMS ທີ່ສົ່ງໄປຍັງເບີ",
+    resendOTP: "ສົ່ງ OTP ອີກຄັ້ງ",
+    youDontHaveCoupon: "ເຈົ້າຍັງບໍ່ມີຄູປ໋ອງເທື່ອ",
+    areYouSureYouWantExitApp: "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການອອກຈາກແອັບ",
+    biometricsAreDisabled: "Biometrics ຖືກປິດໃຊ້ງານ",
+    biometricsAreDisabledDetail:
+        'Biometrics ຖືກປິດໃຊ້ງານ, ກະລຸນາເປີດໃຊ້ມັນຢູ່ໃນ "ການຕັ້ງຄ່າ -> ຄວາມປອດໄພ"',
+    downloadCompletedSuccessfully: "ດາວໂຫຼດສຳເລັດແລ້ວ",
+    theFileIsSavedIn: "ໄຟລ໌ຖືກບັນທຶກໄວ້ໃນອາລະບໍາ",
+    downloadFile: "ດາວໂຫຼດໄຟລ໌",
+    youAreTheLuckyOneAndHaveWonPrize: "ເຈົ້າເປັນຜູ້ໂຊກດີ ແລະໄດ້ຮັບລາງວັນ",
+    validUntil: "ໃຊ້ໄດ້ເຖິງ",
+    used: "ໃຊ້ແລ້ວ",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -599,7 +678,7 @@ mixin AppLocale {
     confirm: 'ยืนยัน',
     totalAmountForPay: 'จำนวนเงินทั้งหมดที่ต้องชำระ',
     pay: 'ชำระเงิน',
-    titleBill: 'กระทรวงการคลังพัฒนาสลากกินแบ่งจำหน่ายโดย',
+    titleBill: 'กระทรวงการคลัง | หวยพัฒนา | จัดจำหน่ายโดย',
     buyerName: 'ชื่อผู้ซื้อ',
     date: 'วันที่',
     buyHistory: 'ประวัติการซื้อ',
@@ -751,7 +830,7 @@ mixin AppLocale {
     deleteAll: "ลบทั้งหมด",
     areYouSureYouWantToDeleteAllLottery:
         "คุณแน่ใจหรือไม่ว่าต้องการลบรายการลอตเตอรี่ทั้งหมด?",
-    thisInvoiceExpiresOn: "ใบแจ้งหนี้นี้จะหมดอายุใน",
+    thisInvoiceExpiresOn: "บิลนี้จะหมดอายุใน",
     identityVerificationRequired: "ต้องการการยืนยันตัวตน",
     collectCoupons: "เก็บคูปอง",
     expiresIn: "หมดอายุใน",
@@ -851,6 +930,42 @@ mixin AppLocale {
         "เลขประจําตัวประชาชนจะต้องมี 10 หลัก",
     identityVerificationIsUnderReview: "การยืนยันตัวตนอยู่ระหว่างการตรวจสอบ",
     yourIdentityVerificationHasBeenRejected: "การยืนยันตัวตนของคุณถูกปฏิเสธ",
+    passcodeChangedSuccessfully: "เปลี่ยน Passcode สำเร็จ",
+    profilePictureChangedSuccessfully: "เปลี่ยนรูปโปรไฟล์สำเร็จ",
+    userNotFound: "ไม่พบผู้ใช้",
+    yourReferralCodeIsEmpty: "รหัสอ้างอิงของคุณว่างเปล่า",
+    pleaseContactUserService: "กรุณาติดต่อฝ่ายบริการผู้ใช้งาน",
+    youAreNowFriends: "คุณได้เป็นเพื่อนกันแล้ว",
+    youAreBecomingFriendsWith: "คุณกำลังจะเป็นเพื่อนกับ",
+    successfullyChangedPhoneNumber: "เปลี่ยนเบอร์โทรศัพท์สำเร็จ",
+    pleaseBuyLotteryNumbers: "กรุณาซื้อลอตเตอรี่ 2-6 ตัว",
+    collectedTheCoupon: "เก็บคูปองแล้ว",
+    youHaveUsedPoints: "คุณใช้คะแนนไป {point} คะแนน",
+    youCannotUseYourOwnQRCode: "คุณไม่สามารถใช้ QR code ของคุณเองได้",
+    pointsFromFriendsPurchases: "คะแนนจากยอดซื้อของเพื่อน",
+    invalidPaymentMethod: "วิธีการชำระเงินไม่ถูกต้อง",
+    removeThisCoupon: "ลบคูปองนี้ออกใช่ไหม?",
+    noProblemWeKeepThisCouponForYouLater:
+        "ไม่มีปัญหา เราจะเก็บคูปองนี้ไว้ให้คุณในภายหลัง",
+    removeCoupon: "ลบคูปอง",
+    keepUsing: "ใช้ต่อไป",
+    pointsToBeReceived: "คะแนนที่จะได้รับ",
+    couponApplied: "ใช้คูปองแล้ว",
+    confirmCode: "ยืนยันรหัส",
+    pleaseEnterThe6Digit:
+        "กรุณากรอกรหัส 6 หลักที่ได้รับจาก SMS ที่ส่งไปยังหมายเลข",
+    resendOTP: "ส่ง OTP อีกครั้ง",
+    youDontHaveCoupon: "คุณยังไม่มีคูปอง",
+    areYouSureYouWantExitApp: "คุณแน่ใจหรือไม่ว่าต้องการออกจากแอพ",
+    biometricsAreDisabled: "Biometrics ถูกปิดใช้งาน",
+    biometricsAreDisabledDetail:
+        'Biometrics ถูกปิดใช้งาน กรุณาเปิดใช้งานใน "การตั้งค่า -> ความปลอดภัย"',
+    downloadCompletedSuccessfully: "ดาวน์โหลดสำเร็จ",
+    theFileIsSavedIn: "ไฟล์ถูกบันทึกในอัลบัม",
+    downloadFile: "ดาวน์โหลดไฟล์",
+    youAreTheLuckyOneAndHaveWonPrize: "คุณคือผู้โชคดีและได้รับรางวัล",
+    validUntil: "ใช้ได้ถึง",
+    used: "ใช้แล้ว",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -1134,5 +1249,42 @@ mixin AppLocale {
     identityVerificationIsUnderReview: "Identity verification is under review",
     yourIdentityVerificationHasBeenRejected:
         "Your identity verification has been rejected",
+    passcodeChangedSuccessfully: "Passcode changed successfully",
+    profilePictureChangedSuccessfully: "Profile picture changed successfully",
+    userNotFound: "User not found",
+    yourReferralCodeIsEmpty: "Your referral code is empty",
+    pleaseContactUserService: "Please contact user service",
+    youAreNowFriends: "You are now friends",
+    youAreBecomingFriendsWith: "You are becoming friends with",
+    successfullyChangedPhoneNumber: "Successfully changed phone number",
+    pleaseBuyLotteryNumbers: "Please buy 2-6 lottery numbers",
+    collectedTheCoupon: "Collected the coupon",
+    youHaveUsedPoints: "You have used {point} point",
+    youCannotUseYourOwnQRCode: "You cannot use your own QR code",
+    pointsFromFriendsPurchases: "Points from friends' purchases",
+    invalidPaymentMethod: "Invalid payment method",
+    removeThisCoupon: "Remove this coupon?",
+    noProblemWeKeepThisCouponForYouLater:
+        "No problem. We'll keep this coupon for you later.",
+    removeCoupon: "Remove coupon",
+    keepUsing: "Keep using",
+    pointsToBeReceived: "Points to be received",
+    couponApplied: "coupon applied",
+    confirmCode: "Confirm code",
+    pleaseEnterThe6Digit:
+        "Please enter the 6-digit code received from the SMS sent to the number",
+    resendOTP: "Resend OTP",
+    youDontHaveCoupon: "You don't have a coupon yet",
+    areYouSureYouWantExitApp: "Are you sure you want to exit the app",
+    biometricsAreDisabled: "Biometrics are disabled",
+    biometricsAreDisabledDetail:
+        'Biometrics is disabled, please enable it in "Settings -> Security"',
+    downloadCompletedSuccessfully: "Download completed successfully",
+    theFileIsSavedIn: "The file is saved in the album",
+    downloadFile: "Download file",
+    youAreTheLuckyOneAndHaveWonPrize:
+        "You are the lucky one and have won a prize",
+    validUntil: "Valid until",
+    used: "Used",
   };
 }

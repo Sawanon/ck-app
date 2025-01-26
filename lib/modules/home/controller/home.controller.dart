@@ -66,9 +66,7 @@ class HomeController extends GetxController {
 
   void startCountdown(DateTime targetDateTime, DateTime currentDateTime) {
     final remain = targetDateTime.difference(currentDateTime);
-    if (_timer != null) {
-      _timer?.cancel();
-    }
+    _timer?.cancel();
     if (remain.inSeconds < 0) {
       return;
     }
@@ -106,7 +104,6 @@ class HomeController extends GetxController {
     // logger.d(lotteryDateData?.toJson());
     // final now = await getCurrentDatetime();
     // if (now == null) return;
-    // FIXME:
     // final now = DateTime.parse("2024-10-28 20:10:00");
     final nowIsAfterStart = now.isAfter(lotteryDateData.startTime);
     final nowIsBeforeEnd = now.isBefore(lotteryDateData.endTime);
@@ -612,6 +609,7 @@ class HomeController extends GetxController {
     await SettingController.to.setup();
     await getMyFriends();
     // await listMyFriendsUser();
+    await LayoutController.to.listBackgroundTheme();
     update();
   }
 
@@ -889,16 +887,21 @@ class HomeController extends GetxController {
   }
 
   void gotoWallPaperPage() {
+    if (SettingController.to.user == null) {
+      LayoutController.to.showDialogLogin();
+      return;
+    }
     Get.toNamed(RouteName.wallpaper);
   }
 
-  void downloadWallpaper(String url) async {
-    logger.d('messageDownload');
-    logger.d(url);
-    await launchUrl(
-      Uri.parse(url),
-      mode: LaunchMode.externalApplication,
-    );
+  Future<void> downloadWallpaper(String fileId, String bucketId) async {
+    await AppWriteController.to.downLoadFile(bucketId, fileId);
+    // logger.d('messageDownload');
+    // logger.d(url);
+    // await launchUrl(
+    //   Uri.parse(url),
+    //   mode: LaunchMode.externalApplication,
+    // );
     // logger.d(bucketId);
     // logger.d(fileId);
     // AppWriteController.to.downloadFile(bucketId, fileId);
@@ -969,6 +972,14 @@ class HomeController extends GetxController {
   void gotoNotification() async {
     LayoutController.to.changeTab(TabApp.settings);
     NotificationController.to.onChangeTab(2);
+  }
+
+  void gotoSetting() async {
+    if (SettingController.to.user == null) {
+      LayoutController.to.showDialogLogin();
+      return;
+    }
+    Get.toNamed(RouteName.setting);
   }
 
   @override

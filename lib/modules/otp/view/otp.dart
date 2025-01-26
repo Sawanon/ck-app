@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/otp/controller/otp.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:pinput/pinput.dart';
 
@@ -39,16 +41,16 @@ class OtpPage extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   physics: const BouncingScrollPhysics(),
                   children: [
-                    const Text(
-                      'ຢືນຢັນລະຫັດ',
-                      style: TextStyle(
+                    Text(
+                      AppLocale.confirmCode.getString(context),
+                      style: const TextStyle(
                         fontSize: 36,
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
                       ),
                     ),
                     Text(
-                      'ກະລຸນາຕື່ມລະຫັດ 6 ຫຼັກ ທີ່ໄດ້ຮັບຈາກ SMS ທີ່ສົ່ງໄປຍັງເບີ ${controller.argrument.phoneNumber}',
+                      '${AppLocale.pleaseEnterThe6Digit.getString(context)} ${controller.argrument.phoneNumber}',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
@@ -147,9 +149,9 @@ class OtpPage extends StatelessWidget {
                                   strokeWidth: 2,
                                 ),
                               )
-                            : const Text(
-                                "ສົ່ງ OTP ອີກຄັ້ງ",
-                                style: TextStyle(
+                            : Text(
+                                AppLocale.resendOTP.getString(context),
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -161,7 +163,7 @@ class OtpPage extends StatelessWidget {
                       () => Align(
                         alignment: Alignment.center,
                         child: Text(
-                          "ກະລຸນາລໍຖ້າ ${controller.remainingTime.value.inSeconds} ວິນາທີ",
+                          "${AppLocale.pleaseWait.getString(context)} ${controller.remainingTime.value.inSeconds} ${AppLocale.second.getString(context)}",
                         ),
                       ),
                     ),

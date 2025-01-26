@@ -31,8 +31,8 @@ import 'package:lottery_ck/utils/common_fn.dart';
 
 enum TabApp { home, history, lottery, notifications, settings }
 
-// class LayoutController extends GetxController with WidgetsBindingObserver {
-class LayoutController extends GetxController {
+class LayoutController extends GetxController with WidgetsBindingObserver {
+// class LayoutController extends GetxController {
   bool isUsedBiometrics = false;
   static LayoutController get to => Get.find();
   var tabIndex = 0;
@@ -45,6 +45,7 @@ class LayoutController extends GetxController {
   StreamSubscription? useBiometricsTimeout;
   UserApp? userApp;
   List<String> backgroundThemeList = [];
+  bool isSessionTimeout = false;
 
   void clearState() {
     isUsedBiometrics = false;
@@ -299,6 +300,7 @@ class LayoutController extends GetxController {
     final uri = SplashScreenController.to.openPath;
     logger.d("uri?.path: ${uri?.path}");
     if (uri == null) return;
+    BuyLotteryController.to.setDisablePopup(true);
     if (uri.path.contains("/payment")) {
       final userApp = await AppWriteController.to.getUserApp();
       if (userApp == null) return;
@@ -368,6 +370,14 @@ class LayoutController extends GetxController {
     return backgroundThemeList[randomNumber];
   }
 
+  Future<void> restartApp() async {
+    Get.offAllNamed(RouteName.splashScreen);
+    Future.delayed(const Duration(milliseconds: 350), () {
+      Get.put<SplashScreenController>(SplashScreenController());
+      SplashScreenController.to.onInit();
+    });
+  }
+
   @override
   void onReady() {
     super.onReady();
@@ -380,12 +390,12 @@ class LayoutController extends GetxController {
     checkUser();
     listenNetworkEvents();
     listBackgroundTheme();
-    // WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void onClose() {
-    // WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     subscriptionNetwork?.cancel();
     isUsedBiometrics = false;
     super.onClose();
@@ -406,7 +416,9 @@ class LayoutController extends GetxController {
   // }
 
   void startCountdownBiometrics() {
-    var future = Future.delayed(const Duration(seconds: 10));
+    // get sesssion time out
+    // var future = Future.delayed(const Duration(seconds: 10));
+    var future = Future.delayed(const Duration(minutes: 5));
     logger.d("useBiometricsTimeout: $useBiometricsTimeout");
     if (useBiometricsTimeout != null) return;
     logger.d("startCountdownBiometrics");
@@ -414,6 +426,7 @@ class LayoutController extends GetxController {
       (event) {
         logger.w("biometrics timeout");
         isUsedBiometrics = false;
+        isSessionTimeout = true;
         logger.d("isUsedBiometrics: $isUsedBiometrics");
         useBiometricsTimeout = null;
         changeTab(TabApp.home);
@@ -432,29 +445,57 @@ class LayoutController extends GetxController {
     isBlur = false;
     update();
     BuyLotteryController.to.getQuota();
+    showDialogVerifyPasscode();
   }
 
-  // @override
-  // void didChangeAppLifecycleState(AppLifecycleState state) {
-  //   logger.w(state);
-  //   // TODO: priority high - sawanon:20240814
-  //   // switch (state) {
-  //   //   case AppLifecycleState.inactive:
-  //   //     // change background to other image
-  //   //     startCountdownBiometrics();
-  //   //     isBlur = true;
-  //   //     update();
-  //   //     break;
-  //   //   case AppLifecycleState.paused:
-  //   //     // stop something
-  //   //     break;
-  //   //   case AppLifecycleState.resumed:
-  //   //     // do something when back to app
-  //   //     onResume();
-  //   //     break;
-  //   //   default:
-  //   //     break;
-  //   // }
-  //   super.didChangeAppLifecycleState(state);
-  // }
+  void showDialogVerifyPasscode() async {
+    final user = SettingController.to.user;
+    if (user == null) {
+      return;
+    }
+    if (isSessionTimeout == true) {
+      Get.dialog(
+        const PinVerifyPage(
+          disabledBackButton: true,
+        ),
+        arguments: {
+          "userId": user.userId,
+          "whenSuccess": () {
+            logger.d("whenSuccess");
+            restartApp();
+            isSessionTimeout = false;
+            isUsedBiometrics = true;
+          },
+          "enableForgetPasscode": true,
+          "whenForgetPasscode": () {
+            logger.d("whenForgetPasscode");
+          }
+        },
+      );
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    logger.w(state);
+    // TODO: priority high - sawanon:20240814
+    switch (state) {
+      case AppLifecycleState.inactive:
+        // change background to other image
+        startCountdownBiometrics();
+        isBlur = true;
+        update();
+        break;
+      case AppLifecycleState.paused:
+        // stop something
+        break;
+      case AppLifecycleState.resumed:
+        // do something when back to app
+        onResume();
+        break;
+      default:
+        break;
+    }
+    super.didChangeAppLifecycleState(state);
+  }
 }

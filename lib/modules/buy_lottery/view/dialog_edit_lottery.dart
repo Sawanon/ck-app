@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/input_text.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/res/app_locale.dart';
+import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 
 class DialogEditLottery extends StatefulWidget {
   final String lottery;
@@ -24,6 +27,7 @@ class _DialogEditLotteryState extends State<DialogEditLottery> {
   bool isLoading = false;
   String? newLottery;
   int? newPrice;
+  TextEditingController priceController = TextEditingController();
 
   void setIsLoading(bool value) {
     setState(() {
@@ -32,12 +36,18 @@ class _DialogEditLotteryState extends State<DialogEditLottery> {
   }
 
   void onChangePrice(String value) {
+    logger.d(value);
     if (value == "") {
       setState(() {
         newPrice = null;
       });
+      // priceController.text = "";
       return;
     }
+    final onlyNumber = value.replaceAll(",", "");
+    logger.d("onlyNumber: $onlyNumber");
+    final priceInt = int.parse(onlyNumber);
+    priceController.text = CommonFn.parseMoney(priceInt);
     setState(() {
       newPrice = int.parse(value);
     });
@@ -63,6 +73,17 @@ class _DialogEditLotteryState extends State<DialogEditLottery> {
     setIsLoading(true);
     await widget.onSubmit(newLottery, priceValue);
     setIsLoading(false);
+  }
+
+  void setup() {
+    // priceController.text = CommonFn.parseMoney(widget.price);
+    onChangePrice(widget.price.toString());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setup();
   }
 
   @override
@@ -104,13 +125,17 @@ class _DialogEditLotteryState extends State<DialogEditLottery> {
                 // mainAxisSize: MainAxisSize.min,
                 children: [
                   InputText(
+                    controller: priceController,
                     maxValue: 999999999,
                     label: Text(
                       AppLocale.price.getString(context),
                     ),
-                    initialValue: "${widget.price}",
+                    // initialValue: "${widget.price}",
                     onChanged: onChangePrice,
                     keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                   ),
                   Positioned(
                     right: 8,

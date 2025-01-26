@@ -13,6 +13,8 @@ class PromotionController extends GetxController {
   static PromotionController get to => Get.find();
   final argument = Get.arguments;
   final List<Coupon> couponsList = [];
+  bool alreadyCollectedCoupon = false;
+  bool isLoading = false;
 
   Map? promotion;
   Future<void> getPromotion() async {
@@ -27,6 +29,11 @@ class PromotionController extends GetxController {
     }
   }
 
+  void setIsLoading(bool value) {
+    isLoading = value;
+    update();
+  }
+
   Future<void> collectCoupons() async {
     final promotionId = argument['promotionId'];
     logger.d("promotionId: $promotionId");
@@ -34,16 +41,20 @@ class PromotionController extends GetxController {
     if (user?.userId == null) {
       LayoutController.to.showDialogLogin();
     }
+    setIsLoading(true);
     final response = await AppWriteController.to.collectCoupons(
       promotionId,
       user!.userId,
     );
+    setIsLoading(false);
     logger.d(response.data);
     if (response.isSuccess) {
       Get.rawSnackbar(
         message:
             AppLocale.collectedTheCouponSuccessfully.getString(Get.context!),
       );
+      alreadyCollectedCoupon = true;
+      update();
     }
   }
 
@@ -58,6 +69,8 @@ class PromotionController extends GetxController {
         },
       ).toList();
       if (resultWhereCoupon.isNotEmpty) {
+        alreadyCollectedCoupon = true;
+        update();
         return true;
       }
       return false;
@@ -96,6 +109,9 @@ class PromotionController extends GetxController {
     logger.d(coupons);
     couponsList.clear();
     couponsList.addAll(coupons);
+    final promotionId = argument['promotionId'];
+    final result = disabledCoupon(promotionId);
+    logger.w("result: $result");
   }
 
   @override

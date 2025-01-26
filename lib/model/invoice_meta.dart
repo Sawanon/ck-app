@@ -1,4 +1,34 @@
+import 'dart:convert';
+
 import 'package:lottery_ck/model/lottery.dart';
+
+class CouponResponse {
+  String couponId;
+  String reason;
+  bool status;
+  CouponResponse({
+    required this.couponId,
+    required this.reason,
+    required this.status,
+  });
+
+  static CouponResponse fromJson(Map json) => CouponResponse(
+        couponId: json['couponId'],
+        reason: json['message'],
+        status: json['success'],
+      );
+
+  Map toJson() => {
+        "couponId": couponId,
+        "message": reason,
+        "success": status,
+      };
+
+  @override
+  String toString() {
+    return jsonEncode(toJson());
+  }
+}
 
 class InvoiceMetaData {
   String lotteryDateStr;
@@ -15,6 +45,8 @@ class InvoiceMetaData {
   int price;
   int quota;
   List? couponIds;
+  int? receivePoint;
+  CouponResponse? couponResponse;
 
   InvoiceMetaData({
     required this.lotteryDateStr,
@@ -31,6 +63,8 @@ class InvoiceMetaData {
     required this.price,
     required this.quota,
     this.couponIds,
+    this.receivePoint,
+    this.couponResponse,
   });
 
   static InvoiceMetaData empty() => InvoiceMetaData(
@@ -60,6 +94,8 @@ class InvoiceMetaData {
         price: price,
         quota: quota,
         couponIds: couponIds,
+        receivePoint: receivePoint,
+        couponResponse: couponResponse,
       );
 
   Map<String, dynamic> toJson(String userId) {
@@ -78,6 +114,7 @@ class InvoiceMetaData {
       'billId': billId,
       'quota': quota,
       'couponId': couponIds,
+      'receive_point': receivePoint,
     };
   }
 }

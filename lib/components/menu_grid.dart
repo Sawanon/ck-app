@@ -263,7 +263,10 @@ class MenuGrid extends StatelessWidget {
           MenuModel(
             disabled: true,
             ontab: () {
-              logger.d("comming soon");
+              if (SettingController.to.user == null) {
+                LayoutController.to.showDialogLogin();
+                return;
+              }
               Get.toNamed(RouteName.kyc);
             },
             icon: SizedBox(

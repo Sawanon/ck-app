@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
@@ -11,6 +13,7 @@ class FriendConfirm extends StatelessWidget {
   final String firstName;
   final String lastName;
   final String phone;
+  final Uint8List? profileByte;
   final void Function()? onConfirm;
   final void Function()? onCancel;
   final void Function()? onBack;
@@ -23,6 +26,7 @@ class FriendConfirm extends StatelessWidget {
     this.onConfirm,
     this.onCancel,
     this.onBack,
+    this.profileByte,
   });
 
   @override
@@ -41,6 +45,10 @@ class FriendConfirm extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Text(
+                      AppLocale.youAreBecomingFriendsWith.getString(context),
+                    ),
+                    const SizedBox(height: 12),
                     Container(
                       width: 100,
                       height: 100,
@@ -49,10 +57,15 @@ class FriendConfirm extends StatelessWidget {
                         color: Colors.grey.shade300,
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(
-                        Icons.person,
-                        size: 42,
-                      ),
+                      child: profileByte != null
+                          ? Image.memory(
+                              profileByte!,
+                              fit: BoxFit.cover,
+                            )
+                          : Icon(
+                              Icons.person,
+                              size: 42,
+                            ),
                     ),
                     const SizedBox(height: 16),
                     Text("$firstName $lastName"),

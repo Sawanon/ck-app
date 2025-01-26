@@ -3,22 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/blur_app.dart';
-import 'package:lottery_ck/components/cart.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/navigation_bar.dart';
 import 'package:lottery_ck/components/no_network_dialog.dart';
-import 'package:lottery_ck/components/overlay.dart';
-import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.page.dart';
-import 'package:lottery_ck/modules/history/view/history.dart';
-import 'package:lottery_ck/modules/home/view/home.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
-import 'package:lottery_ck/modules/lottery_history/view/lottery_history.dart';
-import 'package:lottery_ck/modules/notification/view/notification.dart';
-import 'package:lottery_ck/modules/setting/view/setting.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
-import 'package:upgrader/upgrader.dart';
 
 class LayoutPage extends StatelessWidget {
   const LayoutPage({super.key});
@@ -43,9 +34,6 @@ class LayoutPage extends StatelessWidget {
             },
           );
         }
-        // if (controller.isBlur) {
-        //   return BlurApp(identifier: 'identifier');
-        // }
         return PopScope(
           canPop: false,
           onPopInvoked: (didPop) {
@@ -56,8 +44,8 @@ class LayoutPage extends StatelessWidget {
                 child: Material(
                   color: Colors.transparent,
                   child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 16),
-                    padding: EdgeInsets.all(8),
+                    margin: const EdgeInsets.symmetric(horizontal: 16),
+                    padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
@@ -66,8 +54,8 @@ class LayoutPage extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການອອກຈາກແອັບ?",
-                          style: TextStyle(
+                          "${AppLocale.areYouSureYouWantExitApp.getString(context)}?",
+                          style: const TextStyle(
                             fontSize: 16,
                           ),
                         ),
@@ -90,7 +78,7 @@ class LayoutPage extends StatelessWidget {
                             Expanded(
                               child: LongButton(
                                 backgroundColor: Colors.white,
-                                borderSide: BorderSide(
+                                borderSide: const BorderSide(
                                   width: 1,
                                   color: AppColors.errorBorder,
                                 ),
@@ -100,7 +88,7 @@ class LayoutPage extends StatelessWidget {
                                 },
                                 child: Text(
                                   AppLocale.leave.getString(context),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: AppColors.errorBorder,
                                   ),
                                 ),
@@ -116,53 +104,59 @@ class LayoutPage extends StatelessWidget {
               useSafeArea: true,
             );
           },
-          child: Visibility(
-            maintainState: true,
-            maintainSize: true,
-            maintainAnimation: true,
-            visible: !controller.isBlur,
-            child: Scaffold(
-              // backgroundColor: Colors.white,
-              resizeToAvoidBottomInset: false,
-              body: SafeArea(
-                top: false,
-                child: Stack(
-                  children: [
-                    Container(
-                      clipBehavior: Clip.hardEdge,
-                      padding:
-                          EdgeInsets.only(bottom: controller.bottomPadding),
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
+          child: Builder(builder: (context) {
+            if (controller.isBlur) {
+              return const BlurApp(identifier: 'identifier');
+            }
+            return Visibility(
+              maintainState: true,
+              maintainSize: true,
+              maintainAnimation: true,
+              visible: !controller.isBlur,
+              child: Scaffold(
+                // backgroundColor: Colors.white,
+                resizeToAvoidBottomInset: false,
+                body: SafeArea(
+                  top: false,
+                  child: Stack(
+                    children: [
+                      Container(
+                        clipBehavior: Clip.hardEdge,
+                        padding:
+                            EdgeInsets.only(bottom: controller.bottomPadding),
+                        decoration: const BoxDecoration(
+                          color: Colors.transparent,
+                        ),
+                        child: controller.currentPage(controller.currentTab),
+                        // child: pages[controller.tabIndex],
+                        // child: Text('${controller.tabIndex}'),
                       ),
-                      child: controller.currentPage(controller.currentTab),
-                      // child: pages[controller.tabIndex],
-                      // child: Text('${controller.tabIndex}'),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: CustomNavigationBar(
-                        currentTab: controller.currentTab,
-                        onChangeTab: controller.changeTab,
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: SafeArea(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 48,
-                            right: 8,
-                          ),
-                          child: controller.renderMyCart(controller.currentTab),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: CustomNavigationBar(
+                          currentTab: controller.currentTab,
+                          onChangeTab: controller.changeTab,
                         ),
                       ),
-                    ),
-                  ],
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: SafeArea(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              top: 48,
+                              right: 8,
+                            ),
+                            child:
+                                controller.renderMyCart(controller.currentTab),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          }),
         );
       },
     );

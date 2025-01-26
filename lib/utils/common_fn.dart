@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
@@ -7,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:barcode/barcode.dart';
 
 class CommonFn {
   static String parseDMY(DateTime datetime) {
@@ -213,5 +216,21 @@ class CommonFn {
     } else {
       return "${different.inDays} ${AppLocale.dayAgo.getString(Get.context!)}";
     }
+  }
+
+  static String generateBarcodeImage(
+      Barcode barcode, String data, double width, double height) {
+    // สร้างภาพจาก Barcode เป็น PNG
+    final dataImage = barcode.toSvg(
+      data,
+      width: width,
+      height: height,
+    );
+    // final dataImage = barcode.toBytes(
+    //   data,
+    //   width: 300,
+    //   height: 100,
+    // );
+    return dataImage;
   }
 }

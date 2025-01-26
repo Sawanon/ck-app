@@ -28,7 +28,8 @@ class PointController extends GetxController {
 
   String renderType(String type, BuildContext context) {
     if (type.toLowerCase().contains("random")) {
-      return "ไพ่มงคล";
+      // return "ไพ่มงคล";
+      return AppLocale.randomCard.getString(context);
     }
     switch (type.toLowerCase()) {
       case "buyPromotion":
@@ -36,9 +37,13 @@ class PointController extends GetxController {
       case "daily":
         return AppLocale.horoscope.getString(context);
       case "buyLottery":
-        return "ใช้ซื้อหวย";
-      case "register":
-        return "สมัครใหม่";
+        return AppLocale.buyLottery.getString(context);
+      // case "register":
+      //   return "สมัครใหม่";
+      case "friendBuy":
+        return AppLocale.pointsFromFriendsPurchases.getString(context);
+      case "kyc":
+        return AppLocale.identityVerification.getString(context);
       default:
         if (type.contains("daily")) {
           return type.split("|").last;

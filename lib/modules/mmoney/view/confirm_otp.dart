@@ -44,16 +44,16 @@ class MonneyConfirmOTP extends StatelessWidget {
                   padding: const EdgeInsets.all(16),
                   physics: const BouncingScrollPhysics(),
                   children: [
-                    const Text(
-                      'ຢືນຢັນລະຫັດ',
-                      style: TextStyle(
+                    Text(
+                      AppLocale.confirmCode.getString(context),
+                      style: const TextStyle(
                         fontSize: 36,
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
                       ),
                     ),
                     Text(
-                      'ກະລຸນາຕື່ມລະຫັດ 6 ຫຼັກ ທີ່ໄດ້ຮັບຈາກ SMS ທີ່ສົ່ງໄປຍັງເບີ ${controller.phoneNumber}',
+                      '${AppLocale.pleaseEnterThe6Digit.getString(context)} ${controller.phoneNumber}',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
@@ -146,9 +146,9 @@ class MonneyConfirmOTP extends StatelessWidget {
                                   strokeWidth: 2,
                                 ),
                               )
-                            : const Text(
-                                "ສົ່ງ OTP ອີກຄັ້ງ",
-                                style: TextStyle(
+                            : Text(
+                                AppLocale.resendOTP.getString(context),
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
                                 ),

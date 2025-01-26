@@ -66,15 +66,40 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                     if (controller
                                             .invoiceRemainExpireStr.value ==
                                         "") return const SizedBox();
+                                    final remain =
+                                        controller.invoiceRemainExpire.value;
+                                    Color backgroundColor =
+                                        Colors.amber.shade100;
+                                    Color textColor = Colors.black;
+                                    if (remain.inSeconds < 60) {
+                                      if (remain.inSeconds % 2 == 0) {
+                                        backgroundColor = Colors.red;
+                                        textColor = Colors.white;
+                                      } else {
+                                        backgroundColor = Colors.red.shade100;
+                                        textColor = Colors.black;
+                                      }
+                                    } else if (remain.inSeconds < 120) {
+                                      if (remain.inSeconds % 2 == 0) {
+                                        backgroundColor = Colors.amber;
+                                        textColor = Colors.white;
+                                      } else {
+                                        backgroundColor = Colors.amber.shade100;
+                                        textColor = Colors.black;
+                                      }
+                                    }
                                     return Container(
                                       alignment: Alignment.center,
                                       width: double.infinity,
                                       padding: const EdgeInsets.all(8),
                                       decoration: BoxDecoration(
-                                        color: Colors.amber.shade100,
+                                        color: backgroundColor,
                                       ),
                                       child: Text(
                                         "${AppLocale.thisInvoiceExpiresOn.getString(context)} ${controller.invoiceRemainExpireStr.value}",
+                                        style: TextStyle(
+                                          color: textColor,
+                                        ),
                                       ),
                                     );
                                   }),
@@ -101,7 +126,6 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                 fontSize: 14,
                                               ),
                                             ),
-                                            // TODO: this!
                                             const SizedBox(
                                               width: 16,
                                             ),
@@ -354,7 +378,6 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                                           .w500,
                                                                 ),
                                                               ),
-                                                              // TODO: this!
                                                               const SizedBox(
                                                                 width: 16,
                                                               ),
@@ -455,17 +478,6 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                         color: AppColors.textPrimary,
                                       ),
                                     ),
-                                    // if (controller.invoiceMeta.value.bonus !=
-                                    //         null &&
-                                    //     controller.invoiceMeta.value.bonus != 0)
-                                    //   Text(
-                                    //     "+${CommonFn.parseMoney(controller.invoiceMeta.value.bonus!)}",
-                                    //     style: TextStyle(
-                                    //       color: Colors.green,
-                                    //       fontSize: 16,
-                                    //       fontWeight: FontWeight.bold,
-                                    //     ),
-                                    //   ),
                                   ],
                                 ),
                               ),
@@ -643,7 +655,7 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                     .disabledBuy.value) {
                                                   return;
                                                 }
-                                                controller.submitAddLottery(
+                                                controller.submitFormAddLottery(
                                                   controller.lottery,
                                                   controller.price,
                                                   true,

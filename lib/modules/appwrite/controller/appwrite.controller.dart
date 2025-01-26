@@ -6,7 +6,9 @@ import 'package:appwrite/models.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:gal/gal.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/gender_radio.dart';
@@ -39,6 +41,9 @@ import "package:collection/collection.dart";
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'dart:typed_data';
 import 'package:image/image.dart' as img;
+import 'package:path_provider/path_provider.dart';
+import 'dart:io' as io;
+import 'package:path/path.dart' as path;
 
 class AppWriteController extends GetxController {
   static const String _databaseName = 'lottory';
@@ -63,6 +68,7 @@ class AppWriteController extends GetxController {
   static const String COUPON = '67762ef9003b9b51c763';
 
   static const String FN_SIGNIN = '6759aebe003c92a6fa81';
+  static const String FN_LOTTERY_DATE = '67949bd30000dc05f940';
 
   static const _roleUserId = "669a2cfd00141edc45ef";
   final String _providerId = '66d28d4000300a1e7dc1';
@@ -711,18 +717,30 @@ class AppWriteController extends GetxController {
 
   Future<List?> listLotteryCollection(String lotteryMonth) async {
     try {
-      final token = await getCredential();
-      final dio = Dio();
-      final response = await dio.post(
-        "${AppConst.cloudfareUrl}/listLotteryCollections",
-        data: {
+      final response = await functions.createExecution(
+        functionId: FN_LOTTERY_DATE,
+        body: jsonEncode({
           "lotteryMonth": lotteryMonth,
-        },
-        options: Options(
-          headers: {"Authorization": "Bearer $token"},
-        ),
+        }),
+        method: ExecutionMethod.pOST,
+        path: "/",
       );
-      return response.data["collectionList"];
+      logger.w(response.responseBody);
+      final result = jsonDecode(response.responseBody);
+      return result['collectionList'];
+      // final token = await getCredential();
+      // final dio = Dio();
+      // final response = await dio.post(
+      //   "${AppConst.cloudfareUrl}/listLotteryCollections",
+      //   data: {
+      //     "lotteryMonth": lotteryMonth,
+      //   },
+      //   options: Options(
+      //     headers: {"Authorization": "Bearer $token"},
+      //   ),
+      // );
+      // logger.w("response: ${response.data}");
+      // return response.data["collectionList"];
     } catch (e) {
       logger.e("$e");
       Get.rawSnackbar(message: "$e");
@@ -844,30 +862,42 @@ class AppWriteController extends GetxController {
         queries: [
           Query.select(["lottery_date_id", "lottery"]),
           Query.orderDesc('\$createdAt'),
+          Query.equal('is_approve', '3'),
           Query.limit(25),
         ],
       );
-      // logger.d(lotteryHistoryDocumentList.total);
       List lotteryHistoryList = [];
       final lotteryHistoryListData =
           lotteryHistoryDocumentList.documents.map((document) => document.data);
       var newMap =
           groupBy(lotteryHistoryListData, (Map obj) => obj['lottery_date_id']);
       for (var lotteryByDate in newMap.entries) {
+        lotteryByDate.value.sort(
+          (a, b) {
+            final prev = int.parse(a['lottery'].first);
+            final next = int.parse(b['lottery'].first);
+            if (prev < next) {
+              return 1;
+            } else if (prev > next) {
+              return -1;
+            }
+            return 0;
+          },
+        );
         final lotteryDateDocument = await getLotteryDateById(
             lotteryByDate.value.first["lottery_date_id"]);
-        // logger.f(lotteryDateDocument.data);
         final lotteryDate = CommonFn.parseDMY(
             DateTime.parse(lotteryDateDocument.data["datetime"]).toLocal());
         String lottery = lotteryByDate.value.first["lottery"].first as String;
         if (lottery.length < 6) {
-          final zero = List.generate(6 - lottery.length, (index) => '0');
+          final zero = List.generate(6 - lottery.length, (index) => 'x');
           lottery = "${zero.join("")}$lottery";
+        } else {
+          lotteryHistoryList.add({
+            "lottery": lottery,
+            "lotteryDate": lotteryDate,
+          });
         }
-        lotteryHistoryList.add({
-          "lottery": lottery,
-          "lotteryDate": lotteryDate,
-        });
       }
       return lotteryHistoryList;
     } catch (e) {
@@ -1225,6 +1255,16 @@ class AppWriteController extends GetxController {
           },
         ),
       );
+      if (response.data["phone"] != null) {
+        final me = await user;
+        final response =
+            await account.updatePhone(phone: phone, password: me.password!);
+        final email = '$phone@ckmail.com';
+        final responseUpdateEmail =
+            await account.updateEmail(email: email, password: me.password!);
+        logger.w(response.phone);
+        logger.w(responseUpdateEmail.email);
+      }
       logger.d(response.data);
       return response.data["phone"];
     } catch (e) {
@@ -1340,12 +1380,15 @@ class AppWriteController extends GetxController {
                 'expire', DateTime.now().toUtc().toIso8601String()),
             Query.isNull('expire'),
           ]),
+          Query.orderDesc('\$createdAt'),
+          Query.limit(100),
         ],
       );
       // logger.d(contentDocumentList.documents);
       // for (var content in contentDocumentList.documents) {
       //   logger.d(content.data);
       // }
+      logger.w(contentDocumentList.total);
       return contentDocumentList.documents.map((e) => e.data).toList();
     } catch (e) {
       logger.e("$e");
@@ -1800,7 +1843,8 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<void> connectFriend(String referrer, String referee) async {
+  Future<ResponseApi<void>> connectFriend(
+      String referrer, String referee) async {
     try {
       final dio = Dio();
       final response = await dio.post(
@@ -1811,9 +1855,34 @@ class AppWriteController extends GetxController {
         },
       );
       logger.w(response.data);
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully conect with friend",
+      );
+    } on DioException catch (e) {
+      logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        final String? message =
+            e.response?.statusMessage ?? e.response?.data['message'];
+        return ResponseApi(
+          isSuccess: false,
+          message: message ?? "failed to with connect friend",
+        );
+      }
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to with connect friend",
+      );
     } catch (e) {
       logger.e("$e");
       // return null;
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to with connect friend",
+      );
     }
   }
 
@@ -1868,9 +1937,9 @@ class AppWriteController extends GetxController {
         logger.e(e.response?.statusCode);
         logger.e(e.response?.statusMessage);
         logger.e(e.response?.data);
+        final message = e.response?.statusMessage ?? e.response?.data?['error'];
         return ResponseApi(
-            isSuccess: false,
-            message: e.response?.statusMessage ?? "failed to get your friends");
+            isSuccess: false, message: message ?? "failed to get your friends");
       }
       // return null;
       return ResponseApi(
@@ -1973,7 +2042,6 @@ class AppWriteController extends GetxController {
           Query.greaterThanEqual("expire_date", now),
         ],
       );
-      logger.d("listMyCoupons");
       final coupons = response.documents
           .map((document) => Coupon.fromJson(document.data))
           .toList();
@@ -2007,6 +2075,8 @@ class AppWriteController extends GetxController {
               'end_date',
               'detail',
               'is_need_kyc',
+              'max_user',
+              'current_use',
             ],
           ),
         ],
@@ -2029,6 +2099,7 @@ class AppWriteController extends GetxController {
     required String lotteryDate,
     required String invoiceId,
     required List<String> couponIdsList,
+    String? bankId,
   }) async {
 //     api เลือกคูปอง
 // POST
@@ -2047,6 +2118,9 @@ class AppWriteController extends GetxController {
         "invoiceId": invoiceId,
         "couponId": couponIdsList,
       };
+      if (bankId != null) {
+        payload["bankId"] = bankId;
+      }
       logger.d(payload);
       final response = await dio.post("${AppConst.apiUrl}/payment/summary",
           data: payload,
@@ -2054,82 +2128,6 @@ class AppWriteController extends GetxController {
             headers: {"Authorization": "Bearer $token"},
           ));
       logger.w(response.data);
-      final responseReal = {
-        "status": 200,
-        "message": "Success",
-        "data": {
-          "invoice": {
-            "status": null,
-            "phone": "+856333333333",
-            "totalAmount": 950,
-            "receive_point": 50,
-            "amount": 1000,
-            "pointMoney": null,
-            "point": null,
-            "bonus": 0,
-            "discount": 50,
-            "quota": 1000,
-            "totalTransfer": null,
-            "totalWin": null,
-            "specialWin": null,
-            "specialWintransactionId": [],
-            "is_win": false,
-            "is_buy_quota": false,
-            "is_transfer": false,
-            "transferBy": null,
-            "calBy": null,
-            "userId": "676cda620026fd69cd20",
-            "billNumber": null,
-            "bankId": null,
-            "billId": null,
-            "transactionId": ["677e5c52000bdb153128"],
-            "promotionPoint": [
-              "{\"id\":\"67783d1c000bbeb9af2c\",\"amount\":50}"
-            ],
-            "couponId": ["88200855196680065061"],
-            "\$id": "677e5c520008f260a61d",
-            "\$createdAt": "2025-01-08T11:06:58.240+00:00",
-            "\$updatedAt": "2025-01-08T11:07:21.118+00:00",
-            "\$permissions": [],
-            "\$databaseId": "lottory",
-            "\$collectionId": "20250110_invoice"
-          },
-          "transaction": [
-            {
-              "lottery": "14",
-              "digit_1": null,
-              "digit_2": null,
-              "digit_3": null,
-              "digit_4": null,
-              "digit_5": "1",
-              "digit_6": "4",
-              "paymentMethod": null,
-              "status": null,
-              "winAmount": null,
-              "discount": 50,
-              "lotteryType": 2,
-              "amount": 1000,
-              "quota": 1000,
-              "totalAmount": 950,
-              "bonus": 0,
-              "bankId": null,
-              "calBy": null,
-              "is_win": null,
-              "invoiceId": "677e5c520008f260a61d",
-              "lottery_history_id": null,
-              "transferBy": null,
-              "userId": "676cda620026fd69cd20",
-              "rewardId": null,
-              "\$id": "677e5c52000bdb153128",
-              "\$createdAt": "2025-01-08T11:06:58.211+00:00",
-              "\$updatedAt": "2025-01-08T11:07:21.100+00:00",
-              "\$permissions": [],
-              "\$databaseId": "lottory",
-              "\$collectionId": "20250110_transaction"
-            }
-          ],
-        }
-      };
 
       return ResponseApi(
         isSuccess: true,
@@ -2253,6 +2251,164 @@ class AppWriteController extends GetxController {
         isSuccess: false,
         message: "$e",
       );
+    }
+  }
+
+  Future<ResponseApi<Map?>> applyPoint(
+    String invoiceId,
+    String lotteryDateStr,
+    String point,
+  ) async {
+    try {
+      final dio = Dio();
+      final url = "${AppConst.apiUrl}/payment/select-point";
+      logger.d("url: $url");
+      final payload = {
+        "invoiceId": invoiceId,
+        "lotteryDate": lotteryDateStr,
+        "point": point,
+      };
+      logger.d("payload: $payload");
+      final response = await dio.post(
+        url,
+        data: payload,
+      );
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully apply point",
+        data: response.data,
+      );
+    } on DioException catch (e) {
+      logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        return ResponseApi(
+          isSuccess: false,
+          message: e.response?.statusMessage ?? "failed to apply point",
+        );
+      }
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to apply point",
+      );
+    } catch (e) {
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to apply point",
+      );
+    }
+  }
+
+  Future<ResponseApi<Map?>> readNotification(
+    List<String> notificationIds,
+    String userId,
+  ) async {
+    try {
+      // POST /api/notification/read-noti
+      // Body : {
+      //     "userId"  : "",
+      //     "notiId" : [""]
+      // }
+      final dio = Dio();
+      final url = "${AppConst.apiUrl}/notification/read-noti";
+      logger.d("url: $url");
+      final payload = {
+        "userId": userId,
+        "notiId": notificationIds,
+      };
+      logger.d("payload: $payload");
+      final response = await dio.post(
+        url,
+        data: payload,
+      );
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully read notification",
+        data: response.data,
+      );
+    } on DioException catch (e) {
+      logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        return ResponseApi(
+          isSuccess: false,
+          message: e.response?.statusMessage ?? "failed to read notification",
+        );
+      }
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to read notification",
+      );
+    } catch (e) {
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to read notification",
+      );
+    }
+  }
+
+  Future<void> saveFiles(Uint8List bytes, String fileName) async {
+    try {
+      // ค้นหา directory สำหรับจัดเก็บไฟล์
+      final external = await getExternalStorageDirectory();
+      // return;
+      final filePath = "${external?.path}";
+
+      // สร้าง path สำหรับไฟล์
+      final filePathFull = '$filePath/$fileName';
+
+      // สร้างไฟล์และเขียนข้อมูล
+      final file = io.File(filePathFull);
+      await file.writeAsBytes(bytes);
+      // file.writeAsBytesSync(bytes);
+      logger.d('ไฟล์ถูกบันทึกที่: $filePathFull');
+    } catch (e) {
+      logger.d('เกิดข้อผิดพลาดขณะบันทึกไฟล์: $e');
+    }
+  }
+
+  Future<void> downLoadFile(String bucketId, String fileId) async {
+    try {
+      // Client client = Client()
+      //     .setEndpoint(
+      //         'https://baas-dev.moevedigital.com/v1') // Your API Endpoint
+      //     .setProject('667afb24000fbd66b4df') // Your project ID
+      //     // .setSession(''); // The user session to authenticate with
+      //     .setSelfSigned(status: true);
+
+      // Storage storage = Storage(client);
+
+      Uint8List result = await storage.getFileDownload(
+        bucketId: bucketId,
+        fileId: fileId,
+      );
+      logger.d("downloaded !");
+
+      await Gal.putImageBytes(
+        result,
+        album: 'CK-LOTTO',
+      );
+
+      await FlutterLocalNotificationsPlugin().show(
+        1,
+        AppLocale.downloadCompletedSuccessfully.getString(Get.context!),
+        '${AppLocale.theFileIsSavedIn.getString(Get.context!)} CK-LOTTO',
+        NotificationDetails(
+          android: AndroidNotificationDetails(
+            'download_channel',
+            AppLocale.downloadFile.getString(Get.context!),
+            channelDescription: 'แสดงสถานะการดาวน์โหลดไฟล์',
+          ),
+        ),
+      );
+      // await saveFiles(result, '02.png');
+      logger.d("saved !");
+    } catch (e) {
+      logger.e("$e");
     }
   }
 

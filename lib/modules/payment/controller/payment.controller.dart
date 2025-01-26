@@ -20,6 +20,8 @@ import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/payment/view/bank.dart';
 import 'package:lottery_ck/modules/payment/view/bonus_detail.dart';
+import 'package:lottery_ck/modules/payment/view/coupon_detail.dart';
+import 'package:lottery_ck/modules/payment/view/coupon_remove.dart';
 import 'package:lottery_ck/modules/payment/view/use_point.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
 import 'package:lottery_ck/modules/pin/view/verify_pin.dart';
@@ -120,6 +122,32 @@ class PaymentController extends GetxController {
     return true;
   }
 
+  bool disableBank(Bank bank) {
+    if (bank.name.toLowerCase() == "mmoney") {
+      final totalAmount =
+          BuyLotteryController.to.invoiceMeta.value.amount - (point ?? 0);
+      const minimumPrice = 1000;
+      logger.d(totalAmount);
+      logger.d(minimumPrice);
+      logger.d("totalAmount < minimumPrice: ${totalAmount < minimumPrice}");
+      if (totalAmount < minimumPrice) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Future<void> setUpCouponAndPointAgain() async {
+    final invoice = BuyLotteryController.to.invoiceMeta.value;
+    if (invoice.couponIds == null) {
+      return;
+    }
+    final couponIds = invoice.couponIds!.map((coupon) {
+      return coupon.toString();
+    }).toList();
+    await applyCoupon(couponIds);
+  }
+
   void setup() async {
     point = null;
     setLotteryDate();
@@ -127,6 +155,7 @@ class PaymentController extends GetxController {
     listenInvoiceExpire();
     listMyCoupons();
     await getPoinCanUseOnInvoice();
+    await setUpCouponAndPointAgain();
   }
 
   void listenInvoiceExpire() {
@@ -348,16 +377,6 @@ class PaymentController extends GetxController {
       }
       isLoading = true;
       update();
-      if (bank.name == "ldb") {
-        final canLaunch = await canLaunchUrl(Uri.parse("ldbpay://ldblao.la"));
-        logger.w(canLaunch);
-        if (canLaunch == false) {
-          logger.d("in if");
-          await launchUrl(Uri.parse(
-              'https://play.google.com/store/apps/details?id=com.ldb.wallet'));
-          return;
-        }
-      }
       // final user = await AppWriteController.to.user;
       final userApp = LayoutController.to.userApp;
       if (userApp == null) throw "not found user please login";
@@ -378,9 +397,7 @@ class PaymentController extends GetxController {
       logger.w(payload);
       final responseTransaction = await dio.post(
         "${AppConst.apiUrl}/payment",
-        // "https://1f12-223-24-93-229.ngrok-free.app/api/payment",
-        // https://a6d2-2405-9800-b920-2f86-d4ea-ac87-e5a6-607c.ngrok-free.app
-        // "https://a6d2-2405-9800-b920-2f86-d4ea-ac87-e5a6-607c.ngrok-free.app/api/transaction",
+        // "https://3746-2405-9800-b920-cf8d-7d82-9f53-1cf2-96ff.ngrok-free.app/api/payment",
         data: payload,
         options: Options(
           headers: {
@@ -392,10 +409,33 @@ class PaymentController extends GetxController {
       logger.w(responseTransaction);
       final result = responseTransaction.data['data'];
       logger.w(result);
-      final payment = result['payment'];
-      final deeplink = payment['dataResponse']['link'];
+      if (bank.name == "bcel") {
+        final payment = result['payment'];
+        final deeplink = payment['deeplink'];
+        await launchUrl(Uri.parse('$deeplink'));
+      }
+      // if (bank.name == "ldb") {
+      //   final canLaunch = await canLaunchUrl(Uri.parse("ldbpay://ldblao.la"));
+      //   logger.w(canLaunch);
+      //   if (canLaunch == false) {
+      //     logger.d("in if");
+      //     await launchUrl(Uri.parse(
+      //         'https://play.google.com/store/apps/details?id=com.ldb.wallet'));
+      //     return;
+      //   }
+      // }
       if (bank.name == "ldb") {
         try {
+          final payment = result['payment'];
+          final deeplink = payment['dataResponse']['link'];
+          // final canLaunch = await canLaunchUrl(Uri.parse("ldbpay://ldblao.la"));
+          // logger.w(canLaunch);
+          // if (canLaunch == false) {
+          //   logger.d("in if");
+          //   await launchUrl(Uri.parse(
+          //       'https://play.google.com/store/apps/details?id=com.ldb.wallet'));
+          //   return;
+          // }
           await launchUrl(Uri.parse('$deeplink'));
         } catch (e) {
           logger.e("$e");
@@ -423,7 +463,48 @@ class PaymentController extends GetxController {
     }
   }
 
-  void selectBank(Bank bank) {
+  Future<void> selectBank(Bank bank) async {
+    final lotteryDate =
+        BuyLotteryController.to.invoiceMeta.value.lotteryDateStr;
+    final invoiceId = BuyLotteryController.to.invoiceMeta.value.invoiceId!;
+    final List<String> couponIdsList = [];
+    for (var coupon
+        in BuyLotteryController.to.invoiceMeta.value.couponIds ?? []) {
+      couponIdsList.add(coupon.toString());
+    }
+
+    BuyLotteryController.to.invoiceMeta.value.couponIds ?? <String>[];
+    final response = await AppWriteController.to.applyCoupon(
+      lotteryDate: lotteryDate,
+      invoiceId: invoiceId,
+      couponIdsList: couponIdsList,
+      bankId: bank.$id,
+    );
+    if (response.isSuccess == false) {
+      Get.dialog(
+        DialogApp(
+          title: Text(AppLocale.somethingWentWrong.getString(Get.context!)),
+          details: Text(
+            response.message,
+          ),
+          disableConfirm: true,
+        ),
+      );
+      return;
+    }
+    final result = response.data!['data'];
+    final responseCoupon = result['coupon'];
+    if (responseCoupon is List) {
+      if (responseCoupon.isNotEmpty) {
+        final response = responseCoupon.first;
+        BuyLotteryController.to.invoiceMeta.value.couponResponse =
+            CouponResponse.fromJson(
+          response,
+        );
+      } else {
+        BuyLotteryController.to.invoiceMeta.value.couponResponse = null;
+      }
+    }
     selectedBank = bank;
     update();
   }
@@ -453,9 +534,45 @@ class PaymentController extends GetxController {
       builder: (context) {
         return UsePointComponent(
           myPoint: maxPointCanUse,
-          onSubmit: (usePoint) {
+          onSubmit: (usePoint) async {
+            final invoiceId = invoice.invoiceId!;
+            final lotteryDateStr = invoice.lotteryDateStr;
+            logger.w("usePoint: $usePoint");
+            final response = await AppWriteController.to
+                .applyPoint(invoiceId, lotteryDateStr, "$usePoint");
+            logger.w(response.data);
+            // BuyLotteryController.to.invoiceMeta
+            if (response.isSuccess == false) {
+              Get.dialog(
+                DialogApp(
+                  title: Text(
+                    AppLocale.somethingWentWrong.getString(context),
+                  ),
+                  details: Text(
+                    response.message,
+                  ),
+                  disableConfirm: true,
+                ),
+              );
+              return;
+            }
+            final message = AppLocale.youHaveUsedPoints
+                .getString(Get.context!)
+                .replaceAll("{point}", "$usePoint");
+
             onChangePoint(usePoint);
             Get.back();
+            Future.delayed(const Duration(milliseconds: 350), () {
+              Get.rawSnackbar(
+                messageText: Text(
+                  message,
+                  style: const TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                backgroundColor: Colors.green,
+              );
+            });
           },
         );
       },
@@ -579,8 +696,9 @@ class PaymentController extends GetxController {
       lotteryDate: lotteryDate,
       invoiceId: invoiceId,
       couponIdsList: couponIdsList,
+      bankId: selectedBank?.$id,
     );
-    logger.d(response.data);
+    logger.w(response.data);
     if (response.data == null || response.isSuccess == false) {
       Get.dialog(
         DialogApp(
@@ -598,6 +716,18 @@ class PaymentController extends GetxController {
       return;
     }
     final result = response.data!['data'];
+    final responseCoupon = result['coupon'];
+    if (responseCoupon is List) {
+      if (responseCoupon.isNotEmpty) {
+        final response = responseCoupon.first;
+        BuyLotteryController.to.invoiceMeta.value.couponResponse =
+            CouponResponse.fromJson(
+          response,
+        );
+      } else {
+        BuyLotteryController.to.invoiceMeta.value.couponResponse = null;
+      }
+    }
     final invoiceRes = result['invoice'];
     final InvoiceMetaData invoice =
         BuyLotteryController.to.invoiceMeta.value.copyWith();
@@ -608,6 +738,8 @@ class PaymentController extends GetxController {
     invoice.totalAmount = invoiceRes['totalAmount'];
     invoice.transactions.clear();
     invoice.couponIds = invoiceRes['couponId'];
+    final point = invoiceRes['receive_point'] as int?;
+    invoice.receivePoint = point;
     final List transactions = result['transaction'];
     for (var transaction in transactions) {
       invoice.transactions.add(
@@ -671,6 +803,58 @@ class PaymentController extends GetxController {
     }
     maxPercentPointCanuse = response.data!.percent;
     update();
+  }
+
+  void showCouponDetail(BuildContext context) {
+    final invoice = BuyLotteryController.to.invoiceMeta.value;
+    if (invoice.couponIds?.isEmpty == true) {
+      logger.e("invoice.couponIds?.isEmpty == true");
+      return;
+    }
+    final coupon = couponsList.where(
+      (coupon) {
+        return coupon.couponId == invoice.couponIds!.first;
+      },
+    ).toList();
+    if (coupon.isEmpty) {
+      logger.e("coupon.isEmpty");
+      return;
+    }
+    isOpenedDialog = true;
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return CouponDetail(
+          coupon: coupon.first,
+        );
+      },
+    ).whenComplete(
+      () {
+        isOpenedDialog = false;
+      },
+    );
+  }
+
+  void showRemoveCouponModal(BuildContext context) async {
+    isOpenedDialog = true;
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return CouponRemove(
+          onConfirm: () {
+            applyCoupon([]);
+            Get.back();
+          },
+          onCancel: () {
+            Get.back();
+          },
+        );
+      },
+    ).whenComplete(
+      () {
+        isOpenedDialog = false;
+      },
+    );
   }
 
   @override
