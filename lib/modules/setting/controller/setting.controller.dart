@@ -36,6 +36,8 @@ class SettingController extends GetxController {
   Rx<Uint8List?> profileByte = Rx<Uint8List?>(null);
   Map? kycData;
   RxBool isLoadingProfile = false.obs;
+  List<Map> userGroups = [];
+  RxInt point = 0.obs;
 
   Future<void> logout() async {
     await AppWriteController.to.logout();
@@ -54,10 +56,28 @@ class SettingController extends GetxController {
     update();
   }
 
+  Future<void> getPoint() async {
+    final user = this.user;
+    if (user == null) {
+      return;
+    }
+    final responsePoint = await AppWriteController.to.getPoint(user.userId);
+    if (responsePoint.isSuccess == false) {
+      Get.rawSnackbar(message: responsePoint.message);
+      return;
+    }
+    logger.w("new point: ${responsePoint.data ?? 0}");
+    this.user?.point = responsePoint.data ?? 0;
+    point.value = responsePoint.data ?? 0;
+  }
+
   Future<void> getUser([bool forceReloadProfile = false]) async {
     final user = await AppWriteController.to.getUserApp();
     if (user == null) return;
     this.user = user;
+    getPoint();
+    await listGroup(user.userId);
+    AppWriteController.to.subscribeTopic(user.userId);
     update();
     getProfileImage(user, forceReloadProfile);
     if (user.isKYC != true) {
@@ -77,6 +97,15 @@ class SettingController extends GetxController {
     final fileId = user.profile!.split(":").last;
     final fileByte = await AppWriteController.to.getProfileImage(fileId);
     profileByte.value = fileByte;
+  }
+
+  Future<void> listGroup(String userId) async {
+    final response = await AppWriteController.to.listMyGroup(userId);
+    if (response == null) {
+      logger.e("can't list user groups: listGroup SettingController");
+      return;
+    }
+    userGroups = response;
   }
 
   Future<void> setup() async {

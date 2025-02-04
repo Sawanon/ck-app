@@ -9,6 +9,7 @@ import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller
 import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery_fullscreen.dart';
 import 'package:lottery_ck/modules/lottery_history/view/lottery_history.dart';
+import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/webview/view/webview_component.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -46,6 +47,7 @@ class _BuyLotteryPageState extends State<BuyLotteryPage> {
                                   : AppColors.primary.withOpacity(0.1),
                             ),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SizedBox(
                                   width: 36,
@@ -79,6 +81,7 @@ class _BuyLotteryPageState extends State<BuyLotteryPage> {
                                   : AppColors.primary.withOpacity(0.1),
                             ),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SizedBox(
                                   width: 36,
@@ -112,6 +115,7 @@ class _BuyLotteryPageState extends State<BuyLotteryPage> {
                                   : AppColors.primary.withOpacity(0.1),
                             ),
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 SizedBox(
                                   width: 36,
@@ -188,15 +192,23 @@ class _BuyLotteryPageState extends State<BuyLotteryPage> {
                                   // {number: 123}
                                   final dataMap = jsonDecode(data.message);
                                   logger.w(dataMap);
-                                  // controller.setLottery(dataMap['number']);
                                   final lottery = dataMap['number'];
-                                  final minPrice =
-                                      controller.getMinPrice(lottery);
-                                  controller.addLottery(
-                                    minPrice,
+                                  controller.buyAndGotoLotteryPage(
                                     lottery,
-                                    true,
+                                    () async {
+                                      controller.changeTab(0);
+                                      SettingController.to.getPoint();
+                                      Get.back();
+                                    },
                                   );
+                                  // controller.setLottery(dataMap['number']);
+                                  // final minPrice =
+                                  //     controller.getMinPrice(lottery);
+                                  // controller.addLottery(
+                                  //   minPrice,
+                                  //   lottery,
+                                  //   true,
+                                  // );
                                 } catch (e) {
                                   logger.e("$e");
                                 }

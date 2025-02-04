@@ -26,21 +26,56 @@ class PointController extends GetxController {
     isLoadingPoint.value = false;
   }
 
+  // void test() {
+  //   final test = {
+  //     "random": {
+  //       "lo": "ບັດໂຊກ",
+  //       "th": "ไพ่นำโชค",
+  //       "en": "Lucky Cards",
+  //     },
+  //     "buypromotion": {
+  //       "lo": "ໄດ້ຄະແນນກັບຄືນ",
+  //       "th": "รับคะแนนคืน",
+  //       "en": "Get points back",
+  //     },
+  //     "daily": {
+  //       "lo": "ດູດວງ",
+  //       "th": "ดูดวง",
+  //       "en": "Horoscope",
+  //     },
+  //     "buylottery": {
+  //       "lo": "ຊື້ຫວຍ",
+  //       "th": "ซื้อหวย",
+  //       "en": "Lottery",
+  //     },
+  //     "friendbuy": {
+  //       "lo": "ຄະແນນຈາກການຊື້ຂອງຫມູ່ເພື່ອນ",
+  //       "th": "คะแนนจากยอดซื้อของเพื่อน",
+  //       "en": "Points from friends' purchases",
+  //     },
+  //     "kyc": {
+  //       "lo": "ການລະບຸຕົວຕົນ",
+  //       "th": "การยืนยันตัวตน",
+  //       "en": "Identity verification",
+  //     },
+  //   };
+  // }
+
   String renderType(String type, BuildContext context) {
     if (type.toLowerCase().contains("random")) {
       // return "ไพ่มงคล";
       return AppLocale.randomCard.getString(context);
     }
     switch (type.toLowerCase()) {
-      case "buyPromotion":
-        return AppLocale.buyLottery.getString(context);
+      case "buypromotion":
+        return AppLocale.getPointsBack.getString(context);
       case "daily":
         return AppLocale.horoscope.getString(context);
-      case "buyLottery":
+      case "buylottery":
         return AppLocale.buyLottery.getString(context);
       // case "register":
       //   return "สมัครใหม่";
-      case "friendBuy":
+      case "friendbuy":
         return AppLocale.pointsFromFriendsPurchases.getString(context);
       case "kyc":
         return AppLocale.identityVerification.getString(context);

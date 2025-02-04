@@ -20,14 +20,40 @@ class NotificationController extends GetxController {
   int currentTab = 0;
 
   Future<void> listNews() async {
-    final newsList = await AppWriteController.to.listNews();
-    if (newsList != null) {
-      this.newsList.value = newsList;
+    try {
+      final user = await AppWriteController.to.user;
+      final userGroups = await AppWriteController.to.listMyGroup(user.$id);
+      logger.w("userGroups: $userGroups");
+      if (userGroups == null) {
+        logger.e("can't list user groups: listGroup NotificationController");
+        return;
+      }
+      final groupIds =
+          userGroups.map((group) => group['\$id'] as String).toList();
+      final newsList = await AppWriteController.to.listNews(groupIds);
+      if (newsList != null) {
+        this.newsList.value = newsList;
+      }
+    } catch (e) {
+      logger.e("NotificationController.listNews: $e");
     }
   }
 
   Future<void> listPromotions() async {
-    final promotionListData = await AppWriteController.to.listPromotions();
+    final user = await AppWriteController.to.getUserApp();
+    if (user == null) {
+      return;
+    }
+    final userGroups = await AppWriteController.to.listMyGroup(user.userId);
+    logger.w("userGroups: $userGroups");
+    if (userGroups == null) {
+      logger.e("can't list user groups: listGroup NotificationController");
+      return;
+    }
+    final groupIds =
+        userGroups.map((group) => group['\$id'] as String).toList();
+    final promotionListData =
+        await AppWriteController.to.listPromotions(groupIds);
     List<Map> allPromotionList = [];
     if (promotionListData != null) {
       allPromotionList = promotionListData

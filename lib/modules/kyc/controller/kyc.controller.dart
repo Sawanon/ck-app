@@ -158,6 +158,7 @@ class KYCController extends GetxController {
   }
 
   void loading(bool isLoading) {
+    logger.w("isLoading: $isLoading");
     this.isLoading = isLoading;
     update();
   }
@@ -324,8 +325,9 @@ class KYCController extends GetxController {
     update();
   }
 
-  void resendKYC() async {
+  Future<void> resendKYC() async {
     try {
+      loading(true);
       if (!validFormResendKYC()) {
         return;
       }
@@ -334,7 +336,6 @@ class KYCController extends GetxController {
         'id': idKYC,
         'userId': userApp!.userId,
       };
-      loading(true);
       if (firstName != "") data['firstName'] = firstName;
       if (lastName != "") data['lastName'] = lastName;
       if (gender != "") data['gender'] = gender;
@@ -363,6 +364,9 @@ class KYCController extends GetxController {
         'data': jsonEncode(data),
       });
       var dio = dio_class.Dio();
+      // await Future.delayed(const Duration(seconds: 1), () {
+      //   logger.d("successfully");
+      // });
       var response = await dio.post(
         '${AppConst.apiUrl}/user/kyc',
         // 'http://192.168.1.153:3010/api/user/kyc',
@@ -398,7 +402,7 @@ class KYCController extends GetxController {
   void sendKYC() async {
     try {
       if (remark != null) {
-        resendKYC();
+        await resendKYC();
         return;
       }
       // loading(true);

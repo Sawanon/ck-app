@@ -36,50 +36,54 @@ class PromotionDetailPage extends StatelessWidget {
                   child: ListView(
                     padding: const EdgeInsets.all(16),
                     children: [
-                      Container(
-                        height: 200,
-                        child: controller.promotion == null
-                            ? SizedBox(
-                                height: 100,
-                                width: double.infinity,
-                              )
-                            : Builder(builder: (context) {
-                                final promotion = controller.promotion!;
-                                final imageUrl =
-                                    (promotion['banner_image'] != null ||
-                                            promotion['banner_image'] != "")
-                                        ? promotion['banner_image']
-                                        : 'https://www.google.com';
-                                return CachedNetworkImage(
-                                  imageUrl: imageUrl,
-                                  fit: BoxFit.fitHeight,
-                                  progressIndicatorBuilder: (
-                                    context,
-                                    url,
-                                    downloadProgress,
-                                  ) =>
-                                      Center(
-                                    child: CircularProgressIndicator(
-                                      value: downloadProgress.progress,
-                                    ),
-                                  ),
-                                  errorWidget: (context, url, error) => Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(
-                                        Icons.image,
-                                        size: 52,
+                      AspectRatio(
+                        aspectRatio: 21 / 9,
+                        child: Container(
+                          height: 200,
+                          child: controller.promotion == null
+                              ? SizedBox(
+                                  height: 100,
+                                  width: double.infinity,
+                                )
+                              : Builder(builder: (context) {
+                                  final promotion = controller.promotion!;
+                                  final imageUrl =
+                                      (promotion['banner_image'] != null ||
+                                              promotion['banner_image'] != "")
+                                          ? promotion['banner_image']
+                                          : 'https://www.google.com';
+                                  return CachedNetworkImage(
+                                    imageUrl: imageUrl,
+                                    fit: BoxFit.fitHeight,
+                                    progressIndicatorBuilder: (
+                                      context,
+                                      url,
+                                      downloadProgress,
+                                    ) =>
+                                        Center(
+                                      child: CircularProgressIndicator(
+                                        value: downloadProgress.progress,
                                       ),
-                                      Text(
-                                        "Image not found",
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(
+                                          Icons.image,
+                                          size: 52,
+                                        ),
+                                        Text(
+                                          "Image not found",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }),
+                        ),
                       ),
                       const SizedBox(height: 16),
                       Text(
@@ -169,50 +173,76 @@ class PromotionDetailPage extends StatelessWidget {
                     boxShadow: [AppTheme.softShadow],
                   ),
                   child: Builder(builder: (context) {
+                    final isNotBuyType = controller.promotion?['receive_type']
+                            .toString()
+                            .toLowerCase() !=
+                        "buy";
                     final isNeedKYC =
                         controller.promotion?['is_need_kyc'] == true;
                     final user = SettingController.to.user;
                     final disabled = isNeedKYC && user?.isKYC == false;
+                    // logger.w(
+                    //     "controller.alreadyCollectedCoupon: ${controller.alreadyCollectedCoupon}");
                     // final alreadyExist = controller
                     //     .disabledCoupon(controller.promotion?['\$id']);
                     // logger.d("alreadyExist: $alreadyExist");
-                    return LongButton(
-                      isLoading:
-                          controller.promotion == null || controller.isLoading,
-                      disabled: disabled ||
-                          controller.alreadyCollectedCoupon ||
-                          user == null,
-                      onPressed: () {
-                        if (controller.promotion == null) {
-                          return;
-                        }
-                        controller.collectCoupons();
-                      },
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 24,
-                            height: 24,
-                            child: SvgPicture.asset(
-                              AppIcon.ticket,
-                              colorFilter: ColorFilter.mode(
-                                disabled ? AppColors.disableText : Colors.white,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
+                    String message =
+                        AppLocale.collectCoupons.getString(context);
+                    if (controller.alreadyCollectedCoupon) {
+                      message = AppLocale.collectedTheCoupon.getString(context);
+                    }
+
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (controller.promotion != null && isNotBuyType) ...[
                           Text(
-                            controller.alreadyCollectedCoupon
-                                ? AppLocale.collectedTheCoupon
-                                    .getString(context)
-                                : AppLocale.collectCoupons.getString(context),
-                            style: TextStyle(
-                              fontSize: 16,
+                            "🎉 ${AppLocale.thisPromotionIsAvailableImmediatelyWithoutCollectingCoupons.getString(context)}",
+                            style: const TextStyle(
+                              fontSize: 12,
                             ),
                           ),
+                          const SizedBox(height: 4),
                         ],
-                      ),
+                        LongButton(
+                          isLoading: controller.promotion == null ||
+                              controller.isLoading,
+                          disabled: disabled ||
+                              controller.alreadyCollectedCoupon ||
+                              user == null ||
+                              isNotBuyType,
+                          onPressed: () {
+                            if (controller.promotion == null) {
+                              return;
+                            }
+                            controller.collectCoupons();
+                          },
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: SvgPicture.asset(
+                                  AppIcon.ticket,
+                                  colorFilter: ColorFilter.mode(
+                                    disabled
+                                        ? AppColors.disableText
+                                        : Colors.white,
+                                    BlendMode.srcIn,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                message,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     );
                   }),
                 ),

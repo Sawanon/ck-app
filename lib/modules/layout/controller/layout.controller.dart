@@ -4,6 +4,9 @@ import 'dart:math';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:flutter_screen_lock/flutter_screen_lock.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/cart.dart';
 import 'package:lottery_ck/components/long_button.dart';
@@ -19,11 +22,15 @@ import 'package:lottery_ck/modules/home/view/home.dart';
 import 'package:lottery_ck/modules/home/view/home.v2.dart';
 import 'package:lottery_ck/modules/kyc/view/ask_kyc_dialog.dart';
 import 'package:lottery_ck/modules/notification/view/notification.dart';
+import 'package:lottery_ck/modules/pin/controller/passcode_verify.controller.dart';
+import 'package:lottery_ck/modules/pin/controller/pin_verify.controller.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/setting/view/setting.dart';
 import 'package:lottery_ck/modules/splash_screen/controller/splash_screen.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
@@ -342,9 +349,10 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
         lotteryList: lotteryList,
         totalAmount: invoiceDocument.data['totalAmount'].toString(),
         amount: invoiceDocument.data['amount'],
-        billId: invoiceDocument.data['billId'],
+        billId: invoiceDocument.data['billNumber'] ?? "-",
         bankName: bank?.name ?? "-",
         customerId: cloneUserApp.customerId ?? "-",
+        discount: invoiceDocument.data['discount'],
       );
       Get.toNamed(
         RouteName.bill,
@@ -417,7 +425,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
 
   void startCountdownBiometrics() {
     // get sesssion time out
-    // var future = Future.delayed(const Duration(seconds: 10));
+    // var future = Future.delayed(const Duration(seconds: 5));
     var future = Future.delayed(const Duration(minutes: 5));
     logger.d("useBiometricsTimeout: $useBiometricsTimeout");
     if (useBiometricsTimeout != null) return;
@@ -454,24 +462,176 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
       return;
     }
     if (isSessionTimeout == true) {
-      Get.dialog(
-        const PinVerifyPage(
-          disabledBackButton: true,
+      Get.lazyPut(() => PasscodeVerifyController(), fenix: true);
+      final controller = PasscodeVerifyController.to;
+      screenLock(
+        context: Get.context!,
+        correctString: 'aaaaaa',
+        canCancel: false,
+        footer: Padding(
+          padding: const EdgeInsets.only(bottom: 24),
+          child: GestureDetector(
+            onTap: () {
+              logger.d("message received");
+              controller.forgetPasscode(
+                user.phoneNumber,
+                user.userId,
+                () {
+                  restartApp();
+                  isSessionTimeout = false;
+                  isUsedBiometrics = true;
+                },
+              );
+            },
+            child: Text(
+              "${AppLocale.forgetPasscode.getString(Get.context!)}?",
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+                decoration: TextDecoration.underline,
+                decorationThickness: 2,
+                decorationColor: AppColors.textPrimary,
+              ),
+            ),
+          ),
         ),
-        arguments: {
-          "userId": user.userId,
-          "whenSuccess": () {
-            logger.d("whenSuccess");
-            restartApp();
-            isSessionTimeout = false;
-            isUsedBiometrics = true;
-          },
-          "enableForgetPasscode": true,
-          "whenForgetPasscode": () {
-            logger.d("whenForgetPasscode");
-          }
+        maxRetries: controller.maxRetry,
+        delayBuilder: (context, delay) {
+          return Text(
+            controller.delayMessage ?? "-",
+            style: const TextStyle(
+              fontSize: 16,
+              color: AppColors.errorBorder,
+            ),
+          );
         },
+        onValidate: (passcode) async {
+          return await controller.verifyPasscode(passcode, user.userId);
+        },
+        onUnlocked: () {
+          Get.delete<PasscodeVerifyController>();
+          restartApp();
+          isSessionTimeout = false;
+          isUsedBiometrics = true;
+          // PasscodeVerifyController
+        },
+        useBlur: false,
+        title: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              AppLocale.confirmYourPasscode.getString(Get.context!),
+              style: const TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 8),
+            if (controller.errorMessage != null) ...[
+              Text(
+                controller.errorMessage!,
+                style: const TextStyle(
+                  color: AppColors.errorBorder,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(height: 8),
+            ],
+            SizedBox(
+              height: 24,
+              width: 24,
+              child: Obx(() {
+                if (controller.pendingVerify.value) {
+                  return const CircularProgressIndicator(
+                    color: AppColors.primary,
+                  );
+                }
+                return const SizedBox.shrink();
+              }),
+            )
+          ],
+        ),
+        secretsConfig: SecretsConfig(
+          padding: const EdgeInsets.all(24),
+          spacing: 16,
+          secretConfig: SecretConfig(
+            builder: (context, config, enabled) {
+              return Container(
+                width: 16,
+                height: 16,
+                decoration: BoxDecoration(
+                  color: enabled ? AppColors.primary : Colors.transparent,
+                  border: Border.all(
+                    width: 1,
+                    color: enabled ? Colors.transparent : AppColors.disableText,
+                  ),
+                  shape: BoxShape.circle,
+                ),
+              );
+            },
+          ),
+        ),
+        customizedButtonChild: SizedBox(
+          width: 60,
+          height: 60,
+          child: SvgPicture.asset(
+            AppIcon.fingerScan,
+            fit: BoxFit.fitWidth,
+          ),
+        ),
+        customizedButtonTap: () {
+          controller.useBiometrics();
+        },
+        keyPadConfig: KeyPadConfig(
+          actionButtonConfig: KeyPadButtonConfig(
+              buttonStyle: ButtonStyle(
+            overlayColor: WidgetStateProperty.all(Colors.white),
+            foregroundColor: WidgetStateProperty.all(AppColors.textPrimary),
+          )),
+          buttonConfig: KeyPadButtonConfig(
+            // backgroundColor: Colors.white,
+            buttonStyle: ButtonStyle(
+              overlayColor: WidgetStateProperty.all(Colors.white),
+              foregroundColor: WidgetStateProperty.all(AppColors.textPrimary),
+            ),
+          ),
+        ),
+        config: ScreenLockConfig(
+          backgroundColor: Colors.white,
+          // titleTextStyle: TextStyle(
+          //   fontSize: 32,
+          //   fontWeight: FontWeight.w700,
+          // ),
+          // textStyle: TextStyle(
+          //   color: Colors.red,
+          // ),
+          // buttonStyle: ButtonStyle(
+          //   backgroundColor: WidgetStateProperty.all(
+          //     Colors.amber,
+          //   ),
+          // ),
+        ),
       );
+      // Get.dialog(
+      //   const PinVerifyPage(
+      //     disabledBackButton: true,
+      //   ),
+      //   arguments: {
+      //     "userId": user.userId,
+      //     "whenSuccess": () {
+      //       logger.d("whenSuccess");
+      //       restartApp();
+      //       isSessionTimeout = false;
+      //       isUsedBiometrics = true;
+      //     },
+      //     "enableForgetPasscode": true,
+      //     "whenForgetPasscode": () {
+      //       logger.d("whenForgetPasscode");
+      //     }
+      //   },
+      // );
     }
   }
 

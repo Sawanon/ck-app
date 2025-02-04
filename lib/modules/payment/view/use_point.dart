@@ -43,10 +43,10 @@ class _UsePointComponentState extends State<UsePointComponent> {
     });
   }
 
-  void setup() async {
-    inputPointController.text = "${widget.myPoint}";
-    setPoint(widget.myPoint);
-  }
+  // void setup() async {
+  //   inputPointController.text = "${widget.myPoint}";
+  //   setPoint(widget.myPoint);
+  // }
 
   void submitUsePoint() async {
     try {
@@ -57,11 +57,11 @@ class _UsePointComponentState extends State<UsePointComponent> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    setup();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   setup();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -110,9 +110,9 @@ class _UsePointComponentState extends State<UsePointComponent> {
                   AppLocale.theMaximumPointsYouCanUse.getString(context),
                 ),
               ),
-              // Text(
-              //   CommonFn.parseMoney(widget.myPoint),
-              // ),
+              Text(
+                "${CommonFn.parseMoney(widget.myPoint)} ${AppLocale.point.getString(context)}",
+              ),
             ],
           ),
           const SizedBox(height: 10),

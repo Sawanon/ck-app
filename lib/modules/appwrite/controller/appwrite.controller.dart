@@ -66,9 +66,12 @@ class AppWriteController extends GetxController {
   static const String BACKGROUND_THEME = '6768df870033004ee896';
   static const String APP_WALLPAPERS = 'appWallpapers';
   static const String COUPON = '67762ef9003b9b51c763';
+  static const String GROUP_USER = 'group_users';
 
   static const String FN_SIGNIN = '6759aebe003c92a6fa81';
   static const String FN_LOTTERY_DATE = '67949bd30000dc05f940';
+
+  static const String TOPIC_ALL_USER = '66d2abc9003c1c06ac97';
 
   static const _roleUserId = "669a2cfd00141edc45ef";
   final String _providerId = '66d28d4000300a1e7dc1';
@@ -77,6 +80,7 @@ class AppWriteController extends GetxController {
   late Databases databases;
   late Storage storage;
   late Functions functions;
+  late Messaging messaging;
   Client client = Client();
 
   Future<User> get user async => await account.get();
@@ -174,6 +178,7 @@ class AppWriteController extends GetxController {
       providerId: _providerId,
     );
     logger.d(target.providerType);
+    await StorageController.to.setTargetPush(target.$id);
   }
 
   Future<User?> register(String email, String password, String firstName,
@@ -232,6 +237,7 @@ class AppWriteController extends GetxController {
       await account.deleteSession(sessionId: 'current');
       await StorageController.to.clear();
       LayoutController.to.clearState();
+      await StorageController.to.removeTargetPush();
     } catch (e) {
       logger.e(e.toString());
     }
@@ -246,15 +252,20 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<DocumentList?> listBank() async {
+  Future<List<Bank>?> listBank() async {
     try {
-      final bankList = await databases.listDocuments(
+      final bankDocumentList = await databases.listDocuments(
           databaseId: _databaseName,
           collectionId: BANK,
           queries: [
             Query.select(["name", "logo", "\$id", "full_name"]),
             Query.equal('status', true),
           ]);
+      final bankList = bankDocumentList.documents.map(
+        (document) {
+          return Bank.fromJson(document.data);
+        },
+      ).toList();
       return bankList;
     } catch (e) {
       logger.e(e.toString());
@@ -455,6 +466,34 @@ class AppWriteController extends GetxController {
     }
   }
 
+  Future<List<LotteryDate>?> listLotteryBuyDate() async {
+    try {
+      final listLotteryDate = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: LOTTERY_DATE,
+        queries: [
+          Query.equal('active', true),
+          Query.equal('is_emergency', false),
+          Query.lessThanEqual(
+              'start_time', DateTime.now().toUtc().toIso8601String()),
+          Query.orderDesc("datetime"),
+          Query.limit(10),
+        ],
+      );
+      logger.w("total: ${listLotteryDate.documents.length}");
+      List<LotteryDate> lotteryDateList = [];
+      for (var lotteryDateDocument in listLotteryDate.documents) {
+        final lotteryDate = LotteryDate.fromJson(lotteryDateDocument.data);
+        lotteryDateList.add(lotteryDate);
+      }
+      logger.w("final total: ${lotteryDateList.length}");
+      return lotteryDateList;
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
   Future<List<LotteryDate>?> listLotteryDate() async {
     try {
       final listLotteryDate = await databases.listDocuments(
@@ -530,6 +569,9 @@ class AppWriteController extends GetxController {
         databaseId: _databaseName,
         collectionId: "$lotteryDateStr$TRANSACTION",
         documentId: transactionId,
+        // queries: [
+        //   Query.equal('status', 'paid'),
+        // ],
       );
     } catch (e) {
       logger.e("$e");
@@ -591,7 +633,7 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<List<News>?> listNews() async {
+  Future<List<News>?> listNews(List<String> groupIds) async {
     try {
       final now = DateTime.now().toUtc();
       final newsDocumentList = await databases.listDocuments(
@@ -600,6 +642,7 @@ class AppWriteController extends GetxController {
         queries: [
           Query.equal("is_active", true),
           Query.equal("is_approve", "3"),
+          Query.contains('group_user', groupIds),
           Query.greaterThanEqual("end_date", now.toIso8601String()),
           Query.orderDesc('start_date'),
           Query.limit(25),
@@ -613,7 +656,6 @@ class AppWriteController extends GetxController {
       return newsList;
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(message: "$e");
       return null;
     }
   }
@@ -644,7 +686,7 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<List<Map>?> listPromotions() async {
+  Future<List<Map>?> listPromotions(List<String> groupIds) async {
     try {
       final now = DateTime.now().toUtc();
       final promotionsDocumentList = await databases.listDocuments(
@@ -653,6 +695,7 @@ class AppWriteController extends GetxController {
         queries: [
           Query.equal("is_active", true),
           Query.equal("is_approve", "3"),
+          Query.contains('group_user', groupIds),
           Query.greaterThanEqual("end_date", now.toIso8601String()),
           Query.orderDesc('start_date'),
           Query.limit(25),
@@ -821,7 +864,7 @@ class AppWriteController extends GetxController {
     try {
       final allUser = await databases.listDocuments(
         databaseId: _databaseName,
-        collectionId: "group_users",
+        collectionId: GROUP_USER,
         queries: [
           Query.equal("name", "All User"),
           Query.limit(1),
@@ -835,13 +878,13 @@ class AppWriteController extends GetxController {
       logger.w("not has in group");
       final allUserGroup = await databases.getDocument(
         databaseId: _databaseName,
-        collectionId: "group_users",
+        collectionId: GROUP_USER,
         documentId: allUser.documents.first.$id,
       );
       final oldArray = allUserGroup.data["userId"];
       await databases.updateDocument(
         databaseId: _databaseName,
-        collectionId: "group_users",
+        collectionId: GROUP_USER,
         documentId: allUser.documents.first.$id,
         data: {
           "userId": [
@@ -1292,6 +1335,7 @@ class AppWriteController extends GetxController {
     databases = Databases(client);
     storage = Storage(client);
     functions = Functions(client);
+    messaging = Messaging(client);
     await intialTokenToStorage();
   }
 
@@ -1361,6 +1405,33 @@ class AppWriteController extends GetxController {
           .map((e) => UserPoint.fromJson(e.data))
           .toList();
       return userPointList;
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<List?> listBanner() async {
+    try {
+      final bannerDocumentList = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: CONTENT_MANAGEMENT,
+        queries: [
+          Query.equal('is_approve', '1'),
+          Query.equal('is_active', true),
+          Query.equal('content_type', 'banner'),
+          Query.or([
+            Query.greaterThanEqual(
+                'expire', DateTime.now().toUtc().toIso8601String()),
+            Query.isNull('expire'),
+          ]),
+          Query.orderDesc('\$createdAt'),
+          Query.limit(100),
+        ],
+      );
+      return bannerDocumentList.documents
+          .map((document) => document.data)
+          .toList();
     } catch (e) {
       logger.e("$e");
       return null;
@@ -1528,7 +1599,7 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<Map?> getPointRaio() async {
+  Future<ResponseApi<int?>> getPointRaio() async {
     try {
       final pointRatioDocumentList = await databases.listDocuments(
         databaseId: _databaseName,
@@ -1538,10 +1609,20 @@ class AppWriteController extends GetxController {
           Query.limit(1),
         ],
       );
-      return pointRatioDocumentList.documents.first.data;
+      final result =
+          jsonDecode(pointRatioDocumentList.documents.first.data['setting']);
+      final pointRaio = int.parse(result['amount']);
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully to get point raio",
+        data: pointRaio,
+      );
     } catch (e) {
       logger.e("$e");
-      return null;
+      return ResponseApi(
+        isSuccess: false,
+        message: "Failed to get point raio",
+      );
     }
   }
 
@@ -2030,6 +2111,32 @@ class AppWriteController extends GetxController {
     }
   }
 
+  Future<ResponseApi<List<Coupon>?>> listAllMyCoupons(String userId) async {
+    try {
+      final response = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: COUPON,
+        queries: [
+          Query.equal("userId", userId),
+        ],
+      );
+      final coupons = response.documents
+          .map((document) => Coupon.fromJson(document.data))
+          .toList();
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully list all my coupons",
+        data: coupons,
+      );
+    } on AppwriteException catch (e) {
+      logger.e("$e");
+      return ResponseApi(
+        isSuccess: false,
+        message: e.message ?? "failed to list all my coupongs",
+      );
+    }
+  }
+
   Future<ResponseApi<List<Coupon>?>> listMyCoupons(String userId) async {
     try {
       final now = DateTime.now().toUtc().toIso8601String();
@@ -2381,13 +2488,12 @@ class AppWriteController extends GetxController {
       //     .setSelfSigned(status: true);
 
       // Storage storage = Storage(client);
-
       Uint8List result = await storage.getFileDownload(
         bucketId: bucketId,
         fileId: fileId,
       );
       logger.d("downloaded !");
-
+      // Gal.
       await Gal.putImageBytes(
         result,
         album: 'CK-LOTTO',
@@ -2407,6 +2513,67 @@ class AppWriteController extends GetxController {
       );
       // await saveFiles(result, '02.png');
       logger.d("saved !");
+    } catch (e) {
+      logger.e("$e");
+    }
+  }
+
+  Future<List<Map>?> listMyGroup(String userId) async {
+    try {
+      final response = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: GROUP_USER,
+        queries: [
+          Query.contains('userId', userId),
+          Query.equal('is_active', true),
+          Query.select(['name', 'value', '\$id']),
+        ],
+      );
+      final result = response.documents.map((docment) => docment.data).toList();
+      return result;
+    } catch (e) {
+      logger.e("$e");
+      return null;
+    }
+  }
+
+  Future<ResponseApi<int?>> getPoint(String userId) async {
+    try {
+      final response = await databases.getDocument(
+        databaseId: _databaseName,
+        collectionId: USER,
+        documentId: userId,
+        queries: [
+          Query.select(["point"]),
+        ],
+      );
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully to get point",
+        data: response.data['point'],
+      );
+    } catch (e) {
+      logger.e("$e");
+      return ResponseApi(
+        isSuccess: false,
+        message: "Failed to get point",
+      );
+    }
+  }
+
+  Future<void> subscribeTopic(String userId) async {
+    try {
+      final targetId = await StorageController.to.getTargetPush();
+      if (targetId == null) {
+        return;
+      }
+      final response = await messaging.createSubscriber(
+        topicId: TOPIC_ALL_USER,
+        subscriberId: userId,
+        targetId: targetId,
+      );
+      logger.w("subscribeTopic: $response");
+      // getTargetPush
     } catch (e) {
       logger.e("$e");
     }

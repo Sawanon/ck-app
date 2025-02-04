@@ -38,7 +38,7 @@ class BillComponent extends StatelessWidget {
             child: Text(
               '${AppLocale.titleBill.getString(context)} CK GROUP',
               style: TextStyle(
-                fontSize: 13,
+                fontSize: 12,
                 color: AppColors.secodaryText,
               ),
             ),
@@ -233,26 +233,47 @@ class BillComponent extends StatelessWidget {
               },
             ).toList(),
           ),
+          if (bill.pointMoney != null || bill.discount != null)
+            Divider(
+              color: AppColors.yellowGradient,
+            ),
           if (bill.pointMoney != null) ...[
-            const SizedBox(height: 8),
+            // const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(AppLocale.pointDiscount.getString(context)),
-                Text("-${bill.pointMoney?.toString() ?? '-'}"),
+                Text(
+                  AppLocale.pointDiscount.getString(context),
+                  style: const TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+                Text(
+                  "-${bill.pointMoney!} ${AppLocale.lak.getString(context)}",
+                  style: const TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
               ],
             ),
           ],
           const SizedBox(height: 8),
-          if (bill.lotteryList.fold(0,
-                  (prev, transaction) => prev + (transaction.discount ?? 0)) !=
-              0) ...[
+          if (bill.discount != null && bill.discount != 0) ...[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(AppLocale.discount.getString(context)),
                 Text(
-                    "${CommonFn.parseMoney(bill.lotteryList.fold(0, (prev, transaction) => prev + (transaction.discount ?? 0)))} ${AppLocale.lak.getString(context)}"),
+                  AppLocale.discount.getString(context),
+                  style: const TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+                Text(
+                  "-${CommonFn.parseMoney(bill.discount!)} ${AppLocale.lak.getString(context)}",
+                  style: const TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 8),

@@ -1,3 +1,4 @@
+import 'package:lottery_ck/model/invoice_meta.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 
 class History {
@@ -5,6 +6,7 @@ class History {
   late String time;
   String invoiceId;
   int amount;
+  int quota;
   int totalAmount;
   List transactionIdList;
   List lotteryList = [];
@@ -15,11 +17,13 @@ class History {
   String? billNumber;
   int? point;
   int? pointMoney;
+  int? discount;
 
   History({
     required this.createdAt,
     required this.invoiceId,
     required this.amount,
+    required this.quota,
     required this.totalAmount,
     required this.transactionIdList,
     this.bankId,
@@ -28,6 +32,7 @@ class History {
     this.billNumber,
     this.point,
     this.pointMoney,
+    this.discount,
   }) {
     date = CommonFn.parseDMY(DateTime.parse(createdAt).toLocal());
     time = CommonFn.parseHMS(DateTime.parse(createdAt).toLocal());
@@ -38,6 +43,7 @@ class History {
       createdAt: json['\$createdAt'],
       invoiceId: json["\$id"],
       amount: json["amount"],
+      quota: json["quota"],
       totalAmount: json["totalAmount"],
       transactionIdList: json["transactionId"],
       bankId: json['bankId'],
@@ -46,6 +52,7 @@ class History {
       billNumber: json['billNumber'],
       point: json['point'],
       pointMoney: json['pointMoney'],
+      discount: json['discount'],
     );
   }
 
@@ -57,6 +64,7 @@ class History {
         bankId: 'b1234',
         status: 'pending',
         amount: 0,
+        quota: 0,
       );
 
   Map toJson() => {
@@ -71,5 +79,7 @@ class History {
         "point": point,
         "pointMoney": pointMoney,
         "amount": amount,
+        "discount": discount,
+        "quota": quota,
       };
 }

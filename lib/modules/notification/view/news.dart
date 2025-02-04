@@ -1,13 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/model/news.dart';
 import 'package:lottery_ck/modules/notification/controller/news.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/res/color.dart';
-import 'package:lottery_ck/utils.dart';
 
 class NewsDetailPage extends StatelessWidget {
   final bool? isModal;
@@ -59,29 +56,32 @@ class NewsDetailComponent extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              Container(
-                height: 200,
-                child: news == null
-                    ? SizedBox(
-                        height: 100,
-                        width: double.infinity,
-                      )
-                    : CachedNetworkImage(
-                        imageUrl: news!.image!,
-                        fit: BoxFit.fitHeight,
-                        progressIndicatorBuilder: (
-                          context,
-                          url,
-                          downloadProgress,
-                        ) =>
-                            Center(
-                          child: CircularProgressIndicator(
-                            value: downloadProgress.progress,
+              AspectRatio(
+                aspectRatio: 21 / 9,
+                child: Container(
+                  height: 200,
+                  child: news == null
+                      ? SizedBox(
+                          height: 100,
+                          width: double.infinity,
+                        )
+                      : CachedNetworkImage(
+                          imageUrl: news!.image!,
+                          fit: BoxFit.fitHeight,
+                          progressIndicatorBuilder: (
+                            context,
+                            url,
+                            downloadProgress,
+                          ) =>
+                              Center(
+                            child: CircularProgressIndicator(
+                              value: downloadProgress.progress,
+                            ),
                           ),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
                         ),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
-                      ),
+                ),
               ),
               const SizedBox(height: 16),
               Text(

@@ -150,15 +150,16 @@ class PointPage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              controller.userApp?.fullName ?? '-',
+                              controller.userApp?.firstName ?? '-',
                               style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 16,
                               ),
                             ),
                             Text(
-                              controller.userApp?.phoneNumber ?? '-',
-                              style: TextStyle(
+                              CommonFn.hidePhoneNumber(
+                                  controller.userApp?.phoneNumber),
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.textPrimary,
                               ),

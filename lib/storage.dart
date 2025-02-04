@@ -172,6 +172,18 @@ class StorageController extends GetxController {
     await clearValue("promotionLater");
   }
 
+  Future<void> setTargetPush(String id) async {
+    await setValue("targetPush", id);
+  }
+
+  Future<String?> getTargetPush() async {
+    return await getValue("targetPush");
+  }
+
+  Future<void> removeTargetPush() async {
+    await clearValue("targetPush");
+  }
+
   @override
   void onInit() {
     storage = FlutterSecureStorage(

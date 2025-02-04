@@ -13,7 +13,7 @@ class PromotionController extends GetxController {
   static PromotionController get to => Get.find();
   final argument = Get.arguments;
   final List<Coupon> couponsList = [];
-  bool alreadyCollectedCoupon = false;
+  bool alreadyCollectedCoupon = true;
   bool isLoading = false;
 
   Map? promotion;
@@ -60,6 +60,7 @@ class PromotionController extends GetxController {
 
   bool disabledCoupon(String? promotionId) {
     try {
+      logger.w("promotionId: $promotionId");
       if (couponsList.isEmpty) {
         return false;
       }
@@ -69,9 +70,21 @@ class PromotionController extends GetxController {
         },
       ).toList();
       if (resultWhereCoupon.isNotEmpty) {
-        alreadyCollectedCoupon = true;
-        update();
+        final isReUse = promotion?['is_reuse'] ?? false;
+        logger.w("isReUse: $isReUse");
+        if (isReUse) {
+          final notUseCoupon = resultWhereCoupon
+              .where((coupon) => coupon.isUse == false)
+              .toList();
+          if (notUseCoupon.isEmpty) {
+            alreadyCollectedCoupon = false;
+            update();
+          }
+        }
         return true;
+      } else {
+        alreadyCollectedCoupon = false;
+        update();
       }
       return false;
     } catch (e) {
@@ -80,13 +93,13 @@ class PromotionController extends GetxController {
     }
   }
 
-  void listMyCoupons() async {
+  Future<void> listMyCoupons() async {
     logger.d("listMyCoupons");
     final user = SettingController.to.user;
     if (user == null) {
       return;
     }
-    final response = await AppWriteController.to.listMyCoupons(user.userId);
+    final response = await AppWriteController.to.listAllMyCoupons(user.userId);
     if (response.isSuccess == false) {
       Get.dialog(DialogApp(
         title: Text(
@@ -102,8 +115,11 @@ class PromotionController extends GetxController {
       return;
     }
     final coupons = response.data;
+    logger.w(coupons);
     if (coupons == null || coupons.isEmpty) {
       logger.e("coupon is empty");
+      alreadyCollectedCoupon = false;
+      update();
       return;
     }
     logger.d(coupons);
@@ -114,10 +130,16 @@ class PromotionController extends GetxController {
     logger.w("result: $result");
   }
 
+  void setup() async {
+    // setIsLoading(true);
+    await getPromotion();
+    await listMyCoupons();
+    // setIsLoading(false);
+  }
+
   @override
   void onInit() {
-    getPromotion();
-    listMyCoupons();
+    setup();
     super.onInit();
   }
 }

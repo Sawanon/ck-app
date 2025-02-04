@@ -3,12 +3,14 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/utils.dart';
@@ -68,7 +70,7 @@ class MonneyConfirmOTPController extends GetxController {
           DialogApp(
             disableConfirm: true,
             cancelText: Text(
-              "Close",
+              AppLocale.close.getString(Get.context!),
               style: TextStyle(
                 color: AppColors.primary,
               ),
@@ -92,6 +94,7 @@ class MonneyConfirmOTPController extends GetxController {
         // responseMessage
         return;
       }
+      BuyLotteryController.to.removeInvoiceWhenPaymentSuccess();
       Get.back();
       PaymentController.to.showBill(invoiceMeta.invoiceId!);
     } on DioException catch (e) {

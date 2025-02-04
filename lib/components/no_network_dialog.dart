@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 
 class NoNetworkDialog extends StatelessWidget {
   final String identifier;
@@ -18,8 +19,8 @@ class NoNetworkDialog extends StatelessWidget {
         child: Material(
           color: Colors.transparent,
           child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 16),
-            padding: EdgeInsets.all(16),
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8),
@@ -28,15 +29,15 @@ class NoNetworkDialog extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "ບໍ່ພົບການເຊື່ອມຕໍ່ອິນເຕີເນັດ",
-                  style: TextStyle(
+                  AppLocale.noInternetConnectionFound.getString(context),
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 Text(
-                  "ກະລຸນາກວດສອບການເຊື່ອມຕໍ່ອິນເຕີເນັດ/Wifi ໃນອຸປະກອນມືຖືຂອງເຈົ້າ ແລະລອງເຂົ້າສູ່ລະບົບອີກຄັ້ງ",
-                  style: TextStyle(
+                  AppLocale.noInternetConnectionFoundDetail.getString(context),
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
@@ -44,7 +45,9 @@ class NoNetworkDialog extends StatelessWidget {
                 const SizedBox(height: 16),
                 LongButton(
                   onPressed: onConfirm,
-                  child: Text("Reload"),
+                  child: Text(
+                    AppLocale.retry.getString(context),
+                  ),
                 )
               ],
             ),

@@ -7,6 +7,7 @@ import 'package:lottery_ck/model/menu.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
+import 'package:lottery_ck/modules/point/view/buy_point.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -105,26 +106,24 @@ class MenuGrid extends StatelessWidget {
             ),
           ),
           MenuModel(
-            disabled: true,
             ontab: () {
-              logger.d("comming soon");
+              controller.gotoBuyPoint();
             },
             icon: SizedBox(
               height: 32,
               width: 32,
-              child: Image.asset(
-                AppIcon.wallet,
+              child: SvgPicture.asset(
+                AppIcon.buyPoint,
               ),
             ),
             name: Align(
               alignment: Alignment.center,
               child: Text(
-                AppLocale.wallet.getString(context),
+                AppLocale.buyPoints.getString(context),
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 11,
                   height: 1.2,
-                  color: AppColors.menuTextDisabled,
                 ),
                 textAlign: TextAlign.center,
                 softWrap: true,
@@ -229,40 +228,6 @@ class MenuGrid extends StatelessWidget {
           MenuModel(
             disabled: true,
             ontab: () {
-              logger.d("comming soon");
-            },
-            icon: SizedBox(
-              height: 32,
-              width: 32,
-              // child: Image.asset(
-              //   AppIcon.news,
-              // ),
-              child: SvgPicture.asset(
-                AppIcon.aiChat,
-                colorFilter: ColorFilter.mode(
-                  Colors.grey.shade700,
-                  BlendMode.srcIn,
-                ),
-              ),
-            ),
-            name: Align(
-              alignment: Alignment.center,
-              child: Text(
-                'CK-AI Chat',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 11,
-                  height: 1.2,
-                  color: AppColors.menuTextDisabled,
-                ),
-                textAlign: TextAlign.center,
-                softWrap: true,
-              ),
-            ),
-          ),
-          MenuModel(
-            disabled: true,
-            ontab: () {
               if (SettingController.to.user == null) {
                 LayoutController.to.showDialogLogin();
                 return;
@@ -291,6 +256,40 @@ class MenuGrid extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   fontSize: 11,
                   height: 1.2,
+                ),
+                textAlign: TextAlign.center,
+                softWrap: true,
+              ),
+            ),
+          ),
+          MenuModel(
+            disabled: true,
+            ontab: () {
+              logger.d("comming soon");
+            },
+            icon: SizedBox(
+              height: 32,
+              width: 32,
+              // child: Image.asset(
+              //   AppIcon.news,
+              // ),
+              child: SvgPicture.asset(
+                AppIcon.aiChat,
+                colorFilter: ColorFilter.mode(
+                  Colors.grey.shade700,
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
+            name: Align(
+              alignment: Alignment.center,
+              child: Text(
+                'CK-AI Chat',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 11,
+                  height: 1.2,
+                  color: AppColors.menuTextDisabled,
                 ),
                 textAlign: TextAlign.center,
                 softWrap: true,

@@ -3,6 +3,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/checkbox.dart';
+import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/model/coupon.dart';
@@ -55,25 +56,43 @@ class _CouponsPageState extends State<CouponsPage> {
   }
 
   void onSubmit() async {
-    // logger.d(selectedCoupon);
-    // final List<String> couponIdsList = [];
-    // selectedCoupon.forEach(
-    //   (key, value) {
-    //     logger.d("key: $key");
-    //     logger.d("value: $value");
-    //     if (value == true) {
-    //       couponIdsList.add(key);
-    //     }
-    //   },
-    // );
-    // logger.d(couponIdsList);
     if (selectedCouponId == null) {
       return;
     }
+    final point = PaymentController.to.point;
+    logger.w("point: $point");
+    if (point != null && point != 0) {
+      Get.dialog(
+        DialogApp(
+          title: Text(
+            AppLocale.recalculateScores.getString(context),
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          details: Text(
+            AppLocale.recalculateScoresDetail.getString(context),
+          ),
+          onConfirm: () async {
+            await applyCoupon();
+            PaymentController.to.applyPoint(0, false);
+            Get.back();
+          },
+        ),
+      );
+      return;
+    }
+    await applyCoupon();
+  }
+
+  Future<void> applyCoupon() async {
     setIsLoading(true);
     await PaymentController.to.applyCoupon([selectedCouponId!]);
     setIsLoading(false);
-    Get.back();
+    Future.delayed(const Duration(milliseconds: 250), () {
+      Get.back();
+    });
   }
 
   void setup() {
@@ -89,6 +108,10 @@ class _CouponsPageState extends State<CouponsPage> {
         });
       }
     }
+  }
+
+  void showCoupon(BuildContext context, Coupon coupon) {
+    PaymentController.to.showCouponDetailInCouponPage(context, coupon);
   }
 
   @override
@@ -149,11 +172,12 @@ class _CouponsPageState extends State<CouponsPage> {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: widget.couponsList.map((coupon) {
+                          logger.w("coupon: ${coupon.couponId}");
                           final promotion = coupon.promotion;
-                          logger.w(promotion);
-                          final int currentUse = promotion?['current_use'];
-                          final int maxUser = promotion?['max_user'];
-                          final leftPercent = currentUse / maxUser;
+                          final int currentUse = promotion?['current_use'] ?? 0;
+                          final int maxUser = promotion?['max_user'] ?? 0;
+                          final leftPercent =
+                              maxUser == 0 ? 0 : currentUse / maxUser;
                           final percentStr = leftPercent * 100;
                           return GestureDetector(
                             onTap: () {
@@ -180,7 +204,7 @@ class _CouponsPageState extends State<CouponsPage> {
                                         CrossAxisAlignment.stretch,
                                     children: [
                                       Container(
-                                        width: 80,
+                                        width: 60,
                                         alignment: Alignment.center,
                                         decoration: const BoxDecoration(
                                           color: AppColors.primary,
@@ -201,7 +225,7 @@ class _CouponsPageState extends State<CouponsPage> {
                                         child: Container(
                                           padding: const EdgeInsets.only(
                                             left: 12,
-                                            right: 16,
+                                            right: 12,
                                             top: 16,
                                             bottom: 16,
                                           ),
@@ -215,13 +239,14 @@ class _CouponsPageState extends State<CouponsPage> {
                                                   fontSize: 16,
                                                 ),
                                               ),
-                                              const SizedBox(height: 8),
-                                              Text(
-                                                "${coupon.promotion?['detail'] ?? "Not found promotion"}",
-                                                style: const TextStyle(
-                                                  fontSize: 14,
-                                                ),
-                                              ),
+                                              // const SizedBox(height: 8),
+                                              // Text(
+                                              //   "${coupon.promotion?['detail'] ?? "Not found promotion"}",
+                                              //   maxLines: 2,
+                                              //   style: const TextStyle(
+                                              //     fontSize: 14,
+                                              //   ),
+                                              // ),
                                               Builder(
                                                 builder: (context) {
                                                   if (promotion == null ||
@@ -258,8 +283,6 @@ class _CouponsPageState extends State<CouponsPage> {
                                                             double outerWidth =
                                                                 constraints
                                                                     .maxWidth;
-                                                            logger
-                                                                .w(outerWidth);
                                                             return Container(
                                                               width: outerWidth *
                                                                   leftPercent,
@@ -321,13 +344,45 @@ class _CouponsPageState extends State<CouponsPage> {
                                                         MainAxisSize.min,
                                                     children: [
                                                       const SizedBox(height: 8),
-                                                      Text(
-                                                        "${AppLocale.validUntil.getString(context)} ${CommonFn.parseDMY(expireDate)} ${CommonFn.parseHMS(expireDate)}",
-                                                        style: const TextStyle(
-                                                          fontSize: 12,
-                                                          color: AppColors
-                                                              .textPrimary,
-                                                        ),
+                                                      Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: Text(
+                                                              "${AppLocale.validUntil.getString(context)} ${CommonFn.parseDMY(expireDate)} ${CommonFn.parseHMS(expireDate)}",
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 12,
+                                                                color: AppColors
+                                                                    .textPrimary,
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              showCoupon(
+                                                                  context,
+                                                                  coupon);
+                                                            },
+                                                            child: Container(
+                                                              child: Text(
+                                                                AppLocale
+                                                                    .readMore
+                                                                    .getString(
+                                                                        context),
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 12,
+                                                                  color: Colors
+                                                                      .blue
+                                                                      .shade600,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ],
                                                   );
@@ -341,10 +396,41 @@ class _CouponsPageState extends State<CouponsPage> {
                                         value:
                                             selectedCouponId == coupon.couponId,
                                         onChange: (value) {
-                                          logger.d("value: $value");
+                                          // logger.d("value: $value");
+                                          onClickCoupon(coupon.couponId);
                                         },
                                       ),
                                       const SizedBox(width: 16),
+                                      // Column(
+                                      //   mainAxisAlignment:
+                                      //       MainAxisAlignment.center,
+                                      //   mainAxisSize: MainAxisSize.min,
+                                      //   children: [
+                                      //     Container(
+                                      //       margin: EdgeInsets.only(
+                                      //         bottom: 12,
+                                      //         right: 12,
+                                      //       ),
+                                      //       padding: const EdgeInsets.symmetric(
+                                      //         vertical: 12,
+                                      //       ),
+                                      //       width: 80,
+                                      //       alignment: Alignment.center,
+                                      //       decoration: BoxDecoration(
+                                      //         color: AppColors.primary,
+                                      //         borderRadius:
+                                      //             BorderRadius.circular(8),
+                                      //       ),
+                                      //       child: Text(
+                                      //         AppLocale.apply
+                                      //             .getString(context),
+                                      //         style: const TextStyle(
+                                      //           color: Colors.white,
+                                      //         ),
+                                      //       ),
+                                      //     ),
+                                      //   ],
+                                      // ),
                                     ],
                                   ),
                                 ),

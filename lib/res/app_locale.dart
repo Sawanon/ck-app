@@ -344,6 +344,31 @@ mixin AppLocale {
       "ເຈົ້າເປັນຜູ້ໂຊກດີ ແລະໄດ້ຮັບລາງວັນ";
   static const String validUntil = "ໃຊ້ໄດ້ເຖິງ";
   static const String used = "ໃຊ້ແລ້ວ";
+  static const String thisLotteryNumberIsNotYetOnSale =
+      "ເລກຫວຍນີ້ຍັງບໍ່ໄດ້ຂາຍເທື່ອ";
+  static const String yourAccountIsBlock =
+      "ບັນຊີຂອງທ່ານຖືກລະງັບຊົ່ວຄາວ. ກະລຸນາຕິດຕໍ່ບໍລິການລູກຄ້າ";
+  static const String
+      thisPromotionIsAvailableImmediatelyWithoutCollectingCoupons =
+      "ໂປຣໂມຊັນນີ້ມີໃຫ້ທັນທີໂດຍບໍ່ຕ້ອງເກັບຄູປ໋ອງ";
+  static const String getPointsBack = "ໄດ້ຄະແນນກັບຄືນ";
+  static const String doYouWantToLeaveThisPage = "ທ່ານຕ້ອງການອອກຈາກໜ້ານີ້ບໍ";
+  static const String clickConfirmToGoToTheLotteryPurchasePage =
+      'ຄລິກ "ຕົກລົງ" ເພື່ອໄປທີ່ໜ້າຊື້ຫວຍ';
+  static const String noInternetConnectionFound =
+      "ບໍ່ພົບການເຊື່ອມຕໍ່ອິນເຕີເນັດ";
+  static const String noInternetConnectionFoundDetail =
+      "ກະລຸນາກວດສອບການເຊື່ອມຕໍ່ອິນເຕີເນັດ/Wifi ໃນອຸປະກອນມືຖືຂອງເຈົ້າ ແລະລອງເຂົ້າສູ່ລະບົບອີກຄັ້ງ";
+  static const String retry = "ລອງໃຫມ່";
+  static const String apply = "ໃຊ້";
+  static const String readMore = "ອ່ານເພີ່ມເຕີມ";
+  static const String recalculateScores = "ຄິດໄລ່ຄະແນນຄືນໃໝ່";
+  static const String recalculateScoresDetail =
+      "ຖ້າທ່ານໃຊ້ຄູປ໋ອງ, ຈຸດຂອງທ່ານຈະຖືກຄິດໄລ່ຄືນໃຫມ່";
+  static const String buyPoints = "ຊື້ຄະແນນ";
+  static const String remainingPoints = "ຄະແນນທີ່ຍັງເຫຼືອ";
+  static const String pointsToBuy = "ຄະແນນທີ່ຈະຊື້";
+  static const String selectNumberOfPoints = "ເລືອກຈໍານວນຄະແນນ";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -655,6 +680,27 @@ mixin AppLocale {
     youAreTheLuckyOneAndHaveWonPrize: "ເຈົ້າເປັນຜູ້ໂຊກດີ ແລະໄດ້ຮັບລາງວັນ",
     validUntil: "ໃຊ້ໄດ້ເຖິງ",
     used: "ໃຊ້ແລ້ວ",
+    thisLotteryNumberIsNotYetOnSale: "ເລກຫວຍນີ້ຍັງບໍ່ໄດ້ຂາຍເທື່ອ",
+    yourAccountIsBlock:
+        "ບັນຊີຂອງທ່ານຖືກລະງັບຊົ່ວຄາວ. ກະລຸນາຕິດຕໍ່ບໍລິການລູກຄ້າ",
+    thisPromotionIsAvailableImmediatelyWithoutCollectingCoupons:
+        "ໂປຣໂມຊັນນີ້ມີໃຫ້ທັນທີໂດຍບໍ່ຕ້ອງເກັບຄູປ໋ອງ",
+    getPointsBack: "ໄດ້ຄະແນນກັບຄືນ",
+    doYouWantToLeaveThisPage: "ທ່ານຕ້ອງການອອກຈາກໜ້ານີ້ບໍ",
+    clickConfirmToGoToTheLotteryPurchasePage:
+        'ຄລິກ "ຢືນຢັນ" ເພື່ອໄປທີ່ໜ້າຊື້ຫວຍ',
+    noInternetConnectionFound: "ບໍ່ພົບການເຊື່ອມຕໍ່ອິນເຕີເນັດ",
+    noInternetConnectionFoundDetail:
+        "ກະລຸນາກວດສອບການເຊື່ອມຕໍ່ອິນເຕີເນັດ/Wifi ໃນອຸປະກອນມືຖືຂອງເຈົ້າ ແລະລອງເຂົ້າສູ່ລະບົບອີກຄັ້ງ",
+    retry: "ລອງໃຫມ່",
+    apply: "ໃຊ້",
+    readMore: "ອ່ານເພີ່ມເຕີມ",
+    recalculateScores: "ຄິດໄລ່ຄະແນນຄືນໃໝ່",
+    recalculateScoresDetail: "ຖ້າທ່ານໃຊ້ຄູປ໋ອງ, ຈຸດຂອງທ່ານຈະຖືກຄິດໄລ່ຄືນໃຫມ່",
+    buyPoints: "ຊື້ຄະແນນ",
+    remainingPoints: "ຄະແນນທີ່ຍັງເຫຼືອ",
+    pointsToBuy: "ຄະແນນທີ່ຈະຊື້",
+    selectNumberOfPoints: "ເລືອກຈໍານວນຄະແນນ",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -966,6 +1012,28 @@ mixin AppLocale {
     youAreTheLuckyOneAndHaveWonPrize: "คุณคือผู้โชคดีและได้รับรางวัล",
     validUntil: "ใช้ได้ถึง",
     used: "ใช้แล้ว",
+    thisLotteryNumberIsNotYetOnSale: "หวยเลขนี้ยังไม่วางขาย",
+    yourAccountIsBlock:
+        "บัญชีของท่านถูกระงับชั่วคราว โปรดติดต่อฝ่ายบริการลูกค้า",
+    thisPromotionIsAvailableImmediatelyWithoutCollectingCoupons:
+        "โปรโมชั่นนี้ใช้ได้ทันทีโดยไม่ต้องเก็บคูปอง",
+    getPointsBack: "รับคะแนนคืน",
+    doYouWantToLeaveThisPage: "คุณต้องการออกจากหน้านี้หรือไม่",
+    clickConfirmToGoToTheLotteryPurchasePage:
+        'กด "ยืนยัน" เพื่อไปยังหน้าซื้อหวย',
+    noInternetConnectionFound: "ไม่พบการเชื่อมต่ออินเตอร์เน็ต",
+    noInternetConnectionFoundDetail:
+        "โปรดตรวจสอบการเชื่อมต่ออินเทอร์เน็ต/Wifi บนอุปกรณ์เคลื่อนที่ของคุณและลองเข้าสู่ระบบอีกครั้ง",
+    retry: "ลองใหม่อีกครั้ง",
+    apply: "ใช้",
+    readMore: "อ่านเพิ่มเติม",
+    recalculateScores: "คำนวณคะแนนใหม่",
+    recalculateScoresDetail:
+        "หากใช้คูปองจะทำการคำนวณคะแนนสูงสุดที่คุณใช้ได้ใหม่ คุณแน่ใจจะใช้ คูปองหรือไม่",
+    buyPoints: "ซื้อคะแนน",
+    remainingPoints: "คะแนนที่เหลือ",
+    pointsToBuy: "คะแนนที่ต้องการซื้อ",
+    selectNumberOfPoints: "เลือกจำนวนคะแนน",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -1286,5 +1354,27 @@ mixin AppLocale {
         "You are the lucky one and have won a prize",
     validUntil: "Valid until",
     used: "Used",
+    thisLotteryNumberIsNotYetOnSale: "This lottery number is not yet on sale",
+    yourAccountIsBlock:
+        "Your account is temporarily suspended. Please contact Customer Service",
+    thisPromotionIsAvailableImmediatelyWithoutCollectingCoupons:
+        "This promotion is available immediately without collecting coupons",
+    getPointsBack: "Get points back",
+    doYouWantToLeaveThisPage: "Do you want to leave this page",
+    clickConfirmToGoToTheLotteryPurchasePage:
+        'Click "Confirm" to go to the lottery purchase page',
+    noInternetConnectionFound: "No internet connection found",
+    noInternetConnectionFoundDetail:
+        "Please check your internet/Wifi connection on your mobile device and try logging in again",
+    retry: "Retry",
+    apply: "Apply",
+    readMore: "Read more",
+    recalculateScores: "Recalculate scores",
+    recalculateScoresDetail:
+        "If you use a coupon, the maximum points you can use will be recalculated. Are you sure you want to use the coupon?",
+    buyPoints: "Buy points",
+    remainingPoints: "Remaining points",
+    pointsToBuy: "Points to buy",
+    selectNumberOfPoints: "Select number of points",
   };
 }

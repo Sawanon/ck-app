@@ -103,11 +103,15 @@ class KYCPage extends StatelessWidget {
                                     ),
                                   ),
                                   InputText(
-                                    isError: controller.remark?['firstName']
-                                            ['status'] ==
-                                        false,
+                                    // isError: controller.remark?['firstName']
+                                    //         ['status'] ==
+                                    //     false,
                                     errorText: controller.remark?['firstName']
-                                        ['message'],
+                                                ['status'] ==
+                                            false
+                                        ? controller.remark!['firstName']
+                                            ['message']
+                                        : null,
                                     controller: controller.firstNameController,
                                     disabled: controller.isLoading,
                                     onChanged: controller.onChangeFirstName,

@@ -23,7 +23,7 @@ class PromotionListComponent extends StatelessWidget {
         return SafeArea(
           child: RefreshIndicator(
             onRefresh: () async {
-              controller.listPromotions();
+              await controller.listPromotions();
             },
             child: Obx(() {
               if (controller.promotionList.isEmpty) {

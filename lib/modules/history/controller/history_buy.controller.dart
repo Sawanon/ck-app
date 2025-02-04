@@ -1,6 +1,7 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/model/bill.dart';
@@ -9,6 +10,7 @@ import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/model/lottery_date.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/bill/view/bill_component.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
@@ -25,7 +27,7 @@ class HistoryBuyController extends GetxController {
   void listLotteryDate() async {
     try {
       final appwriteController = AppWriteController.to;
-      final lotteryDateList = await appwriteController.listLotteryDate();
+      final lotteryDateList = await appwriteController.listLotteryBuyDate();
       if (lotteryDateList == null) {
         return;
       }
@@ -58,7 +60,7 @@ class HistoryBuyController extends GetxController {
     this.historyList.value = historyList;
   }
 
-  Future<Document> getTransaction(String transactionId) async {
+  Future<Document?> getTransaction(String transactionId) async {
     final lotteryStr =
         CommonFn.parseYMD(selectedLotteryDate!).split("-").join("");
     final transaction = await AppWriteController.to.getTransactionById(
@@ -79,7 +81,9 @@ class HistoryBuyController extends GetxController {
       final lotteryList = [];
       for (var transactionId in history.transactionIdList) {
         final transaction = await getTransaction(transactionId);
-        lotteryList.add(transaction.data['lottery']);
+        if (transaction != null) {
+          lotteryList.add(transaction.data['lottery']);
+        }
       }
       history.lotteryList = lotteryList;
     }
@@ -136,6 +140,7 @@ class HistoryBuyController extends GetxController {
       transactionList.add(Lottery.fromJson(transactionDocument!.data));
     }
     navigator?.pop();
+    logger.w("history.billNumber: ${history.billNumber}");
     final bill = Bill(
       firstName: user.name.split(" ").first,
       lastName: user.name.split(" ")[1],
@@ -150,6 +155,7 @@ class HistoryBuyController extends GetxController {
       customerId: userApp!.customerId!,
       point: history.point,
       pointMoney: history.pointMoney,
+      discount: history.discount,
     );
 
     if (context.mounted) {
@@ -167,9 +173,9 @@ class HistoryBuyController extends GetxController {
                     onPressed: () {
                       navigator?.pop();
                     },
-                    child: const Text(
-                      "ປິດ",
-                      style: TextStyle(
+                    child: Text(
+                      AppLocale.close.getString(Get.context!),
+                      style: const TextStyle(
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
                       ),

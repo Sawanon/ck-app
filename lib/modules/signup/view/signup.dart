@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:lottery_ck/components/gender_radio.dart';
+import 'package:lottery_ck/components/input_text.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/signup/controller/signup.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
@@ -124,38 +125,7 @@ class SignupPage extends StatelessWidget {
                                   ],
                                 ),
                                 const SizedBox(height: 4),
-                                TextFormField(
-                                  decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.symmetric(horizontal: 8),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.errorBorder,
-                                        width: 4,
-                                      ),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.errorBorder,
-                                        width: 4,
-                                      ),
-                                    ),
-                                  ),
+                                InputText(
                                   validator: (value) {
                                     if (value == null || value == "") {
                                       return AppLocale.pleaseEnterYourFirstName
@@ -163,10 +133,55 @@ class SignupPage extends StatelessWidget {
                                     }
                                     return null;
                                   },
+                                  onlyLaos: true,
+                                  onlyText: true,
                                   onChanged: (value) {
                                     controller.firstName = value;
                                   },
                                 ),
+                                // TextFormField(
+                                //   decoration: InputDecoration(
+                                //     contentPadding:
+                                //         EdgeInsets.symmetric(horizontal: 8),
+                                //     enabledBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         color: AppColors.primary,
+                                //       ),
+                                //     ),
+                                //     focusedBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         color: AppColors.primary,
+                                //         width: 2,
+                                //       ),
+                                //     ),
+                                //     errorBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         color: AppColors.errorBorder,
+                                //         width: 4,
+                                //       ),
+                                //     ),
+                                //     focusedErrorBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         color: AppColors.errorBorder,
+                                //         width: 4,
+                                //       ),
+                                //     ),
+                                //   ),
+                                //   validator: (value) {
+                                //     if (value == null || value == "") {
+                                //       return AppLocale.pleaseEnterYourFirstName
+                                //           .getString(context);
+                                //     }
+                                //     return null;
+                                //   },
+                                //   onChanged: (value) {
+                                //     controller.firstName = value;
+                                //   },
+                                // ),
                                 const SizedBox(height: 16),
                                 Row(
                                   children: [
@@ -188,38 +203,7 @@ class SignupPage extends StatelessWidget {
                                   ],
                                 ),
                                 const SizedBox(height: 4),
-                                TextFormField(
-                                  decoration: InputDecoration(
-                                    contentPadding:
-                                        EdgeInsets.symmetric(horizontal: 8),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.primary,
-                                        width: 2,
-                                      ),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.errorBorder,
-                                        width: 4,
-                                      ),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                        color: AppColors.errorBorder,
-                                        width: 4,
-                                      ),
-                                    ),
-                                  ),
+                                InputText(
                                   validator: (value) {
                                     if (value == null || value == "") {
                                       return AppLocale.pleaseEnterYourLasttName
@@ -227,10 +211,55 @@ class SignupPage extends StatelessWidget {
                                     }
                                     return null;
                                   },
+                                  onlyLaos: true,
+                                  onlyText: true,
                                   onChanged: (value) {
                                     controller.lastName = value;
                                   },
                                 ),
+                                // TextFormField(
+                                //   decoration: InputDecoration(
+                                //     contentPadding:
+                                //         EdgeInsets.symmetric(horizontal: 8),
+                                //     enabledBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         color: AppColors.primary,
+                                //       ),
+                                //     ),
+                                //     focusedBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         color: AppColors.primary,
+                                //         width: 2,
+                                //       ),
+                                //     ),
+                                //     errorBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         color: AppColors.errorBorder,
+                                //         width: 4,
+                                //       ),
+                                //     ),
+                                //     focusedErrorBorder: OutlineInputBorder(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       borderSide: const BorderSide(
+                                //         color: AppColors.errorBorder,
+                                //         width: 4,
+                                //       ),
+                                //     ),
+                                //   ),
+                                //   validator: (value) {
+                                //     if (value == null || value == "") {
+                                //       return AppLocale.pleaseEnterYourLasttName
+                                //           .getString(context);
+                                //     }
+                                //     return null;
+                                //   },
+                                //   onChanged: (value) {
+                                //     controller.lastName = value;
+                                //   },
+                                // ),
                                 const SizedBox(height: 16),
                                 Row(
                                   children: [
@@ -269,10 +298,10 @@ class SignupPage extends StatelessWidget {
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
+                                      borderRadius: BorderRadius.circular(4),
                                       border: Border.all(
                                         width: 1,
-                                        color: AppColors.primary,
+                                        color: AppColors.inputBorder,
                                       ),
                                     ),
                                     child: Text(
@@ -315,12 +344,12 @@ class SignupPage extends StatelessWidget {
                                     alignment: Alignment.center,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
+                                      borderRadius: BorderRadius.circular(4),
                                       border: Border.all(
                                         width: 1,
                                         color: controller.unknowBirthTime
                                             ? AppColors.disable
-                                            : AppColors.primary,
+                                            : AppColors.inputBorder,
                                       ),
                                     ),
                                     child: Text(

@@ -209,70 +209,70 @@ class PayMentPage extends StatelessWidget {
                                     ),
                                   )
                                 ],
-                                if (BuyLotteryController
-                                            .to.invoiceMeta.value.discount !=
-                                        null &&
-                                    BuyLotteryController
-                                            .to.invoiceMeta.value.discount !=
-                                        0)
-                                  TableRow(
-                                    decoration: const BoxDecoration(
-                                      border: Border(
-                                        top: BorderSide(
-                                          width: 1,
-                                          color: AppColors.disableText,
-                                        ),
-                                      ),
-                                    ),
-                                    children: [
-                                      TableCell(
-                                        verticalAlignment:
-                                            TableCellVerticalAlignment.middle,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            AppLocale.discount
-                                                .getString(context),
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      TableCell(
-                                        verticalAlignment:
-                                            TableCellVerticalAlignment.middle,
-                                        child: Container(
-                                          alignment: Alignment.centerRight,
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            BuyLotteryController
-                                                .to.invoiceMeta.value.discount
-                                                .toString(),
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      // TableCell(
-                                      //   verticalAlignment:
-                                      //       TableCellVerticalAlignment.middle,
-                                      //   child: Container(
-                                      //     alignment: Alignment.centerRight,
-                                      //     padding: const EdgeInsets.all(8.0),
-                                      //     // child: Text(
-                                      //     //   AppLocale.bonus.getString(context),
-                                      //     //   style: const TextStyle(
-                                      //     //     fontSize: 14,
-                                      //     //     fontWeight: FontWeight.w700,
-                                      //     //     color: Colors.green,
-                                      //     //   ),
-                                      //     // ),
-                                      //   ),
-                                      // ),
-                                    ],
-                                  ),
+                                // if (BuyLotteryController
+                                //             .to.invoiceMeta.value.discount !=
+                                //         null &&
+                                //     BuyLotteryController
+                                //             .to.invoiceMeta.value.discount !=
+                                //         0)
+                                //   TableRow(
+                                //     decoration: const BoxDecoration(
+                                //       border: Border(
+                                //         top: BorderSide(
+                                //           width: 1,
+                                //           color: AppColors.disableText,
+                                //         ),
+                                //       ),
+                                //     ),
+                                //     children: [
+                                //       TableCell(
+                                //         verticalAlignment:
+                                //             TableCellVerticalAlignment.middle,
+                                //         child: Padding(
+                                //           padding: const EdgeInsets.all(8.0),
+                                //           child: Text(
+                                //             AppLocale.discount
+                                //                 .getString(context),
+                                //             style: const TextStyle(
+                                //               fontSize: 14,
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ),
+                                //       TableCell(
+                                //         verticalAlignment:
+                                //             TableCellVerticalAlignment.middle,
+                                //         child: Container(
+                                //           alignment: Alignment.centerRight,
+                                //           padding: const EdgeInsets.all(8.0),
+                                //           child: Text(
+                                //             BuyLotteryController
+                                //                 .to.invoiceMeta.value.discount
+                                //                 .toString(),
+                                //             style: const TextStyle(
+                                //               fontSize: 14,
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ),
+                                //       // TableCell(
+                                //       //   verticalAlignment:
+                                //       //       TableCellVerticalAlignment.middle,
+                                //       //   child: Container(
+                                //       //     alignment: Alignment.centerRight,
+                                //       //     padding: const EdgeInsets.all(8.0),
+                                //       //     // child: Text(
+                                //       //     //   AppLocale.bonus.getString(context),
+                                //       //     //   style: const TextStyle(
+                                //       //     //     fontSize: 14,
+                                //       //     //     fontWeight: FontWeight.w700,
+                                //       //     //     color: Colors.green,
+                                //       //     //   ),
+                                //       //     // ),
+                                //       //   ),
+                                //       // ),
+                                //     ],
+                                //   ),
                                 // if (controller.point != null)
                                 //   TableRow(
                                 //     decoration: BoxDecoration(
@@ -358,11 +358,10 @@ class PayMentPage extends StatelessWidget {
                               ),
                               child: Row(
                                 children: [
-                                  Expanded(
-                                    child: Text(
-                                      AppLocale.coupon.getString(context),
-                                    ),
+                                  Text(
+                                    AppLocale.coupon.getString(context),
                                   ),
+                                  const SizedBox(width: 12),
                                   if (BuyLotteryController.to.invoiceMeta.value
                                           .couponResponse?.status ==
                                       false) ...[
@@ -390,15 +389,18 @@ class PayMentPage extends StatelessWidget {
                                             couponDetail.promotion!['name']);
                                       }
                                     }
-                                    return Text(
-                                      selectedCoupons.isEmpty
-                                          ? AppLocale.useCoupon
-                                              .getString(context)
-                                          : selectedCoupons.join(","),
-                                      style: TextStyle(
-                                        color: selectedCoupons.isEmpty
-                                            ? AppColors.disableText
-                                            : AppColors.textPrimary,
+                                    return Expanded(
+                                      child: Text(
+                                        selectedCoupons.isEmpty
+                                            ? AppLocale.useCoupon
+                                                .getString(context)
+                                            : selectedCoupons.join(","),
+                                        style: TextStyle(
+                                          overflow: TextOverflow.ellipsis,
+                                          color: selectedCoupons.isEmpty
+                                              ? AppColors.disableText
+                                              : AppColors.textPrimary,
+                                        ),
                                       ),
                                     );
                                   }),

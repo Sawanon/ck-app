@@ -121,65 +121,33 @@ class HistoryBuyPage extends StatelessWidget {
                                   width: MediaQuery.of(context).size.width,
                                   child: Column(
                                     children: [
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              vertical: 2, horizontal: 8),
-                                          decoration: BoxDecoration(
-                                            color: history.status == "paid"
-                                                ? Colors.green.shade200
-                                                : Colors.grey.shade300,
-                                            borderRadius:
-                                                BorderRadius.circular(24),
-                                          ),
-                                          child: Text(
-                                            CommonFn.renderBillStatus(
-                                                history.status, context),
-                                            style: TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 8),
                                       Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    'ວັນທີ ${history.date}',
-                                                    style: const TextStyle(
-                                                      fontSize: 12,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(width: 8),
-                                                  Text(
-                                                    'ເວລາຂອງການຊື້ ${history.time}',
-                                                    style: const TextStyle(
-                                                      fontSize: 12,
-                                                    ),
-                                                  ),
-                                                ],
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                                vertical: 2, horizontal: 8),
+                                            decoration: BoxDecoration(
+                                              color: history.status == "paid"
+                                                  ? Colors.green.shade200
+                                                  : Colors.grey.shade300,
+                                              borderRadius:
+                                                  BorderRadius.circular(24),
+                                            ),
+                                            child: Text(
+                                              CommonFn.renderBillStatus(
+                                                  history.status, context),
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
                                               ),
-                                              const SizedBox(height: 4),
-                                              Text(
-                                                'ລະຫັດໃບເກັບເງິນຫວຍ: ${history.billId}',
-                                                style: const TextStyle(
-                                                  fontSize: 12,
-                                                ),
-                                              ),
-                                            ],
+                                            ),
                                           ),
                                           Text(
-                                            CommonFn.parseMoney(history.amount),
+                                            CommonFn.parseMoney(history.quota -
+                                                (history.pointMoney ?? 0) -
+                                                (history.discount ?? 0)),
                                             style: TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
@@ -187,6 +155,37 @@ class HistoryBuyPage extends StatelessWidget {
                                                   ? Color.fromRGBO(
                                                       249, 49, 55, 1)
                                                   : Colors.grey,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'ວັນທີ ${history.date}',
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                              const SizedBox(width: 8),
+                                              Text(
+                                                'ເວລາຂອງການຊື້ ${history.time}',
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Text(
+                                            'ລະຫັດໃບເກັບເງິນຫວຍ: ${history.billId}',
+                                            style: const TextStyle(
+                                              fontSize: 12,
                                             ),
                                           ),
                                         ],

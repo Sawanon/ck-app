@@ -1,28 +1,26 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ffi';
 
+import 'package:appwrite/appwrite.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
+import 'package:lottery_ck/components/dialog_cant_cancel.dart';
 import 'package:lottery_ck/components/dialog_change_birthtime_v2.dart';
 import 'package:lottery_ck/components/dialog_promotion.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/model/buy_lottery_configs.dart';
 import 'package:lottery_ck/model/invoice_meta.dart';
 import 'package:lottery_ck/model/lottery.dart';
-import 'package:lottery_ck/model/response_add_transaction.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/dialog_edit_lottery.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/mmoney/controller/confirm_otp.controller.dart';
-import 'package:lottery_ck/modules/mmoney/view/confirm_otp.dart';
-import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -31,7 +29,7 @@ import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
-import 'package:intl/intl.dart';
+import 'package:pinput/pinput.dart';
 
 class BuyLotteryController extends GetxController {
   static BuyLotteryController get to => Get.find();
@@ -114,6 +112,8 @@ class BuyLotteryController extends GetxController {
     _timer = Timer.periodic(
       const Duration(seconds: 1),
       (timer) {
+        // logger.e(
+        //     "timer run ${DateTime.now().hour}-${DateTime.now().minute}-${DateTime.now().second}");
         if (invoiceRemainExpire.value.inSeconds > 0) {
           invoiceRemainExpire.value -= const Duration(seconds: 1);
           invoiceRemainExpireStr.value =
@@ -274,6 +274,45 @@ class BuyLotteryController extends GetxController {
         logger.e(e.response?.requestOptions);
       }
       return null;
+    } on AppwriteException catch (e) {
+      logger.e(e.message);
+      logger.e(e.code);
+      logger.e(e.response);
+      logger.e(e.type);
+      if (e.type == "user_blocked") {
+        // AppLocale.yourAccountIsBlock
+        Get.dialog(
+          DialogCantCancel(
+            child: Center(
+              child: Material(
+                color: Colors.transparent,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      AppLocale.yourAccountIsBlock.getString(Get.context!),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    LongButton(
+                      onPressed: () {
+                        LayoutController.to.restartApp();
+                      },
+                      child: Text(
+                        AppLocale.close.getString(Get.context!),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          barrierDismissible: false,
+        );
+      }
+      return null;
     } catch (e) {
       logger.e("$e");
       return null;
@@ -410,6 +449,12 @@ class BuyLotteryController extends GetxController {
     _timer?.cancel();
   }
 
+  void removeInvoiceWhenPaymentSuccess() async {
+    clearInvoice();
+    invoiceRemainExpireStr.value = "";
+    _timer?.cancel();
+  }
+
   void showInvalidPrice() {
     // Get.rawSnackbar(
     //   backgroundColor: Colors.amber,
@@ -536,10 +581,13 @@ class BuyLotteryController extends GetxController {
       return false;
     }
     logger.d("formKey?.currentState: ${formKey?.currentState}");
+    final userApp = SettingController.to.user;
     if (userApp == null) {
       showLoginDialog();
       return false;
     }
+    logger.d("active: ${userApp.active}");
+    // if(userApp.)
     if (formKey?.currentState != null && formKey!.currentState!.validate()) {
       final result = await addLottery(price, lottery, fromOtherPage);
       return result;
@@ -780,6 +828,7 @@ class BuyLotteryController extends GetxController {
     //   logger.w(e.toJson());
     // });
     // return;
+    logger.w(invoiceMeta.value.toJson("fake"));
     if (lotteryList.isEmpty) {
       logger.e("lotteryList isEmpty length:${lotteryList.length}");
       return false;
@@ -822,6 +871,8 @@ class BuyLotteryController extends GetxController {
       emptyInvoice.lotteryDateStr = lotteryDateStr;
       // responseTransactions => {"123": {$id: '3ofodf', amount: 1000,}}
       final List<Lottery> transactionFailed = [];
+      String errorMessage =
+          AppLocale.someLotteryQuotaExceeded.getString(Get.context!);
       final responseTransactionsList =
           responseCreateInvoice['transaction'] as Map;
       for (var transaction in invoicePayload.transactions) {
@@ -839,30 +890,41 @@ class BuyLotteryController extends GetxController {
           emptyInvoice.totalAmount += transaction.totalAmount!;
         } else {
           transactionFailed.add(transaction);
+          switch (responseTransaction['type']) {
+            case "notSell":
+              errorMessage = AppLocale.thisLotteryNumberIsNotYetOnSale
+                  .getString(Get.context!);
+              // case "buyLimit":
+              //   errorMessage = AppLocale.exceededQuota.getString(Get.context!);
+              break;
+            default:
+          }
         }
       }
       logger.e(transactionFailed);
       invoiceMeta.value = emptyInvoice.copyWith();
       if (transactionFailed.isNotEmpty) {
-        Get.dialog(DialogApp(
-          title: Text(
-            AppLocale.someLotteryQuotaExceeded.getString(Get.context!),
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: AppColors.textPrimary,
+        Get.dialog(
+          DialogApp(
+            title: Text(
+              errorMessage,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+              ),
+            ),
+            details: Text(
+                '"${transactionFailed.map((e) => e.lottery).toList().join(",")}" ${AppLocale.pleaseBuyLessOrAnotherLottery.getString(Get.context!)}'),
+            disableConfirm: true,
+            cancelText: Text(
+              AppLocale.close.getString(Get.context!),
+              style: TextStyle(
+                color: AppColors.primary,
+              ),
             ),
           ),
-          details: Text(
-              '"${transactionFailed.map((e) => e.lottery).toList().join(",")}" ${AppLocale.pleaseBuyLessOrAnotherLottery.getString(Get.context!)}'),
-          disableConfirm: true,
-          cancelText: Text(
-            AppLocale.close.getString(Get.context!),
-            style: TextStyle(
-              color: AppColors.primary,
-            ),
-          ),
-        ));
+        );
         return false;
       }
     } else {
@@ -1430,6 +1492,37 @@ class BuyLotteryController extends GetxController {
     );
   }
 
+  Future<void> buyAndGotoLotteryPage(
+      String lottery, Future<void> Function() onConfirm) async {
+    final title = AppLocale.doYouWantToLeaveThisPage.getString(Get.context!);
+    final detail = AppLocale.clickConfirmToGoToTheLotteryPurchasePage
+        .getString(Get.context!);
+    Get.dialog(
+      DialogApp(
+        title: Text(
+          title,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        details: Text(
+          detail,
+        ),
+        onConfirm: () async {
+          await onConfirm();
+          setLottery(lottery);
+        },
+        // onConfirm: () async {
+        //   changeTab(0);
+        //   SettingController.to.getPoint();
+        //   Get.back();
+        //   setLottery(lottery);
+        // },
+      ),
+    );
+  }
+
   void setLottery(String lottery) {
     lotteryTextController.text = lottery;
     final buyLotteryConfig = buyLotteryConfigs
@@ -1574,6 +1667,7 @@ class BuyLotteryController extends GetxController {
         // title: Text("คุณต้องการออกจากไพ่นำโชค?"),
         onConfirm: () async {
           changeTab(index);
+          SettingController.to.getPoint();
           Get.back();
         },
       ),
@@ -1828,7 +1922,7 @@ class BuyLotteryController extends GetxController {
     // checkUser();
     listBuyLotteryConfigs();
     getUseApp();
-    listPromotions();
+    // listPromotions();
     setupNode();
     getQuota();
     keyboardSubscription = KeyboardVisibilityController().onChange.listen(

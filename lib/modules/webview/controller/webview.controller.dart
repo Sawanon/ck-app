@@ -44,6 +44,11 @@ class CustomWebviewController extends GetxController {
       "zinzae",
       onMessageReceived: (data) {
         logger.d(jsonEncode(data.message));
+        final onMessage = argument['onMessage'] as Future<void> Function(
+            JavaScriptMessage data)?;
+        if (onMessage != null) {
+          onMessage(data);
+        }
       },
     );
     if (argument['url'] != null) {

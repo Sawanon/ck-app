@@ -20,7 +20,7 @@ class NewsListComponent extends StatelessWidget {
         return SafeArea(
           child: RefreshIndicator(
             onRefresh: () async {
-              controller.listNews();
+              await controller.listNews();
               // _notificationViewModel.clearNews();
               // _notificationViewModel.getNews();
             },

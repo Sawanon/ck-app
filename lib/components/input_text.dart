@@ -17,6 +17,8 @@ class InputText extends StatelessWidget {
   final String? initialValue;
   final String? counterText;
   final bool onlyLaos;
+  final bool onlyText;
+  final TextAlign textAlign;
 
   const InputText({
     super.key,
@@ -34,15 +36,12 @@ class InputText extends StatelessWidget {
     this.initialValue,
     this.counterText,
     this.onlyLaos = true,
+    this.onlyText = false,
+    this.textAlign = TextAlign.start,
   });
 
   @override
   Widget build(BuildContext context) {
-    // TODO:
-    List<TextInputFormatter> _inputFormatters = [];
-    if (keyboardType == TextInputType.number) {
-      // _inputFormatters.addAll(iterable)
-    }
     return TextFormField(
       initialValue: initialValue,
       controller: controller,
@@ -54,16 +53,21 @@ class InputText extends StatelessWidget {
           FilteringTextInputFormatter.allow(
             RegExp(r'[ກ-ໝໜໞໟ໠-໽, 0-9, /]'), // ชุดตัวอักษรภาษาลาว
           ),
+        if (onlyText)
+          FilteringTextInputFormatter.allow(
+            RegExp(r'[^\d]'), // อนุญาตเฉพาะตัวอักษรที่ไม่ใช่ตัวเลข
+          ),
         if (keyboardType == TextInputType.number)
           CustomRangeTextInputFormatter(maxValue ?? 1000000),
         // CustomRangeTextInputFormatter(),
       ],
       maxLength: maxLength,
+      textAlign: textAlign,
       decoration: InputDecoration(
         counterText: counterText,
         label: label,
         errorText: errorText,
-        contentPadding: EdgeInsets.symmetric(horizontal: 8),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 8),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(4),
           borderSide: BorderSide(

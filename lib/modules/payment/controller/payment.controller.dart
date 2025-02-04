@@ -53,6 +53,7 @@ class PaymentController extends GetxController {
   int? pointMonney;
   StreamSubscription<String>? streamInvoice;
   Subscription? subscriptionPubnub;
+  Subscription? subscriptionPubnubLDB;
   int routeLevel = 0;
   bool isOpenedDialog = false;
   List<Coupon> couponsList = [];
@@ -74,12 +75,7 @@ class PaymentController extends GetxController {
 
   Future<void> getBank() async {
     final appwriteController = AppWriteController.to;
-    final bankDocuments = await appwriteController.listBank();
-    final bankList = bankDocuments?.documents.map(
-      (document) {
-        return Bank.fromJson(document.data);
-      },
-    ).toList();
+    final bankList = await appwriteController.listBank();
     // TODO: develop remove on production
     // bankList?.add(
     //   Bank(
@@ -127,9 +123,9 @@ class PaymentController extends GetxController {
       final totalAmount =
           BuyLotteryController.to.invoiceMeta.value.amount - (point ?? 0);
       const minimumPrice = 1000;
-      logger.d(totalAmount);
-      logger.d(minimumPrice);
-      logger.d("totalAmount < minimumPrice: ${totalAmount < minimumPrice}");
+      // logger.d(totalAmount);
+      // logger.d(minimumPrice);
+      // logger.d("totalAmount < minimumPrice: ${totalAmount < minimumPrice}");
       if (totalAmount < minimumPrice) {
         return true;
       }
@@ -229,7 +225,7 @@ class PaymentController extends GetxController {
         lotteryList: invoiceMeta.transactions,
         totalAmount: invoiceMeta.totalAmount.toString(),
         amount: invoiceMeta.amount,
-        billId: invoiceDocuments.data['billId'],
+        billId: invoiceDocuments.data['billNumber'] ?? "-",
         // invoiceId: invoiceMeta,
         bankName: selectedBank!.fullName,
         customerId: userApp.customerId!,
@@ -259,24 +255,59 @@ class PaymentController extends GetxController {
     }
   }
 
-  Future<void> subRealTime(String invoiceId) async {
+  Future<void> subRealTimeLDB(String uuid, String invoiceId) async {
     // Create PubNub instance with default keyset.
     var pubnub = PubNub(
       defaultKeyset: Keyset(
-        publishKey: 'pub-c-ff681b02-4518-4dbd-a081-f98d1b2fcef6',
-        subscribeKey: 'sub-c-8ae0d87d-51b2-4f42-83b6-e201bb96d7bd',
-        userId: UserId('sawanon'),
+        // publishKey: 'pub-c-ff681b02-4518-4dbd-a081-f98d1b2fcef6',
+        // subscribeKey: 'sub-c-8ae0d87d-51b2-4f42-83b6-e201bb96d7bd',
+        subscribeKey: 'sub-c-ccd836b1-b45e-488e-9960-d9ebc02a9078',
+        userId: UserId(uuid),
+      ),
+    );
+    const channel = "LDB0300100541";
+    subscriptionPubnubLDB = pubnub.subscribe(channels: {channel});
+    logger.w("start sub real-time LDB");
+    subscriptionPubnubLDB?.messages.listen((message) {
+      logger.w(message.content);
+      BuyLotteryController.to.removeInvoiceWhenPaymentSuccess();
+      showBill(invoiceId);
+      subscriptionPubnubLDB?.dispose();
+    })
+      ?..onDone(
+        () {
+          logger.d("subscription done");
+        },
+      )
+      ..onError(
+        (error, stackTrace) {
+          logger.e(error);
+          logger.e(stackTrace);
+        },
+      );
+  }
+
+  Future<void> subRealTime(String uuid, String invoiceId) async {
+    // Create PubNub instance with default keyset.
+    var pubnub = PubNub(
+      defaultKeyset: Keyset(
+        // publishKey: 'pub-c-ff681b02-4518-4dbd-a081-f98d1b2fcef6',
+        // subscribeKey: 'sub-c-8ae0d87d-51b2-4f42-83b6-e201bb96d7bd',
+        subscribeKey: 'sub-c-91489692-fa26-11e9-be22-ea7c5aada356',
+        userId: const UserId('BCELBANK'),
       ),
     );
 
     // Subscribe to a channel
-    var channel = "hello_world-$invoiceId";
+    const mcid = 'mch5c2f0404102fb';
+    var channel = "uuid-$mcid-$uuid";
     subscriptionPubnub = pubnub.subscribe(channels: {channel});
 
     logger.d("subscription start");
     // Print every message
     subscriptionPubnub?.messages.listen((message) {
       logger.w(message.content);
+      BuyLotteryController.to.removeInvoiceWhenPaymentSuccess();
       showBill(invoiceId);
       // subscriptionPubnub?.unsubscribe();
       // subscriptionPubnub?.cancel();
@@ -341,7 +372,7 @@ class PaymentController extends GetxController {
         final userApp = LayoutController.to.userApp;
         logger.d("${invoiceMeta.toJson(userApp!.userId)}");
 
-        subRealTime(invoiceMeta.invoiceId!);
+        // subRealTime(invoiceMeta.invoiceId!);
         await Future.delayed(const Duration(seconds: 2));
         final dio = Dio();
         final response = await dio.post(
@@ -395,9 +426,11 @@ class PaymentController extends GetxController {
         "point": point,
       };
       logger.w(payload);
+      // const url =
+      //     "https://95b3-2405-9800-b920-3bfd-1d74-2ce3-b45b-7852.ngrok-free.app/api/payment";
       final responseTransaction = await dio.post(
+        // url,
         "${AppConst.apiUrl}/payment",
-        // "https://3746-2405-9800-b920-cf8d-7d82-9f53-1cf2-96ff.ngrok-free.app/api/payment",
         data: payload,
         options: Options(
           headers: {
@@ -411,8 +444,14 @@ class PaymentController extends GetxController {
       logger.w(result);
       if (bank.name == "bcel") {
         final payment = result['payment'];
+        final invoiceMeta = result['invoiceMeta']['data'];
+        final newExpire = DateTime.parse(invoiceMeta['expire']);
         final deeplink = payment['deeplink'];
+        final uuid = payment['uuid'];
+        logger.w("uuid: $uuid");
         await launchUrl(Uri.parse('$deeplink'));
+        BuyLotteryController.to.startCountDownInvoiceExpire(newExpire);
+        subRealTime(uuid!, invoiceMeta['invoiceId']);
       }
       // if (bank.name == "ldb") {
       //   final canLaunch = await canLaunchUrl(Uri.parse("ldbpay://ldblao.la"));
@@ -427,7 +466,10 @@ class PaymentController extends GetxController {
       if (bank.name == "ldb") {
         try {
           final payment = result['payment'];
+          final invoiceMeta = result['invoiceMeta']['data'];
+          final newExpire = DateTime.parse(invoiceMeta['expire']);
           final deeplink = payment['dataResponse']['link'];
+          final billId = payment['dataResponse']['billId'];
           // final canLaunch = await canLaunchUrl(Uri.parse("ldbpay://ldblao.la"));
           // logger.w(canLaunch);
           // if (canLaunch == false) {
@@ -437,6 +479,8 @@ class PaymentController extends GetxController {
           //   return;
           // }
           await launchUrl(Uri.parse('$deeplink'));
+          BuyLotteryController.to.startCountDownInvoiceExpire(newExpire);
+          subRealTimeLDB(billId, invoiceMeta['invoiceId']);
         } catch (e) {
           logger.e("$e");
           await launchUrl(Uri.parse(
@@ -511,6 +555,48 @@ class PaymentController extends GetxController {
 
   bool get enablePay => selectedBank != null;
 
+  Future<void> applyPoint(int usePoint, [bool isShowNoti = true]) async {
+    final invoice = BuyLotteryController.to.invoiceMeta.value;
+    final invoiceId = invoice.invoiceId!;
+    final lotteryDateStr = invoice.lotteryDateStr;
+    logger.w("usePoint: $usePoint");
+    final response = await AppWriteController.to
+        .applyPoint(invoiceId, lotteryDateStr, "$usePoint");
+    logger.w(response.data);
+    if (response.isSuccess == false) {
+      Get.dialog(
+        DialogApp(
+          title: Text(
+            AppLocale.somethingWentWrong.getString(Get.context!),
+          ),
+          details: Text(
+            response.message,
+          ),
+          disableConfirm: true,
+        ),
+      );
+      return;
+    }
+    final message = AppLocale.youHaveUsedPoints
+        .getString(Get.context!)
+        .replaceAll("{point}", "$usePoint");
+
+    onChangePoint(usePoint);
+    if (isShowNoti) {
+      Future.delayed(const Duration(milliseconds: 350), () {
+        Get.rawSnackbar(
+          messageText: Text(
+            message,
+            style: const TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          backgroundColor: Colors.green,
+        );
+      });
+    }
+  }
+
   void showBottomModalPoint(BuildContext context) {
     final int myPoint = SettingController.to.user?.point != null
         ? SettingController.to.user!.point
@@ -535,44 +621,8 @@ class PaymentController extends GetxController {
         return UsePointComponent(
           myPoint: maxPointCanUse,
           onSubmit: (usePoint) async {
-            final invoiceId = invoice.invoiceId!;
-            final lotteryDateStr = invoice.lotteryDateStr;
-            logger.w("usePoint: $usePoint");
-            final response = await AppWriteController.to
-                .applyPoint(invoiceId, lotteryDateStr, "$usePoint");
-            logger.w(response.data);
-            // BuyLotteryController.to.invoiceMeta
-            if (response.isSuccess == false) {
-              Get.dialog(
-                DialogApp(
-                  title: Text(
-                    AppLocale.somethingWentWrong.getString(context),
-                  ),
-                  details: Text(
-                    response.message,
-                  ),
-                  disableConfirm: true,
-                ),
-              );
-              return;
-            }
-            final message = AppLocale.youHaveUsedPoints
-                .getString(Get.context!)
-                .replaceAll("{point}", "$usePoint");
-
-            onChangePoint(usePoint);
+            await applyPoint(usePoint);
             Get.back();
-            Future.delayed(const Duration(milliseconds: 350), () {
-              Get.rawSnackbar(
-                messageText: Text(
-                  message,
-                  style: const TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                backgroundColor: Colors.green,
-              );
-            });
           },
         );
       },
@@ -628,15 +678,17 @@ class PaymentController extends GetxController {
       return;
     }
     for (var coupon in coupons) {
-      final promotionMap = responsePromotionsList.data!.firstWhere(
+      final promotionListMap = responsePromotionsList.data!.where(
         (promotion) {
           return promotion['\$id'] == coupon.promotionId;
         },
       );
-      coupon.promotion = promotionMap;
+      if (promotionListMap.isNotEmpty) {
+        coupon.promotion = promotionListMap.first;
+      }
     }
     logger.d(responsePromotionsList.data);
-    couponsList = coupons;
+    couponsList = coupons.where((coupon) => coupon.promotion != null).toList();
     update();
   }
 
@@ -683,6 +735,7 @@ class PaymentController extends GetxController {
     logger.d(lotteryDateStrYMD);
     final lotteryDate = lotteryDateStrYMD;
     final invoiceId = BuyLotteryController.to.invoiceMeta.value.invoiceId;
+    logger.w("invoiceId: $invoiceId log");
     if (lotteryDate == null) {
       logger.e("lotteryDateStrYMD is empty");
       return;
@@ -743,15 +796,17 @@ class PaymentController extends GetxController {
     final List transactions = result['transaction'];
     for (var transaction in transactions) {
       invoice.transactions.add(
-        Lottery(
-          lottery: transaction['lottery'],
-          amount: transaction['amount'],
-          lotteryType: transaction['lotteryType'],
-          quota: transaction['quota'],
-          bonus: transaction['bonus'],
-          discount: transaction['discount'],
-          totalAmount: transaction['totalAmount'],
-        ),
+        Lottery.fromJson(transaction),
+        // Lottery(
+        //   id: transaction['\$id'],
+        //   lottery: transaction['lottery'],
+        //   amount: transaction['amount'],
+        //   lotteryType: transaction['lotteryType'],
+        //   quota: transaction['quota'],
+        //   bonus: transaction['bonus'],
+        //   discount: transaction['discount'],
+        //   totalAmount: transaction['totalAmount'],
+        // ),
       );
     }
     BuyLotteryController.to.setInvoice(invoice);
@@ -803,6 +858,22 @@ class PaymentController extends GetxController {
     }
     maxPercentPointCanuse = response.data!.percent;
     update();
+  }
+
+  void showCouponDetailInCouponPage(BuildContext context, Coupon coupon) {
+    isOpenedDialog = true;
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return CouponDetail(
+          coupon: coupon,
+        );
+      },
+    ).whenComplete(
+      () {
+        isOpenedDialog = false;
+      },
+    );
   }
 
   void showCouponDetail(BuildContext context) {
@@ -871,6 +942,7 @@ class PaymentController extends GetxController {
     // subscriptionPubnub?.unsubscribe();
     // subscriptionPubnub?.cancel();
     subscriptionPubnub?.dispose();
+    subscriptionPubnubLDB?.dispose();
     super.onClose();
   }
 }

@@ -16,6 +16,7 @@ import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 
 class PinVerifyController extends GetxController {
+  static PinVerifyController get to => Get.find();
   RxBool pendingVerify = false.obs;
 
   final arguments = Get.arguments;

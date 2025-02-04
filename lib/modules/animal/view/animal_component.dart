@@ -430,6 +430,7 @@ class _AnimalComponentState extends State<AnimalComponent> {
                   width: double.infinity,
                   // height: MediaQuery.of(context).size.height * 0.6,
                   child: Wrap(
+                    alignment: WrapAlignment.center,
                     spacing: 8,
                     runSpacing: 10,
                     direction: Axis.horizontal,

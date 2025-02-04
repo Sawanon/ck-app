@@ -30,7 +30,8 @@ class LayoutPage extends StatelessWidget {
           return NoNetworkDialog(
             identifier: 'identifier',
             onConfirm: () {
-              logger.d("refresh network");
+              // logger.d("refresh network");
+              controller.restartApp();
             },
           );
         }

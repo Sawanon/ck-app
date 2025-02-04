@@ -76,6 +76,7 @@ class InvoiceMetaData {
         transactions: [],
         price: 0,
         quota: 0,
+        invoiceId: null,
       );
 
   InvoiceMetaData copyWith() => InvoiceMetaData(
@@ -116,5 +117,10 @@ class InvoiceMetaData {
       'couponId': couponIds,
       'receive_point': receivePoint,
     };
+  }
+
+  @override
+  String toString() {
+    return jsonEncode(toJson("fake"));
   }
 }

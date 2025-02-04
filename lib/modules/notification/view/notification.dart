@@ -40,6 +40,16 @@ class NotificationPage extends StatelessWidget {
                 indicatorSize: TabBarIndicatorSize.tab,
                 indicator: const BoxDecoration(
                   color: AppColors.primary,
+                  // border: Border(
+                  //   left: BorderSide(
+                  //     width: 1,
+                  //     color: Colors.grey,
+                  //   ),
+                  //   right: BorderSide(
+                  //     width: 1,
+                  //     color: Colors.grey,
+                  //   ),
+                  // ),
                 ),
                 tabs: [
                   Tab(

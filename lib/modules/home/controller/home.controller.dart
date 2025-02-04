@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
@@ -21,6 +22,7 @@ import 'package:lottery_ck/modules/history/controller/history_win.controller.dar
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
 import 'package:lottery_ck/modules/notification/view/news.dart';
+import 'package:lottery_ck/modules/point/view/buy_point.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/webview/view/webview.dart';
 import 'package:lottery_ck/res/app_locale.dart';
@@ -33,6 +35,7 @@ import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class HomeController extends GetxController {
   static HomeController get to => Get.find();
@@ -604,6 +607,7 @@ class HomeController extends GetxController {
     await getLotteryDate();
     // await listArtworks();
     await listContent();
+    await listBanner();
     // await setupMenu();
     await getWallpaperBackground();
     await SettingController.to.setup();
@@ -669,10 +673,29 @@ class HomeController extends GetxController {
       WebviewPage(),
       arguments: {
         'url': 'https://staging.randomcards.pages.dev/?payload=$payload',
+        'onMessage': (JavaScriptMessage data) async {
+          final dataMap = jsonDecode(data.message);
+          logger.w(dataMap);
+          final lottery = dataMap['number'];
+          BuyLotteryController.to.buyAndGotoLotteryPage(
+            lottery,
+            () async {
+              LayoutController.to.changeTab(TabApp.lottery);
+              SettingController.to.getPoint();
+              Get.back();
+              Get.back();
+              Get.back();
+            },
+          );
+        },
         // 'url':
         //     'https://staging.daily-ce2.pages.dev/?payload=eyJhbGciOiJIUzM4NCIsInR5cCI6IkpXVCJ9.eyJiaXJ0aFRpbWUiOiIwMToyNCIsImJpcnRoZGF5IjoiMTk5Ni0wMy0yMiIsImlhdCI6MTcyODA0NjM5OCwiZXhwIjoxNzI4MzY2Nzc2LCJwb2ludHMiOiI5NSIsInVzZXJJZCI6IjY2ZmY1OWFiMDAyNjlmMGViYmM2In0.L5_O5vkQeWo7tlADAVRoCuk5cpdUN40v19oReu9AGa5YzFdpE68L-tg_wb7e15Ju',
       },
       useSafeArea: false,
+    ).whenComplete(
+      () async {
+        SettingController.to.getPoint();
+      },
     );
   }
 
@@ -730,11 +753,24 @@ class HomeController extends GetxController {
     );
   }
 
+  Future<void> listBanner() async {
+    final response = await AppWriteController.to.listBanner();
+    if (response == null) {
+      return;
+    }
+    bannerContent.clear();
+    List<Map<dynamic, dynamic>> _banner = [];
+    for (var banner in response) {
+      _banner.add(getContentUrlAndLink(banner));
+    }
+    bannerContent.addAll(_banner);
+  }
+
   Future<void> listContent() async {
     try {
       artWorksContent.clear();
       wallpaperContent.clear();
-      bannerContent.clear();
+      // bannerContent.clear();
       videoContent.clear();
       final contentList = await AppWriteController.to.listContent();
       if (contentList == null) return;
@@ -749,12 +785,12 @@ class HomeController extends GetxController {
           case 'wallpaper':
             wallpaperContent.add(content);
             break;
-          case 'banner':
-            logger.w(content);
-            final contentData = getContentUrlAndLink(content);
-            // logger.d(contentData);
-            bannerContent.add(contentData);
-            break;
+          // case 'banner':
+          //   logger.w(content);
+          //   final contentData = getContentUrlAndLink(content);
+          //   // logger.d(contentData);
+          //   bannerContent.add(contentData);
+          //   break;
           case 'video':
             logger.d(content);
             final videoData = content['videos'];
@@ -980,6 +1016,17 @@ class HomeController extends GetxController {
       return;
     }
     Get.toNamed(RouteName.setting);
+  }
+
+  void gotoBuyPoint() async {
+    if (SettingController.to.user == null) {
+      LayoutController.to.showDialogLogin();
+      return;
+    }
+    Get.to(
+      () => const BuyPoint(),
+      transition: Transition.rightToLeft,
+    );
   }
 
   @override
