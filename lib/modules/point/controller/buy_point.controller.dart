@@ -20,17 +20,27 @@ class BuyPointController extends GetxController {
   bool isLoading = true;
   List<Bank> bankList = [];
   Bank? selectedBank;
+  int selectedPointList = 0;
+
+  void onClickPointList(int point) {
+    selectedPointList = point;
+    update();
+  }
 
   void onChangePoint(String point) {
     if (point == "") {
       pointInpuController.text = "";
       pointWantToBuy = null;
+      // clear focus
+      selectedPointList = 0;
       update();
       return;
     }
     final pointInt = int.parse(point);
     pointInpuController.text = CommonFn.parseMoney(pointInt);
     pointWantToBuy = pointInt;
+    // clear focus
+    selectedPointList = 0;
     update();
   }
 

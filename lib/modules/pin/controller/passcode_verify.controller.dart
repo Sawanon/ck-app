@@ -55,9 +55,9 @@ class PasscodeVerifyController extends GetxController {
             return null;
           }
           final data = response.data!;
-          Get.dialog(
-            DialogOtpComponent(otp: data.otp),
-          );
+          // Get.dialog(
+          //   DialogOtpComponent(otp: data.otp),
+          // );
           otpRef = data.otpRef;
           return data.otpRef;
         },

@@ -421,8 +421,8 @@ class KYCPage extends StatelessWidget {
                                   // ),
                                   const SizedBox(height: 8),
                                   InputText(
-                                    maxLength: 10,
-                                    maxValue: 9999999999,
+                                    maxLength: controller.maxIdCard,
+                                    maxValue: 999999999999999999,
                                     inputFormatters: [
                                       FilteringTextInputFormatter.digitsOnly,
                                     ],

@@ -366,9 +366,25 @@ mixin AppLocale {
   static const String recalculateScoresDetail =
       "ຖ້າທ່ານໃຊ້ຄູປ໋ອງ, ຈຸດຂອງທ່ານຈະຖືກຄິດໄລ່ຄືນໃຫມ່";
   static const String buyPoints = "ຊື້ຄະແນນ";
+  static const String topupPoints = "ຕື່ມຄະແນນ";
   static const String remainingPoints = "ຄະແນນທີ່ຍັງເຫຼືອ";
   static const String pointsToBuy = "ຄະແນນທີ່ຈະຊື້";
   static const String selectNumberOfPoints = "ເລືອກຈໍານວນຄະແນນ";
+  static const String bankErrorMinimum =
+      "ບໍ່ສາມາດໃຊ້ໄດ້ເພາະວ່າຈໍານວນການຈ່າຍເງິນຂອງທ່ານມີຫນ້ອຍກວ່າ {price} ກີບ";
+  static const String or = "ຫຼື";
+  static const String notIncludedWithOtherPromotions = "ບໍ່ລວມກັບໂປຣໂມຊັນອື່ນໆ";
+  static const String clearPointTitle = "ຄະແນນຖືກຣີເຊັດ";
+  static const String clearPointDetail = "ກະລຸນາເລືອກຈຸດທີ່ທ່ານຕ້ອງການໃຊ້";
+  static const String usePromotion = "ໃຊ້ໂປຣໂມຊັນ";
+  static const String useAll = "ໃຊ້ທັງຫມົດ";
+  static const String pointsCannotBeUsed = "ບໍ່ສາມາດໃຊ້ຄະແນນໄດ້";
+  static const String pointsCannotBeUsedInThisOrder =
+      "ບໍ່ສາມາດໃຊ້ຄະແນນໃນຄໍາສັ່ງນີ້";
+  static const String pointCannotBeUsedDetail =
+      "ເນື່ອງຈາກວ່າຄະແນນຂອງທ່ານບໍ່ພຽງພໍທີ່ຈະກວມເອົາຈໍານວນທີ່ຈະຈ່າຍ";
+  static const String noWallpaperTitle =
+      "ຍັງບໍ່ມີວອນເປເປີ ມາຄົ້ນພົບຄວາມງາມໃໝ່ໃນໄມ່ຊ້າ!";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -518,7 +534,7 @@ mixin AppLocale {
     welcome: "ຍິນດີຕ້ອນຮັບ",
     inviteFriends: "ແນະນໍາຫມູ່",
     inviteAccept: "ເຊີນ/ຍອມຮັບ",
-    youHaveScore: "ທ່ານມີ/ຈຸດ",
+    youHaveScore: "ທ່ານມີ/ຄະແນນ",
     amountInWallet: "ຈຳນວນເງິນໃນກະເປົາເງິນ",
     quickMenu: "ເມນູດ່ວນ",
     dailyFortune: "ໂຊກ​ປະ​ຈໍາ​ວັນ​",
@@ -701,6 +717,20 @@ mixin AppLocale {
     remainingPoints: "ຄະແນນທີ່ຍັງເຫຼືອ",
     pointsToBuy: "ຄະແນນທີ່ຈະຊື້",
     selectNumberOfPoints: "ເລືອກຈໍານວນຄະແນນ",
+    bankErrorMinimum:
+        "ບໍ່ສາມາດໃຊ້ໄດ້ເພາະວ່າຈໍານວນການຈ່າຍເງິນຂອງທ່ານມີຫນ້ອຍກວ່າ {price} ກີບ",
+    topupPoints: "ຕື່ມຄະແນນ",
+    or: "ຫຼື",
+    notIncludedWithOtherPromotions: "ບໍ່ລວມກັບໂປຣໂມຊັນອື່ນໆ",
+    clearPointTitle: "ຄະແນນຖືກຣີເຊັດ",
+    clearPointDetail: "ກະລຸນາເລືອກຈຸດທີ່ທ່ານຕ້ອງການໃຊ້",
+    usePromotion: "ໃຊ້ໂປຣໂມຊັນ",
+    useAll: "ໃຊ້ທັງຫມົດ",
+    pointsCannotBeUsed: "ບໍ່ສາມາດໃຊ້ຄະແນນໄດ້",
+    pointsCannotBeUsedInThisOrder: "ບໍ່ສາມາດໃຊ້ຄະແນນໃນຄໍາສັ່ງນີ້",
+    pointCannotBeUsedDetail:
+        "ເນື່ອງຈາກວ່າຄະແນນຂອງທ່ານບໍ່ພຽງພໍທີ່ຈະກວມເອົາຈໍານວນທີ່ຈະຈ່າຍ",
+    noWallpaperTitle: "ຍັງບໍ່ມີວອນເປເປີ ມາຄົ້ນພົບຄວາມງາມໃໝ່ໃນໄມ່ຊ້າ!",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -1034,6 +1064,20 @@ mixin AppLocale {
     remainingPoints: "คะแนนที่เหลือ",
     pointsToBuy: "คะแนนที่ต้องการซื้อ",
     selectNumberOfPoints: "เลือกจำนวนคะแนน",
+    bankErrorMinimum:
+        "ไม่สามารถใช้ได้เนื่องจากยอดชำระของท่านไม่ถึง {price} กีบ",
+    topupPoints: "เติมคะแนน",
+    or: "หรืิอ",
+    notIncludedWithOtherPromotions: "ไม่รวมกับโปรโมชั่นอื่น",
+    clearPointTitle: "คะแนนถูกรีเซ็ตแล้ว",
+    clearPointDetail: "กรุณาเลือกคะแนนที่คุณต้องการใช้",
+    usePromotion: "ใช้โปรโมชั่น",
+    useAll: "ใช้ทั้งหมด",
+    pointsCannotBeUsed: "ไม่สามารถใช้คะแนนได้",
+    pointsCannotBeUsedInThisOrder: "ไม่สามารถใช้คะแนนในคำสั่งซื้อนี้",
+    pointCannotBeUsedDetail:
+        "เนื่องจากคะแนนของคุณไม่เพียงพอกับจำนวนเงินที่ต้องชำระ",
+    noWallpaperTitle: "ตอนนี้ยังไม่มีวอลเปเปอร์ ลองกลับมาใหม่เร็วๆ นี้นะ!",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -1376,5 +1420,20 @@ mixin AppLocale {
     remainingPoints: "Remaining points",
     pointsToBuy: "Points to buy",
     selectNumberOfPoints: "Select number of points",
+    bankErrorMinimum:
+        "Unable to use because your payment amount is less than {price} LAK",
+    topupPoints: "Top up points",
+    or: "Or",
+    notIncludedWithOtherPromotions: "Not included with other promotions",
+    clearPointTitle: "Points have been reset",
+    clearPointDetail: "Please select the points you want to use",
+    usePromotion: "Use promotions",
+    useAll: "Use all",
+    pointsCannotBeUsed: "Points cannot be used",
+    pointsCannotBeUsedInThisOrder: "Points cannot be used in this order",
+    pointCannotBeUsedDetail:
+        "Because your points are not enough to cover the amount to be paid",
+    noWallpaperTitle:
+        "No wallpapers available right now. Check back soon for something awesome!",
   };
 }

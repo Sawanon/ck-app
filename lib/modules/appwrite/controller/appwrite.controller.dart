@@ -22,6 +22,10 @@ import 'package:lottery_ck/model/news.dart';
 import 'package:lottery_ck/model/notification.dart';
 import 'package:lottery_ck/model/point_can_use.dart';
 import 'package:lottery_ck/model/respnose_verifypasscode.dart';
+import 'package:lottery_ck/model/response/bytedance_get_snapshot.dart';
+import 'package:lottery_ck/model/response/bytedance_get_video_info.dart';
+import 'package:lottery_ck/model/response/bytedance_list_video.dart';
+import 'package:lottery_ck/model/response/bytedance_response.dart';
 import 'package:lottery_ck/model/response/get_my_friends.dart';
 import 'package:lottery_ck/model/response/get_otp.dart';
 import 'package:lottery_ck/model/response/get_user_by_ref_code.dart';
@@ -172,6 +176,7 @@ class AppWriteController extends GetxController {
 
   Future<void> createTarget() async {
     final tokenFirebase = await FirebaseMessagingController.to.getToken();
+    logger.w("tokenFirebase: $tokenFirebase");
     final target = await account.createPushTarget(
       targetId: ID.unique(),
       identifier: tokenFirebase!,
@@ -589,6 +594,8 @@ class AppWriteController extends GetxController {
         documentId: user.$id,
       );
       final userMap = userFromDatabase.data;
+      logger.w("userMap");
+      logger.w(userMap);
       return UserApp.fromJson(userMap);
       // return UserApp(
       //   firstName: userMap['firstname'],
@@ -1283,7 +1290,7 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<String?> updateUserPhone(String phone) async {
+  Future<String?> updateUserPhone(String phone, String userId) async {
     try {
       final dio = Dio();
       final token = await getCredential();
@@ -1298,17 +1305,25 @@ class AppWriteController extends GetxController {
           },
         ),
       );
-      if (response.data["phone"] != null) {
-        final me = await user;
-        final response =
-            await account.updatePhone(phone: phone, password: me.password!);
-        final email = '$phone@ckmail.com';
-        final responseUpdateEmail =
-            await account.updateEmail(email: email, password: me.password!);
-        logger.w(response.phone);
-        logger.w(responseUpdateEmail.email);
-      }
-      logger.d(response.data);
+      final responseChangeAuthPhone = await dio.post(
+        "${AppConst.apiUrl}/user/change-phone",
+        data: {
+          "userId": "",
+          "phone": phone,
+        },
+      );
+      logger.w(responseChangeAuthPhone.data);
+      // if (response.data["phone"] != null) {
+      //   final me = await user;
+      //   final response =
+      //       await account.updatePhone(phone: phone, password: me.password!);
+      //   final email = '$phone@ckmail.com';
+      //   final responseUpdateEmail =
+      //       await account.updateEmail(email: email, password: me.password!);
+      //   logger.w(response.phone);
+      //   logger.w(responseUpdateEmail.email);
+      // }
+      // logger.d(response.data);
       return response.data["phone"];
     } catch (e) {
       logger.e("$e");
@@ -2326,17 +2341,21 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<ResponseApi<Map?>> listCategories() async {
+  Future<ResponseApi<BytedanceGetSnapshotResponse?>> getSnapshot(
+      String videoId) async {
     try {
       final dio = Dio();
-      final response = await dio.get(
-        "${AppConst.apiUrl}/video/listCategories",
+      final response = await dio.post(
+        "${AppConst.apiUrl}/video/getSnapshot",
+        data: {
+          "videoId": videoId,
+        },
       );
-
+      logger.w(response.data);
       return ResponseApi(
         isSuccess: true,
-        message: "Successfully to list categories",
-        data: response.data,
+        message: "Successfully to get snapshot",
+        data: BytedanceGetSnapshotResponse.fromJson(response.data),
       );
     } on DioException catch (e) {
       logger.e("$e");
@@ -2346,7 +2365,119 @@ class AppWriteController extends GetxController {
         logger.e(e.response?.data);
         return ResponseApi(
           isSuccess: false,
-          message: e.response?.statusMessage ?? "failed to apply coupon",
+          message: e.response?.statusMessage ?? "failed to get snapshot",
+        );
+      }
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to get snapshot",
+      );
+    } catch (e) {
+      return ResponseApi(
+        isSuccess: false,
+        message: "$e",
+      );
+    }
+  }
+
+  Future<ResponseApi<BytedanceGetVideoInfo?>> getVideoInfo(
+    String videoId,
+    String definition,
+  ) async {
+    try {
+      final response = await Dio().post(
+        "${AppConst.apiUrl}/video/getVideoInfo",
+        data: {
+          "videoId": videoId,
+          'definition': definition,
+        },
+      );
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully to get video info",
+        data: BytedanceGetVideoInfo.fromJson(response.data),
+      );
+    } on DioException catch (e) {
+      logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        return ResponseApi(
+          isSuccess: false,
+          message: e.response?.statusMessage ?? "failed to get video info",
+        );
+      }
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to get video info",
+      );
+    } catch (e) {
+      logger.e("$e");
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to get video info",
+      );
+    }
+  }
+
+  Future<ResponseApi<ByteDanceListVideo?>> listVideo(String? categoryId) async {
+    try {
+      final dio = Dio();
+      Map payload = {};
+      if (categoryId != null) {
+        payload = {
+          "categoryId": categoryId,
+        };
+      }
+      final response = await dio.post(
+        "${AppConst.apiUrl}/video/listVideo",
+        data: payload,
+      );
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully to list video",
+        data: ByteDanceListVideo.fromJson(response.data),
+      );
+    } on DioException catch (e) {
+      logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        return ResponseApi(
+          isSuccess: false,
+          message: e.response?.statusMessage ?? "failed to list video",
+        );
+      }
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to list video",
+      );
+    }
+  }
+
+  Future<ResponseApi<BytedanceResponse?>> listCategories() async {
+    try {
+      final dio = Dio();
+      final response = await dio.get(
+        "${AppConst.apiUrl}/video/listCategories",
+      );
+      final responseClass = BytedanceResponse.fromJson(response.data);
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully to list categories",
+        data: responseClass,
+      );
+    } on DioException catch (e) {
+      logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        return ResponseApi(
+          isSuccess: false,
+          message: e.response?.statusMessage ?? "failed to list categories",
         );
       }
       return ResponseApi(
@@ -2358,6 +2489,44 @@ class AppWriteController extends GetxController {
         isSuccess: false,
         message: "$e",
       );
+    }
+  }
+
+  Future<ResponseApi<Map?>> selectBank(
+      String invoiceId, String lotteryDate, String bankId) async {
+    try {
+      final dio = Dio();
+      final token = await getCredential();
+      final response = await dio.post("${AppConst.apiUrl}/payment/select-bank",
+          data: {
+            "invoiceId": invoiceId,
+            "lotteryDate": lotteryDate,
+            "bankId": bankId,
+          },
+          options: Options(headers: {"Authorization": "Bearer $token"}));
+      return ResponseApi(
+        isSuccess: true,
+        message: "Success to select bank",
+        data: response.data,
+      );
+    } on DioException catch (e) {
+      logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        return ResponseApi(
+          isSuccess: false,
+          message: e.response?.statusMessage ?? "failed to select bank",
+        );
+      }
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to select bank",
+      );
+    } catch (e) {
+      logger.e("$e");
+      return ResponseApi(isSuccess: false, message: "failed to select bank");
     }
   }
 
@@ -2576,6 +2745,55 @@ class AppWriteController extends GetxController {
       // getTargetPush
     } catch (e) {
       logger.e("$e");
+    }
+  }
+
+  Future<ResponseApi<Map>> applyPromotion(
+      String? promotionId, String invoiceId, String lotteryDate,
+      [String? bankId]) async {
+    try {
+      final dio = Dio();
+      final payload = {
+        "invoiceId": invoiceId,
+        "lotteryDate": lotteryDate,
+      };
+      if (promotionId != null) {
+        payload["promotionId"] = promotionId;
+      }
+      if (bankId != null) {
+        payload['bankId'] = bankId;
+      }
+      logger.w(payload);
+      final response = await dio.post(
+        "${AppConst.apiUrl}/payment/buy-promotion",
+        data: payload,
+      );
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully apply promotion",
+        data: response.data,
+      );
+    } on DioException catch (e) {
+      logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        return ResponseApi(
+          isSuccess: false,
+          message: e.response?.statusMessage ?? "failed to apply promotion",
+        );
+      }
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to apply promotion",
+      );
+    } catch (e) {
+      logger.e("$e");
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to apply promotion",
+      );
     }
   }
 

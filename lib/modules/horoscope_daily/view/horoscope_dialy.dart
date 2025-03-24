@@ -44,24 +44,37 @@ class HoroscopeDialyPage extends StatelessWidget {
                         bottom: 0,
                         left: 0,
                         right: 0,
-                        child: Opacity(
-                          opacity: 0.4,
-                          child: Container(
-                            clipBehavior: Clip.hardEdge,
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(52),
-                                topRight: Radius.circular(52),
-                              ),
+                        child: Container(
+                          clipBehavior: Clip.hardEdge,
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(24),
+                              topRight: Radius.circular(24),
                             ),
-                            child: CachedNetworkImage(
-                              imageUrl: backgroundTheme,
-                              fit: BoxFit.fitWidth,
-                            ),
+                          ),
+                          child: CachedNetworkImage(
+                            imageUrl: backgroundTheme,
+                            fit: BoxFit.fitWidth,
                           ),
                         ),
                       );
                     },
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.white.withOpacity(1),
+                          Colors.white.withOpacity(0.4),
+                        ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        stops: const [
+                          0.7,
+                          1,
+                        ],
+                      ),
+                    ),
                   ),
                   ListView(
                     padding: const EdgeInsets.all(24),

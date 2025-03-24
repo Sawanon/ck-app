@@ -7,6 +7,7 @@ import 'package:lottery_ck/utils.dart';
 
 class BillController extends GetxController {
   Bill? bill;
+  final arguments = Get.arguments;
 
   void setup() {
     setupBill();
@@ -19,8 +20,11 @@ class BillController extends GetxController {
   }
 
   void backToHome() {
-    navigator?.pop();
-    BuyLotteryController.to.clearLottery();
+    // navigator?.pop();
+    // BuyLotteryController.to.clearLottery();
+    if (arguments['onClose'] is Function) {
+      arguments['onClose']();
+    }
   }
 
   @override

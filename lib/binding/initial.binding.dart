@@ -35,6 +35,7 @@ import 'package:lottery_ck/modules/video/controller/video.controller.dart';
 import 'package:lottery_ck/modules/webview/controller/webview.controller.dart';
 import 'package:lottery_ck/repository/user_repository/user.repository.dart';
 import 'package:lottery_ck/storage.dart';
+import 'package:lottery_ck/utils/location.dart';
 
 class InitialBinding extends Bindings {
   @override
@@ -94,5 +95,6 @@ class LayoutBindings extends Bindings {
     Get.lazyPut<FriendsController>(() => FriendsController(), fenix: true);
     Get.put<VideoController>(VideoController());
     Get.lazyPut<BuyPointController>(() => BuyPointController(), fenix: true);
+    Get.put<LocationService>(LocationService());
   }
 }

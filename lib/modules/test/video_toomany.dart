@@ -42,7 +42,7 @@ class _VideoToomanyState extends State<VideoToomany> {
 
   void setSource() async {
     TTVideoEngineUrlSource source = TTVideoEngineUrlSource.initWithURL(
-      'https://demovod.mylaos.life/83b83759f2264edeaf0e62cffd250028/master.m3u8?auth_key=1734513020-273789e165ac460ea98a9d622b5b4a87-0-c543a2e77dc2fc81913a50b1fbf157e8',
+      'https://demovod.mylaos.life/83b83759f2264edeaf0e62cffd250028/master.m3u8?auth_key=1739336478-d333ebeafbe04905a5332d048b570d2c-0-0477f86a0edc0377115555711babdf58',
       'horoscope',
     );
     // TTVideoEngineVidSource source = TTVideoEngineVidSource.init(
@@ -55,7 +55,7 @@ class _VideoToomanyState extends State<VideoToomany> {
 
   @override
   void initState() {
-    // setup();
+    setup();
     super.initState();
   }
 
@@ -77,19 +77,19 @@ class _VideoToomanyState extends State<VideoToomany> {
               },
               child: Text('setSource'),
             ),
-            // playerView != null
-            //     ? Expanded(
-            //         child: Container(
-            //           padding: const EdgeInsets.all(16),
-            //           color: Colors.red.shade200,
-            //           child: playerView!,
-            //         ),
-            //       )
-            //     : const Center(
-            //         child: CircularProgressIndicator(
-            //           color: Colors.black,
-            //         ),
-            //       ),
+            playerView != null
+                ? Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.all(16),
+                      color: Colors.red.shade200,
+                      child: playerView!,
+                    ),
+                  )
+                : const Center(
+                    child: CircularProgressIndicator(
+                      color: Colors.black,
+                    ),
+                  ),
           ],
         ),
       ),

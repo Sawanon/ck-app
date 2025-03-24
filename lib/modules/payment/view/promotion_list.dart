@@ -3,10 +3,8 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/checkbox.dart';
-import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/long_button.dart';
-import 'package:lottery_ck/model/coupon.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -15,23 +13,33 @@ import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:lottery_ck/utils/theme.dart';
 
-class CouponsPage extends StatefulWidget {
-  final List<Coupon> couponsList;
-  final List? selectedCouponsList;
-  const CouponsPage({
+class PromotionListPage extends StatefulWidget {
+  final List<Map> promotionList;
+  final List? selectedPromotionIds;
+  const PromotionListPage({
     super.key,
-    required this.couponsList,
-    this.selectedCouponsList,
+    required this.promotionList,
+    this.selectedPromotionIds,
   });
 
   @override
-  State<CouponsPage> createState() => _CouponsPageState();
+  State<PromotionListPage> createState() => _PromotionListPageState();
 }
 
-class _CouponsPageState extends State<CouponsPage> {
+class _PromotionListPageState extends State<PromotionListPage> {
+  String? selectedPromotionId;
   bool isLoading = false;
-  // Map<String, bool?> selectedCoupon = {};
-  String? selectedCouponId;
+
+  void setup() {
+    logger.w(widget.selectedPromotionIds);
+    if (widget.selectedPromotionIds != null) {
+      if (widget.selectedPromotionIds?.isNotEmpty == true) {
+        setState(() {
+          selectedPromotionId = widget.selectedPromotionIds?.first;
+        });
+      }
+    }
+  }
 
   void setIsLoading(bool value) {
     setState(() {
@@ -39,85 +47,47 @@ class _CouponsPageState extends State<CouponsPage> {
     });
   }
 
-  void onClickCoupon(String couponId) {
-    setState(() {
-      selectedCouponId = couponId;
-    });
-    // final _selectedCoupon = selectedCoupon[couponId];
-    // if (_selectedCoupon == null || _selectedCoupon == false) {
-    //   setState(() {
-    //     selectedCoupon[couponId] = true;
-    //   });
-    // } else {
-    //   setState(() {
-    //     selectedCoupon[couponId] = false;
-    //   });
-    // }
-  }
-
-  void onSubmit() async {
-    if (selectedCouponId == null) {
-      return;
-    }
-    final point = PaymentController.to.point;
-    logger.w("point: $point");
-    // if (point != null && point != 0) {
-    //   Get.dialog(
-    //     DialogApp(
-    //       title: Text(
-    //         AppLocale.recalculateScores.getString(context),
-    //         style: const TextStyle(
-    //           fontSize: 16,
-    //           fontWeight: FontWeight.bold,
-    //         ),
-    //       ),
-    //       details: Text(
-    //         AppLocale.recalculateScoresDetail.getString(context),
-    //       ),
-    //       onConfirm: () async {
-    //         await applyCoupon();
-    //         PaymentController.to.applyPoint(0, false);
-    //         Get.back();
-    //       },
-    //     ),
-    //   );
-    //   return;
-    // }
-    await applyCoupon();
-  }
-
-  Future<void> applyCoupon() async {
-    setIsLoading(true);
-    await PaymentController.to.applyCoupon([selectedCouponId!]);
-    setIsLoading(false);
-    Future.delayed(const Duration(milliseconds: 250), () {
-      Get.back();
-    });
-  }
-
-  void setup() {
-    if (widget.selectedCouponsList != null) {
-      // Map<String, bool?> _selectedCoupon = {};
-      // for (var coupon in widget.selectedCouponsList!) {
-      //   _selectedCoupon[coupon] = true;
-      // }
-      if (widget.selectedCouponsList?.isNotEmpty == true) {
-        setState(() {
-          // selectedCoupon = _selectedCoupon;
-          selectedCouponId = widget.selectedCouponsList?.first;
+  Future<void> onSubmit() async {
+    try {
+      if (selectedPromotionId == null) {
+        return;
+      }
+      setIsLoading(true);
+      final isSuccess =
+          await PaymentController.to.applyPromotion(selectedPromotionId!);
+      if (isSuccess) {
+        Future.delayed(const Duration(milliseconds: 250), () {
+          Get.back();
         });
       }
+    } catch (e) {
+      logger.e("$e");
+    } finally {
+      setIsLoading(false);
     }
   }
 
-  void showCoupon(BuildContext context, Coupon coupon) {
-    PaymentController.to.showCouponDetailInCouponPage(context, coupon);
+  void showPromotion(BuildContext context, Map promotion) {
+    PaymentController.to.showPromotionDetail(context, promotion);
+  }
+
+  void onClickPromotion(Map? promotion) {
+    logger.w(promotion);
+    if (promotion == null) {
+      setState(() {
+        selectedPromotionId = null;
+      });
+      return;
+    }
+    setState(() {
+      selectedPromotionId = promotion["\$id"];
+    });
   }
 
   @override
   void initState() {
-    super.initState();
     setup();
+    super.initState();
   }
 
   @override
@@ -128,7 +98,7 @@ class _CouponsPageState extends State<CouponsPage> {
         child: Column(
           children: [
             Header(
-              title: AppLocale.coupon.getString(context),
+              title: AppLocale.promotion.getString(context),
             ),
             Expanded(
               child: ListView(
@@ -139,7 +109,7 @@ class _CouponsPageState extends State<CouponsPage> {
                 children: [
                   Builder(
                     builder: (context) {
-                      if (widget.couponsList.isEmpty) {
+                      if (widget.promotionList.isEmpty) {
                         return Container(
                           alignment: Alignment.center,
                           height: MediaQuery.of(context).size.height / 2,
@@ -171,11 +141,11 @@ class _CouponsPageState extends State<CouponsPage> {
 
                       return Column(
                         mainAxisSize: MainAxisSize.min,
-                        children: widget.couponsList.map((coupon) {
-                          logger.w("coupon: ${coupon.couponId}");
-                          final promotion = coupon.promotion;
-                          final int currentUse = promotion?['current_use'] ?? 0;
-                          final int maxUser = promotion?['max_user'] ?? 0;
+                        children: widget.promotionList.map((promotion) {
+                          // logger.w("coupon: ${coupon.couponId}");
+                          // final promotion = coupon.promotion;
+                          final int currentUse = promotion['current_use'] ?? 0;
+                          final int maxUser = promotion['max_user'] ?? 0;
                           final leftPercent =
                               maxUser == 0 ? 0 : currentUse / maxUser;
                           final percentStr = leftPercent * 100;
@@ -184,7 +154,8 @@ class _CouponsPageState extends State<CouponsPage> {
                               if (leftPercent >= 1) {
                                 return;
                               }
-                              onClickCoupon(coupon.couponId);
+                              onClickPromotion(promotion);
+                              // onClickCoupon(coupon.couponId);
                             },
                             child: Opacity(
                               opacity: leftPercent >= 1 ? 0.4 : 1,
@@ -234,7 +205,7 @@ class _CouponsPageState extends State<CouponsPage> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "${coupon.promotion?['name'] ?? "Not found promotion"}",
+                                                "${promotion['name'] ?? "Not found promotion"}",
                                                 style: const TextStyle(
                                                   fontSize: 16,
                                                 ),
@@ -249,9 +220,8 @@ class _CouponsPageState extends State<CouponsPage> {
                                               // ),
                                               Builder(
                                                 builder: (context) {
-                                                  if (promotion == null ||
-                                                      promotion['max_user'] ==
-                                                          null) {
+                                                  if (promotion['max_user'] ==
+                                                      null) {
                                                     return const SizedBox
                                                         .shrink();
                                                   }
@@ -329,13 +299,19 @@ class _CouponsPageState extends State<CouponsPage> {
                                               ),
                                               Builder(
                                                 builder: (context) {
-                                                  if (coupon.expireDate ==
+                                                  if (promotion['end_date'] ==
                                                       null) {
                                                     return const SizedBox
                                                         .shrink();
                                                   }
+                                                  // if (coupon.expireDate ==
+                                                  //     null) {
+                                                  //   return const SizedBox
+                                                  //       .shrink();
+                                                  // }
                                                   final expireDate =
-                                                      coupon.expireDate!;
+                                                      DateTime.parse(promotion[
+                                                          'end_date']);
                                                   return Column(
                                                     crossAxisAlignment:
                                                         CrossAxisAlignment
@@ -348,7 +324,8 @@ class _CouponsPageState extends State<CouponsPage> {
                                                         children: [
                                                           Expanded(
                                                             child: Text(
-                                                              "${AppLocale.validUntil.getString(context)} ${CommonFn.parseDMY(expireDate)} ${CommonFn.parseHMS(expireDate)}",
+                                                              "${AppLocale.validUntil.getString(context)} ${CommonFn.parseDMY(expireDate)} ${CommonFn.parseHM(expireDate)}",
+                                                              // "asd",
                                                               style:
                                                                   const TextStyle(
                                                                 fontSize: 12,
@@ -362,9 +339,10 @@ class _CouponsPageState extends State<CouponsPage> {
                                                           ),
                                                           GestureDetector(
                                                             onTap: () {
-                                                              showCoupon(
+                                                              // TODO: show promotion detail
+                                                              showPromotion(
                                                                   context,
-                                                                  coupon);
+                                                                  promotion);
                                                             },
                                                             child: Container(
                                                               child: Text(
@@ -393,11 +371,18 @@ class _CouponsPageState extends State<CouponsPage> {
                                         ),
                                       ),
                                       CheckboxComponent(
-                                        value:
-                                            selectedCouponId == coupon.couponId,
+                                        // TODO: fix use value
+                                        value: selectedPromotionId ==
+                                            promotion['\$id'],
                                         onChange: (value) {
-                                          // logger.d("value: $value");
-                                          onClickCoupon(coupon.couponId);
+                                          // TODO: fix use function
+                                          logger.d("value: $value");
+                                          // onClickCoupon(coupon.couponId);
+                                          if (value) {
+                                            onClickPromotion(promotion);
+                                            return;
+                                          }
+                                          onClickPromotion(null);
                                         },
                                       ),
                                       const SizedBox(width: 16),
@@ -448,7 +433,7 @@ class _CouponsPageState extends State<CouponsPage> {
               padding: const EdgeInsets.all(16),
               child: LongButton(
                 isLoading: isLoading,
-                disabled: selectedCouponId == null,
+                disabled: selectedPromotionId == null,
                 onPressed: () {
                   onSubmit();
                 },

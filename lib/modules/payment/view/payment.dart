@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/point_icon.dart';
+import 'package:lottery_ck/components/switch.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
@@ -335,16 +338,101 @@ class PayMentPage extends StatelessWidget {
                           }),
                         ),
                         const SizedBox(height: 8),
-                        Obx(() {
+
+                        GestureDetector(
+                          onTap: () {
+                            // controller.showBottomModalPoint(context);
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 16,
+                            ),
+                            // margin:
+                            //     const EdgeInsets.symmetric(horizontal: 16.0),
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              // borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              children: [
+                                const PointIcon(),
+                                const SizedBox(width: 8),
+                                Obx(() {
+                                  final invoice =
+                                      BuyLotteryController.to.invoiceMeta.value;
+                                  return Text(
+                                    controller.isCanUsePoint
+                                        ? "${AppLocale.useAll.getString(context)} ${CommonFn.parseMoney(invoice.quota)} ${AppLocale.point.getString(context)}"
+                                        : AppLocale.pointsCannotBeUsed
+                                            .getString(context),
+                                    // AppLocale.point.getString(context),
+                                    style: const TextStyle(
+                                      // fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                  );
+                                }),
+                                Expanded(
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: controller.isCanUsePoint
+                                        ? SwitchComponent(
+                                            value: controller.point != null,
+                                            onChange:
+                                                controller.onChangePointSwitch,
+                                          )
+                                        : GestureDetector(
+                                            onTap: () {
+                                              logger.d("message");
+                                              controller.showCannotBeUsedPoint(
+                                                  context);
+                                            },
+                                            child: Icon(
+                                              Icons.info_outline_rounded,
+                                              size: 28,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                    // child: Text(
+                                    //   controller.point == null
+                                    //       ? AppLocale.pleaseEnterPointsWantUse
+                                    //           .getString(context)
+                                    //       : "${CommonFn.parseMoney(controller.point ?? 0)} ${AppLocale.point.getString(context)}",
+                                    //   style: TextStyle(
+                                    //     fontWeight: FontWeight.w500,
+                                    //     fontSize: 14,
+                                    //     color: controller.point == null
+                                    //         ? AppColors.disableText
+                                    //         : Colors.black,
+                                    //   ),
+                                    // ),
+                                  ),
+                                ),
+                                // SizedBox(
+                                //   width: 24,
+                                //   height: 24,
+                                //   child: SvgPicture.asset(
+                                //     AppIcon.arrowRight,
+                                //   ),
+                                // )
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Builder(builder: (context) {
                           return GestureDetector(
                             onTap: () {
                               final invoice =
                                   BuyLotteryController.to.invoiceMeta.value;
                               if (invoice.couponIds?.isNotEmpty == true) {
-                                controller.showCouponDetail(context);
+                                // controller.showCouponDetail(context);
+                                // TODO: show promotion Detail
                                 return;
                               }
-                              controller.gotoCouponPage();
+                              // controller.gotoCouponPage();
+                              controller.gotoPromotionPage();
                             },
                             child: Container(
                               padding: const EdgeInsets.only(
@@ -359,45 +447,48 @@ class PayMentPage extends StatelessWidget {
                               child: Row(
                                 children: [
                                   Text(
-                                    AppLocale.coupon.getString(context),
+                                    AppLocale.promotion.getString(context),
                                   ),
                                   const SizedBox(width: 12),
-                                  if (BuyLotteryController.to.invoiceMeta.value
-                                          .couponResponse?.status ==
-                                      false) ...[
-                                    const Icon(
-                                      Icons.info,
-                                      color: Colors.red,
-                                    ),
-                                    const SizedBox(width: 4),
-                                  ],
-                                  Builder(builder: (context) {
+                                  // if (BuyLotteryController.to.invoiceMeta.value
+                                  //         .couponResponse?.status ==
+                                  //     false)
+                                  //     ...[
+                                  //   const Icon(
+                                  //     Icons.info,
+                                  //     color: Colors.red,
+                                  //   ),
+                                  //   const SizedBox(width: 4),
+                                  // ],
+                                  const SizedBox(width: 4),
+                                  Obx(() {
                                     final invoice = BuyLotteryController
                                         .to.invoiceMeta.value;
-                                    final List<String> selectedCoupons = [];
-                                    if (invoice.couponIds != null &&
-                                        controller.couponsList.isNotEmpty) {
-                                      for (var selectedCoupon
-                                          in invoice.couponIds!) {
-                                        final couponDetail = controller
-                                            .couponsList
-                                            .firstWhere((coupon) {
-                                          return coupon.couponId ==
-                                              selectedCoupon;
+                                    final List<String> selectedPromotionList =
+                                        [];
+                                    if (invoice.promotionIds?.isNotEmpty ==
+                                        true) {
+                                      for (var selectedPromotion
+                                          in invoice.promotionIds!) {
+                                        final promotionDetail = controller
+                                            .promotionList
+                                            .firstWhere((promotion) {
+                                          return promotion['\$id'] ==
+                                              selectedPromotion;
                                         });
-                                        selectedCoupons.add(
-                                            couponDetail.promotion!['name']);
+                                        selectedPromotionList
+                                            .add(promotionDetail['name']);
                                       }
                                     }
                                     return Expanded(
                                       child: Text(
-                                        selectedCoupons.isEmpty
-                                            ? AppLocale.useCoupon
+                                        selectedPromotionList.isEmpty
+                                            ? AppLocale.usePromotion
                                                 .getString(context)
-                                            : selectedCoupons.join(","),
+                                            : selectedPromotionList.join(","),
                                         style: TextStyle(
                                           overflow: TextOverflow.ellipsis,
-                                          color: selectedCoupons.isEmpty
+                                          color: selectedPromotionList.isEmpty
                                               ? AppColors.disableText
                                               : AppColors.textPrimary,
                                         ),
@@ -435,62 +526,6 @@ class PayMentPage extends StatelessWidget {
                             ),
                           );
                         }),
-                        const SizedBox(height: 8),
-                        GestureDetector(
-                          onTap: () {
-                            controller.showBottomModalPoint(context);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 8,
-                              horizontal: 16,
-                            ),
-                            // margin:
-                            //     const EdgeInsets.symmetric(horizontal: 16.0),
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              // borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Row(
-                              children: [
-                                const PointIcon(),
-                                const SizedBox(width: 8),
-                                Text(
-                                  AppLocale.point.getString(context),
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                      controller.point == null
-                                          ? AppLocale.pleaseEnterPointsWantUse
-                                              .getString(context)
-                                          : "${CommonFn.parseMoney(controller.point ?? 0)} ${AppLocale.point.getString(context)}",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 14,
-                                        color: controller.point == null
-                                            ? AppColors.disableText
-                                            : Colors.black,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: SvgPicture.asset(
-                                    AppIcon.arrowRight,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
                         const SizedBox(height: 8),
                         GestureDetector(
                           onTap: () {
@@ -553,7 +588,7 @@ class PayMentPage extends StatelessWidget {
                                                     selectedBank)) ...[
                                                   const SizedBox(width: 8),
                                                   const Icon(
-                                                    Icons.info,
+                                                    Icons.error_outline_rounded,
                                                     color: Colors.red,
                                                   ),
                                                 ]
@@ -591,8 +626,8 @@ class PayMentPage extends StatelessWidget {
                                 BuyLotteryController.to.invoiceMeta.value;
                             final amount =
                                 invoice.amount - (controller.point ?? 0);
-                            logger.w(invoice
-                                .toJson(SettingController.to.user!.userId));
+                            // logger.w(invoice
+                            //     .toJson(SettingController.to.user!.userId));
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
@@ -896,13 +931,19 @@ class PayMentPage extends StatelessWidget {
                   ),
                 ],
               ),
-              if (controller.isLoading)
-                Dialog.fullscreen(
-                  backgroundColor: Colors.black.withOpacity(0.4),
-                  child: const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                ),
+              Obx(
+                () {
+                  if (controller.isLoading.value) {
+                    return Dialog.fullscreen(
+                      backgroundColor: Colors.white,
+                      child: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  }
+                  return const SizedBox.shrink();
+                },
+              )
             ],
           ),
         ),

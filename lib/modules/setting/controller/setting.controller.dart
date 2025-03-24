@@ -226,9 +226,9 @@ class SettingController extends GetxController {
                     return null;
                   }
                   final data = response.data!;
-                  Get.dialog(
-                    DialogOtpComponent(otp: data.otp),
-                  );
+                  // Get.dialog(
+                  //   DialogOtpComponent(otp: data.otp),
+                  // );
                   otpRef = data.otpRef;
                   return data.otpRef;
                 },
@@ -380,9 +380,9 @@ class SettingController extends GetxController {
                     if (result == null) {
                       return null;
                     }
-                    Get.dialog(
-                      DialogOtpComponent(otp: result.otp),
-                    );
+                    // Get.dialog(
+                    //   DialogOtpComponent(otp: result.otp),
+                    // );
                     otpRef = result.otpRef;
                     return result.otpRef;
                   },
@@ -397,7 +397,7 @@ class SettingController extends GetxController {
                         .confirmOTP(newPhoneNumber!, otp, otpRef!);
                     if (result) {
                       final response = await AppWriteController.to
-                          .updateUserPhone(newPhoneNumber!);
+                          .updateUserPhone(newPhoneNumber!, user!.userId);
                       if (response == null) {
                         Get.back();
                         Get.back();

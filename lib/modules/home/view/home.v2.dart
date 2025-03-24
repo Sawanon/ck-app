@@ -11,6 +11,7 @@ import 'package:lottery_ck/components/banner.dart';
 import 'package:lottery_ck/components/dev/dialog_change_url.dart';
 import 'package:lottery_ck/components/friends.dart';
 import 'package:lottery_ck/components/input_text.dart';
+import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/menu_card.dart';
 import 'package:lottery_ck/components/menu_grid.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
@@ -20,11 +21,13 @@ import 'package:lottery_ck/modules/splash_screen/controller/splash_screen.contro
 import 'package:lottery_ck/modules/wallpaper/view/fake.wallpaper.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:lottery_ck/utils/location.dart';
 import 'package:lottery_ck/utils/theme.dart';
 
 class HomePageV2 extends StatelessWidget {
@@ -81,7 +84,7 @@ class HomePageV2 extends StatelessWidget {
                   top: false,
                   child: ListView(
                     clipBehavior: Clip.none,
-                    padding: const EdgeInsets.all(0),
+                    padding: const EdgeInsets.only(bottom: 24),
                     physics: AlwaysScrollableScrollPhysics(),
                     children: [
                       Stack(
@@ -1012,7 +1015,7 @@ class HomePageV2 extends StatelessWidget {
                                   const SizedBox(height: 20),
                                   GestureDetector(
                                     onTap: () {
-                                      Get.toNamed(RouteName.videoMenu);
+                                      controller.gotoVideo();
                                     },
                                     child: MenuCardComponent(
                                       title: AppLocale.socialMediaFamousTeachers
@@ -1053,14 +1056,142 @@ class HomePageV2 extends StatelessWidget {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            width: 22,
-                            height: 22,
-                            child: SvgPicture.asset(
-                              AppIcon.timer,
-                              colorFilter: const ColorFilter.mode(
-                                Colors.white,
-                                BlendMode.srcIn,
+                          GestureDetector(
+                            onDoubleTap: () async {
+                              logger.w("message");
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Builder(builder: (context) {
+                                    GlobalKey<FormState> makey = GlobalKey();
+                                    return Center(
+                                      child: Material(
+                                        color: Colors.transparent,
+                                        child: Form(
+                                          key: makey,
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8, horizontal: 16),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              color: Colors.white,
+                                            ),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  "Enter host name api back-end",
+                                                  style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                  "Ex. https://5356-2405-9800-b920-d13f-5d5e-8048-dbf9-abd9.ngrok-free.app/api",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 48,
+                                                  width: 200,
+                                                  child: TextFormField(
+                                                    initialValue:
+                                                        AppConst.apiUrl,
+                                                    decoration: InputDecoration(
+                                                      contentPadding:
+                                                          EdgeInsets.all(8),
+                                                      enabledBorder:
+                                                          OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        borderSide:
+                                                            const BorderSide(
+                                                          color:
+                                                              AppColors.primary,
+                                                        ),
+                                                      ),
+                                                      focusedBorder:
+                                                          OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        borderSide:
+                                                            const BorderSide(
+                                                          color:
+                                                              AppColors.primary,
+                                                          width: 2,
+                                                        ),
+                                                      ),
+                                                      errorBorder:
+                                                          OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        borderSide:
+                                                            const BorderSide(
+                                                          color: AppColors
+                                                              .errorBorder,
+                                                          width: 4,
+                                                        ),
+                                                      ),
+                                                      focusedErrorBorder:
+                                                          OutlineInputBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        borderSide:
+                                                            const BorderSide(
+                                                          color: AppColors
+                                                              .errorBorder,
+                                                          width: 4,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    // onChanged: (value) {
+                                                    //   logger.d("onchange");
+                                                    //   if (value == "") return;
+                                                    //   AppConst.apiUrl = value;
+                                                    // },
+                                                    onSaved: (newValue) {
+                                                      if (newValue == "" ||
+                                                          newValue == null) {
+                                                        return;
+                                                      }
+
+                                                      AppConst.apiUrl =
+                                                          newValue;
+                                                      Get.back();
+                                                    },
+                                                  ),
+                                                ),
+                                                LongButton(
+                                                  onPressed: () {
+                                                    makey.currentState?.save();
+                                                  },
+                                                  child: Text("Save"),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  });
+                                },
+                              );
+                            },
+                            child: SizedBox(
+                              width: 22,
+                              height: 22,
+                              child: SvgPicture.asset(
+                                AppIcon.timer,
+                                colorFilter: const ColorFilter.mode(
+                                  Colors.white,
+                                  BlendMode.srcIn,
+                                ),
                               ),
                             ),
                           ),

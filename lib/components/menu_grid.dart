@@ -107,7 +107,7 @@ class MenuGrid extends StatelessWidget {
           ),
           MenuModel(
             ontab: () {
-              controller.gotoBuyPoint();
+              controller.gotoTopupPoint();
             },
             icon: SizedBox(
               height: 32,
@@ -119,7 +119,7 @@ class MenuGrid extends StatelessWidget {
             name: Align(
               alignment: Alignment.center,
               child: Text(
-                AppLocale.buyPoints.getString(context),
+                AppLocale.topupPoints.getString(context),
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 11,
@@ -266,6 +266,7 @@ class MenuGrid extends StatelessWidget {
             disabled: true,
             ontab: () {
               logger.d("comming soon");
+              // Get.toNamed('/test');
             },
             icon: SizedBox(
               height: 32,

@@ -47,6 +47,9 @@ class InvoiceMetaData {
   List? couponIds;
   int? receivePoint;
   CouponResponse? couponResponse;
+  int? point;
+  int? pointMoney;
+  List? promotionIds;
 
   InvoiceMetaData({
     required this.lotteryDateStr,
@@ -65,6 +68,9 @@ class InvoiceMetaData {
     this.couponIds,
     this.receivePoint,
     this.couponResponse,
+    this.point,
+    this.pointMoney,
+    this.promotionIds,
   });
 
   static InvoiceMetaData empty() => InvoiceMetaData(
@@ -77,6 +83,8 @@ class InvoiceMetaData {
         price: 0,
         quota: 0,
         invoiceId: null,
+        point: 0,
+        pointMoney: 0,
       );
 
   InvoiceMetaData copyWith() => InvoiceMetaData(
@@ -97,6 +105,9 @@ class InvoiceMetaData {
         couponIds: couponIds,
         receivePoint: receivePoint,
         couponResponse: couponResponse,
+        point: point,
+        pointMoney: pointMoney,
+        promotionIds: promotionIds,
       );
 
   Map<String, dynamic> toJson(String userId) {
@@ -116,6 +127,9 @@ class InvoiceMetaData {
       'quota': quota,
       'couponId': couponIds,
       'receive_point': receivePoint,
+      'point': point,
+      'pointMoney': pointMoney,
+      'promotionId': promotionIds,
     };
   }
 

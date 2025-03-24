@@ -6,6 +6,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/components/switch.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
@@ -147,139 +148,156 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                             //   ),
                                             // ],
                                             // const SizedBox(width: 8),
-                                            GestureDetector(
-                                              onTap: () {
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (context) {
-                                                    return Center(
-                                                      child: Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(16),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors.white,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                        ),
-                                                        child: Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          children: [
-                                                            Text(
-                                                              AppLocale
-                                                                  .areYouSureYouWantToDeleteAllLottery
-                                                                  .getString(
-                                                                      context),
-                                                              style: TextStyle(
-                                                                fontSize: 16,
+                                            Builder(builder: (context) {
+                                              final lotteryEmpty = controller
+                                                  .invoiceMeta
+                                                  .value
+                                                  .transactions
+                                                  .isEmpty;
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  if (lotteryEmpty) {
+                                                    return;
+                                                  }
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return Center(
+                                                        child: Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(16),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                          ),
+                                                          child: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              Text(
+                                                                AppLocale
+                                                                    .areYouSureYouWantToDeleteAllLottery
+                                                                    .getString(
+                                                                        context),
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize: 16,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            const SizedBox(
-                                                                height: 12),
-                                                            Row(
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              children: [
-                                                                ElevatedButton(
-                                                                  style: ElevatedButton
-                                                                      .styleFrom(
-                                                                    elevation:
-                                                                        0,
-                                                                    backgroundColor:
-                                                                        AppColors
-                                                                            .primary,
-                                                                    foregroundColor:
-                                                                        Colors
-                                                                            .white,
-                                                                    shape:
-                                                                        RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              10),
-                                                                    ),
-                                                                  ),
-                                                                  onPressed:
-                                                                      () {
-                                                                    navigator
-                                                                        ?.pop();
-                                                                  },
-                                                                  child: Text(
-                                                                    AppLocale
-                                                                        .cancel
-                                                                        .getString(
-                                                                            context),
-                                                                  ),
-                                                                ),
-                                                                const SizedBox(
-                                                                    width: 8),
-                                                                ElevatedButton(
-                                                                  style: ElevatedButton
-                                                                      .styleFrom(
-                                                                    elevation:
-                                                                        0,
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .white,
-                                                                    foregroundColor:
-                                                                        AppColors
-                                                                            .errorBorder,
-                                                                    shape:
-                                                                        RoundedRectangleBorder(
-                                                                      side:
-                                                                          BorderSide(
-                                                                        color: AppColors
-                                                                            .errorBorder,
-                                                                        width:
-                                                                            1,
+                                                              const SizedBox(
+                                                                  height: 12),
+                                                              Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  ElevatedButton(
+                                                                    style: ElevatedButton
+                                                                        .styleFrom(
+                                                                      elevation:
+                                                                          0,
+                                                                      backgroundColor:
+                                                                          AppColors
+                                                                              .primary,
+                                                                      foregroundColor:
+                                                                          Colors
+                                                                              .white,
+                                                                      shape:
+                                                                          RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(10),
                                                                       ),
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              10),
+                                                                    ),
+                                                                    onPressed:
+                                                                        () {
+                                                                      navigator
+                                                                          ?.pop();
+                                                                    },
+                                                                    child: Text(
+                                                                      AppLocale
+                                                                          .cancel
+                                                                          .getString(
+                                                                              context),
                                                                     ),
                                                                   ),
-                                                                  onPressed:
-                                                                      () {
-                                                                    controller
-                                                                        .removeAllLottery();
-                                                                    navigator
-                                                                        ?.pop();
-                                                                  },
-                                                                  child: Text(
-                                                                    AppLocale
-                                                                        .deleteAll
-                                                                        .getString(
-                                                                            context),
+                                                                  const SizedBox(
+                                                                      width: 8),
+                                                                  ElevatedButton(
+                                                                    style: ElevatedButton
+                                                                        .styleFrom(
+                                                                      elevation:
+                                                                          0,
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .white,
+                                                                      foregroundColor:
+                                                                          AppColors
+                                                                              .errorBorder,
+                                                                      shape:
+                                                                          RoundedRectangleBorder(
+                                                                        side:
+                                                                            BorderSide(
+                                                                          color:
+                                                                              AppColors.errorBorder,
+                                                                          width:
+                                                                              1,
+                                                                        ),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(10),
+                                                                      ),
+                                                                    ),
+                                                                    onPressed:
+                                                                        () {
+                                                                      controller
+                                                                          .removeAllLotteryV2();
+                                                                      navigator
+                                                                          ?.pop();
+                                                                    },
+                                                                    child: Text(
+                                                                      AppLocale
+                                                                          .deleteAll
+                                                                          .getString(
+                                                                              context),
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    );
-                                                  },
-                                                );
-                                              },
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    width: 1,
-                                                    color:
-                                                        AppColors.errorBorder,
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                      width: 1,
+                                                      color: lotteryEmpty
+                                                          ? AppColors
+                                                              .disableText
+                                                          : AppColors
+                                                              .errorBorder,
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            4),
                                                   ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(4),
+                                                  child: Icon(
+                                                    Icons.close,
+                                                    color: lotteryEmpty
+                                                        ? AppColors.disableText
+                                                        : AppColors.errorBorder,
+                                                  ),
                                                 ),
-                                                child: Icon(
-                                                  Icons.close,
-                                                  color: AppColors.errorBorder,
-                                                ),
-                                              ),
-                                            ),
+                                              );
+                                            }),
                                           ],
                                         ),
                                       ],
@@ -287,13 +305,14 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                   ),
                                   Expanded(
                                     child: Obx(() {
+                                      final invoice =
+                                          controller.invoiceMeta.value;
                                       return ListView(
                                         physics: const BouncingScrollPhysics(),
                                         padding: const EdgeInsets.symmetric(
                                           horizontal: 16,
                                         ),
-                                        children: controller.invoiceMeta.value
-                                                .transactions.isEmpty
+                                        children: invoice.transactions.isEmpty
                                             ? [
                                                 Container(
                                                   margin: const EdgeInsets.only(
@@ -311,14 +330,13 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                 )
                                               ]
                                             // : controller.lotteryList.map(
-                                            : controller.invoiceMeta.value
-                                                .transactions.reversed
+                                            : invoice.transactions.reversed
                                                 .toList()
                                                 .map(
                                                 (lotteryData) {
                                                   return GestureDetector(
                                                     onTap: () {
-                                                      controller.editLottery(
+                                                      controller.editLotteryV2(
                                                         lotteryData.lottery,
                                                         lotteryData.quota,
                                                       );
@@ -407,7 +425,7 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                               GestureDetector(
                                                                 onTap: () {
                                                                   controller
-                                                                      .removeLottery(
+                                                                      .removeLotteryV2(
                                                                           lotteryData);
                                                                 },
                                                                 child:
@@ -655,7 +673,8 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                     .disabledBuy.value) {
                                                   return;
                                                 }
-                                                controller.submitFormAddLottery(
+                                                controller
+                                                    .submitFormAddLotteryV2(
                                                   controller.lottery,
                                                   controller.price,
                                                   true,
@@ -693,8 +712,9 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                       const SizedBox(height: 8),
                                       LongButton(
                                         onPressed: () {
-                                          controller.confirmLottery(
-                                              context); // lottery confirm
+                                          // controller.confirmLottery(
+                                          //     context); // lottery confirm
+                                          controller.confirmLotteryV2();
                                         },
                                         disabled: controller.disabledBuy.value,
                                         child: Text(

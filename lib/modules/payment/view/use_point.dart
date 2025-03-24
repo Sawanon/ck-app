@@ -115,7 +115,14 @@ class _UsePointComponentState extends State<UsePointComponent> {
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          Text(
+            "(${AppLocale.notIncludedWithOtherPromotions.getString(context)})",
+            style: TextStyle(
+              fontSize: 12,
+              color: Colors.red.shade300,
+            ),
+          ),
+          const SizedBox(height: 24),
           InputText(
             controller: inputPointController,
             label: Text(

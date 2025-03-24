@@ -13,13 +13,11 @@ import 'package:lottery_ck/utils.dart';
 
 class FirebaseMessagingController extends GetxController {
   static FirebaseMessagingController get to => Get.find();
-  late String? token;
   StreamSubscription<RemoteMessage>? stream;
   void initialFirebase() async {
     try {
       // You may set the permission requests to "provisional" which allows the user to choose what type
       // of notifications they would like to receive once the user receives a notification.
-      token = await FirebaseMessaging.instance.getToken();
       // logger.w("token firebase: $token");
       final notificationSettings =
           await FirebaseMessaging.instance.requestPermission(

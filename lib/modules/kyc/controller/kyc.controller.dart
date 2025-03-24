@@ -20,6 +20,7 @@ import 'package:image/image.dart' as img;
 import 'package:path/path.dart';
 
 class KYCController extends GetxController {
+  final maxIdCard = 15;
   Map<String, List<String>> districtList = {
     "th": [
       "คำม่วน",
@@ -195,7 +196,7 @@ class KYCController extends GetxController {
         return true;
       }
       if (remark?['idCard']['status'] == false &&
-          (idCard == "" || idCard.length < 10)) {
+          (idCard == "" || idCard.length < maxIdCard)) {
         logger.e("idCard");
         return true;
       }
@@ -221,7 +222,7 @@ class KYCController extends GetxController {
         idCard == "") {
       return true;
     }
-    if (idCard.length < 10) {
+    if (idCard.length < maxIdCard) {
       return true;
     }
     if (documentImage == null || selfieWithDocumentImage == null) {
@@ -252,7 +253,7 @@ class KYCController extends GetxController {
               AppLocale.pleaseFillInAllInformation.getString(Get.context!));
       return false;
     }
-    if (idCard.length < 10) {
+    if (idCard.length < maxIdCard) {
       Get.rawSnackbar(
         message: AppLocale.theNationalIdentificationNumberMustContainDigits
             .getString(Get.context!),
@@ -292,7 +293,7 @@ class KYCController extends GetxController {
         throw AppLocale.pleaseCorrectYourDistrict.getString(Get.context!);
       }
       if (remark?['idCard']['status'] == false &&
-          (idCard == "" || idCard.length < 10)) {
+          (idCard == "" || idCard.length < maxIdCard)) {
         throw AppLocale.pleaseCorrectYourIDCardNumber.getString(Get.context!);
       }
       if (remark?['documentImage']['status'] == false &&

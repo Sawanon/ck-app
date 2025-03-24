@@ -758,6 +758,7 @@ class HomeController extends GetxController {
     if (response == null) {
       return;
     }
+    logger.w("listBanner: $response");
     bannerContent.clear();
     List<Map<dynamic, dynamic>> _banner = [];
     for (var banner in response) {
@@ -810,6 +811,7 @@ class HomeController extends GetxController {
 
   Map getContentUrlAndLink(Map content) {
     Map cloneContent = {};
+    logger.w(content);
     switch (content['type']) {
       case 'news':
         final news = content['news'];
@@ -819,6 +821,9 @@ class HomeController extends GetxController {
         break;
       case 'promotions':
         final promotions = content['promotions'];
+        if (promotions == null) {
+          break;
+        }
         cloneContent['name'] = promotions['name'];
         if (promotions['banner_image'] != null) {
           cloneContent['imageUrl'] = promotions['banner_image'];
@@ -838,6 +843,12 @@ class HomeController extends GetxController {
         cloneContent['name'] = content['name'];
         cloneContent['imageUrl'] = artworks['url'];
         // cloneContent['getLink'] = 'dialog:/artwork/${artworks['\$id']}';
+        break;
+      case "wallpapers":
+        final wallpapers = content['wallpapers'];
+        cloneContent['name'] = content['name'];
+        cloneContent['imageUrl'] = wallpapers['url'];
+        // cloneContent['getLink'] = '/wallpaper/${wallpapers['\$id']}';
         break;
       default:
     }
@@ -1018,15 +1029,23 @@ class HomeController extends GetxController {
     Get.toNamed(RouteName.setting);
   }
 
-  void gotoBuyPoint() async {
+  void gotoTopupPoint() async {
     if (SettingController.to.user == null) {
       LayoutController.to.showDialogLogin();
       return;
     }
     Get.to(
-      () => const BuyPoint(),
+      () => const TopupPoint(),
       transition: Transition.rightToLeft,
     );
+  }
+
+  void gotoVideo() {
+    if (SettingController.to.user == null) {
+      LayoutController.to.showDialogLogin();
+      return;
+    }
+    Get.toNamed(RouteName.videoMenu);
   }
 
   @override

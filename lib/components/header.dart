@@ -65,13 +65,16 @@ class Header extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: textColor,
+          Expanded(
+            child: Text(
+              title,
+              textAlign: TextAlign.left,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: textColor,
+              ),
             ),
           ),
         ],

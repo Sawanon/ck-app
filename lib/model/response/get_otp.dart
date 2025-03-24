@@ -1,6 +1,6 @@
 class ResponseGetOTP {
   String otpRef;
-  String otp;
+  String? otp;
 
   ResponseGetOTP({
     required this.otpRef,

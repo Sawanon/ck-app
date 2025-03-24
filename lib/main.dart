@@ -39,12 +39,12 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 Future<void> initTTSDK() async {
   // Enable logging
   if (kDebugMode) {
-    FlutterTTSDKManager.openAllLog();
+    // FlutterTTSDKManager.openAllLog();
   }
   // Register plugin logs
-  TTFLogger.onLog = (logLevel, msg) {
-    logger.d(msg);
-  };
+  // TTFLogger.onLog = (logLevel, msg) {
+  //   logger.d(msg);
+  // };
 
   // Provide a valid license file path, such as 'assets/VEVod.lic'
   String licPath = 'assets/VEVod.lic';
@@ -91,8 +91,13 @@ Future<void> setupLocalNotification() async {
   const AndroidInitializationSettings initializationSettingsAndroid =
       AndroidInitializationSettings('@mipmap/launcher_icon');
 
-  const InitializationSettings initializationSettings =
-      InitializationSettings(android: initializationSettingsAndroid);
+  const DarwinInitializationSettings initializationSettingsDarwin =
+      DarwinInitializationSettings();
+
+  const InitializationSettings initializationSettings = InitializationSettings(
+    android: initializationSettingsAndroid,
+    iOS: initializationSettingsDarwin,
+  );
   await FlutterLocalNotificationsPlugin().initialize(initializationSettings);
 }
 

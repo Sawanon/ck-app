@@ -12,7 +12,7 @@ class ResponseSignup {
   @override
   String toString() {
     return '${{
-      "user": user.$id,
+      "userId": user.$id,
       "secret": secret,
     }}';
   }

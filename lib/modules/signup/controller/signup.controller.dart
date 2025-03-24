@@ -66,25 +66,25 @@ class SignupController extends GetxController {
       Get.rawSnackbar(message: "sign up failed");
       return;
     }
-    final token = await appwriteController.getToken(phoneNumber);
-    logger.d("token: $token");
-    if (token == null) {
-      Get.rawSnackbar(message: "get token failed");
-      return;
-    }
     final session = await appwriteController.createSession(
         response.user.$id, response.secret);
     if (session == null) {
       Get.rawSnackbar(message: "create session failed");
       return;
     }
+    final token = await appwriteController.getToken(phoneNumber);
+    logger.d("token: $token");
+    if (token == null) {
+      Get.rawSnackbar(message: "get token failed");
+      return;
+    }
     await FirebaseMessagingController.to.getToken();
-    logger.d("user: ${response.user.$id}");
     // if (user != null) {
     Get.delete<UserStore>();
     Get.toNamed(
       RouteName.pin,
       arguments: {
+        'userId': response.user.$id,
         'whenSuccess': () async {
           // await CommonFn.requestBiometrics();
           final availableBiometrics = await CommonFn.availableBiometrics();

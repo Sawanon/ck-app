@@ -130,7 +130,7 @@ class _DialogChangeBirthtimeComponentState
                   ),
                   const SizedBox(height: 48),
                   LongButton(
-                    disabled: isLoading,
+                    disabled: isLoading || birthTime == null,
                     onPressed: () {
                       if (birthTime == null) return;
                       confirmDateTime();

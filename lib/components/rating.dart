@@ -23,6 +23,17 @@ class RatingComponent extends StatefulWidget {
 class _RatingComponentState extends State<RatingComponent> {
   double _rating = 5;
   String? _comment;
+
+  void setComment(String value) {
+    setState(() {
+      if (value == "") {
+        _comment = null;
+        return;
+      }
+      _comment = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -122,13 +133,14 @@ class _RatingComponentState extends State<RatingComponent> {
               ),
               onChanged: (value) {
                 logger.d("value: $value");
-                _comment = value;
+                setComment(value);
               },
             ),
           ),
           Container(
             margin: EdgeInsets.only(top: 24, bottom: 16),
             child: LongButton(
+              disabled: _comment == null,
               onPressed: () {
                 widget.onSubmit(_rating, _comment);
               },

@@ -3,6 +3,7 @@ class AppConst {
       // "https://60e3-2405-9800-b920-d13f-d8cb-7807-d2d1-1fbe.ngrok-free.app";
       "http://demo.mylaos.life:3000";
   static String apiUrl = "https://demo.mylaos.life/api";
+  static String apiLocal = "http://192.168.1.128:3000/api";
   // static String apiUrl =
   //     "https://180c-2405-9800-b920-cf8d-ec9c-ca14-1a6f-dae8.ngrok-free.app/api";
   // static String apiUrl = "http://192.168.1.169:3000/api";

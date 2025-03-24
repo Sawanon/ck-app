@@ -1,9 +1,14 @@
 source 'https://github.com/volcengine/volcengine-specs.git'
 source 'https://github.com/byteplus-sdk/byteplus-specs.git'
-source 'https://cdn.cocoapods.org/'
-$FirebaseSDKVersion = '8.0.0'
+
+# source 'https://cdn.cocoapods.org/'
+source 'https://github.com/CocoaPods/Specs.git'
+
+# $FirebaseSDKVersion = '8.0.0'
+# $FirebaseSDKVersion = '10.29.0'
 # Uncomment this line to define a global platform for your project
 # platform :ios, '13.0'
+platform :ios, '15.5'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'

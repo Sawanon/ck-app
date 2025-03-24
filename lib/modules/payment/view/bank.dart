@@ -106,15 +106,26 @@ class BankPage extends StatelessWidget {
                                     if (minimumPrice != null)
                                       Builder(
                                         builder: (context) {
-                                          final detail = AppLocale.minimumAmount
+                                          String detail = AppLocale
+                                              .minimumAmount
                                               .getString(context)
                                               .replaceAll(
                                                   "{price}", "$minimumPrice");
+                                          if (isActive == false) {
+                                            detail = AppLocale.bankErrorMinimum
+                                                .getString(context)
+                                                .replaceAll(
+                                                  "{price}",
+                                                  "$minimumPrice",
+                                                );
+                                          }
                                           return Text(
                                             detail,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 12,
-                                              color: AppColors.disableText,
+                                              color: isActive
+                                                  ? AppColors.disableText
+                                                  : AppColors.errorBorder,
                                             ),
                                           );
                                         },

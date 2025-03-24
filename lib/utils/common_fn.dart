@@ -26,6 +26,11 @@ class CommonFn {
     return "${parseTimeZome.hour.toString().padLeft(2, "0")}:${parseTimeZome.minute.toString().padLeft(2, "0")}:${parseTimeZome.second.toString().padLeft(2, "0")}";
   }
 
+  static String parseHM(DateTime datetime) {
+    final parseTimeZome = datetime.toLocal();
+    return "${parseTimeZome.hour.toString().padLeft(2, "0")}:${parseTimeZome.minute.toString().padLeft(2, "0")}";
+  }
+
   static String parseTimeOfDayToHMS(TimeOfDay timeOfDay) {
     return '${timeOfDay.hour.toString().padLeft(2, '0')}:${timeOfDay.minute.toString().padLeft(2, '0')}';
   }
@@ -232,5 +237,9 @@ class CommonFn {
     //   height: 100,
     // );
     return dataImage;
+  }
+
+  static bool isInteger(double value) {
+    return value == value.toInt();
   }
 }

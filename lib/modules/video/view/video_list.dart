@@ -4,9 +4,7 @@ import 'package:lottery_ck/modules/video/view/video.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/res/icon.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:video_player/video_player.dart';
 
 /// Stateful widget to fetch and then display video content.
 class VideoList extends StatefulWidget {

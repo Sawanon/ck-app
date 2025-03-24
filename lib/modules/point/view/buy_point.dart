@@ -16,8 +16,8 @@ import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:lottery_ck/utils/theme.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class BuyPoint extends StatelessWidget {
-  const BuyPoint({super.key});
+class TopupPoint extends StatelessWidget {
+  const TopupPoint({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class BuyPoint extends StatelessWidget {
           child: Column(
             children: [
               Header(
-                title: AppLocale.buyPoints.getString(context),
+                title: AppLocale.topupPoints.getString(context),
               ),
               Expanded(
                 child: ListView(
@@ -172,8 +172,10 @@ class BuyPoint extends StatelessWidget {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       GestureDetector(
-                                        onTap: () =>
-                                            controller.onChangePoint("$point"),
+                                        onTap: () {
+                                          controller.onChangePoint("$point");
+                                          controller.onClickPointList(point);
+                                        },
                                         child: Container(
                                           margin: EdgeInsets.only(
                                             left: point == 1000 ? 0 : 8,
@@ -187,7 +189,11 @@ class BuyPoint extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             border: Border.all(
                                               width: 1,
-                                              color: AppColors.inputBorder,
+                                              color: controller
+                                                          .selectedPointList ==
+                                                      point
+                                                  ? AppColors.primary
+                                                  : AppColors.inputBorder,
                                             ),
                                             borderRadius:
                                                 BorderRadius.circular(8),
@@ -228,8 +234,10 @@ class BuyPoint extends StatelessWidget {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       GestureDetector(
-                                        onTap: () =>
-                                            controller.onChangePoint("$point"),
+                                        onTap: () {
+                                          controller.onChangePoint("$point");
+                                          controller.onClickPointList(point);
+                                        },
                                         child: Container(
                                           margin: EdgeInsets.only(
                                             left: point == 10000 ? 0 : 8,
@@ -243,7 +251,11 @@ class BuyPoint extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             border: Border.all(
                                               width: 1,
-                                              color: AppColors.inputBorder,
+                                              color: controller
+                                                          .selectedPointList ==
+                                                      point
+                                                  ? AppColors.primary
+                                                  : AppColors.inputBorder,
                                             ),
                                             borderRadius:
                                                 BorderRadius.circular(8),
@@ -295,7 +307,11 @@ class BuyPoint extends StatelessWidget {
                       ),
                       alignment: Alignment.center,
                       child: Text(
-                        "หรือ",
+                        AppLocale.or.getString(context),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     Container(

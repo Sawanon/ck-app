@@ -21,6 +21,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginController extends GetxController {
   final devPhone = "+8562055265064";
+  final appleAccount = "+8562012121313";
   static LoginController get to => Get.find();
   String phoneNumber = '';
   GlobalKey<FormState> keyForm = GlobalKey();
@@ -89,11 +90,11 @@ class LoginController extends GetxController {
             return null;
           }
           otpRef = result.otpRef;
-          Get.dialog(
-            DialogOtpComponent(
-              otp: result.otp,
-            ),
-          );
+          // Get.dialog(
+          //   DialogOtpComponent(
+          //     otp: result.otp,
+          //   ),
+          // );
           return result.otpRef;
         },
         whenConfirmOTP: (otp) async {
@@ -121,7 +122,7 @@ class LoginController extends GetxController {
 
   Future<void> getOTPandCreatePin(Map<String, dynamic> responseUser) async {
     // Get.toNamed(
-    if (phoneNumber == devPhone) {
+    if (phoneNumber == devPhone || phoneNumber == appleAccount) {
       gotoPinverifyDev(responseUser['data']['userId']);
       return;
     }
@@ -148,9 +149,9 @@ class LoginController extends GetxController {
             return null;
           }
           final data = response.data!;
-          Get.dialog(
-            DialogOtpComponent(otp: data.otp),
-          );
+          // Get.dialog(
+          //   DialogOtpComponent(otp: data.otp),
+          // );
           otpRef = data.otpRef;
           return data.otpRef;
         },
@@ -194,9 +195,9 @@ class LoginController extends GetxController {
                         return null;
                       }
                       final data = response.data!;
-                      Get.dialog(
-                        DialogOtpComponent(otp: data.otp),
-                      );
+                      // Get.dialog(
+                      //   DialogOtpComponent(otp: data.otp),
+                      // );
                       otpRef = data.otpRef;
                       return data.otpRef;
                     },
