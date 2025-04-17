@@ -237,7 +237,7 @@ class BillComponent extends StatelessWidget {
             Divider(
               color: AppColors.yellowGradient,
             ),
-          if (bill.pointMoney != null) ...[
+          if (bill.pointMoney != null && bill.pointMoney != 0) ...[
             // const SizedBox(height: 8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -312,24 +312,33 @@ class BillComponent extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             "${AppLocale.billId.getString(context)}: ${bill.billId}",
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             "${AppLocale.paidBy.getString(context)}: ${bill.bankName}",
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             "${AppLocale.contact.getString(context)} CK GROUP: 0865446524",
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 12,
             ),
           ),
+          if (bill.refCode != null) ...[
+            const SizedBox(height: 8),
+            Text(
+              "Refcode: ${bill.refCode}",
+              style: const TextStyle(
+                fontSize: 12,
+              ),
+            ),
+          ],
           const SizedBox(height: 8),
           Builder(
             builder: (context) {

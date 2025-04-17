@@ -150,7 +150,7 @@ class BuylotteryComponent extends StatelessWidget {
                             if (controller.disabledBuy.value) {
                               return;
                             }
-                            controller.submitFormAddLottery(
+                            controller.submitFormAddLotteryV2(
                               controller.lottery,
                               controller.price,
                               true,
@@ -185,11 +185,11 @@ class BuylotteryComponent extends StatelessWidget {
                   const SizedBox(height: 8),
                   LongButton(
                     onPressed: () {
-                      controller.confirmLottery(context); // lottery confirm
+                      controller.confirmLotteryV2(); // lottery confirm
                     },
                     disabled: controller.disabledBuy.value,
                     child: Text(
-                      AppLocale.pay.getString(context),
+                      AppLocale.billSummary.getString(context),
                       style: TextStyle(
                         fontSize: 16,
                       ),

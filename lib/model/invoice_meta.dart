@@ -50,6 +50,7 @@ class InvoiceMetaData {
   int? point;
   int? pointMoney;
   List? promotionIds;
+  int? pointBank;
 
   InvoiceMetaData({
     required this.lotteryDateStr,
@@ -71,6 +72,7 @@ class InvoiceMetaData {
     this.point,
     this.pointMoney,
     this.promotionIds,
+    this.pointBank,
   });
 
   static InvoiceMetaData empty() => InvoiceMetaData(
@@ -108,6 +110,7 @@ class InvoiceMetaData {
         point: point,
         pointMoney: pointMoney,
         promotionIds: promotionIds,
+        pointBank: pointBank,
       );
 
   Map<String, dynamic> toJson(String userId) {
@@ -130,6 +133,7 @@ class InvoiceMetaData {
       'point': point,
       'pointMoney': pointMoney,
       'promotionId': promotionIds,
+      'pointBank': pointBank,
     };
   }
 

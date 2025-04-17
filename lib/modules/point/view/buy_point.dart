@@ -35,7 +35,7 @@ class TopupPoint extends StatelessWidget {
                   children: [
                     Container(
                       padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: Colors.white,
                       ),
                       child: Row(
@@ -485,7 +485,7 @@ class TopupPoint extends StatelessWidget {
                       controller.submitBuyPoint();
                     },
                     child: Text(
-                      "${AppLocale.pay.getString(context)}",
+                      AppLocale.pay.getString(context),
                     ),
                   );
                 }),

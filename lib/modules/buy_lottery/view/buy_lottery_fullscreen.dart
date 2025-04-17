@@ -710,22 +710,30 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                         ],
                                       ),
                                       const SizedBox(height: 8),
-                                      LongButton(
-                                        onPressed: () {
-                                          // controller.confirmLottery(
-                                          //     context); // lottery confirm
-                                          controller.confirmLotteryV2();
-                                        },
-                                        disabled: controller.disabledBuy.value,
-                                        child: Text(
-                                          AppLocale.pay.getString(context),
-                                          // AppLocale.confirmBuyLottery
-                                          //     .getString(context),
-                                          style: const TextStyle(
-                                            fontSize: 16,
+                                      Obx(() {
+                                        final invoice =
+                                            controller.invoiceMeta.value;
+                                        final disabled =
+                                            controller.disabledBuy.value ||
+                                                invoice.transactions.isEmpty;
+                                        return LongButton(
+                                          onPressed: () {
+                                            // controller.confirmLottery(
+                                            //     context); // lottery confirm
+                                            controller.confirmLotteryV2();
+                                          },
+                                          disabled: disabled,
+                                          child: Text(
+                                            AppLocale.billSummary
+                                                .getString(context),
+                                            // AppLocale.confirmBuyLottery
+                                            //     .getString(context),
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                            ),
                                           ),
-                                        ),
-                                      )
+                                        );
+                                      })
                                     ],
                                   ),
                                 ),

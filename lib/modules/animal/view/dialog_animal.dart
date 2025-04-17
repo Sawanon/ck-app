@@ -287,7 +287,6 @@ class _DialogAnimalState extends State<DialogAnimal> {
                         await widget.onClickBuy(lotteryWithPrice);
 
                         setIsLoading(false);
-                        Navigator.of(context).pop();
                         // navigatorContext
                         //     .pop();
                       },

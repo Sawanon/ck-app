@@ -35,6 +35,7 @@ import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:lottery_ck/utils/location.dart';
 import 'package:pubnub/pubnub.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -64,6 +65,7 @@ class PaymentController extends GetxController {
   bool isUsePoint = false;
   bool isCanUsePoint = false;
   List<Map> promotionList = [];
+  List<Map> promotionBankList = [];
 
   void getPointRaio() async {
     final pointRatio = await AppWriteController.to.getPointRaio();
@@ -168,7 +170,7 @@ class PaymentController extends GetxController {
     final user = SettingController.to.user;
     if (user == null) return;
     final userGroups = await AppWriteController.to.listMyGroup(user.userId);
-    logger.w("userGroups: $userGroups");
+    // logger.w("userGroups: $userGroups");
     if (userGroups == null) {
       logger.e("can't list user groups: listGroup NotificationController");
       return;
@@ -177,19 +179,24 @@ class PaymentController extends GetxController {
         userGroups.map((group) => group['\$id'] as String).toList();
     final promotionListData =
         await AppWriteController.to.listPromotions(groupIds);
-    // logger.w(promotionListData);
+    logger.w(promotionListData);
     if (promotionListData == null) return;
     // for (var promotion in promotionListData) {
     //   logger.w(promotion);
     // }
     // receive_type: register, friend, kyc
+    final List<Map> promotionBankList = [];
     final filteredPromotionList = promotionListData.where((promotion) {
+      if (promotion['bank'] != null) {
+        promotionBankList.add(promotion);
+      }
       final promotionType = promotion['receive_type'] as String;
-      final ignoreReceiveType = ["register", "friend", "kyc"];
+      final ignoreReceiveType = ["register", "friend", "kyc", "bank"];
       return !ignoreReceiveType.contains(promotionType);
     }).toList();
     // logger.w(filteredPromotionList);
     promotionList = filteredPromotionList;
+    this.promotionBankList = promotionBankList;
     // update();
   }
 
@@ -203,7 +210,7 @@ class PaymentController extends GetxController {
     listPromotion();
     await getPoinCanUseOnInvoice();
     await setUpCouponAndPointAgain();
-    await clearPoint();
+    // await clearPoint();
     checkCanUsePoint();
     isLoading.value = false;
     applyDefaultPromotion();
@@ -240,6 +247,9 @@ class PaymentController extends GetxController {
     streamInvoice = BuyLotteryController.to.invoiceRemainExpireStr.listen(
       (value) {
         if (value == "") {
+          if (Get.isDialogOpen == true) {
+            Get.back();
+          }
           if (isOpenedDialog) {
             Get.back();
           }
@@ -286,9 +296,9 @@ class PaymentController extends GetxController {
     // );
   }
 
-  void showBill(String invoiceId) async {
+  void showBill(String invoiceId, [String? refCode]) async {
     try {
-      final invoiceMeta = BuyLotteryController.to.invoiceMeta.value;
+      final invoiceMeta = BuyLotteryController.to.invoiceMeta.value.copyWith();
       final appwriteController = AppWriteController.to;
       // final user = await appwriteController.user;
       final userApp = await appwriteController.getUserApp();
@@ -311,6 +321,10 @@ class PaymentController extends GetxController {
         // invoiceId: invoiceMeta,
         bankName: selectedBank!.fullName,
         customerId: userApp.customerId!,
+        refCode: refCode,
+        discount: invoiceDocuments.data['discount'],
+        point: invoiceDocuments.data['point'],
+        pointMoney: invoiceDocuments.data['pointMoney'],
       );
       // final bill = Bill(
       //   firstName: userApp!.firstName,
@@ -362,8 +376,8 @@ class PaymentController extends GetxController {
     });
     subscriptionPubnubLDB?.messages.listen((message) {
       logger.w(message.content);
-      BuyLotteryController.to.removeInvoiceWhenPaymentSuccess();
       showBill(invoiceId);
+      BuyLotteryController.to.removeInvoiceWhenPaymentSuccess();
       subscriptionPubnubLDB?.dispose();
     })
       ?..onDone(
@@ -381,10 +395,10 @@ class PaymentController extends GetxController {
 
   Future<void> subRealTime(String uuid, String invoiceId) async {
     // Create PubNub instance with default keyset.
+    // publishKey: 'pub-c-ff681b02-4518-4dbd-a081-f98d1b2fcef6',
+    // subscribeKey: 'sub-c-8ae0d87d-51b2-4f42-83b6-e201bb96d7bd',
     var pubnub = PubNub(
       defaultKeyset: Keyset(
-        // publishKey: 'pub-c-ff681b02-4518-4dbd-a081-f98d1b2fcef6',
-        // subscribeKey: 'sub-c-8ae0d87d-51b2-4f42-83b6-e201bb96d7bd',
         subscribeKey: 'sub-c-91489692-fa26-11e9-be22-ea7c5aada356',
         userId: const UserId('BCELBANK'),
       ),
@@ -394,14 +408,16 @@ class PaymentController extends GetxController {
     const mcid = 'mch5c2f0404102fb';
     var channel = "uuid-$mcid-$uuid";
     subscriptionPubnub = pubnub.subscribe(channels: {channel});
-
-    logger.d("subscription start");
+    logger.d("channel: $channel");
+    logger.d("subscription start: $invoiceId");
     // Print every message
     subscriptionPubnub?.messages.listen((message) {
-      logger.w(message.content);
-      BuyLotteryController.to.removeInvoiceWhenPaymentSuccess();
+      final contentJson = jsonDecode(message.content);
+      logger.w(contentJson);
+      final String? fccref = contentJson['fccref'];
       subscriptionPubnub?.dispose();
-      showBill(invoiceId);
+      showBill(invoiceId, fccref);
+      BuyLotteryController.to.removeInvoiceWhenPaymentSuccess();
       // subscriptionPubnub?.unsubscribe();
       // subscriptionPubnub?.cancel();
     })
@@ -482,6 +498,7 @@ class PaymentController extends GetxController {
       final credential = "$sessionId:${userApp.userId}";
       final bearer = base64Encode(utf8.encode(credential));
       final dio = Dio();
+      final position = await LocationService.getCurrentLocation();
       final payload = {
         "bankId": bank.$id,
         "phone": userApp.phoneNumber,
@@ -490,9 +507,12 @@ class PaymentController extends GetxController {
         "lotteryDateStr": invoiceMeta.lotteryDateStr,
         "customerId": userApp.customerId,
         "point": point,
+        "lat": position.latitude,
+        "long": position.longitude,
       };
       logger.w(payload);
-      // const url = "https://8303-202-144-184-208.ngrok-free.app/api/payment";
+      // const url =
+      //     "https://a8d4-2405-9800-b920-2d16-41b3-6892-29cb-c9f3.ngrok-free.app/api/payment";
       final responseTransaction = await dio.post(
         // url,
         "${AppConst.apiUrl}/payment",
@@ -543,8 +563,12 @@ class PaymentController extends GetxController {
           //       'https://play.google.com/store/apps/details?id=com.ldb.wallet'));
           //   return;
           // }
-          await Future.delayed(const Duration(seconds: 5));
-          await launchUrl(Uri.parse('$deeplink'));
+          // await Future.delayed(const Duration(seconds: 5));
+          logger.d("launchUrl externalApplication");
+          await launchUrl(
+            Uri.parse('$deeplink'),
+            mode: LaunchMode.externalApplication,
+          );
           BuyLotteryController.to.startCountDownInvoiceExpire(newExpire);
           // subRealTimeLDB(billId, invoiceMeta['invoiceId']);
         } catch (e) {
@@ -560,7 +584,25 @@ class PaymentController extends GetxController {
         logger.e(e.response?.data);
         logger.e(e.response?.headers);
         logger.e(e.response?.requestOptions);
-        Get.rawSnackbar(message: e.response?.statusMessage);
+        isOpenedDialog = true;
+        Get.dialog(
+          DialogApp(
+            disableConfirm: true,
+            title: Text(
+              AppLocale.somethingWentWrong.getString(Get.context!),
+            ),
+            details: Text(
+              e.response?.data['message']?['message'] ??
+                  e.response?.statusMessage ??
+                  "",
+            ),
+          ),
+        ).whenComplete(
+          () {
+            isOpenedDialog = false;
+          },
+        );
+        // Get.rawSnackbar(message: e.response?.statusMessage);
       }
     } catch (e) {
       logger.e("$e");
@@ -626,6 +668,7 @@ class PaymentController extends GetxController {
       return;
     }
     final result = response.data!['data'];
+    logger.w(result);
     // final responseCoupon = result['coupon'];
     // if (responseCoupon is List) {
     //   if (responseCoupon.isNotEmpty) {
@@ -651,6 +694,10 @@ class PaymentController extends GetxController {
     invoiceClone.couponIds = invoiceRes['couponId'];
     final point = invoiceRes['receive_point'] as int?;
     invoiceClone.receivePoint = point;
+    final pointBank = invoiceRes['pointBank'];
+    if (pointBank is num) {
+      invoiceClone.pointBank = pointBank.toInt();
+    }
     // final List transactions = result['transaction'];
     // for (var transaction in transactions) {
     //   invoiceClone.transactions.add(
@@ -668,6 +715,7 @@ class PaymentController extends GetxController {
   Future<void> onChangePointSwitch(bool value) async {
     if (value == false) {
       await applyPoint(0);
+      applyDefaultPromotion();
       return;
     }
     final invoice = BuyLotteryController.to.invoiceMeta.value;
@@ -678,10 +726,10 @@ class PaymentController extends GetxController {
     final invoice = BuyLotteryController.to.invoiceMeta.value;
     final invoiceId = invoice.invoiceId!;
     final lotteryDateStr = invoice.lotteryDateStr;
-    logger.w("usePoint: $usePoint");
+    // logger.w("usePoint: $usePoint");
     final response = await AppWriteController.to
-        .applyPoint(invoiceId, lotteryDateStr, "$usePoint");
-    logger.w(response.data);
+        .applyPoint(invoiceId, lotteryDateStr, usePoint);
+    // logger.w(response.data);
     if (response.isSuccess == false) {
       Get.dialog(
         DialogApp(
@@ -919,6 +967,7 @@ class PaymentController extends GetxController {
       invoice.lotteryDateStr,
     );
     logger.w(response.data);
+    onChangePoint(0);
     if (response.data == null || response.isSuccess == false) {
       Get.dialog(
         DialogApp(
@@ -1187,6 +1236,10 @@ class PaymentController extends GetxController {
         isOpenedDialog = false;
       },
     );
+  }
+
+  void removeInvoiceWhenBack() {
+    BuyLotteryController.to.removeAllLottery();
   }
 
   @override

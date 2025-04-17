@@ -80,72 +80,125 @@ class _WallpaperFullscreenPageState extends State<WallpaperFullscreenPage> {
                   title: widget.name,
                 ),
                 Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      if (isOpen) {
-                        closeDesc();
-                        return;
-                      }
-                      flipWallpaper();
-                    },
-                    child: Container(
-                      clipBehavior: Clip.hardEdge,
-                      width: double.infinity,
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 16,
-                      ),
-                      padding: EdgeInsets.all(isChangeToDes ? 16 : 0),
-                      decoration: BoxDecoration(
-                        color:
-                            isChangeToDes ? Colors.white : Colors.transparent,
-                        boxShadow: [AppTheme.softShadow],
-                        borderRadius:
-                            BorderRadius.circular(isChangeToDes ? 20 : 0),
-                      ),
-                      child: isChangeToDes
-                          ? ListView(
-                              children: [
-                                Transform.flip(
-                                  flipX: true,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: 16,
-                                    ),
-                                    child: Text(
-                                      widget.detail,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-                          : CachedNetworkImage(
-                              imageUrl: widget.url,
-                              fit: BoxFit.fitHeight,
-                              progressIndicatorBuilder: (
-                                context,
-                                url,
-                                downloadProgress,
-                              ) =>
-                                  Center(
-                                child: CircularProgressIndicator(
-                                  value: downloadProgress.progress,
-                                ),
-                              ),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            if (isOpen) {
+                              closeDesc();
+                              return;
+                            }
+                            flipWallpaper();
+                          },
+                          child: Container(
+                            clipBehavior: Clip.hardEdge,
+                            width: double.infinity,
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 16,
                             ),
-                    ),
+                            padding: EdgeInsets.all(isChangeToDes ? 16 : 0),
+                            decoration: BoxDecoration(
+                              color: isChangeToDes
+                                  ? Colors.white
+                                  : Colors.transparent,
+                              boxShadow: [AppTheme.softShadow],
+                              borderRadius:
+                                  BorderRadius.circular(isChangeToDes ? 20 : 0),
+                            ),
+                            child: isChangeToDes
+                                ? ListView(
+                                    children: [
+                                      Transform.flip(
+                                        flipX: true,
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 16,
+                                          ),
+                                          child: Text(
+                                            widget.detail,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Padding(
+                                    padding: EdgeInsets.only(top: 20),
+                                    child: CachedNetworkImage(
+                                      imageUrl: widget.url,
+                                      fit: BoxFit.fitHeight,
+                                      progressIndicatorBuilder: (
+                                        context,
+                                        url,
+                                        downloadProgress,
+                                      ) =>
+                                          Center(
+                                        child: CircularProgressIndicator(
+                                          value: downloadProgress.progress,
+                                        ),
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          Icon(Icons.error),
+                                    )
+                                        .animate(
+                                          onPlay: (controller) => controller
+                                              .repeat(), // 👈 repeat forever
+                                        )
+                                        .moveY(
+                                          begin: 10,
+                                          end: -10,
+                                          curve: Curves.easeInOut,
+                                          duration: const Duration(seconds: 1),
+                                        )
+                                        .then()
+                                        .moveY(
+                                          begin: -10,
+                                          end: 10,
+                                          duration: const Duration(seconds: 1),
+                                          // curve: Curves.easeInOut,
+                                        ),
+                                  ),
+                            // .shakeY(
+                            //   amount: 2,
+                            //   duration: const Duration(seconds: 2),
+                            //   // curve: Curves.bounceInOut,
+                            //   hz: 0.5,
+                            // ),
+                          )
+                              .animate(
+                                target: isOpen ? 1 : 0,
+                              )
+                              .flipH(
+                                curve: Curves.easeInOut,
+                                begin: 0,
+                                end: 1,
+                                duration: const Duration(milliseconds: 500),
+                              ),
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.touch_app_rounded,
+                            color: Colors.grey.shade600,
+                          ),
+                          Text(
+                            isChangeToDes
+                                ? AppLocale.tapToSeeWallpaper.getString(context)
+                                : AppLocale.tapToSeeTheMeaning
+                                    .getString(context),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                )
-                    .animate(
-                      target: isOpen ? 1 : 0,
-                    )
-                    .flipH(
-                      curve: Curves.easeInOut,
-                      begin: 0,
-                      end: 1,
-                      duration: const Duration(milliseconds: 500),
-                    ),
+                ),
                 // const SizedBox(height: 16),
                 Padding(
                   padding: EdgeInsets.all(16),
@@ -185,44 +238,6 @@ class _WallpaperFullscreenPageState extends State<WallpaperFullscreenPage> {
                     ),
                   ),
                 ),
-                // GestureDetector(
-                //   onTap: () {
-                //     controller.downloadWallpaper(
-                //         widget.fileId, widget.bucketId);
-                //   },
-                //   child: Container(
-                //     padding: const EdgeInsets.all(8),
-                //     decoration: BoxDecoration(
-                //       color: AppColors.primary,
-                //       borderRadius: BorderRadius.circular(8),
-                //     ),
-                //     child: Row(
-                //       mainAxisAlignment: MainAxisAlignment.center,
-                //       children: [
-                //         SizedBox(
-                //           width: 24,
-                //           height: 24,
-                //           child: SvgPicture.asset(
-                //             AppIcon.download,
-                //             colorFilter: const ColorFilter.mode(
-                //               Colors.white,
-                //               BlendMode.srcIn,
-                //             ),
-                //           ),
-                //         ),
-                //         const SizedBox(width: 8),
-                //         Text(
-                //           AppLocale.save.getString(context),
-                //           style: TextStyle(
-                //             fontSize: 16,
-                //             fontWeight: FontWeight.bold,
-                //             color: Colors.white,
-                //           ),
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),

@@ -175,15 +175,19 @@ class AppWriteController extends GetxController {
   }
 
   Future<void> createTarget() async {
-    final tokenFirebase = await FirebaseMessagingController.to.getToken();
-    logger.w("tokenFirebase: $tokenFirebase");
-    final target = await account.createPushTarget(
-      targetId: ID.unique(),
-      identifier: tokenFirebase!,
-      providerId: _providerId,
-    );
-    logger.d(target.providerType);
-    await StorageController.to.setTargetPush(target.$id);
+    try {
+      final tokenFirebase = await FirebaseMessagingController.to.getToken();
+      logger.w("tokenFirebase: $tokenFirebase");
+      final target = await account.createPushTarget(
+        targetId: ID.unique(),
+        identifier: tokenFirebase!,
+        providerId: _providerId,
+      );
+      logger.d(target.providerType);
+      await StorageController.to.setTargetPush(target.$id);
+    } catch (e) {
+      logger.e(e);
+    }
   }
 
   Future<User?> register(String email, String password, String firstName,
@@ -1181,7 +1185,6 @@ class AppWriteController extends GetxController {
     try {
       final dio = Dio();
       final jwt = await getAppJWT();
-      logger.d("jwt: $jwt");
       final response = await dio.post(
         // "${AppConst.cloudfareUrl}/sign-in",
         "${AppConst.apiUrl}/user/sign-in",
@@ -2533,18 +2536,16 @@ class AppWriteController extends GetxController {
   Future<ResponseApi<Map?>> applyPoint(
     String invoiceId,
     String lotteryDateStr,
-    String point,
+    int point,
   ) async {
     try {
       final dio = Dio();
       final url = "${AppConst.apiUrl}/payment/select-point";
-      logger.d("url: $url");
       final payload = {
         "invoiceId": invoiceId,
         "lotteryDate": lotteryDateStr,
         "point": point,
       };
-      logger.d("payload: $payload");
       final response = await dio.post(
         url,
         data: payload,
@@ -2767,6 +2768,56 @@ class AppWriteController extends GetxController {
       final response = await dio.post(
         "${AppConst.apiUrl}/payment/buy-promotion",
         data: payload,
+      );
+      return ResponseApi(
+        isSuccess: true,
+        message: "Successfully apply promotion",
+        data: response.data,
+      );
+    } on DioException catch (e) {
+      logger.e("$e");
+      if (e.response != null) {
+        logger.e(e.response?.statusCode);
+        logger.e(e.response?.statusMessage);
+        logger.e(e.response?.data);
+        return ResponseApi(
+          isSuccess: false,
+          message: e.response?.statusMessage ?? "failed to apply promotion",
+        );
+      }
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to apply promotion",
+      );
+    } catch (e) {
+      logger.e("$e");
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to apply promotion",
+      );
+    }
+  }
+
+  Future<ResponseApi<Map>> topup(
+    int point,
+    String bankId,
+    String userId,
+  ) async {
+    try {
+      final dio = Dio();
+      final payload = {
+        "point": point,
+        "bankId": bankId,
+        "userId": userId,
+      };
+      logger.w(payload);
+      final jwt = await getAppJWT();
+      final response = await dio.post(
+        "${AppConst.apiUrl}/topup/payment",
+        data: payload,
+        options: Options(headers: {
+          "Authorization": "Bearer $jwt",
+        }),
       );
       return ResponseApi(
         isSuccess: true,

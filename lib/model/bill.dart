@@ -15,6 +15,7 @@ class Bill {
   int? point;
   int? pointMoney;
   int? discount;
+  String? refCode;
 
   Bill({
     required this.firstName,
@@ -31,5 +32,6 @@ class Bill {
     this.point,
     this.pointMoney,
     this.discount,
+    this.refCode,
   });
 }

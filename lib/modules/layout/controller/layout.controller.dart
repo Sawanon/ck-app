@@ -350,13 +350,18 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
         totalAmount: invoiceDocument.data['totalAmount'].toString(),
         amount: invoiceDocument.data['amount'],
         billId: invoiceDocument.data['billNumber'] ?? "-",
-        bankName: bank?.name ?? "-",
+        bankName: bank?.fullName ?? "-",
         customerId: cloneUserApp.customerId ?? "-",
         discount: invoiceDocument.data['discount'],
       );
       Get.toNamed(
         RouteName.bill,
-        arguments: {"bill": bill, "onClose": () {}},
+        arguments: {
+          "bill": bill,
+          "onClose": () {
+            Get.back();
+          }
+        },
       );
     }
   }

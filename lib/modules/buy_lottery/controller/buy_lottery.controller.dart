@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:appwrite/appwrite.dart';
+import 'package:argon2/argon2.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
@@ -194,6 +195,7 @@ class BuyLotteryController extends GetxController {
             DialogApp(
               title: Text(
                 AppLocale.exceededQuota.getString(Get.context!),
+                // "เกินจำนวนการซื้อสูงสุดต่อเลข",
                 style: const TextStyle(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.bold,
@@ -204,6 +206,8 @@ class BuyLotteryController extends GetxController {
                 AppLocale.pleaseBuyMax
                     .getString(Get.context!)
                     .replaceAll("{max}", CommonFn.parseMoney(config.max ?? 0)),
+                // TODO: language
+                // "กรุณาซื้อไม่เกิน ${CommonFn.parseMoney(config.max ?? 0)} กีบ ต่อเลข",
                 style: const TextStyle(
                   color: AppColors.textPrimary,
                 ),
@@ -245,8 +249,8 @@ class BuyLotteryController extends GetxController {
   // Future<Map?> addTransaction(Lottery transaction) async {
   Future<Map?> addTransaction(InvoiceMetaData invoiceMeta) async {
     try {
-      final position = await LocationService.getCurrentLocation();
-      logger.w("lat: ${position.latitude}, lng: ${position.longitude}");
+      // final position = await LocationService.getCurrentLocation();
+      // logger.w("lat: ${position.latitude}, lng: ${position.longitude}");
       isLoadingAddLottery.value = true;
       final dio = Dio();
       // getAppJWT
@@ -254,14 +258,16 @@ class BuyLotteryController extends GetxController {
       // final token = await AppWriteController.to.getCredential();
       logger.d("payload");
       final payload = invoiceMeta.toJson(userApp!.userId);
-      payload['lat'] = position.latitude;
-      payload['long'] = position.longitude;
+      // payload['lat'] = position.latitude;
+      // payload['long'] = position.longitude;
       final user = SettingController.to.user;
       if (user == null) return null;
       payload['userId'] = user.userId;
       logger.w(payload);
       // TODO: dev
-      // const url = "http://192.168.1.108:3000/api/transaction";
+      // const url =
+      //     "https://a8d4-2405-9800-b920-2d16-41b3-6892-29cb-c9f3.ngrok-free.app/api/transaction";
+      // FIXME: bug send to gie when amount 0
       final response = await dio.post(
         // url,
         "${AppConst.apiUrl}/transaction",
@@ -448,9 +454,9 @@ class BuyLotteryController extends GetxController {
         transaction.remove();
         return transaction;
       }).toList();
-      for (var transaction in transactionRemove) {
-        logger.d(transaction.toJson());
-      }
+      // for (var transaction in transactionRemove) {
+      //   logger.d(transaction.toJson());
+      // }
       final cloneInvoice = invoiceMeta.value.copyWith();
       cloneInvoice.transactions = transactionRemove;
       logger.d(cloneInvoice.toJson(userApp!.userId));
@@ -474,7 +480,10 @@ class BuyLotteryController extends GetxController {
     cloneInvoice.transactions.clear();
     cloneInvoice.amount = 0;
     cloneInvoice.quota = 0;
+    cloneInvoice.invoiceId = null;
     invoiceMeta.value = cloneInvoice;
+    invoiceRemainExpireStr.value = "";
+    _timer?.cancel();
   }
 
   void removeInvoiceWhenPaymentSuccess() async {
@@ -597,33 +606,11 @@ class BuyLotteryController extends GetxController {
     int? price, [
     bool? fromOtherPage,
   ]) async {
-    // block 1 digits lottery
-    if (lottery?.length == 1) {
-      Get.dialog(
-        DialogApp(
-          title: Text(
-            AppLocale.pleaseBuyLotteryNumbers.getString(Get.context!),
-          ),
-          disableConfirm: true,
-        ),
-      );
-      return false;
-    }
     // check value empty
     if (lottery == null || price == null) {
       alertLotteryEmpty();
       alertPrice();
       return false;
-    }
-    // get user
-    final userApp = SettingController.to.user;
-    // check user
-    if (userApp == null) {
-      showLoginDialog();
-      return false;
-    }
-    if (userApp.active == false) {
-      SettingController.to.logout();
     }
     if (formKey?.currentState != null && formKey!.currentState!.validate()) {
       final result = await addTransactionIntoInvoice(
@@ -641,6 +628,28 @@ class BuyLotteryController extends GetxController {
   }
 
   Future<bool> addTransactionIntoInvoice(Lottery lottery) async {
+    // get user
+    final userApp = SettingController.to.user;
+    // check user
+    if (userApp == null) {
+      showLoginDialog();
+      return false;
+    }
+    if (userApp.active == false) {
+      SettingController.to.logout();
+    }
+    // block 1 digits lottery
+    if (lottery.lottery.length == 1) {
+      Get.dialog(
+        DialogApp(
+          title: Text(
+            AppLocale.pleaseBuyLotteryNumbers.getString(Get.context!),
+          ),
+          disableConfirm: true,
+        ),
+      );
+      return false;
+    }
     if (lottery.price % 1000 != 0) {
       showInvalidPrice();
       return false;
@@ -659,63 +668,66 @@ class BuyLotteryController extends GetxController {
       detail = detail.replaceAll("{lottery}", lottery.lottery);
       detail = detail.replaceAll("{price}", CommonFn.parseMoney(lottery.quota));
       bool _isSuccess = true;
-      await Get.dialog(
-        DialogApp(
-          title: Text(
-            AppLocale.confirmLotteryPurchase.getString(Get.context!),
-          ),
-          details: Text(
-            detail,
-          ),
-          onConfirm: () async {
-            // TODO: แค่เพิ่มเข้า invoice ไม่ต้องเช็คหรือส่ง API อะไรทั้งนั้น
-            // check already exist in invoice
-            final existLotteryInInvoice =
-                invoiceMeta.value.transactions.where((transaction) {
-              return transaction.lottery == lottery.lottery;
-            }).toList();
-            logger.w(existLotteryInInvoice);
-            final cloneInvoice = invoiceMeta.value.copyWith();
-            if (existLotteryInInvoice.isEmpty) {
-              cloneInvoice.transactions.add(lottery);
-            } else {
-              for (var transaction in cloneInvoice.transactions) {
-                if (transaction.lottery == lottery.lottery) {
-                  transaction.amount += lottery.price;
-                  transaction.quota += lottery.price;
-                  break;
-                }
-              }
-            }
-            cloneInvoice.amount += lottery.price;
-            cloneInvoice.quota += lottery.price;
-            // for (var transaction in cloneInvoice.transactions) {
+      // await Get.dialog(
+      //   DialogApp(
+      //     title: Text(
+      //       AppLocale.confirmLotteryPurchase.getString(Get.context!),
+      //     ),
+      //     details: Text(
+      //       detail,
+      //     ),
+      //     onConfirm: () async {
+      // TODO: แค่เพิ่มเข้า invoice ไม่ต้องเช็คหรือส่ง API อะไรทั้งนั้น
+      // check already exist in invoice
+      final existLotteryInInvoice =
+          invoiceMeta.value.transactions.where((transaction) {
+        return transaction.lottery == lottery.lottery;
+      }).toList();
+      logger.w(existLotteryInInvoice);
+      final cloneInvoice = invoiceMeta.value.copyWith();
+      if (existLotteryInInvoice.isEmpty) {
+        cloneInvoice.transactions.add(lottery);
+      } else {
+        for (var transaction in cloneInvoice.transactions) {
+          if (transaction.lottery == lottery.lottery) {
+            transaction.amount += lottery.price;
+            transaction.quota += lottery.price;
+            break;
+          }
+        }
+      }
+      cloneInvoice.amount += lottery.price;
+      cloneInvoice.quota += lottery.price;
+      // for (var transaction in cloneInvoice.transactions) {
 
-            // }
-            invoiceMeta.value = cloneInvoice;
-            // final isSuccess = await createTransaction([lottery]);
-            // logger.w("isSuccess: $isSuccess");
-            // if (isSuccess == false) {
-            //   _isSuccess = false;
-            //   return;
-            // }
-            // lotteryNode.requestFocus();
-            Get.closeAllSnackbars();
+      // }
+      invoiceMeta.value = cloneInvoice;
+      lotteryTextController.text = '';
+      priceTextController.text = '';
+      lotteryNode.requestFocus();
+      // final isSuccess = await createTransaction([lottery]);
+      // logger.w("isSuccess: $isSuccess");
+      // if (isSuccess == false) {
+      //   _isSuccess = false;
+      //   return;
+      // }
+      // lotteryNode.requestFocus();
+      Get.closeAllSnackbars();
 
-            logger.w(Get.isSnackbarOpen);
-            // if (Get.isSnackbarOpen) {
-            //   Get.back();
-            // }
-            await Future.delayed(
-              const Duration(milliseconds: 150),
-              () {
-                Get.back();
-                showSnackbarSuccess([lottery]);
-              },
-            );
-          },
-        ),
+      logger.w(Get.isSnackbarOpen);
+      // if (Get.isSnackbarOpen) {
+      //   Get.back();
+      // }
+      await Future.delayed(
+        const Duration(milliseconds: 150),
+        () {
+          Get.back();
+          showSnackbarSuccess([lottery]);
+        },
       );
+      // },
+      //   ),
+      // );
       return _isSuccess;
     }
     return true;
@@ -864,31 +876,15 @@ class BuyLotteryController extends GetxController {
 
   Future<void> confirmLotteryV2() async {
     logger.d(invoiceMeta.value.toJson('fakeId'));
-
-    // final notSellResponseTransaction = {
-    //   "status": false,
-    //   "type": "notSell",
-    //   "data": {"lottery": "48", "quotaRemain": 8000000},
-    //   "message": "Not sell"
-    // };
-    // final List<Map> transactionError = [];
-    // transactionError.add(notSellResponseTransaction);
-    // if (transactionError.isNotEmpty) {
-    //   Get.dialog(
-    //     DialogTransactionError(
-    //       transactionError: transactionError,
-    //     ),
-    //   );
-    // }
-    // return;
-
-    if (invoiceMeta.value.invoiceId == null) {
+    try {
+      isLoadingAddLottery.value = true;
+      // if (invoiceMeta.value.invoiceId == null) {
       // new invoice
       final lotteryDate = HomeController.to.lotteryDate;
       if (lotteryDate == null) {
         return;
       }
-      final lotteryList = invoiceMeta.value.transactions;
+      final lotteryList = invoiceMeta.value.transactions.copy();
       final lotteryDateStr = CommonFn.parseLotteryDateCollection(lotteryDate);
       final amount = CommonFn.calculateTotalPrice(lotteryList);
       final invoicePayload = InvoiceMetaData(
@@ -901,16 +897,21 @@ class BuyLotteryController extends GetxController {
         price: amount,
         quota: amount,
       );
+      if (invoiceMeta.value.invoiceId != null) {
+        invoicePayload.invoiceId = invoiceMeta.value.invoiceId;
+      }
       logger.w(invoicePayload.toJson(userApp!.userId));
       final responseCreateInvoice = await addTransaction(invoicePayload);
       logger.d(responseCreateInvoice);
       if (responseCreateInvoice == null) {
         return;
       }
-      final invoiceExpire = responseCreateInvoice['invoice']['expire'];
-      invoicePayload.expire = invoiceExpire;
-      final expireDateTime = DateTime.parse(invoiceExpire);
-      startCountDownInvoiceExpire(expireDateTime);
+      if (invoiceMeta.value.invoiceId == null) {
+        final invoiceExpire = responseCreateInvoice['invoice']['expire'];
+        invoicePayload.expire = invoiceExpire;
+        final expireDateTime = DateTime.parse(invoiceExpire);
+        startCountDownInvoiceExpire(expireDateTime);
+      }
       final cloneInvoice = invoiceMeta.value.copyWith();
       // response invoice
       final responseInvoice = responseCreateInvoice['invoice'];
@@ -921,17 +922,34 @@ class BuyLotteryController extends GetxController {
       cloneInvoice.totalAmount = responseInvoice['totalAmount'];
       cloneInvoice.lotteryDateStr = lotteryDateStr;
       // response transaction
-      cloneInvoice.transactions.clear();
+      // cloneInvoice.transactions.clear();
       final responseTransactionsList =
           responseCreateInvoice['transaction'] as Map;
       final List<Map> transactionError = [];
       for (var transaction in invoicePayload.transactions) {
         final responseTransaction =
             responseTransactionsList[transaction.lottery];
+        final foundIndex =
+            cloneInvoice.transactions.indexWhere((cloneTransaction) {
+          return cloneTransaction.lottery == transaction.lottery;
+        });
+        if (foundIndex == -1) {
+          throw "Not found this lottery ${transaction.lottery}";
+        }
         if (responseTransaction['status'] == true) {
           // success
           transaction.id = responseTransaction['data']['\$id'];
-          cloneInvoice.transactions.add(transaction);
+          if (responseTransaction['type'] == 'quotaExceed') {
+            final cloneResponse = responseTransaction;
+            cloneResponse['data']['quotaRequest'] = transaction.quota;
+            transactionError.add(cloneResponse);
+
+            transaction.quota = responseTransaction['data']['quotaRemain'];
+            transaction.amount = responseTransaction['data']['quotaRemain'];
+          }
+
+          cloneInvoice.transactions[foundIndex] = transaction;
+          // cloneInvoice.transactions.add(transaction);
         } else {
           // error something
           // final notSellResponseTransaction = {
@@ -940,21 +958,114 @@ class BuyLotteryController extends GetxController {
           //   "data": {"lottery": "48", "quotaRemain": 8000000},
           //   "message": "Not sell"
           // };
-          transactionError.add(responseTransaction);
+          if (responseTransaction['type'] == 'notSell') {
+            cloneInvoice.transactions.removeAt(foundIndex);
+          } else if (responseTransaction['type'] == 'quotaExceed') {
+            if (responseTransaction['data']['quotaRemain'] == 0) {
+              cloneInvoice.transactions.removeAt(foundIndex);
+            }
+            // else {
+            //   transaction.quota = responseTransaction['data']['quotaRemain'];
+            //   transaction.amount = responseTransaction['data']['quotaRemain'];
+            //   cloneInvoice.transactions[foundIndex] = transaction;
+            // }
+          }
+          final cloneResponse = responseTransaction;
+          cloneResponse['data']['quotaRequest'] = transaction.quota;
+          transactionError.add(cloneResponse);
         }
       }
       invoiceMeta.value = cloneInvoice;
+      logger.d(transactionError);
       if (transactionError.isNotEmpty) {
         Get.dialog(
           DialogTransactionError(
             transactionError: transactionError,
+            onConfirmBuy: (transactionCanSell) async {
+              // final invoicePayload = invoiceMeta.value.copyWith();
+              // invoicePayload.transactions.clear();
+              // for (var transaction in transactionCanSell) {
+              //   invoicePayload.transactions.add(Lottery(
+              //     lottery: transaction['data']['lottery'],
+              //     amount: transaction['data']['quotaRemain'],
+              //     lotteryType:
+              //         (transaction['data']['lottery'] as String).length,
+              //     quota: transaction['data']['quotaRemain'],
+              //     totalAmount: transaction['data']['quotaRemain'],
+              //   ));
+              // }
+              // logger.d(invoicePayload.toJson('fake'));
+              // final responseCreateInvoice =
+              //     await addTransaction(invoicePayload);
+              // logger.d(responseCreateInvoice);
+              // if (responseCreateInvoice == null) {
+              //   return;
+              // }
+              // final cloneInvoice = invoiceMeta.value.copyWith();
+              // // response invoice
+              // final responseInvoice = responseCreateInvoice['invoice'];
+              // final invoiceId = responseInvoice['\$id'];
+              // cloneInvoice.invoiceId = invoiceId;
+              // cloneInvoice.amount = responseInvoice['amount'];
+              // cloneInvoice.quota = responseInvoice['quota'];
+              // cloneInvoice.totalAmount = responseInvoice['totalAmount'];
+              // cloneInvoice.lotteryDateStr = lotteryDateStr;
+              // // response transaction
+              // cloneInvoice.transactions.clear();
+              // final responseTransactionsList =
+              //     responseCreateInvoice['transaction'] as Map;
+              // final List<Map> transactionError = [];
+              // for (var transaction in invoicePayload.transactions) {
+              //   final responseTransaction =
+              //       responseTransactionsList[transaction.lottery];
+              //   if (responseTransaction['status'] == true) {
+              //     // success
+              //     transaction.id = responseTransaction['data']['\$id'];
+              //     cloneInvoice.transactions.add(transaction);
+              //   } else {
+              //     // error something
+              //     // final notSellResponseTransaction = {
+              //     //   "status": false,
+              //     //   "type": "notSell",
+              //     //   "data": {"lottery": "48", "quotaRemain": 8000000},
+              //     //   "message": "Not sell"
+              //     // };
+              //     transactionError.add(responseTransaction);
+              //   }
+              // }
+              // invoiceMeta.value = cloneInvoice;
+              Get.back();
+              if (invoiceMeta.value.transactions.isEmpty) {
+                return;
+              }
+              await Future.delayed(const Duration(milliseconds: 100), () {
+                Get.toNamed(RouteName.payment);
+              });
+            },
+            onConfirmNotBuy: () async {
+              Get.back();
+              if (invoiceMeta.value.transactions.isEmpty) {
+                return;
+              }
+              await Future.delayed(const Duration(milliseconds: 100), () {
+                Get.toNamed(RouteName.payment);
+              });
+              // Get.toNamed(RouteName.payment);
+            },
           ),
         );
+        return;
       }
-    } else {
-      // already invoice
+      Get.toNamed(RouteName.payment);
+      // } else {
+      //   // already invoice
+      // }
+      logger.d(invoiceMeta.value.toJson('fake after'));
+    } catch (e) {
+      logger.e(e);
+    } finally {
+      isLoadingAddLottery.value = false;
     }
-    logger.d(invoiceMeta.value.toJson('fake after'));
   }
 
   void confirmLottery(BuildContext context) async {
@@ -1074,6 +1185,7 @@ class BuyLotteryController extends GetxController {
           ),
         )
         .toList();
+    final List<String> lotteryError = [];
     for (var lottery in lotteryList) {
       logger.d("start run for");
       final isMaxPerTimes = lotteryIsValid(
@@ -1086,10 +1198,26 @@ class BuyLotteryController extends GetxController {
       );
       if (isMaxPerTimes == false) {
         logger.w("break");
+        lotteryError.add(lottery.lottery);
+        break;
         return lottery.lottery;
       }
     }
-    await createTransaction(lotteryList);
+    logger.d("after break");
+    logger.d(lotteryError);
+    if (lotteryError.isNotEmpty) {
+      return null;
+    }
+    for (var lottery in lotteryList) {
+      // submitFormAddLotteryV2(lottery.lottery, lottery.quota);
+      final result = await addTransactionIntoInvoice(lottery);
+      logger.d("result: $result");
+      if (result == false) {
+        break;
+      }
+    }
+    // await createTransaction(lotteryList);
+    Get.back();
     showSnackbarSuccess(lotteryList);
     return null;
   }
@@ -1765,7 +1893,9 @@ class BuyLotteryController extends GetxController {
   }
 
   Future<void> buyAndGotoLotteryPage(
-      String lottery, Future<void> Function() onConfirm) async {
+    String lottery,
+    Future<void> Function() onConfirm,
+  ) async {
     final title = AppLocale.doYouWantToLeaveThisPage.getString(Get.context!);
     final detail = AppLocale.clickConfirmToGoToTheLotteryPurchasePage
         .getString(Get.context!);
@@ -1808,8 +1938,10 @@ class BuyLotteryController extends GetxController {
       return;
     }
     final configByLotteryType = buyLotteryConfig.first;
-    this.lottery = lottery;
-    onChangePrice(configByLotteryType.min.toString());
+    // this.lottery = lottery;
+    // onChangePrice(configByLotteryType.min.toString());
+    priceTextController.text = configByLotteryType.min.toString();
+    submitFormAddLotteryV2(lottery, configByLotteryType.min);
   }
 
   int getMinPrice(String lottery) {

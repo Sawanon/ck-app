@@ -102,11 +102,11 @@ mixin AppLocale {
   static const String pleaseChooseGender = "ກະລຸນາເລືອກເພດຂອງທ່ານ";
   static const String disableLotteryType =
       "ຕົວເລກ {lotteryType} ຕົວເລກຍັງບໍ່ມີ";
-  static const String exceededQuota = "ເກີນໂຄຕ້າ";
+  static const String exceededQuota = "ເກີນຈໍານວນການຊື້ສູງສຸດຕໍ່ຕົວເລກ";
   static const String lessThanQuota = "ຊື້ຫນ້ອຍກວ່າຕໍາສຸດທີ່";
-  static const String pleaseBuyMax = "ກະລຸນາຊື້ຫວຍສູງສຸດ {max} LAK ຕໍ່ຫວຍ";
+  static const String pleaseBuyMax = "ກະລຸນາຊື້ບໍ່ເກີນ {max} ກີບຕໍ່ເບີ";
   static const String pleaseBuyMin =
-      "ກະລຸນາຊື້ຫວຍດ້ວຍລາຄາຕໍ່າສຸດ {min} LAK ຕໍ່ໃບຫວຍ";
+      "ກະລຸນາຊື້ຫວຍດ້ວຍລາຄາຕໍ່າສຸດ {min} ກີບຕໍ່ໃບຫວຍ";
   static const String closeSale = "ດຽວນີ້ລະບົບໄດ້ປິດການຂາຍແລ້ວ";
   static const String houseNo = "ເລກເຮືອນ";
   static const String city = "ເມືອງ";
@@ -385,6 +385,18 @@ mixin AppLocale {
       "ເນື່ອງຈາກວ່າຄະແນນຂອງທ່ານບໍ່ພຽງພໍທີ່ຈະກວມເອົາຈໍານວນທີ່ຈະຈ່າຍ";
   static const String noWallpaperTitle =
       "ຍັງບໍ່ມີວອນເປເປີ ມາຄົ້ນພົບຄວາມງາມໃໝ່ໃນໄມ່ຊ້າ!";
+  static const String billSummary = "ສະຫຼຸບບິນ";
+  static const String bankPointDetail = "ໂບນັດຈາກການສົ່ງເສີມການຈ່າຍເງິນ";
+  static const String lotteryCantSellTitle = "ຕົວເລກທີ່ບໍ່ສາມາດຊື້ໄດ້";
+  static const String number = "ເລກ";
+  static const String thisNumberNotSale = "ເບີນີ້ບໍ່ໄດ້ເປີດຂາຍ";
+  static const String thisNumberExceededQuota = "ເກີນໂຄຕ້າ";
+  static const String stilldBePurchasedTitle =
+      "ຕົວເລກເກີນໂຄຕ້າທີ່ຍັງສາມາດຊື້ໄດ້";
+  static const String order = "ສັ່ງ";
+  static const String youCanBut = "ສາມາດຊື້ໄດ້";
+  static const String tapToSeeTheMeaning = "ແຕະເພື່ອເບິ່ງຄວາມໝາຍ";
+  static const String tapToSeeWallpaper = "ແຕະເພື່ອເບິ່ງຮູບວໍເປເປີ";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -482,9 +494,9 @@ mixin AppLocale {
     pleaseEnterBirthDate: "ກະລຸນາເລືອກວັນເດືອນປີເກີດຂອງທ່ານ",
     pleaseChooseGender: "ກະລຸນາເລືອກເພດຂອງທ່ານ",
     disableLotteryType: "ຕົວເລກ {lotteryType} ຕົວເລກຍັງບໍ່ມີ",
-    exceededQuota: "ເກີນໂຄຕ້າ",
+    exceededQuota: "ເກີນຈໍານວນການຊື້ສູງສຸດຕໍ່ຕົວເລກ",
     lessThanQuota: "ຊື້ຫນ້ອຍກວ່າຕໍາສຸດທີ່",
-    pleaseBuyMax: "ກະລຸນາຊື້ຫວຍສູງສຸດ {max} LAK ຕໍ່ຫວຍ",
+    pleaseBuyMax: "ກະລຸນາຊື້ບໍ່ເກີນ {max} ກີບຕໍ່ເບີ",
     pleaseBuyMin: "ກະລຸນາຊື້ຫວຍດ້ວຍລາຄາຕໍ່າສຸດ {min} LAK ຕໍ່ໃບຫວຍ",
     closeSale: "ດຽວນີ້ລະບົບໄດ້ປິດການຂາຍແລ້ວ",
     houseNo: "ເລກເຮືອນ",
@@ -731,6 +743,17 @@ mixin AppLocale {
     pointCannotBeUsedDetail:
         "ເນື່ອງຈາກວ່າຄະແນນຂອງທ່ານບໍ່ພຽງພໍທີ່ຈະກວມເອົາຈໍານວນທີ່ຈະຈ່າຍ",
     noWallpaperTitle: "ຍັງບໍ່ມີວອນເປເປີ ມາຄົ້ນພົບຄວາມງາມໃໝ່ໃນໄມ່ຊ້າ!",
+    billSummary: "ສະຫຼຸບບິນ",
+    bankPointDetail: "ໂບນັດຈາກການສົ່ງເສີມການຈ່າຍເງິນ",
+    lotteryCantSellTitle: "ຕົວເລກທີ່ບໍ່ສາມາດຊື້ໄດ້",
+    number: "ເລກ",
+    thisNumberNotSale: "ເບີນີ້ບໍ່ໄດ້ເປີດຂາຍ",
+    thisNumberExceededQuota: "ເກີນໂຄຕ້າ",
+    stilldBePurchasedTitle: "ຕົວເລກເກີນໂຄຕ້າທີ່ຍັງສາມາດຊື້ໄດ້",
+    order: "ສັ່ງ",
+    youCanBut: "ສາມາດຊື້ໄດ້",
+    tapToSeeTheMeaning: "ແຕະເພື່ອເບິ່ງຄວາມໝາຍ",
+    tapToSeeWallpaper: "ແຕະເພື່ອເບິ່ງຮູບວໍເປເປີ",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -828,9 +851,9 @@ mixin AppLocale {
     pleaseEnterBirthDate: "กรุณาเลือกวันเกิดของคุณ",
     pleaseChooseGender: "กรุณาเลือกเพศของคุณ",
     disableLotteryType: "เลข {lotteryType} ตัวยังไม่เปิดให้บริการ",
-    exceededQuota: "เกินโควต้า",
+    exceededQuota: "เกินจำนวนการซื้อสูงสุดต่อเลข",
     lessThanQuota: "ซื้อน้อยกว่าขั้นต่ำ",
-    pleaseBuyMax: "กรุณาซื้อลอตเตอรี่สูงสุด {max} LAK ต่อลอตเตอรี่",
+    pleaseBuyMax: "กรุณาซื้อไม่เกิน {max} กีบต่อเลข",
     pleaseBuyMin: "กรุณาซื้อลอตเตอรี่น้อยสุด {min} LAK ต่อลอตเตอรี่",
     closeSale: "ขณะนี้ระบบได้ปิดการขายแล้ว",
     houseNo: "บ้านเลขที่",
@@ -1078,6 +1101,17 @@ mixin AppLocale {
     pointCannotBeUsedDetail:
         "เนื่องจากคะแนนของคุณไม่เพียงพอกับจำนวนเงินที่ต้องชำระ",
     noWallpaperTitle: "ตอนนี้ยังไม่มีวอลเปเปอร์ ลองกลับมาใหม่เร็วๆ นี้นะ!",
+    billSummary: "สรุปบิล",
+    bankPointDetail: "โบนัสจากโปรโมชั่นการชำระเงิน",
+    lotteryCantSellTitle: "เลขที่ไม่สามารถซื้อได้",
+    number: "เลข",
+    thisNumberNotSale: "เลขนี้ไม่เปิดขาย",
+    thisNumberExceededQuota: "เกินโควต้า",
+    stilldBePurchasedTitle: "เลขที่เกินโควต้าที่ยังสามารถซื้อได้",
+    order: "สั่งซื้อ",
+    youCanBut: "ซื้อได้",
+    tapToSeeTheMeaning: "แตะเพื่อดูความหมาย",
+    tapToSeeWallpaper: "แตะเพื่อดูรูปวอลเปเปอร์",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -1176,9 +1210,9 @@ mixin AppLocale {
     pleaseEnterBirthDate: "Please select your birth date",
     pleaseChooseGender: "Please choose your gender",
     disableLotteryType: "The {lotteryType}-digit number is not yet available",
-    exceededQuota: "Exceeded quota",
+    exceededQuota: "Exceeded the maximum purchase amount per number",
     lessThanQuota: "Purchase less than minimum",
-    pleaseBuyMax: "Please purchase a maximum of {max} LAK per lottery ticket",
+    pleaseBuyMax: "Please purchase no more than {max} LAK per number",
     pleaseBuyMin: "Please buy a minimum of {min} LAK per lottery ticket",
     closeSale: "The system is now closed for sales",
     houseNo: "Address No.",
@@ -1435,5 +1469,17 @@ mixin AppLocale {
         "Because your points are not enough to cover the amount to be paid",
     noWallpaperTitle:
         "No wallpapers available right now. Check back soon for something awesome!",
+    billSummary: "Bill summary",
+    bankPointDetail: "Bonus from payment promotion",
+    lotteryCantSellTitle: "Numbers that cannot be purchased",
+    number: "Number",
+    thisNumberNotSale: "This number is not open for sale",
+    thisNumberExceededQuota: "Exceeded quota",
+    stilldBePurchasedTitle:
+        "Numbers exceeding the quota that can still be purchased",
+    order: "Order",
+    youCanBut: "Maximum allowed",
+    tapToSeeTheMeaning: "Tap to see the meaning",
+    tapToSeeWallpaper: "Tap to see wallpaper",
   };
 }

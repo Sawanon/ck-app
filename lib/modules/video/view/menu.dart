@@ -1,22 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/header.dart';
-import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/video/controller/video.controller.dart';
 import 'package:lottery_ck/modules/video/view/short_player.dart';
-import 'package:lottery_ck/modules/video/view/video.dart';
 import 'package:lottery_ck/modules/video/view/video_player.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
-import 'package:lottery_ck/res/icon.dart';
-import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
-import 'package:lottery_ck/utils/theme.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
 class VideoMenu extends StatelessWidget {
   const VideoMenu({super.key});
@@ -174,12 +167,12 @@ class VideoMenu extends StatelessWidget {
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
-                              Colors.white.withOpacity(1),
+                              Colors.white.withOpacity(0.6),
                               Colors.white.withOpacity(0.4),
                             ],
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
-                            stops: [
+                            stops: const [
                               0.7,
                               1,
                             ],

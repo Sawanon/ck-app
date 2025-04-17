@@ -29,7 +29,7 @@ class WallpaperPage extends StatelessWidget {
                 Expanded(
                   child: Builder(builder: (context) {
                     // if (controller.wallpaperContent.isEmpty) {
-                    if (false) {
+                    if (controller.wallpaperContent.isEmpty) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Column(
@@ -140,6 +140,7 @@ class WallpaperPage extends StatelessWidget {
                                       const SizedBox(height: 8),
                                       Text(
                                         "${wallpaper['wallpapers']['name']}",
+                                        textAlign: TextAlign.center,
                                         style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,

@@ -28,7 +28,7 @@ class BankPage extends StatelessWidget {
               ),
               Expanded(
                 child: ListView(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 16,
                   ),
@@ -38,6 +38,10 @@ class BankPage extends StatelessWidget {
                           ? controller.checkActiveBank(bank.downtime!)
                           : true;
                       int? minimumPrice;
+                      final promotionBank =
+                          controller.promotionBankList.where((promotion) {
+                        return bank.$id == promotion['bank'];
+                      }).toList();
                       if (bank.name.toLowerCase() == "mmoney") {
                         final totalAmount =
                             BuyLotteryController.to.invoiceMeta.value.amount -
@@ -103,6 +107,10 @@ class BankPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(bank.fullName),
+                                    if (promotionBank.isNotEmpty)
+                                      Text(
+                                        promotionBank.first['detail_card'],
+                                      ),
                                     if (minimumPrice != null)
                                       Builder(
                                         builder: (context) {

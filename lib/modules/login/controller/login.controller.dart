@@ -22,6 +22,9 @@ import 'package:webview_flutter/webview_flutter.dart';
 class LoginController extends GetxController {
   final devPhone = "+8562055265064";
   final appleAccount = "+8562012121313";
+  final nonAccount = "+8562013131414";
+  final nonAccount2 = "+8562014141515";
+  final nonAccount3 = "+8562015151616";
   static LoginController get to => Get.find();
   String phoneNumber = '';
   GlobalKey<FormState> keyForm = GlobalKey();
@@ -122,7 +125,11 @@ class LoginController extends GetxController {
 
   Future<void> getOTPandCreatePin(Map<String, dynamic> responseUser) async {
     // Get.toNamed(
-    if (phoneNumber == devPhone || phoneNumber == appleAccount) {
+    if (phoneNumber == devPhone ||
+        phoneNumber == appleAccount ||
+        phoneNumber == nonAccount ||
+        phoneNumber == nonAccount2 ||
+        phoneNumber == nonAccount3) {
       gotoPinverifyDev(responseUser['data']['userId']);
       return;
     }
@@ -307,8 +314,8 @@ class LoginController extends GetxController {
                 // final session =
                 //     await AppWriteController.to.createSession(userId, secret);
                 final session = await AppWriteController.to.login(
-                  "+8562055265064@ckmail.com",
-                  "+8562055265064",
+                  "$phoneNumber@ckmail.com",
+                  phoneNumber,
                 );
                 if (session == null) {
                   Get.snackbar(
@@ -340,8 +347,8 @@ class LoginController extends GetxController {
           // final session = await AppWriteController.to
           //     .createSession(responseUser['data']["userId"], secret);
           final session = await AppWriteController.to.login(
-            "+8562055265064@ckmail.com",
-            "+8562055265064",
+            "$phoneNumber@ckmail.com",
+            phoneNumber,
           );
           if (session == null) {
             Get.snackbar(

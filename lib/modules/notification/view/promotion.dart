@@ -162,90 +162,90 @@ class PromotionDetailPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 16,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: [AppTheme.softShadow],
-                  ),
-                  child: Builder(builder: (context) {
-                    final isNotBuyType = controller.promotion?['receive_type']
-                            .toString()
-                            .toLowerCase() !=
-                        "buy";
-                    final isNeedKYC =
-                        controller.promotion?['is_need_kyc'] == true;
-                    final user = SettingController.to.user;
-                    final disabled = isNeedKYC && user?.isKYC == false;
-                    // logger.w(
-                    //     "controller.alreadyCollectedCoupon: ${controller.alreadyCollectedCoupon}");
-                    // final alreadyExist = controller
-                    //     .disabledCoupon(controller.promotion?['\$id']);
-                    // logger.d("alreadyExist: $alreadyExist");
-                    String message =
-                        AppLocale.collectCoupons.getString(context);
-                    if (controller.alreadyCollectedCoupon) {
-                      message = AppLocale.collectedTheCoupon.getString(context);
-                    }
+                // Container(
+                //   width: double.infinity,
+                //   padding: EdgeInsets.symmetric(
+                //     horizontal: 16,
+                //     vertical: 16,
+                //   ),
+                //   decoration: BoxDecoration(
+                //     color: Colors.white,
+                //     boxShadow: [AppTheme.softShadow],
+                //   ),
+                //   child: Builder(builder: (context) {
+                //     final isNotBuyType = controller.promotion?['receive_type']
+                //             .toString()
+                //             .toLowerCase() !=
+                //         "buy";
+                //     final isNeedKYC =
+                //         controller.promotion?['is_need_kyc'] == true;
+                //     final user = SettingController.to.user;
+                //     final disabled = isNeedKYC && user?.isKYC == false;
+                //     // logger.w(
+                //     //     "controller.alreadyCollectedCoupon: ${controller.alreadyCollectedCoupon}");
+                //     // final alreadyExist = controller
+                //     //     .disabledCoupon(controller.promotion?['\$id']);
+                //     // logger.d("alreadyExist: $alreadyExist");
+                //     String message =
+                //         AppLocale.collectCoupons.getString(context);
+                //     if (controller.alreadyCollectedCoupon) {
+                //       message = AppLocale.collectedTheCoupon.getString(context);
+                //     }
 
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (controller.promotion != null && isNotBuyType) ...[
-                          Text(
-                            "🎉 ${AppLocale.thisPromotionIsAvailableImmediatelyWithoutCollectingCoupons.getString(context)}",
-                            style: const TextStyle(
-                              fontSize: 12,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                        ],
-                        LongButton(
-                          isLoading: controller.promotion == null ||
-                              controller.isLoading,
-                          disabled: disabled ||
-                              controller.alreadyCollectedCoupon ||
-                              user == null ||
-                              isNotBuyType,
-                          onPressed: () {
-                            if (controller.promotion == null) {
-                              return;
-                            }
-                            controller.collectCoupons();
-                          },
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: SvgPicture.asset(
-                                  AppIcon.ticket,
-                                  colorFilter: ColorFilter.mode(
-                                    disabled
-                                        ? AppColors.disableText
-                                        : Colors.white,
-                                    BlendMode.srcIn,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                message,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    );
-                  }),
-                ),
+                //     return Column(
+                //       mainAxisSize: MainAxisSize.min,
+                //       children: [
+                //         if (controller.promotion != null && isNotBuyType) ...[
+                //           Text(
+                //             "🎉 ${AppLocale.thisPromotionIsAvailableImmediatelyWithoutCollectingCoupons.getString(context)}",
+                //             style: const TextStyle(
+                //               fontSize: 12,
+                //             ),
+                //           ),
+                //           const SizedBox(height: 4),
+                //         ],
+                //         LongButton(
+                //           isLoading: controller.promotion == null ||
+                //               controller.isLoading,
+                //           disabled: disabled ||
+                //               controller.alreadyCollectedCoupon ||
+                //               user == null ||
+                //               isNotBuyType,
+                //           onPressed: () {
+                //             if (controller.promotion == null) {
+                //               return;
+                //             }
+                //             controller.collectCoupons();
+                //           },
+                //           child: Row(
+                //             children: [
+                //               SizedBox(
+                //                 width: 24,
+                //                 height: 24,
+                //                 child: SvgPicture.asset(
+                //                   AppIcon.ticket,
+                //                   colorFilter: ColorFilter.mode(
+                //                     disabled
+                //                         ? AppColors.disableText
+                //                         : Colors.white,
+                //                     BlendMode.srcIn,
+                //                   ),
+                //                 ),
+                //               ),
+                //               const SizedBox(width: 10),
+                //               Text(
+                //                 message,
+                //                 style: const TextStyle(
+                //                   fontSize: 16,
+                //                 ),
+                //               ),
+                //             ],
+                //           ),
+                //         ),
+                //       ],
+                //     );
+                //   }),
+                // ),
               ],
             ),
           ),

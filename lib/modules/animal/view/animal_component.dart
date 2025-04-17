@@ -505,7 +505,8 @@ class _AnimalComponentState extends State<AnimalComponent> {
                                             onClickBuy: (lotterise) async {
                                               logger.d("lotterise: $lotterise");
                                               await Future.delayed(
-                                                const Duration(seconds: 2),
+                                                const Duration(
+                                                    milliseconds: 250),
                                               );
                                               if (widget.onClickBuy == null) {
                                                 return;

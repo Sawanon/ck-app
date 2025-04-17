@@ -28,10 +28,11 @@ Future<String?> createZZUrl(String url, [bool? isUnknowBirthTime]) async {
       }
     }
   }
-  final now = (DateTime.now().millisecondsSinceEpoch / 1000).toInt();
+  logger.d("${DateTime.now()}");
+  final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
   final exp =
-      (DateTime.now().add(Duration(minutes: 10)).millisecondsSinceEpoch / 1000)
-          .toInt();
+      DateTime.now().add(const Duration(minutes: 10)).millisecondsSinceEpoch ~/
+          1000;
   final payload2 = {
     "birthTime": userApp.birthTime,
     "birthday": CommonFn.parseYMD(userApp.birthDate),
