@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/model/bank.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
+import 'package:lottery_ck/modules/point/view/bill_point.dart';
 import 'package:lottery_ck/modules/point/view/payment_method.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
@@ -71,6 +72,15 @@ class BuyPointController extends GetxController {
       final contentJson = jsonDecode(message.content);
       logger.w(contentJson);
       // final String? fccref = contentJson['fccref'];
+      Get.dialog(
+        BillPoint(onBackHome: () {
+          Get.back();
+          Get.back();
+        }, onBuyAgain: () {
+          Get.back();
+        }),
+      );
+      SettingController.to.getPoint();
       subscriptionPubnub?.dispose();
       // subscriptionPubnub?.unsubscribe();
       // subscriptionPubnub?.cancel();

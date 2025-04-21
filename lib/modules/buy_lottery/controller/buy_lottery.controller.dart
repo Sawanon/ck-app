@@ -126,7 +126,7 @@ class BuyLotteryController extends GetxController {
         invoiceRemainExpireStr.value = "";
         logger.e("stop !");
         // clearInvoice();
-        removeAllLottery();
+        removeAllLottery(isKeepTransaction: true);
         enableResendOTPPayment();
         timer.cancel();
       },
@@ -449,8 +449,9 @@ class BuyLotteryController extends GetxController {
 
   Future<void> removeInvoiceAPI() async {
     try {
+      final cloneInvoiceForRemoveTransaction = invoiceMeta.value.copyWith();
       final transactionRemove =
-          invoiceMeta.value.transactions.map((transaction) {
+          cloneInvoiceForRemoveTransaction.transactions.map((transaction) {
         transaction.remove();
         return transaction;
       }).toList();
@@ -462,15 +463,25 @@ class BuyLotteryController extends GetxController {
       logger.d(cloneInvoice.toJson(userApp!.userId));
       final response = await addTransaction(cloneInvoice);
       logger.w(response);
+      invoiceMeta.value.invoiceId = null;
+      invoiceMeta.value.discount = null;
+      invoiceMeta.value.bonus = null;
+      invoiceMeta.value.transactions =
+          invoiceMeta.value.transactions.map((transaction) {
+        transaction.id = null;
+        return transaction;
+      }).toList();
       // logger.w(transactionRemove);
     } catch (e) {
       logger.e("$e");
     }
   }
 
-  void removeAllLottery() async {
+  void removeAllLottery({isKeepTransaction = false}) async {
     await removeInvoiceAPI();
-    clearInvoice();
+    if (isKeepTransaction == false) {
+      clearInvoice();
+    }
     invoiceRemainExpireStr.value = "";
     _timer?.cancel();
   }
@@ -876,6 +887,7 @@ class BuyLotteryController extends GetxController {
 
   Future<void> confirmLotteryV2() async {
     logger.d(invoiceMeta.value.toJson('fakeId'));
+    // return;
     try {
       isLoadingAddLottery.value = true;
       // if (invoiceMeta.value.invoiceId == null) {

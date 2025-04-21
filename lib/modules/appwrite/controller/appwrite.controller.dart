@@ -2546,10 +2546,14 @@ class AppWriteController extends GetxController {
         "lotteryDate": lotteryDateStr,
         "point": point,
       };
+      logger.w("payload applyPoint");
+      logger.d(payload);
       final response = await dio.post(
         url,
         data: payload,
       );
+      logger.w("response applyPoint");
+      logger.d(response.data);
       return ResponseApi(
         isSuccess: true,
         message: "Successfully apply point",

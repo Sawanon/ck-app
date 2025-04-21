@@ -8,6 +8,7 @@ import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/input_text.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/point/controller/buy_point.controller.dart';
+import 'package:lottery_ck/modules/point/view/bill_point.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -55,8 +56,8 @@ class TopupPoint extends StatelessWidget {
                                 children: [
                                   Container(
                                     padding: const EdgeInsets.all(2),
-                                    width: 60,
-                                    height: 60,
+                                    width: 48,
+                                    height: 48,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(60),
                                       gradient: const LinearGradient(
@@ -86,7 +87,7 @@ class TopupPoint extends StatelessWidget {
                                           return const Icon(
                                             Icons.person,
                                             color: AppColors.primary,
-                                            size: 48,
+                                            size: 32,
                                           );
                                         },
                                       ),
@@ -123,27 +124,29 @@ class TopupPoint extends StatelessWidget {
                             ),
                           ),
                           Expanded(
-                            child: Builder(builder: (context) {
-                              final user = SettingController.to.user;
-                              return Column(
-                                children: [
-                                  Text(
-                                    AppLocale.remainingPoints
-                                        .getString(context),
-                                    style: const TextStyle(
-                                      fontSize: 12,
+                            child: Obx(
+                              () {
+                                final point = SettingController.to.point.value;
+                                return Column(
+                                  children: [
+                                    Text(
+                                      AppLocale.remainingPoints
+                                          .getString(context),
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    "${CommonFn.parseMoney(user?.point ?? 0)} ${AppLocale.point.getString(context)}",
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
+                                    Text(
+                                      "${CommonFn.parseMoney(point)} ${AppLocale.point.getString(context)}",
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              );
-                            }),
+                                  ],
+                                );
+                              },
+                            ),
                           )
                         ],
                       ),

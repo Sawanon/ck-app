@@ -618,40 +618,17 @@ class PaymentController extends GetxController {
     final lotteryDate =
         BuyLotteryController.to.invoiceMeta.value.lotteryDateStr;
     final invoiceId = BuyLotteryController.to.invoiceMeta.value.invoiceId!;
-    // final List<String> couponIdsList = [];
-    // for (var coupon
-    //     in BuyLotteryController.to.invoiceMeta.value.couponIds ?? []) {
-    //   couponIdsList.add(coupon.toString());
-    // }
     final invoice = BuyLotteryController.to.invoiceMeta.value;
     final String? promotionId = invoice.promotionIds?.isEmpty == false
         ? invoice.promotionIds!.first
         : null;
-    // for (var promotion
-    //     in BuyLotteryController.to.invoiceMeta.value.promotionIds ?? []) {
-    //   promotionList.add(promotion.toString());
-    // }
-
-    // BuyLotteryController.to.invoiceMeta.value.couponIds ?? <String>[];
-    // final response = await AppWriteController.to.applyCoupon(
-    //   lotteryDate: lotteryDate,
-    //   invoiceId: invoiceId,
-    //   couponIdsList: couponIdsList,
-    //   bankId: bank.$id,
-    // );
-
+    logger.w("promotionId: $promotionId");
     final response = await AppWriteController.to.applyPromotion(
       promotionId,
       invoiceId,
       lotteryDate,
       bank.$id,
     );
-
-    // final response = await AppWriteController.to.selectBank(
-    //   invoiceId,
-    //   lotteryDate,
-    //   bank.$id,
-    // );
 
     logger.w(response.data);
 
@@ -669,18 +646,6 @@ class PaymentController extends GetxController {
     }
     final result = response.data!['data'];
     logger.w(result);
-    // final responseCoupon = result['coupon'];
-    // if (responseCoupon is List) {
-    //   if (responseCoupon.isNotEmpty) {
-    //     final response = responseCoupon.first;
-    //     BuyLotteryController.to.invoiceMeta.value.couponResponse =
-    //         CouponResponse.fromJson(
-    //       response,
-    //     );
-    //   } else {
-    //     BuyLotteryController.to.invoiceMeta.value.couponResponse = null;
-    //   }
-    // }
 
     final invoiceRes = result['invoice'];
     final InvoiceMetaData invoiceClone =
@@ -698,12 +663,7 @@ class PaymentController extends GetxController {
     if (pointBank is num) {
       invoiceClone.pointBank = pointBank.toInt();
     }
-    // final List transactions = result['transaction'];
-    // for (var transaction in transactions) {
-    //   invoiceClone.transactions.add(
-    //     Lottery.fromJson(transaction),
-    //   );
-    // }
+
     BuyLotteryController.to.setInvoice(invoiceClone);
 
     selectedBank = bank;
@@ -766,6 +726,10 @@ class PaymentController extends GetxController {
     invoiceClone.bonus = invoiceRes['bonus'];
     invoiceClone.amount = invoiceRes['amount'];
     invoiceClone.totalAmount = invoiceRes['totalAmount'];
+    final pointBank = invoiceRes['pointBank'];
+    if (pointBank is num) {
+      invoiceClone.pointBank = pointBank.toInt();
+    }
     // final List transactions = result['transaction'];
     // for (var transaction in transactions) {
     //   invoiceClone.transactions.add(
@@ -965,6 +929,7 @@ class PaymentController extends GetxController {
       promotionId,
       invoice.invoiceId!,
       invoice.lotteryDateStr,
+      selectedBank?.$id,
     );
     logger.w(response.data);
     onChangePoint(0);
@@ -1000,6 +965,10 @@ class PaymentController extends GetxController {
     invoiceClone.couponIds = invoiceRes['couponId'];
     final point = invoiceRes['receive_point'] as int?;
     invoiceClone.receivePoint = point;
+    final pointBank = invoiceRes['pointBank'];
+    if (pointBank is num) {
+      invoiceClone.pointBank = pointBank.toInt();
+    }
     // final List transactions = result['transaction'];
     // for (var transaction in transactions) {
     //   invoiceClone.transactions.add(
@@ -1239,7 +1208,9 @@ class PaymentController extends GetxController {
   }
 
   void removeInvoiceWhenBack() {
-    BuyLotteryController.to.removeAllLottery();
+    BuyLotteryController.to.removeAllLottery(
+      isKeepTransaction: true,
+    );
   }
 
   @override
