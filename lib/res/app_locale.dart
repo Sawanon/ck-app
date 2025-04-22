@@ -104,7 +104,7 @@ mixin AppLocale {
       "ຕົວເລກ {lotteryType} ຕົວເລກຍັງບໍ່ມີ";
   static const String exceededQuota = "ເກີນຈໍານວນການຊື້ສູງສຸດຕໍ່ຕົວເລກ";
   static const String lessThanQuota = "ຊື້ຫນ້ອຍກວ່າຕໍາສຸດທີ່";
-  static const String pleaseBuyMax = "ກະລຸນາຊື້ບໍ່ເກີນ {max} ກີບຕໍ່ເບີ";
+  static const String pleaseBuyMax = "ກະລຸນາຊື້ບໍ່ເກີນ {max} ກີບຕໍ່ຕົວເລກ";
   static const String pleaseBuyMin =
       "ກະລຸນາຊື້ຫວຍດ້ວຍລາຄາຕໍ່າສຸດ {min} ກີບຕໍ່ໃບຫວຍ";
   static const String closeSale = "ດຽວນີ້ລະບົບໄດ້ປິດການຂາຍແລ້ວ";
@@ -397,6 +397,8 @@ mixin AppLocale {
   static const String youCanBut = "ສາມາດຊື້ໄດ້";
   static const String tapToSeeTheMeaning = "ແຕະເພື່ອເບິ່ງຄວາມໝາຍ";
   static const String tapToSeeWallpaper = "ແຕະເພື່ອເບິ່ງຮູບວໍເປເປີ";
+  static const String registerBonus = "ໂບນັດລົງທະບຽນ";
+  static const String identityVerificationBonus = "ໂບນັດຢືນຢັນຕົວຕົນ";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -496,7 +498,7 @@ mixin AppLocale {
     disableLotteryType: "ຕົວເລກ {lotteryType} ຕົວເລກຍັງບໍ່ມີ",
     exceededQuota: "ເກີນຈໍານວນການຊື້ສູງສຸດຕໍ່ຕົວເລກ",
     lessThanQuota: "ຊື້ຫນ້ອຍກວ່າຕໍາສຸດທີ່",
-    pleaseBuyMax: "ກະລຸນາຊື້ບໍ່ເກີນ {max} ກີບຕໍ່ເບີ",
+    pleaseBuyMax: "ກະລຸນາຊື້ບໍ່ເກີນ {max} ກີບຕໍ່ຕົວເລກ",
     pleaseBuyMin: "ກະລຸນາຊື້ຫວຍດ້ວຍລາຄາຕໍ່າສຸດ {min} LAK ຕໍ່ໃບຫວຍ",
     closeSale: "ດຽວນີ້ລະບົບໄດ້ປິດການຂາຍແລ້ວ",
     houseNo: "ເລກເຮືອນ",
@@ -754,6 +756,8 @@ mixin AppLocale {
     youCanBut: "ສາມາດຊື້ໄດ້",
     tapToSeeTheMeaning: "ແຕະເພື່ອເບິ່ງຄວາມໝາຍ",
     tapToSeeWallpaper: "ແຕະເພື່ອເບິ່ງຮູບວໍເປເປີ",
+    registerBonus: "ໂບນັດລົງທະບຽນ",
+    identityVerificationBonus: "ໂບນັດຢືນຢັນຕົວຕົນ",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -1112,6 +1116,8 @@ mixin AppLocale {
     youCanBut: "ซื้อได้",
     tapToSeeTheMeaning: "แตะเพื่อดูความหมาย",
     tapToSeeWallpaper: "แตะเพื่อดูรูปวอลเปเปอร์",
+    registerBonus: "โบนัสลงทะเบียน",
+    identityVerificationBonus: "โบนัสการยืนยันตัวตน",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -1481,5 +1487,7 @@ mixin AppLocale {
     youCanBut: "Maximum allowed",
     tapToSeeTheMeaning: "Tap to see the meaning",
     tapToSeeWallpaper: "Tap to see wallpaper",
+    registerBonus: "Sign Up Bonus",
+    identityVerificationBonus: "Identity verification bonus",
   };
 }

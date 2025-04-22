@@ -78,7 +78,9 @@ class PointController extends GetxController {
       case "friendbuy":
         return AppLocale.pointsFromFriendsPurchases.getString(context);
       case "kyc":
-        return AppLocale.identityVerification.getString(context);
+        return AppLocale.identityVerificationBonus.getString(context);
+      case "register":
+        return AppLocale.registerBonus.getString(context);
       default:
         if (type.contains("daily")) {
           return type.split("|").last;

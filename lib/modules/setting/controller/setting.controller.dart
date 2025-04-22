@@ -241,6 +241,7 @@ class SettingController extends GetxController {
                   }
                   if (response['status'] == 200) {
                     Get.offNamed(RouteName.pin, arguments: {
+                      "userId": user!.userId,
                       "whenSuccess": () {
                         Get.back();
                         logger.d("change passcode successful");

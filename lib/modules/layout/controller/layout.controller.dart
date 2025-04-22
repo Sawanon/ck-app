@@ -25,6 +25,7 @@ import 'package:lottery_ck/modules/notification/view/notification.dart';
 import 'package:lottery_ck/modules/pin/controller/passcode_verify.controller.dart';
 import 'package:lottery_ck/modules/pin/controller/pin_verify.controller.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
+import 'package:lottery_ck/modules/point/view/bill_point.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/setting/view/setting.dart';
 import 'package:lottery_ck/modules/splash_screen/controller/splash_screen.controller.dart';
@@ -362,6 +363,16 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
             Get.back();
           }
         },
+      );
+    } else if (uri.path.contains("/point/topup")) {
+      final invoiceId = uri.queryParameters['invoiceId'];
+      Get.dialog(
+        BillPoint(onBackHome: () {
+          Get.back();
+          Get.back();
+        }, onBuyAgain: () {
+          Get.back();
+        }),
       );
     }
   }

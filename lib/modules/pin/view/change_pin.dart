@@ -30,6 +30,7 @@ class ChangePasscode extends StatelessWidget {
                 Expanded(
                   child: ScreenLock.create(
                     onConfirmed: (value) {
+                      logger.w("value passcode: $value");
                       controller.changePasscode(value);
                     },
                     confirmTitle: Text(
