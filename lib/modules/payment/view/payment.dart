@@ -446,101 +446,110 @@ class PayMentPage extends StatelessWidget {
                                   // TODO: show promotion Detail
                                   return;
                                 }
+                                if (controller.point != null) {
+                                  return;
+                                }
                                 // controller.gotoCouponPage();
                                 controller.gotoPromotionPage();
                               },
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                  top: 16,
-                                  left: 16,
-                                  right: 16,
-                                  bottom: 16,
-                                ),
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                ),
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      AppLocale.promotion.getString(context),
-                                    ),
-                                    const SizedBox(width: 12),
-                                    // if (BuyLotteryController.to.invoiceMeta.value
-                                    //         .couponResponse?.status ==
-                                    //     false)
-                                    //     ...[
-                                    //   const Icon(
-                                    //     Icons.info,
-                                    //     color: Colors.red,
-                                    //   ),
-                                    //   const SizedBox(width: 4),
-                                    // ],
-                                    const SizedBox(width: 4),
-                                    Obx(() {
-                                      final invoice = BuyLotteryController
-                                          .to.invoiceMeta.value;
-                                      final List<String> selectedPromotionList =
-                                          [];
-                                      if (invoice.promotionIds?.isNotEmpty ==
-                                              true &&
-                                          controller.promotionList.isNotEmpty) {
-                                        for (var selectedPromotion
-                                            in invoice.promotionIds!) {
-                                          // TODO: promotion is null
-                                          logger.d(controller.promotionList);
-                                          final promotionDetail = controller
-                                              .promotionList
-                                              .firstWhere((promotion) {
-                                            return promotion['\$id'] ==
-                                                selectedPromotion;
-                                          });
-                                          selectedPromotionList
-                                              .add(promotionDetail['name']);
-                                        }
-                                      }
-                                      return Expanded(
-                                        child: Text(
-                                          selectedPromotionList.isEmpty
-                                              ? AppLocale.usePromotion
-                                                  .getString(context)
-                                              : selectedPromotionList.join(","),
-                                          style: TextStyle(
-                                            overflow: TextOverflow.ellipsis,
-                                            color: selectedPromotionList.isEmpty
-                                                ? AppColors.disableText
-                                                : AppColors.textPrimary,
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                                    Builder(builder: (context) {
-                                      final invoice = BuyLotteryController
-                                          .to.invoiceMeta.value;
-                                      if (invoice.couponIds?.isNotEmpty ==
-                                          true) {
-                                        return GestureDetector(
-                                          onTap: () {
+                              child: Opacity(
+                                opacity: controller.point == null ? 1 : 0.5,
+                                child: Container(
+                                  padding: const EdgeInsets.only(
+                                    top: 16,
+                                    left: 16,
+                                    right: 16,
+                                    bottom: 16,
+                                  ),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.white,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        AppLocale.promotion.getString(context),
+                                      ),
+                                      const SizedBox(width: 12),
+                                      // if (BuyLotteryController.to.invoiceMeta.value
+                                      //         .couponResponse?.status ==
+                                      //     false)
+                                      //     ...[
+                                      //   const Icon(
+                                      //     Icons.info,
+                                      //     color: Colors.red,
+                                      //   ),
+                                      //   const SizedBox(width: 4),
+                                      // ],
+                                      const SizedBox(width: 4),
+                                      Obx(() {
+                                        final invoice = BuyLotteryController
+                                            .to.invoiceMeta.value;
+                                        final List<String>
+                                            selectedPromotionList = [];
+                                        if (invoice.promotionIds?.isNotEmpty ==
+                                                true &&
                                             controller
-                                                .showRemoveCouponModal(context);
-                                          },
-                                          child: SizedBox(
-                                            width: 24,
-                                            height: 24,
-                                            child: SvgPicture.asset(
-                                              AppIcon.x,
+                                                .promotionList.isNotEmpty) {
+                                          for (var selectedPromotion
+                                              in invoice.promotionIds!) {
+                                            // TODO: promotion is null
+                                            logger.d(controller.promotionList);
+                                            final promotionDetail = controller
+                                                .promotionList
+                                                .firstWhere((promotion) {
+                                              return promotion['\$id'] ==
+                                                  selectedPromotion;
+                                            });
+                                            selectedPromotionList
+                                                .add(promotionDetail['name']);
+                                          }
+                                        }
+                                        return Expanded(
+                                          child: Text(
+                                            selectedPromotionList.isEmpty
+                                                ? AppLocale.usePromotion
+                                                    .getString(context)
+                                                : selectedPromotionList
+                                                    .join(","),
+                                            style: TextStyle(
+                                              overflow: TextOverflow.ellipsis,
+                                              color:
+                                                  selectedPromotionList.isEmpty
+                                                      ? AppColors.disableText
+                                                      : AppColors.textPrimary,
                                             ),
                                           ),
                                         );
-                                      }
-                                      return SizedBox(
-                                        width: 24,
-                                        height: 24,
-                                        child: SvgPicture.asset(
-                                          AppIcon.arrowRight,
-                                        ),
-                                      );
-                                    })
-                                  ],
+                                      }),
+                                      Builder(builder: (context) {
+                                        final invoice = BuyLotteryController
+                                            .to.invoiceMeta.value;
+                                        if (invoice.couponIds?.isNotEmpty ==
+                                            true) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              controller.showRemoveCouponModal(
+                                                  context);
+                                            },
+                                            child: SizedBox(
+                                              width: 24,
+                                              height: 24,
+                                              child: SvgPicture.asset(
+                                                AppIcon.x,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        return SizedBox(
+                                          width: 24,
+                                          height: 24,
+                                          child: SvgPicture.asset(
+                                            AppIcon.arrowRight,
+                                          ),
+                                        );
+                                      })
+                                    ],
+                                  ),
                                 ),
                               ),
                             );

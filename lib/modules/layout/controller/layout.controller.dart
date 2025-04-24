@@ -95,7 +95,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   }
 
   Widget renderMyCart(TabApp tab) {
-    if (tab == TabApp.home || tab == TabApp.lottery) {
+    if (tab == TabApp.home || tab == TabApp.lottery || tab == TabApp.history) {
       // if (tab == TabApp.home) {
       return const SizedBox.shrink();
     }

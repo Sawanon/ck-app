@@ -156,6 +156,7 @@ class HistoryBuyController extends GetxController {
       point: history.point,
       pointMoney: history.pointMoney,
       discount: history.discount,
+      refCode: history.refCode,
     );
 
     if (context.mounted) {

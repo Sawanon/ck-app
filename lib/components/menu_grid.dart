@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/dialog_kyc_pending.dart';
 import 'package:lottery_ck/components/user_qr.dart';
 import 'package:lottery_ck/model/menu.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
@@ -228,8 +229,15 @@ class MenuGrid extends StatelessWidget {
           MenuModel(
             disabled: true,
             ontab: () {
-              if (SettingController.to.user == null) {
+              final user = SettingController.to.user;
+              if (user == null) {
                 LayoutController.to.showDialogLogin();
+                return;
+              }
+              if (SettingController.to.kycData != null) {
+                Get.dialog(
+                  DialogKycPending(),
+                );
                 return;
               }
               Get.toNamed(RouteName.kyc);

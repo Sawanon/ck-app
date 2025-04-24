@@ -210,6 +210,7 @@ class SettingController extends GetxController {
       Get.to(
         PinVerifyPage(disabledBackButton: false),
         arguments: {
+          "disabledBioMetrics": true,
           "userId": user!.userId,
           "whenSuccess": () {
             logger.d("pin verify successful");
@@ -257,24 +258,6 @@ class SettingController extends GetxController {
                   }
                 },
               ),
-              // arguments: {
-              //   "phoneNumber": user!.phoneNumber,
-              //   "whenSuccess": () {
-              //     logger.d("otp verify successful");
-              //     Get.offNamed(RouteName.pin, arguments: {
-              //       "whenSuccess": () {
-              //         Get.back();
-              //         logger.d("change passcode successful");
-              //         Get.snackbar(
-              //           "Change passcode success",
-              //           "message",
-              //           backgroundColor: Colors.green.shade700,
-              //           colorText: Colors.white,
-              //         );
-              //       }
-              //     });
-              //   }
-              // },
             );
           }
         },

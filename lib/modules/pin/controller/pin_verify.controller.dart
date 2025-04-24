@@ -22,6 +22,8 @@ class PinVerifyController extends GetxController {
   final arguments = Get.arguments;
   final enableForgetPasscode =
       Get.arguments['enableForgetPasscode'] == null ? false : true;
+  final disabledBioMetrics =
+      Get.arguments['disabledBioMetrics'] == true ? true : false;
   String? errorMessage;
   String? delayMessage;
   Duration retryDelay = Duration.zero;

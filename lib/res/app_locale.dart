@@ -41,7 +41,7 @@ mixin AppLocale {
   static const String pleaseBuyLessOrAnotherLottery =
       'ກະລຸນາຊື້ໜ້ອຍລົງ ຫຼືຊື້ເລກຫວຍອື່ນ.';
   static const String translate = 'ປ່ຽນພາສາ';
-  static const String amountNotCorrect = 'ຈຳນວນບໍ່ຖືກຕ້ອງ';
+  static const String amountNotCorrect = 'ສາມາດຊື້ໄດ້ສະເພາະຈຳນວນເຕັມພັນ';
   static const String logout = 'ອອກຈາກລະບົບ';
   static const String cancel = 'ຍົກເລີກ';
   static const String lotteryList = 'ເລກທີ່ເລືອກ';
@@ -399,6 +399,8 @@ mixin AppLocale {
   static const String tapToSeeWallpaper = "ແຕະເພື່ອເບິ່ງຮູບວໍເປເປີ";
   static const String registerBonus = "ໂບນັດລົງທະບຽນ";
   static const String identityVerificationBonus = "ໂບນັດຢືນຢັນຕົວຕົນ";
+  static const String kycPendingTitle = "ຂໍ້ມູນຂອງທ່ານກຳລັງຖືກກວດສອບ";
+  static const String kycPendingDescription = "ພວກເຮົາກຳລັງກວດສອບຂໍ້ມູນຂອງທ່ານ";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -441,7 +443,7 @@ mixin AppLocale {
     someLotteryQuotaExceeded: 'ຫວຍບາງລາຍການເກີນໂຄຕ້າ',
     pleaseBuyLessOrAnotherLottery: 'ກະລຸນາຊື້ໜ້ອຍລົງ ຫຼືຊື້ເລກຫວຍອື່ນ.',
     translate: 'ປ່ຽນພາສາ',
-    amountNotCorrect: 'ຈຳນວນບໍ່ຖືກຕ້ອງ',
+    amountNotCorrect: 'ສາມາດຊື້ໄດ້ສະເພາະຈຳນວນເຕັມພັນ',
     logout: 'ອອກຈາກລະບົບ',
     cancel: 'ຍົກເລີກ',
     lotteryList: 'ເລກທີ່ເລືອກ',
@@ -758,6 +760,8 @@ mixin AppLocale {
     tapToSeeWallpaper: "ແຕະເພື່ອເບິ່ງຮູບວໍເປເປີ",
     registerBonus: "ໂບນັດລົງທະບຽນ",
     identityVerificationBonus: "ໂບນັດຢືນຢັນຕົວຕົນ",
+    kycPendingTitle: "ຂໍ້ມູນຂອງທ່ານກຳລັງຖືກກວດສອບ",
+    kycPendingDescription: "ພວກເຮົາກຳລັງກວດສອບຂໍ້ມູນຂອງທ່ານ",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -800,7 +804,7 @@ mixin AppLocale {
     someLotteryQuotaExceeded: 'ลอตเตอรี่บางรายการเกินโควตา',
     pleaseBuyLessOrAnotherLottery: 'กรุณาซื้อน้อยกว่าหรือซื้อเลขลอตเตอรี่อื่น',
     translate: 'ภาษา',
-    amountNotCorrect: 'จำนวนเงินไม่ถูกต้อง',
+    amountNotCorrect: 'ซื้อได้แต่จำนวนเต็มพัน',
     logout: 'ออกจากระบบ',
     cancel: 'ยกเลิก',
     lotteryList: 'เลขที่เลือก',
@@ -1118,6 +1122,8 @@ mixin AppLocale {
     tapToSeeWallpaper: "แตะเพื่อดูรูปวอลเปเปอร์",
     registerBonus: "โบนัสลงทะเบียน",
     identityVerificationBonus: "โบนัสการยืนยันตัวตน",
+    kycPendingTitle: "ข้อมูลของคุณกำลังได้รับการตรวจสอบ",
+    kycPendingDescription: "ขณะนี้เรากำลังตรวจสอบข้อมูลของคุณ",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -1161,7 +1167,7 @@ mixin AppLocale {
     pleaseBuyLessOrAnotherLottery:
         'Please buy less or buy another lottery number',
     translate: 'Language',
-    amountNotCorrect: 'Amount not correct',
+    amountNotCorrect: 'Only purchases in full thousands are allowed',
     logout: 'Logout',
     cancel: 'Cancel',
     lotteryList: 'Lottery list',
@@ -1489,5 +1495,7 @@ mixin AppLocale {
     tapToSeeWallpaper: "Tap to see wallpaper",
     registerBonus: "Sign Up Bonus",
     identityVerificationBonus: "Identity verification bonus",
+    kycPendingTitle: "Your Information is Being Reviewed",
+    kycPendingDescription: "We are currently reviewing your information",
   };
 }

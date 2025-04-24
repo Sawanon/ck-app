@@ -194,15 +194,20 @@ class PinVerifyPage extends StatelessWidget {
                             },
                           ),
                         ),
-                        customizedButtonChild: SizedBox(
-                          width: 60,
-                          height: 60,
-                          child: SvgPicture.asset(
-                            AppIcon.fingerScan,
-                            fit: BoxFit.fitWidth,
-                          ),
-                        ),
+                        customizedButtonChild: controller.disabledBioMetrics
+                            ? null
+                            : SizedBox(
+                                width: 60,
+                                height: 60,
+                                child: SvgPicture.asset(
+                                  AppIcon.fingerScan,
+                                  fit: BoxFit.fitWidth,
+                                ),
+                              ),
                         customizedButtonTap: () {
+                          if (controller.disabledBioMetrics) {
+                            return;
+                          }
                           controller.useBiometrics();
                         },
                         keyPadConfig: KeyPadConfig(

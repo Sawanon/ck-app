@@ -96,16 +96,16 @@ class HistoryPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
-                  color: Colors.white,
-                  padding: const EdgeInsets.only(
-                    top: 8,
-                    bottom: 44,
-                    left: 16,
-                    right: 16,
-                  ),
-                  child: BuylotteryComponent(),
-                ),
+                // Container(
+                //   color: Colors.white,
+                //   padding: const EdgeInsets.only(
+                //     top: 8,
+                //     bottom: 44,
+                //     left: 16,
+                //     right: 16,
+                //   ),
+                //   child: BuylotteryComponent(),
+                // ),
               ],
             ),
           ),

@@ -388,45 +388,45 @@ class ProfilePage extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: 16),
-                              InkWell(
-                                onTap: () {
-                                  Get.toNamed(RouteName.changeAddress);
-                                },
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: 16,
-                                            height: 16,
-                                            child: SvgPicture.asset(
-                                              AppIcon.location,
-                                            ),
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Expanded(
-                                            child: Text(
-                                              "${controller.user?.address}",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 24,
-                                      height: 24,
-                                      child:
-                                          SvgPicture.asset(AppIcon.arrowRight),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              // const SizedBox(height: 16),
+                              // InkWell(
+                              //   onTap: () {
+                              //     Get.toNamed(RouteName.changeAddress);
+                              //   },
+                              //   child: Row(
+                              //     mainAxisAlignment:
+                              //         MainAxisAlignment.spaceBetween,
+                              //     children: [
+                              //       Expanded(
+                              //         child: Row(
+                              //           children: [
+                              //             SizedBox(
+                              //               width: 16,
+                              //               height: 16,
+                              //               child: SvgPicture.asset(
+                              //                 AppIcon.location,
+                              //               ),
+                              //             ),
+                              //             const SizedBox(width: 8),
+                              //             Expanded(
+                              //               child: Text(
+                              //                 "${controller.user?.address}",
+                              //                 maxLines: 1,
+                              //                 overflow: TextOverflow.ellipsis,
+                              //               ),
+                              //             ),
+                              //           ],
+                              //         ),
+                              //       ),
+                              //       SizedBox(
+                              //         width: 24,
+                              //         height: 24,
+                              //         child:
+                              //             SvgPicture.asset(AppIcon.arrowRight),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),

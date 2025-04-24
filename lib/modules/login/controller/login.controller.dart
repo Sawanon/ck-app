@@ -171,9 +171,9 @@ class LoginController extends GetxController {
 
           Get.snackbar("OTP verify successfully !", "");
           Get.offNamed(
-            // RouteName.pin,
             RouteName.pinVerify,
             arguments: {
+              "disabledBioMetrics": true,
               "userId": responseUser['data']["userId"],
               "enableForgetPasscode": true,
               "whenForgetPasscode": () async {
@@ -295,9 +295,9 @@ class LoginController extends GetxController {
 
   void gotoPinverifyDev(String userId) {
     Get.offNamed(
-      // RouteName.pin,
       RouteName.pinVerify,
       arguments: {
+        "disabledBioMetrics": true,
         "userId": userId,
         "enableForgetPasscode": true,
         "whenForgetPasscode": () async {
