@@ -75,6 +75,7 @@ class SettingController extends GetxController {
     final user = await AppWriteController.to.getUserApp();
     if (user == null) return;
     this.user = user;
+    update();
     getPoint();
     await listGroup(user.userId);
     AppWriteController.to.subscribeTopic(user.userId);

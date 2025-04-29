@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/model/point_topup.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 
 class BillPoint extends StatelessWidget {
   final void Function() onBackHome;
   final void Function() onBuyAgain;
+  final PointTopup pointTop;
   const BillPoint({
     super.key,
     required this.onBackHome,
     required this.onBuyAgain,
+    required this.pointTop,
   });
 
   @override
@@ -51,8 +55,8 @@ class BillPoint extends StatelessWidget {
                       children: [
                         Text("จำนวน point ที่ได้รับ"),
                         Text(
-                          "+5000",
-                          style: TextStyle(
+                          "+${CommonFn.parseMoney(pointTop.point?.toInt() ?? 0)}",
+                          style: const TextStyle(
                             color: Colors.green,
                             fontWeight: FontWeight.bold,
                           ),
@@ -64,7 +68,8 @@ class BillPoint extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("ยอดเงินที่ชำระ"),
-                        Text("5000"),
+                        Text(CommonFn.parseMoney(
+                            pointTop.pointMoney?.toInt() ?? 0)),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -72,7 +77,16 @@ class BillPoint extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("วันที่เวลาที่ซื้อ"),
-                        Text("21/04/2025 11:23"),
+                        // Text("21/04/2025 11:23"),
+                        Builder(builder: (context) {
+                          final date = pointTop.paidAt != null
+                              ? CommonFn.parseDMY(pointTop.paidAt!)
+                              : "-";
+                          final time = pointTop.paidAt != null
+                              ? CommonFn.parseHM(pointTop.paidAt!)
+                              : "-";
+                          return Text("$date $time");
+                        }),
                       ],
                     ),
                   ],

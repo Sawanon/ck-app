@@ -212,6 +212,19 @@ class BuyLotteryController extends GetxController {
                   color: AppColors.textPrimary,
                 ),
               ),
+              cancelText: Text(
+                AppLocale.acknowledge.getString(Get.context!),
+                style: const TextStyle(
+                  color: AppColors.primary,
+                ),
+              ),
+              onCancel: () {
+                submitFormAddLotteryV2(
+                  lottery.lottery,
+                  config.max!,
+                  true,
+                );
+              },
               disableConfirm: true,
             ),
           );

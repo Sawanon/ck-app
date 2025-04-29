@@ -8,4 +8,10 @@ class ResponseApi<T> {
     required this.message,
     this.data,
   });
+
+  Map toJson() => {
+        "isSuccess": isSuccess,
+        "message": message,
+        "data": data.toString(),
+      };
 }

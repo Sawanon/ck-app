@@ -12,6 +12,7 @@ import 'package:gal/gal.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/gender_radio.dart';
+import 'package:lottery_ck/main.dart';
 import 'package:lottery_ck/model/bank.dart';
 import 'package:lottery_ck/model/buy_lottery_configs.dart';
 import 'package:lottery_ck/model/coupon.dart';
@@ -21,6 +22,7 @@ import 'package:lottery_ck/model/lottery_date.dart';
 import 'package:lottery_ck/model/news.dart';
 import 'package:lottery_ck/model/notification.dart';
 import 'package:lottery_ck/model/point_can_use.dart';
+import 'package:lottery_ck/model/point_topup.dart';
 import 'package:lottery_ck/model/respnose_verifypasscode.dart';
 import 'package:lottery_ck/model/response/bytedance_get_snapshot.dart';
 import 'package:lottery_ck/model/response/bytedance_get_video_info.dart';
@@ -1327,7 +1329,7 @@ class AppWriteController extends GetxController {
       //   logger.w(responseUpdateEmail.email);
       // }
       // logger.d(response.data);
-      return response.data["phone"];
+      return responseChangeAuthPhone.data?.toString();
     } catch (e) {
       logger.e("$e");
       return null;
@@ -1917,7 +1919,7 @@ class AppWriteController extends GetxController {
     try {
       final dio = Dio();
       final response =
-          await dio.get('${AppConst.apiUrl}/user/ref-code/$refCode');
+          await dio.get('${AppConst.apiInviteFriends}/user/ref-code/$refCode');
       final result = response.data;
       return ResponseApi(
         isSuccess: true,
@@ -1947,7 +1949,7 @@ class AppWriteController extends GetxController {
     try {
       final dio = Dio();
       final response = await dio.post(
-        "${AppConst.apiUrl}/user/ref-code",
+        "${AppConst.apiInviteFriends}/user/ref-code",
         data: {
           "referrer": referrer,
           "referee": referee,
@@ -1990,7 +1992,7 @@ class AppWriteController extends GetxController {
     try {
       final dio = Dio();
       final response = await dio.post(
-        "${AppConst.apiUrl}/user/ref-code/accept",
+        "${AppConst.apiInviteFriends}/user/ref-code/accept",
         data: {
           "referrer": referrer,
           "referee": referee,
@@ -2021,7 +2023,12 @@ class AppWriteController extends GetxController {
     try {
       final dio = Dio();
       final response = await dio.get(
-        "${AppConst.apiUrl}/user/ref-code/my-friends/$refCode",
+        "${AppConst.apiInviteFriends}/user/ref-code/my-friends/$refCode",
+        options: Options(
+          headers: {
+            "lang": localization.currentLocale?.languageCode,
+          },
+        ),
       );
       return ResponseApi(
         isSuccess: true,
@@ -2051,7 +2058,7 @@ class AppWriteController extends GetxController {
     try {
       final dio = Dio();
       final response = await dio.get(
-        "${AppConst.apiUrl}/user/ref-code/my-friends/list-user/$refCode",
+        "${AppConst.apiInviteFriends}/user/ref-code/my-friends/list-user/$refCode",
       );
       final resultList = response.data['data'] as List;
       return ResponseApi(
@@ -2848,6 +2855,31 @@ class AppWriteController extends GetxController {
       return ResponseApi(
         isSuccess: false,
         message: "failed to apply promotion",
+      );
+    }
+  }
+
+  Future<ResponseApi<PointTopup?>> getPointTopup(String id) async {
+    try {
+      final response = await databases.getDocument(
+        databaseId: _databaseName,
+        collectionId: 'point_topup',
+        documentId: id,
+      );
+      return ResponseApi(
+        isSuccess: true,
+        message: "get point topup transaction success",
+        data: PointTopup.fromJson(response.data),
+      );
+    } on AppwriteException catch (e) {
+      return ResponseApi(
+        isSuccess: false,
+        message: e.message ?? e.type ?? e.code?.toString() ?? 'appwrite error',
+      );
+    } catch (e) {
+      return ResponseApi(
+        isSuccess: false,
+        message: e.toString(),
       );
     }
   }

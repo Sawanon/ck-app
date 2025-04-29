@@ -82,20 +82,14 @@ class _DialogAppState extends State<DialogApp> {
                         color: AppColors.primary,
                       ),
                       onPressed: onClose,
-                      child: widget.disableConfirm == true
+                      child: widget.cancelText == null
                           ? Text(
                               AppLocale.close.getString(context),
                               style: const TextStyle(
                                 color: AppColors.primary,
                               ),
                             )
-                          : widget.cancelText ??
-                              Text(
-                                AppLocale.cancel.getString(context),
-                                style: const TextStyle(
-                                  color: AppColors.primary,
-                                ),
-                              ),
+                          : widget.cancelText!,
                     ),
                   ),
                   if (!widget.disableConfirm) const SizedBox(width: 8),

@@ -868,32 +868,34 @@ class PayMentPage extends StatelessWidget {
                                               ),
                                             ),
                                             Text(
-                                              "+${CommonFn.parseMoney(invoice.receivePoint ?? 30)} ${AppLocale.point.getString(context)}",
+                                              "+${CommonFn.parseMoney(invoice.receivePoint ?? 0)} ${AppLocale.point.getString(context)}",
                                               style: const TextStyle(
                                                 color: Colors.green,
                                               ),
                                             ),
                                           ],
                                         ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            AppLocale.bankPointDetail
-                                                .getString(context),
-                                            style: const TextStyle(
-                                              color: AppColors.textPrimary,
+                                      if (invoice.pointBank != null &&
+                                          invoice.pointBank != 0)
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              AppLocale.bankPointDetail
+                                                  .getString(context),
+                                              style: const TextStyle(
+                                                color: AppColors.textPrimary,
+                                              ),
                                             ),
-                                          ),
-                                          Text(
-                                            "+${CommonFn.parseMoney(invoice.pointBank ?? 30)} ${AppLocale.point.getString(context)}",
-                                            style: const TextStyle(
-                                              color: Colors.green,
+                                            Text(
+                                              "+${CommonFn.parseMoney(invoice.pointBank ?? 0)} ${AppLocale.point.getString(context)}",
+                                              style: const TextStyle(
+                                                color: Colors.green,
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
+                                          ],
+                                        ),
                                     ],
                                   ),
                                 );

@@ -14,6 +14,7 @@ import 'package:lottery_ck/components/input_text.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/menu_card.dart';
 import 'package:lottery_ck/components/menu_grid.dart';
+import 'package:lottery_ck/main.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
@@ -248,6 +249,7 @@ class HomePageV2 extends StatelessWidget {
                                                   onTap: () {
                                                     // Get.toNamed(
                                                     //     RouteName.friends);
+                                                    // localization.currentLocale
                                                     if (controller.myFriends !=
                                                         null) {
                                                       Get.to(

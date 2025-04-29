@@ -98,21 +98,22 @@ class DialogTransactionError extends StatelessWidget {
               const SizedBox(height: 16),
               // TODO: create colum in build for can sell transaction
               // Builder(builder: builder)
-              Row(
-                children: [
-                  const Icon(
-                    Icons.warning_rounded,
-                    color: Colors.amber,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    AppLocale.stilldBePurchasedTitle.getString(context),
-                    style: const TextStyle(
-                      fontSize: 20,
+              if (canSellGroup.isNotEmpty)
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.warning_rounded,
+                      color: Colors.amber,
                     ),
-                  ),
-                ],
-              ),
+                    const SizedBox(width: 4),
+                    Text(
+                      AppLocale.stilldBePurchasedTitle.getString(context),
+                      style: const TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
+                ),
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: canSellGroup.map((transaction) {

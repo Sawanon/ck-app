@@ -5,6 +5,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/model/bank.dart';
+import 'package:lottery_ck/model/point_topup.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/point/view/bill_point.dart';
 import 'package:lottery_ck/modules/point/view/payment_method.dart';
@@ -68,17 +69,36 @@ class BuyPointController extends GetxController {
     subscriptionPubnub = pubnub.subscribe(channels: {channel});
     logger.d("channel: $channel");
     // Print every message
-    subscriptionPubnub?.messages.listen((message) {
+    subscriptionPubnub?.messages.listen((message) async {
       final contentJson = jsonDecode(message.content);
       logger.w(contentJson);
       // final String? fccref = contentJson['fccref'];
+      final response = await AppWriteController.to.getPointTopup(uuid);
+      logger.w("key data");
+      logger.d(response.toJson());
+      if (response.isSuccess == false || response.data == null) {
+        Get.dialog(
+          DialogApp(
+            title: Text("Can't get point transaction data"),
+            details: Text(
+              response.message,
+            ),
+            disableConfirm: true,
+          ),
+        );
+        return;
+      }
       Get.dialog(
-        BillPoint(onBackHome: () {
-          Get.back();
-          Get.back();
-        }, onBuyAgain: () {
-          Get.back();
-        }),
+        BillPoint(
+          pointTop: response.data!,
+          onBackHome: () {
+            Get.back();
+            Get.back();
+          },
+          onBuyAgain: () {
+            Get.back();
+          },
+        ),
       );
       SettingController.to.getPoint();
       subscriptionPubnub?.dispose();
@@ -144,7 +164,8 @@ class BuyPointController extends GetxController {
       selectedBank!.$id,
       SettingController.to.user!.userId,
     );
-    logger.w(response.data);
+    logger.w("buy_point.controller.dart:147");
+    logger.d(response.data);
     final result = response.data?['data'];
     if (selectedBank?.name == "bcel") {
       final payment = result['payment'];

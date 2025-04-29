@@ -1,17 +1,14 @@
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
-import 'package:lottery_ck/components/dev/dialog_otp.dart';
 import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/model/get_argument/otp.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/couldflare/controller/cloudflare.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
-import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:device_info_plus/device_info_plus.dart';

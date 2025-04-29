@@ -6,6 +6,7 @@ import 'package:lottery_ck/modules/otp/controller/otp.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:pinput/pinput.dart';
 
 class OtpPage extends StatelessWidget {
@@ -50,7 +51,7 @@ class OtpPage extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${AppLocale.pleaseEnterThe6Digit.getString(context)} ${controller.argrument.phoneNumber}',
+                      '${AppLocale.pleaseEnterThe6Digit.getString(context)} ${CommonFn.hidePhoneNumber(controller.argrument.phoneNumber)}',
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w400,

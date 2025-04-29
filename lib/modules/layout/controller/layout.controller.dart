@@ -9,6 +9,7 @@ import 'package:flutter_screen_lock/flutter_screen_lock.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/cart.dart';
+import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/model/bill.dart';
 import 'package:lottery_ck/model/get_argument/otp.dart';
@@ -366,13 +367,35 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
       );
     } else if (uri.path.contains("/point/topup")) {
       final invoiceId = uri.queryParameters['invoiceId'];
+      if (invoiceId == null) {
+        return;
+      }
+      final response = await AppWriteController.to.getPointTopup(invoiceId);
+      logger.w("key data");
+      logger.d(response.toJson());
+      if (response.isSuccess == false || response.data == null) {
+        Get.dialog(
+          DialogApp(
+            title: Text("Can't get point transaction data"),
+            details: Text(
+              response.message,
+            ),
+            disableConfirm: true,
+          ),
+        );
+        return;
+      }
       Get.dialog(
-        BillPoint(onBackHome: () {
-          Get.back();
-          Get.back();
-        }, onBuyAgain: () {
-          Get.back();
-        }),
+        BillPoint(
+          pointTop: response.data!,
+          onBackHome: () {
+            Get.back();
+            Get.back();
+          },
+          onBuyAgain: () {
+            Get.back();
+          },
+        ),
       );
     }
   }

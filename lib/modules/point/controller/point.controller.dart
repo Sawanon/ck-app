@@ -81,6 +81,8 @@ class PointController extends GetxController {
         return AppLocale.identityVerificationBonus.getString(context);
       case "register":
         return AppLocale.registerBonus.getString(context);
+      case "topup":
+        return AppLocale.topupPoints.getString(context);
       default:
         if (type.contains("daily")) {
           return type.split("|").last;

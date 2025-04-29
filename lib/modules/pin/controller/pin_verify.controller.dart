@@ -130,15 +130,15 @@ class PinVerifyController extends GetxController {
       logger.d(response.toMap());
       if (response.pass == true) {
         maxRetry = 3;
-        whenSuccess();
         StorageController.to.removePassCodeDelay();
+        whenSuccess();
       } else {
         final remain = response.data?.remain;
         if (remain != null) {
           errorMessage = getErrorMessageWhenHaveRemain(remain);
           StorageController.to.setPasscodeDelay({
             "remain": remain,
-            "blockUntil": response.data?.blockUntil,
+            "blockUntil": response.data?.blockUntil?.toIso8601String(),
           });
         } else {
           // lock !
@@ -213,6 +213,7 @@ class PinVerifyController extends GetxController {
 
   void setup() async {
     final passcodeInvalidData = await StorageController.to.getPasscodeDelay();
+    logger.w("key 216");
     logger.d(passcodeInvalidData);
     if (passcodeInvalidData == null) return;
     maxRetry = 1;
