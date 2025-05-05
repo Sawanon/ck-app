@@ -5,6 +5,8 @@ import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:pinput/pinput.dart';
 
 class DialogAnimal extends StatefulWidget {
@@ -56,7 +58,7 @@ class _DialogAnimalState extends State<DialogAnimal> {
   @override
   void initState() {
     for (var element in listController) {
-      element.setText('1000');
+      element.setText(CommonFn.parseMoney(1000));
     }
     super.initState();
   }
@@ -169,9 +171,19 @@ class _DialogAnimalState extends State<DialogAnimal> {
                                 final animalThisLoop = animalList[index];
                                 print('lottery is: $animalThisLoop');
                                 print('value is $value');
+                                final onlyNumber = value.replaceAll(",", "");
                                 setState(() {
-                                  listPrice[index] = value;
+                                  listPrice[index] =
+                                      value.isEmpty ? '0' : onlyNumber;
                                 });
+                                if (value.isEmpty) {
+                                  listController[index].setText('0');
+                                  return;
+                                }
+
+                                final priceInt = int.parse(onlyNumber);
+                                listController[index]
+                                    .setText(CommonFn.parseMoney(priceInt));
                               },
                             ),
                           ),
@@ -183,47 +195,6 @@ class _DialogAnimalState extends State<DialogAnimal> {
                 separatorBuilder: (context, index) => SizedBox(),
                 itemCount: (widget.animal['lotteries'] as List<String>).length,
               ),
-              // child: Column(
-              //   children: (animal['lotteries'] as List<String>).map((e) {
-              //     return Container(
-              //       margin: EdgeInsets.only(top: 16),
-              //       padding: const EdgeInsets.symmetric(horizontal: 12),
-              //       child: Row(
-              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //         crossAxisAlignment: CrossAxisAlignment.center,
-              //         children: [
-              //           Container(
-              //             // padding: EdgeInsets.symmetric(horizontal: 12),
-              //             alignment: Alignment.center,
-              //             width: 40,
-              //             decoration: BoxDecoration(
-              //               border: Border.all(
-              //                 color: AppColors.primary,
-              //                 width: 1,
-              //               ),
-              //               borderRadius: BorderRadius.circular(2),
-              //             ),
-              //             child: Text(
-              //               '$e',
-              //               style: TextStyle(
-              //                 fontSize: 16,
-              //                 fontWeight: FontWeight.bold,
-              //               ),
-              //             ),
-              //           ),
-              //           Expanded(
-              //             child: Padding(
-              //               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              //               child: TextFormField(
-              //                 decoration: inputStyle,
-              //               ),
-              //             ),
-              //           )
-              //         ],
-              //       ),
-              //     );
-              //   }).toList(),
-              // ),
             ),
             Container(
               margin: const EdgeInsets.symmetric(
@@ -270,6 +241,7 @@ class _DialogAnimalState extends State<DialogAnimal> {
                         List<Map<String, dynamic>> lotteryWithPrice = [];
                         bool invalidPrice = false;
                         listLottery.asMap().forEach((index, element) {
+                          logger.w(listPrice[index]);
                           final price = int.parse(listPrice[index]);
                           if (price % 1000 != 0) {
                             invalidPrice = true;

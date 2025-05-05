@@ -126,4 +126,10 @@ class PointController extends GetxController {
     setupTotalPoint();
     super.onInit();
   }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
+  }
 }

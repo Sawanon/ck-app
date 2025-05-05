@@ -7,6 +7,7 @@ import 'package:lottery_ck/main.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:pinput/pinput.dart';
 
 class AnimalPage extends StatefulWidget {
@@ -367,7 +368,7 @@ class _AnimalPageState extends State<AnimalPage> {
     TextEditingController(),
     TextEditingController(),
   ];
-  List<String> listPrice = ["1000", "1000", "1000"];
+  List<String> listPrice = ["2000", "1000", "1000"];
 
   @override
   Widget build(BuildContext context) {
@@ -795,7 +796,8 @@ class _AnimalPageState extends State<AnimalPage> {
                                           },
                                         );
                                         for (var element in listController) {
-                                          element.setText('1000');
+                                          element.setText(
+                                              CommonFn.parseMoney(1000));
                                         }
                                         // onClickBuy(animal['lotteries'] as List<String>);
                                         // Navigator.of(context).pop();

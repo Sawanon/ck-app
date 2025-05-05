@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/input_text.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/model/point_topup.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/point/controller/buy_point.controller.dart';
 import 'package:lottery_ck/modules/point/view/bill_point.dart';

@@ -12,6 +12,7 @@ import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:pinput/pinput.dart';
 
 class AnimalComponent extends StatefulWidget {
@@ -375,12 +376,6 @@ class _AnimalComponentState extends State<AnimalComponent> {
       ),
     ),
   );
-  List<TextEditingController> listController = [
-    TextEditingController(),
-    TextEditingController(),
-    TextEditingController(),
-  ];
-  List<String> listPrice = ["1000", "1000", "1000"];
 
   void setIsLoading(bool value) {
     setState(() {
@@ -515,9 +510,6 @@ class _AnimalComponentState extends State<AnimalComponent> {
                                             },
                                           ),
                                         );
-                                        for (var element in listController) {
-                                          element.setText('1000');
-                                        }
                                       },
                                 child: Container(
                                   alignment: Alignment.center,

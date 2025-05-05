@@ -16,8 +16,12 @@ class NotificationController extends GetxController {
   static NotificationController get to => Get.find();
   RxList<News> newsList = <News>[].obs;
   RxList<Map> promotionList = <Map>[].obs;
-  RxList<NotificationModel> notificationList = <NotificationModel>[].obs;
+  Rx<NotificationDataModel?> notificationList =
+      Rx<NotificationDataModel?>(null);
   int currentTab = 0;
+  ScrollController notificationScrollController = ScrollController();
+  int notificationCurrentPage = 1;
+  bool notificationLoading = false;
 
   Future<void> listNews() async {
     try {
@@ -125,7 +129,8 @@ class NotificationController extends GetxController {
       return;
     }
 
-    final response = await AppWriteController.to.listNotification(user.userId);
+    final response =
+        await AppWriteController.to.listNotification(user.userId, 10, 1);
     // logger.d(response.data);
     if (response.isSuccess == false || response.data == null) {
       Get.dialog(
@@ -142,9 +147,50 @@ class NotificationController extends GetxController {
       return;
     }
     notificationList.value = response.data!;
-    // response.data?.forEach((notification) {
-    //   logger.w("$notification");
-    // });
+  }
+
+  void listNotificationAddition() async {
+    logger.w("load more");
+    final user = await AppWriteController.to.getUserApp();
+    if (user == null) {
+      return;
+    }
+    notificationLoading = true;
+    update();
+    final response = await AppWriteController.to.listNotification(
+      user.userId,
+      10,
+      notificationCurrentPage + 1,
+    );
+    notificationLoading = false;
+    update();
+    final result = response.data;
+    if (response.isSuccess == false || result == null) {
+      Get.dialog(
+        DialogApp(
+          title: Text(
+            AppLocale.somethingWentWrong.getString(Get.context!),
+          ),
+          details: Text(
+            response.message,
+          ),
+          disableConfirm: true,
+        ),
+      );
+      return;
+    }
+    final cloneData = notificationList.value;
+    if (cloneData != null) {
+      notificationList.value = NotificationDataModel(
+        data: [...cloneData.data, ...result.data],
+        totalItems: result.totalItems,
+        totalPages: result.totalPages,
+        currentPage: result.currentPage,
+        limit: result.limit,
+      );
+    }
+    notificationCurrentPage = notificationCurrentPage + 1;
+    update();
   }
 
   void onClickNotification(NotificationModel notification) async {
@@ -191,6 +237,13 @@ class NotificationController extends GetxController {
     listNews();
     listPromotions();
     listNotification();
+    notificationScrollController.addListener(() {
+      if (notificationScrollController.position.pixels ==
+              notificationScrollController.position.maxScrollExtent &&
+          !notificationLoading) {
+        listNotificationAddition();
+      }
+    });
     super.onInit();
   }
 }

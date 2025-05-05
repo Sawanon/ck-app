@@ -142,23 +142,30 @@ class _PromotionListPageState extends State<PromotionListPage> {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: widget.promotionList.map((promotion) {
-                          // logger.w("coupon: ${coupon.couponId}");
-                          // final promotion = coupon.promotion;
+                          logger.w("promotion:145");
+                          logger.d(promotion);
                           final int currentUse = promotion['current_use'] ?? 0;
                           final int maxUser = promotion['max_user'] ?? 0;
                           final leftPercent =
                               maxUser == 0 ? 0 : currentUse / maxUser;
                           final percentStr = leftPercent * 100;
+                          final canUse =
+                              PaymentController.to.isCanUse(promotion['\$id']);
                           return GestureDetector(
                             onTap: () {
                               if (leftPercent >= 1) {
                                 return;
                               }
+                              if (canUse == false) return;
                               onClickPromotion(promotion);
                               // onClickCoupon(coupon.couponId);
                             },
                             child: Opacity(
-                              opacity: leftPercent >= 1 ? 0.4 : 1,
+                              opacity: canUse == false
+                                  ? 0.4
+                                  : leftPercent >= 1
+                                      ? 0.4
+                                      : 1,
                               child: Container(
                                 margin: const EdgeInsets.only(
                                   top: 8,
@@ -377,6 +384,10 @@ class _PromotionListPageState extends State<PromotionListPage> {
                                         onChange: (value) {
                                           // TODO: fix use function
                                           logger.d("value: $value");
+                                          if (leftPercent >= 1) {
+                                            return;
+                                          }
+                                          if (canUse == false) return;
                                           // onClickCoupon(coupon.couponId);
                                           if (value) {
                                             onClickPromotion(promotion);

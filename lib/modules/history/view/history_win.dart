@@ -9,14 +9,18 @@ import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:lottery_ck/utils/theme.dart';
 
 Color checkWin(String buyNumber, String winNumber) {
-  logger.d("buyNumber: $buyNumber");
-  logger.d("winNumber: $winNumber");
-  final cutNumber = winNumber.substring(winNumber.length - buyNumber.length);
-  // print('buyNumber: $buyNumber, winNumber: $winNumber, cutNumber: $cutNumber');
-  if (cutNumber == buyNumber) {
-    return AppColors.winContainer;
+  try {
+    // logger.d("buyNumber: $buyNumber");
+    // logger.d("winNumber: $winNumber");
+    final cutNumber = winNumber.substring(winNumber.length - buyNumber.length);
+    // print('buyNumber: $buyNumber, winNumber: $winNumber, cutNumber: $cutNumber');
+    if (cutNumber == buyNumber) {
+      return AppColors.winContainer;
+    }
+    return Colors.grey;
+  } catch (e) {
+    return Colors.red;
   }
-  return Colors.grey;
 }
 
 class HistoryWinPage extends StatelessWidget {
@@ -97,6 +101,14 @@ class HistoryWinPage extends StatelessWidget {
                   return ListView.separated(
                     padding: const EdgeInsets.only(bottom: 8),
                     itemBuilder: (context, index) {
+                      final winInvoice = controller.winInvoice[index];
+                      // $collectionId
+                      final winNumber = controller.findWinLottery(
+                        winInvoice['\$collectionId'],
+                      );
+                      if (winNumber == null) {
+                        return const SizedBox.shrink();
+                      }
                       return GestureDetector(
                         onTap: () {
                           // TODO: hard code
@@ -134,11 +146,6 @@ class HistoryWinPage extends StatelessWidget {
                               ),
                               const SizedBox(height: 12),
                               Builder(builder: (context) {
-                                final winInvoice = controller.winInvoice[index];
-                                // $collectionId
-                                final winNumber = controller.findWinLottery(
-                                  winInvoice['\$collectionId'],
-                                );
                                 if (winNumber == null) {
                                   return Container(
                                     child: Text("-"),
@@ -198,7 +205,7 @@ class HistoryWinPage extends StatelessWidget {
                                 height: 1,
                                 color: Colors.grey,
                               ),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -209,7 +216,7 @@ class HistoryWinPage extends StatelessWidget {
                                     children: [
                                       Text(
                                           'วันที่ ${CommonFn.parseDMY(DateTime.parse(controller.winInvoice[index]["\$createdAt"]))} เวลาซื้อ ${CommonFn.parseHMS(DateTime.parse(controller.winInvoice[index]["\$createdAt"]))}'),
-                                      SizedBox(height: 4),
+                                      const SizedBox(height: 4),
                                       Text(
                                           'เลขที่บิลหวย: ${controller.winInvoice[index]["billId"]}'),
                                     ],
@@ -239,21 +246,70 @@ class HistoryWinPage extends StatelessWidget {
                                               ["transactionList"] as List)
                                           .map((transaction) {
                                         return Builder(builder: (context) {
-                                          logger
-                                              .w(controller.winInvoice[index]);
+                                          logger.w("winInvoice");
+                                          logger.d(winInvoice);
                                           final winNumber =
                                               controller.findWinNumber(
                                                   controller.winInvoice[index]
                                                       ["transactionList"]);
-                                          logger.d("winNumber: $winNumber");
-                                          if (winNumber == null) {
-                                            return Text("-");
+                                          if (winInvoice['is_special_win'] ==
+                                              true) {
+                                            return FutureBuilder(
+                                              future: controller
+                                                  .checkSpecialLottery(
+                                                      winInvoice[
+                                                          '\$collectionId'],
+                                                      transaction['lottery']),
+                                              builder: (context, snapshot) {
+                                                Color backgroundColor =
+                                                    Colors.grey.shade200;
+                                                Color borderColor =
+                                                    Colors.transparent;
+                                                if (snapshot.hasData) {
+                                                  backgroundColor = snapshot
+                                                              .data ==
+                                                          true
+                                                      ? AppColors.winContainer
+                                                      : Colors.grey.shade200;
+                                                  borderColor = snapshot.data ==
+                                                          true
+                                                      ? Colors.amber.shade600
+                                                      : Colors.transparent;
+                                                }
+                                                return Container(
+                                                  decoration: BoxDecoration(
+                                                    color: backgroundColor,
+                                                    border: Border.all(
+                                                        width: snapshot.data ==
+                                                                true
+                                                            ? 1
+                                                            : 0,
+                                                        color: borderColor,
+                                                        strokeAlign: BorderSide
+                                                            .strokeAlignOutside),
+                                                    borderRadius:
+                                                        const BorderRadius.all(
+                                                            Radius.circular(5)),
+                                                  ),
+                                                  padding: const EdgeInsets
+                                                      .symmetric(vertical: 8),
+                                                  width: 74,
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    transaction['lottery'],
+                                                    style: const TextStyle(
+                                                        fontSize: 14),
+                                                  ),
+                                                );
+                                              },
+                                            );
                                           }
+
                                           return Container(
                                             decoration: BoxDecoration(
                                               color: checkWin(
                                                 transaction['lottery'],
-                                                winNumber,
+                                                winNumber ?? "",
                                               ),
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(5)),

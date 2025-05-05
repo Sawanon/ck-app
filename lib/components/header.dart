@@ -30,8 +30,10 @@ class Header extends StatelessWidget {
         color: backgroundColor,
         border: Border(
           bottom: BorderSide(
-            width: 0.5,
-            color: AppColors.shadow.withOpacity(0.2),
+            width: backgroundColor == Colors.transparent ? 0 : 0.5,
+            color: backgroundColor == Colors.transparent
+                ? Colors.transparent
+                : AppColors.shadow.withOpacity(0.2),
           ),
         ),
       ),

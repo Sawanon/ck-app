@@ -436,16 +436,40 @@ class PayMentPage extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          Builder(builder: (context) {
+                          Obx(() {
+                            final invoice =
+                                BuyLotteryController.to.invoiceMeta.value;
+                            final List<String> selectedPromotionList = [];
+                            if (invoice.promotionIds?.isNotEmpty == true &&
+                                controller.promotionList.isNotEmpty) {
+                              for (var selectedPromotion
+                                  in invoice.promotionIds!) {
+                                // TODO: promotion is null
+                                logger.d(controller.promotionList);
+                                final promotionDetail = controller.promotionList
+                                    .firstWhere((promotion) {
+                                  return promotion['\$id'] == selectedPromotion;
+                                });
+                                selectedPromotionList
+                                    .add(promotionDetail['name']);
+                              }
+                            }
+                            bool isCanUse = false;
+                            final promotionIds = invoice.promotionIds;
+                            if (promotionIds != null &&
+                                promotionIds.isNotEmpty) {
+                              isCanUse =
+                                  controller.isCanUse(promotionIds.first);
+                            }
                             return GestureDetector(
                               onTap: () {
-                                final invoice =
-                                    BuyLotteryController.to.invoiceMeta.value;
-                                if (invoice.couponIds?.isNotEmpty == true) {
-                                  // controller.showCouponDetail(context);
-                                  // TODO: show promotion Detail
-                                  return;
-                                }
+                                // final invoice =
+                                //     BuyLotteryController.to.invoiceMeta.value;
+                                // if (invoice.couponIds?.isNotEmpty == true) {
+                                //   // controller.showCouponDetail(context);
+                                //   // TODO: show promotion Detail
+                                //   return;
+                                // }
                                 if (controller.point != null) {
                                   return;
                                 }
@@ -470,57 +494,30 @@ class PayMentPage extends StatelessWidget {
                                         AppLocale.promotion.getString(context),
                                       ),
                                       const SizedBox(width: 12),
-                                      // if (BuyLotteryController.to.invoiceMeta.value
-                                      //         .couponResponse?.status ==
-                                      //     false)
-                                      //     ...[
-                                      //   const Icon(
-                                      //     Icons.info,
-                                      //     color: Colors.red,
-                                      //   ),
-                                      //   const SizedBox(width: 4),
-                                      // ],
+                                      if (invoice.promotionIds?.isNotEmpty ==
+                                              true &&
+                                          isCanUse == false) ...[
+                                        const Icon(
+                                          Icons.info,
+                                          color: Colors.red,
+                                        ),
+                                        const SizedBox(width: 4),
+                                      ],
                                       const SizedBox(width: 4),
-                                      Obx(() {
-                                        final invoice = BuyLotteryController
-                                            .to.invoiceMeta.value;
-                                        final List<String>
-                                            selectedPromotionList = [];
-                                        if (invoice.promotionIds?.isNotEmpty ==
-                                                true &&
-                                            controller
-                                                .promotionList.isNotEmpty) {
-                                          for (var selectedPromotion
-                                              in invoice.promotionIds!) {
-                                            // TODO: promotion is null
-                                            logger.d(controller.promotionList);
-                                            final promotionDetail = controller
-                                                .promotionList
-                                                .firstWhere((promotion) {
-                                              return promotion['\$id'] ==
-                                                  selectedPromotion;
-                                            });
-                                            selectedPromotionList
-                                                .add(promotionDetail['name']);
-                                          }
-                                        }
-                                        return Expanded(
-                                          child: Text(
-                                            selectedPromotionList.isEmpty
-                                                ? AppLocale.usePromotion
-                                                    .getString(context)
-                                                : selectedPromotionList
-                                                    .join(","),
-                                            style: TextStyle(
-                                              overflow: TextOverflow.ellipsis,
-                                              color:
-                                                  selectedPromotionList.isEmpty
-                                                      ? AppColors.disableText
-                                                      : AppColors.textPrimary,
-                                            ),
+                                      Expanded(
+                                        child: Text(
+                                          selectedPromotionList.isEmpty
+                                              ? AppLocale.usePromotion
+                                                  .getString(context)
+                                              : selectedPromotionList.join(","),
+                                          style: TextStyle(
+                                            overflow: TextOverflow.ellipsis,
+                                            color: selectedPromotionList.isEmpty
+                                                ? AppColors.disableText
+                                                : AppColors.textPrimary,
                                           ),
-                                        );
-                                      }),
+                                        ),
+                                      ),
                                       Builder(builder: (context) {
                                         final invoice = BuyLotteryController
                                             .to.invoiceMeta.value;

@@ -1236,13 +1236,14 @@ class HomePageV2 extends StatelessWidget {
                                     () {
                                       final isUnReadNotification =
                                           NotificationController
-                                              .to.notificationList.value
+                                              .to.notificationList.value?.data
                                               .where(
                                         (notification) {
                                           return notification.isRead == false;
                                         },
                                       );
-                                      if (isUnReadNotification.isNotEmpty) {
+                                      if (isUnReadNotification?.isNotEmpty ==
+                                          true) {
                                         return Positioned(
                                           top: 0,
                                           right: 0,

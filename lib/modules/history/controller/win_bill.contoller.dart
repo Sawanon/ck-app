@@ -37,8 +37,13 @@ class WinBillContoller extends GetxController {
       totalAmount: invoice.data["totalAmount"].toString(),
       amount: invoice.data["amount"],
       billId: invoice.data['billNumber'],
-      bankName: bank?.name ?? "-",
+      bankName: bank?.fullName ?? "-",
       customerId: userApp!.customerId!,
+      point: invoice.data['point'],
+      pointMoney: invoice.data['pointMoney'],
+      discount: invoice.data['discount'],
+      refCode: invoice.data['bankRef'],
+      isSpecialWin: invoice.data['is_special_win'],
     );
     logger.d(bill);
     update();

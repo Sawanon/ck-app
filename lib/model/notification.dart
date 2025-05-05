@@ -1,5 +1,33 @@
 import 'dart:convert';
 
+class NotificationDataModel {
+  List<NotificationModel> data;
+  int totalItems;
+  int totalPages;
+  int currentPage;
+  int limit;
+
+  NotificationDataModel({
+    required this.data,
+    required this.totalItems,
+    required this.totalPages,
+    required this.currentPage,
+    required this.limit,
+  });
+
+  static NotificationDataModel fromJson(Map json) {
+    return NotificationDataModel(
+      data: (json['data'] as List)
+          .map((data) => NotificationModel.fromJson(data))
+          .toList(),
+      totalItems: json['totalItems'],
+      totalPages: json['totalPages'],
+      currentPage: json['currentPage'],
+      limit: json['limit'],
+    );
+  }
+}
+
 class NotificationModel {
   String id;
   String title;

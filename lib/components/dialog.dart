@@ -37,11 +37,11 @@ class _DialogAppState extends State<DialogApp> {
     });
   }
 
-  void onClose() {
-    Get.back();
+  void onClose() async {
     if (widget.onCancel != null) {
       widget.onCancel!();
     }
+    Get.back();
   }
 
   void onConfirm() async {

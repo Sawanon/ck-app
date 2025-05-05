@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/navigation_item.dart';
 import 'package:lottery_ck/main.dart';
+import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -23,6 +26,23 @@ class CustomNavigationBar extends StatefulWidget {
 }
 
 class _CustomNavigationBarState extends State<CustomNavigationBar> {
+  void onChangeTab(TabApp tab) {
+    if (BuyLotteryController.to.currentTab.value != 0) {
+      Get.dialog(
+        DialogApp(
+          title: Text(AppLocale.doYouWantToLeaveThisPage.getString(context)),
+          onConfirm: () async {
+            BuyLotteryController.to.changeTab(0);
+            changeTab(tab);
+            Get.back();
+          },
+        ),
+      );
+      return;
+    }
+    changeTab(tab);
+  }
+
   void changeTab(TabApp tab) {
     if (widget.onChangeTab != null) {
       widget.onChangeTab!(tab);
@@ -67,7 +87,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
               NavigationItem(
                 tab: TabApp.home,
                 currentTab: widget.currentTab,
-                changeTab: changeTab,
+                changeTab: onChangeTab,
                 index: 0,
                 icon: SizedBox(
                   width: 24,
@@ -93,7 +113,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
               NavigationItem(
                 tab: TabApp.history,
                 currentTab: widget.currentTab,
-                changeTab: changeTab,
+                changeTab: onChangeTab,
                 index: 1,
                 icon: SvgPicture.asset(
                   AppIcon.history,
@@ -141,7 +161,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
               NavigationItem(
                 tab: TabApp.notifications,
                 currentTab: widget.currentTab,
-                changeTab: changeTab,
+                changeTab: onChangeTab,
                 index: 3,
                 icon: SizedBox(
                   width: 24,
@@ -171,7 +191,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
               NavigationItem(
                 tab: TabApp.settings,
                 currentTab: widget.currentTab,
-                changeTab: changeTab,
+                changeTab: onChangeTab,
                 index: 4,
                 icon: SvgPicture.asset(
                   AppIcon.gift,
@@ -197,7 +217,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
           padding: EdgeInsets.only(bottom: 32),
           child: GestureDetector(
             onTap: () {
-              changeTab(TabApp.lottery);
+              onChangeTab(TabApp.lottery);
             },
             child: Column(
               mainAxisSize: MainAxisSize.min,

@@ -603,7 +603,7 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                 hintText: AppLocale.price
                                                     .getString(context),
                                                 errorStyle:
-                                                    TextStyle(height: 0),
+                                                    const TextStyle(height: 0),
                                                 contentPadding:
                                                     const EdgeInsets.symmetric(
                                                         horizontal: 8),

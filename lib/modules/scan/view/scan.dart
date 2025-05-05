@@ -3,19 +3,16 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/friend_confirm.dart';
 import 'package:lottery_ck/components/header.dart';
-import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/user_qr.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
-import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 // import 'package:mobile_scanner_example/scanned_barcode_label.dart';
@@ -172,35 +169,40 @@ class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
                   final response = await AppWriteController.to
                       .acceptFriend(refCode, userApp.refCode!);
                   if (response.isSuccess) {
-                    Get.dialog(
-                      DialogApp(
-                        title: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(AppLocale.youAreNowFriends.getString(context)),
-                            const SizedBox(width: 12),
-                            Icon(
-                              Icons.check,
-                              color: Colors.green,
-                            ),
-                          ],
+                    if (mounted) {
+                      Get.dialog(
+                        DialogApp(
+                          title: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(AppLocale.youAreNowFriends
+                                  .getString(context)),
+                              const SizedBox(width: 12),
+                              const Icon(
+                                Icons.check,
+                                color: Colors.green,
+                              ),
+                            ],
+                          ),
+                          disableConfirm: true,
+                          onCancel: () {
+                            Get.back();
+                            Get.back();
+                          },
                         ),
-                        disableConfirm: true,
-                        onCancel: () {
-                          Get.back();
-                          Get.back();
-                        },
-                      ),
-                    );
+                      );
+                    }
                   } else {
-                    Get.dialog(
-                      DialogApp(
-                        title: Text(
-                            AppLocale.somethingWentWrong.getString(context)),
-                        details: Text(response.message),
-                        disableConfirm: true,
-                      ),
-                    );
+                    if (mounted) {
+                      Get.dialog(
+                        DialogApp(
+                          title: Text(
+                              AppLocale.somethingWentWrong.getString(context)),
+                          details: Text(response.message),
+                          disableConfirm: true,
+                        ),
+                      );
+                    }
                   }
                 },
                 onCancel: () {
@@ -311,7 +313,7 @@ class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
               );
             },
           ),
-          Align(
+          const Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -329,7 +331,7 @@ class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
             left: 0,
             right: 0,
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   // color: Colors.white,
                   ),
               child: Column(
@@ -359,7 +361,7 @@ class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
                           )),
                       child: Text(
                         AppLocale.myQRcode.getString(context),
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                         ),
                       ),
@@ -376,12 +378,12 @@ class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
               onTap: _analyzeImageFromFile,
               child: Container(
                 alignment: Alignment.center,
-                padding: EdgeInsets.all(4),
+                padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.image,
                   size: 40,
                 ),
@@ -401,7 +403,7 @@ class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
           if (isLoading == true)
             Container(
               color: Colors.black.withOpacity(0.85),
-              child: Center(
+              child: const Center(
                 child: SizedBox(
                   width: 80,
                   height: 80,

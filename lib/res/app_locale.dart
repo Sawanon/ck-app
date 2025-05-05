@@ -342,6 +342,8 @@ mixin AppLocale {
   static const String downloadFile = "ດາວໂຫຼດໄຟລ໌";
   static const String youAreTheLuckyOneAndHaveWonPrize =
       "ເຈົ້າເປັນຜູ້ໂຊກດີ ແລະໄດ້ຮັບລາງວັນ";
+  static const String youAreTheLuckyOneAndHaveWonPrizeSpecial =
+      "ເຈົ້າເປັນຜູ້ໂຊກດີ ແລະໄດ້ຮັບລາງວັນພິເສດ";
   static const String validUntil = "ໃຊ້ໄດ້ເຖິງ";
   static const String used = "ໃຊ້ແລ້ວ";
   static const String thisLotteryNumberIsNotYetOnSale =
@@ -401,6 +403,11 @@ mixin AppLocale {
   static const String identityVerificationBonus = "ໂບນັດຢືນຢັນຕົວຕົນ";
   static const String kycPendingTitle = "ຂໍ້ມູນຂອງທ່ານກຳລັງຖືກກວດສອບ";
   static const String kycPendingDescription = "ພວກເຮົາກຳລັງກວດສອບຂໍ້ມູນຂອງທ່ານ";
+  static const String purchaseCompleted = "ສຳເລັດການຊື້";
+  static const String numberPointsReceived = "ຈໍານວນຄະແນນທີ່ໄດ້ຮັບ";
+  static const String amountPaid = "ຈຳນວນທີ່ຈ່າຍ";
+  static const String dateTimePurchase = "ວັນທີ/ເວລາຂອງການຊື້";
+  static const String buyMorePoints = "ຊື້ຄະແນນເພີ່ມເຕີມ";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -710,6 +717,8 @@ mixin AppLocale {
     theFileIsSavedIn: "ໄຟລ໌ຖືກບັນທຶກໄວ້ໃນອາລະບໍາ",
     downloadFile: "ດາວໂຫຼດໄຟລ໌",
     youAreTheLuckyOneAndHaveWonPrize: "ເຈົ້າເປັນຜູ້ໂຊກດີ ແລະໄດ້ຮັບລາງວັນ",
+    youAreTheLuckyOneAndHaveWonPrizeSpecial:
+        "ເຈົ້າເປັນຜູ້ໂຊກດີ ແລະໄດ້ຮັບລາງວັນພິເສດ",
     validUntil: "ໃຊ້ໄດ້ເຖິງ",
     used: "ໃຊ້ແລ້ວ",
     thisLotteryNumberIsNotYetOnSale: "ເລກຫວຍນີ້ຍັງບໍ່ໄດ້ຂາຍເທື່ອ",
@@ -762,6 +771,11 @@ mixin AppLocale {
     identityVerificationBonus: "ໂບນັດຢືນຢັນຕົວຕົນ",
     kycPendingTitle: "ຂໍ້ມູນຂອງທ່ານກຳລັງຖືກກວດສອບ",
     kycPendingDescription: "ພວກເຮົາກຳລັງກວດສອບຂໍ້ມູນຂອງທ່ານ",
+    purchaseCompleted: "ສຳເລັດການຊື້",
+    numberPointsReceived: "ຈໍານວນຄະແນນທີ່ໄດ້ຮັບ",
+    amountPaid: "ຈຳນວນທີ່ຈ່າຍ",
+    dateTimePurchase: "ວັນທີ/ເວລາຂອງການຊື້",
+    buyMorePoints: "ຊື້ຄະແນນເພີ່ມເຕີມ",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -1071,6 +1085,8 @@ mixin AppLocale {
     theFileIsSavedIn: "ไฟล์ถูกบันทึกในอัลบัม",
     downloadFile: "ดาวน์โหลดไฟล์",
     youAreTheLuckyOneAndHaveWonPrize: "คุณคือผู้โชคดีและได้รับรางวัล",
+    youAreTheLuckyOneAndHaveWonPrizeSpecial:
+        "คุณคือผู้โชคดีและได้รับรางวัลพิเศษ",
     validUntil: "ใช้ได้ถึง",
     used: "ใช้แล้ว",
     thisLotteryNumberIsNotYetOnSale: "หวยเลขนี้ยังไม่วางขาย",
@@ -1124,6 +1140,11 @@ mixin AppLocale {
     identityVerificationBonus: "โบนัสการยืนยันตัวตน",
     kycPendingTitle: "ข้อมูลของคุณกำลังได้รับการตรวจสอบ",
     kycPendingDescription: "ขณะนี้เรากำลังตรวจสอบข้อมูลของคุณ",
+    purchaseCompleted: "การซื้อสำเร็จ",
+    numberPointsReceived: "จำนวน point ที่ได้รับ",
+    amountPaid: "ยอดเงินที่ชำระ",
+    dateTimePurchase: "วันที่เวลาที่ซื้อ",
+    buyMorePoints: "ซื้อคะแนนเพิ่ม",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -1442,6 +1463,8 @@ mixin AppLocale {
     downloadFile: "Download file",
     youAreTheLuckyOneAndHaveWonPrize:
         "You are the lucky one and have won a prize",
+    youAreTheLuckyOneAndHaveWonPrizeSpecial:
+        "You are the lucky one and have won a special prize",
     validUntil: "Valid until",
     used: "Used",
     thisLotteryNumberIsNotYetOnSale: "This lottery number is not yet on sale",
@@ -1497,5 +1520,10 @@ mixin AppLocale {
     identityVerificationBonus: "Identity verification bonus",
     kycPendingTitle: "Your Information is Being Reviewed",
     kycPendingDescription: "We are currently reviewing your information",
+    purchaseCompleted: "Purchase completed",
+    numberPointsReceived: "Number of points received",
+    amountPaid: "Amount paid",
+    dateTimePurchase: "Date-Time of Purchase",
+    buyMorePoints: "Buy more points",
   };
 }

@@ -217,7 +217,7 @@ class _BuyLotteryPageState extends State<BuyLotteryPage> {
                             );
                           } else if (controller.currentTab.value == 3) {
                             return AnimalComponent(
-                              padding: EdgeInsets.only(bottom: 122),
+                              padding: const EdgeInsets.only(bottom: 122),
                               onClickBuy: (lotterise) async {
                                 await controller.onClickAnimalBuy(lotterise);
                               },

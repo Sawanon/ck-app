@@ -16,6 +16,8 @@ class Bill {
   int? pointMoney;
   int? discount;
   String? refCode;
+  bool? isSpecialWin;
+  List<Lottery>? specialLotteryWin;
 
   Bill({
     required this.firstName,
@@ -33,5 +35,7 @@ class Bill {
     this.pointMoney,
     this.discount,
     this.refCode,
+    this.isSpecialWin,
+    this.specialLotteryWin,
   });
 }

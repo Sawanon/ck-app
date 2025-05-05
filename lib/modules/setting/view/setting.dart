@@ -48,7 +48,7 @@ class SettingPage extends StatelessWidget {
                   Header(
                     title: AppLocale.setting.getString(context),
                     padding: const EdgeInsets.all(0),
-                    // backgroundColor: Colors.transparent,
+                    backgroundColor: Colors.transparent,
                   ),
                   const SizedBox(height: 16),
                   Expanded(

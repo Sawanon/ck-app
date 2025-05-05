@@ -20,22 +20,23 @@ class HistoryWinController extends GetxController {
 
   Future<void> listWinInVoice([String? lotteryMonth]) async {
     winInvoice.clear();
-    logger.d(selectedMonth);
+    // logger.d(selectedMonth);
     final lotteryMonthRevers =
         (lotteryMonth ?? selectedMonth).split("-").reversed.join("");
-    logger.d(lotteryMonthRevers);
+    // logger.d(lotteryMonthRevers);
     final listInvoiceCollection =
         await AppWriteController.to.listLotteryCollection(lotteryMonthRevers);
-    logger.d(listInvoiceCollection);
+    // logger.d(listInvoiceCollection);
     if (listInvoiceCollection == null) {
       return;
     }
-    logger.d(listInvoiceCollection);
+    // logger.d(listInvoiceCollection);
     for (var invoiceCollection in listInvoiceCollection) {
       if (invoiceCollection is String) {
         final winInvoice =
             await AppWriteController.to.listWinInvoices(invoiceCollection);
-        logger.w(winInvoice);
+        logger.w("winInvoice");
+        logger.d(winInvoice);
         if (winInvoice == null) continue;
 
         this.winInvoice.value = [...this.winInvoice, ...winInvoice];
@@ -50,19 +51,21 @@ class HistoryWinController extends GetxController {
     return lotteryDate;
   }
 
-  String findWinLottery(String collectionId) {
+  String? findWinLottery(String collectionId) {
     // lotteryHistoryList // 20250122_invoice
     final lotteryDate = getLotteryDateFromCollection(collectionId);
+    // logger.d("lotteryDate: $lotteryDate");
     final lotteryHistoryList =
         LotteryHistoryController.to.lotteryHistoryList.value;
-    logger.w(lotteryHistoryList);
+    // logger.w(lotteryHistoryList);
+    // logger.d("lotteryHistoryList: $lotteryHistoryList");
     final result = lotteryHistoryList.where(
       (lottery) {
         return lottery['lotteryDate'] == lotteryDate;
       },
     ).toList();
     if (result.isEmpty) {
-      return "";
+      return null;
     }
     return result.first['lottery'];
   }
@@ -80,9 +83,39 @@ class HistoryWinController extends GetxController {
     return winLottery.first["lotteryHistory"]['lottery'].first as String;
   }
 
+  Future<bool> checkSpecialLottery(
+      String collectionId, String lotteryNumber) async {
+    final lotteryDateStr = getLotteryDateFromCollection(collectionId);
+    final lotteryHistoryList =
+        LotteryHistoryController.to.lotteryHistoryList.value;
+    final result = lotteryHistoryList.where(
+      (lottery) {
+        return lottery['lotteryDate'] == lotteryDateStr;
+      },
+    ).toList();
+    if (result.isEmpty) {
+      return false;
+    }
+    final lotteryDateId = result.first['lotteryDateId'];
+    final specialRewardResponse =
+        await AppWriteController.to.listSpecialReward(lotteryDateId);
+    final specialRewardList = specialRewardResponse.data;
+    if (specialRewardResponse.isSuccess == false || specialRewardList == null) {
+      logger.e(specialRewardResponse.message);
+      return false;
+    }
+    final resultMatch = specialRewardList.where((specialReward) {
+      return specialReward.isMatch(lotteryNumber);
+    }).toList();
+    if (resultMatch.isEmpty) {
+      return false;
+    }
+    return true;
+  }
+
   void openWinDetail(String invoiceId, String lotteryStr) async {
-    // final testInvoice = "66d525ec000a12bdf1ab";
-    // final testLotteryDate = "20240905";
+    // const testInvoice = "680b48640025e028d5d9";
+    // const testLotteryDate = "20250425";
     Get.toNamed(
       RouteName.winbill,
       arguments: {

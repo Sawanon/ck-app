@@ -139,19 +139,19 @@ class LayoutPage extends StatelessWidget {
                           onChangeTab: controller.changeTab,
                         ),
                       ),
-                      Align(
-                        alignment: Alignment.topRight,
-                        child: SafeArea(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              top: 48,
-                              right: 8,
-                            ),
-                            child:
-                                controller.renderMyCart(controller.currentTab),
-                          ),
-                        ),
-                      ),
+                      // Align(
+                      //   alignment: Alignment.topRight,
+                      //   child: SafeArea(
+                      //     child: Padding(
+                      //       padding: const EdgeInsets.only(
+                      //         top: 48,
+                      //         right: 8,
+                      //       ),
+                      //       child:
+                      //           controller.renderMyCart(controller.currentTab),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

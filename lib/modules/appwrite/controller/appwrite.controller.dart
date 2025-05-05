@@ -34,6 +34,7 @@ import 'package:lottery_ck/model/response/get_user_by_ref_code.dart';
 import 'package:lottery_ck/model/response/list_my_friends_user.dart';
 import 'package:lottery_ck/model/response/response_api.dart';
 import 'package:lottery_ck/model/response/signup.dart';
+import 'package:lottery_ck/model/special_reward.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/model/user_point.dart';
 import 'package:lottery_ck/modules/appwrite/controller/savefile.dart';
@@ -822,12 +823,17 @@ class AppWriteController extends GetxController {
 
   Future<List?> listWinInvoices(String collectionId) async {
     try {
-      final userId = await user.then((value) => value.$id);
+      // final userId = await user.then((value) => value.$id);
+      // const userId = "67edf7a800193b9b4180"; // p nat
+      const userId = "680b37540010c6d7e604"; // p nueg
       final invoiceList = await databases.listDocuments(
         databaseId: _databaseName,
         collectionId: collectionId,
         queries: [
-          Query.equal("is_win", true),
+          Query.or([
+            Query.equal("is_win", true),
+            Query.equal("is_special_win", true),
+          ]),
           Query.equal("userId", userId),
           Query.orderDesc('\$createdAt'),
         ],
@@ -952,6 +958,7 @@ class AppWriteController extends GetxController {
           lotteryHistoryList.add({
             "lottery": lottery,
             "lotteryDate": lotteryDate,
+            "lotteryDateId": lotteryByDate.value.first["lottery_date_id"],
           });
         }
       }
@@ -1918,8 +1925,17 @@ class AppWriteController extends GetxController {
       String refCode) async {
     try {
       final dio = Dio();
-      final response =
-          await dio.get('${AppConst.apiInviteFriends}/user/ref-code/$refCode');
+      final response = await dio.post(
+        '${AppConst.apiInviteFriends}/getUser',
+        data: {
+          "ref_code": refCode,
+        },
+        options: Options(
+          headers: {
+            "accept-language": localization.currentLocale?.languageCode,
+          },
+        ),
+      );
       final result = response.data;
       return ResponseApi(
         isSuccess: true,
@@ -1948,12 +1964,18 @@ class AppWriteController extends GetxController {
       String referrer, String referee) async {
     try {
       final dio = Dio();
+      logger.w(localization.currentLocale?.languageCode);
       final response = await dio.post(
-        "${AppConst.apiInviteFriends}/user/ref-code",
+        "${AppConst.apiInviteFriends}/connectFriend",
         data: {
           "referrer": referrer,
           "referee": referee,
         },
+        options: Options(
+          headers: {
+            "accept-language": localization.currentLocale?.languageCode,
+          },
+        ),
       );
       logger.w(response.data);
       return ResponseApi(
@@ -1967,7 +1989,7 @@ class AppWriteController extends GetxController {
         logger.e(e.response?.statusMessage);
         logger.e(e.response?.data);
         final String? message =
-            e.response?.statusMessage ?? e.response?.data['message'];
+            e.response?.data['message'] ?? e.response?.statusMessage;
         return ResponseApi(
           isSuccess: false,
           message: message ?? "failed to with connect friend",
@@ -1992,11 +2014,16 @@ class AppWriteController extends GetxController {
     try {
       final dio = Dio();
       final response = await dio.post(
-        "${AppConst.apiInviteFriends}/user/ref-code/accept",
+        "${AppConst.apiInviteFriends}/accept",
         data: {
           "referrer": referrer,
           "referee": referee,
         },
+        options: Options(
+          headers: {
+            "accept-language": localization.currentLocale?.languageCode,
+          },
+        ),
       );
       logger.w(response.data);
       return ResponseApi(
@@ -2021,9 +2048,13 @@ class AppWriteController extends GetxController {
 
   Future<ResponseApi<GetMyFriends?>> getMyFriends(String refCode) async {
     try {
-      final dio = Dio();
+      final option = BaseOptions(
+        connectTimeout: const Duration(seconds: 15),
+        receiveTimeout: const Duration(seconds: 15),
+      );
+      final dio = Dio(option);
       final response = await dio.get(
-        "${AppConst.apiInviteFriends}/user/ref-code/my-friends/$refCode",
+        "${AppConst.apiInviteFriends}/myFriends/$refCode",
         options: Options(
           headers: {
             "lang": localization.currentLocale?.languageCode,
@@ -2056,9 +2087,18 @@ class AppWriteController extends GetxController {
   Future<ResponseApi<List<ListMyFriendsUser>?>> listMyFriendsUser(
       String refCode) async {
     try {
-      final dio = Dio();
+      final option = BaseOptions(
+        connectTimeout: const Duration(seconds: 15),
+        receiveTimeout: const Duration(seconds: 15),
+      );
+      final dio = Dio(option);
       final response = await dio.get(
-        "${AppConst.apiInviteFriends}/user/ref-code/my-friends/list-user/$refCode",
+        "${AppConst.apiInviteFriends}/myFriends/listUser/$refCode",
+        options: Options(
+          headers: {
+            "lang": localization.currentLocale?.languageCode,
+          },
+        ),
       );
       final resultList = response.data['data'] as List;
       return ResponseApi(
@@ -2280,28 +2320,31 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<ResponseApi<List<NotificationModel>?>> listNotification(
-      String userId) async {
+  Future<ResponseApi<NotificationDataModel?>> listNotification(
+    String userId, [
+    int limit = 0,
+    int page = 1,
+  ]) async {
     try {
       final dio = Dio();
+      final payload = {
+        "userId": userId,
+        "limit": limit,
+        "page": page,
+      };
+      logger.w(payload);
       final response = await dio.post(
         "${AppConst.apiUrl}/notification/get-noti",
-        data: {
-          "userId": userId,
-        },
+        data: payload,
       );
       logger.d(response.data);
-      final List<dynamic> result = response.data;
+      final result = response.data;
 
       // final notificationList = response.data
       return ResponseApi(
         isSuccess: true,
         message: "message",
-        data: result.map(
-          (notification) {
-            return NotificationModel.fromJson(notification);
-          },
-        ).toList(),
+        data: NotificationDataModel.fromJson(result),
       );
     } on DioException catch (e) {
       logger.e("$e");
@@ -2316,6 +2359,7 @@ class AppWriteController extends GetxController {
       }
       return ResponseApi(isSuccess: false, message: "failed to apply coupon");
     } catch (e) {
+      logger.e("$e");
       return ResponseApi(isSuccess: false, message: "$e");
     }
   }
@@ -2872,11 +2916,92 @@ class AppWriteController extends GetxController {
         data: PointTopup.fromJson(response.data),
       );
     } on AppwriteException catch (e) {
+      logger.e(e);
       return ResponseApi(
         isSuccess: false,
         message: e.message ?? e.type ?? e.code?.toString() ?? 'appwrite error',
       );
     } catch (e) {
+      logger.e(e);
+      return ResponseApi(
+        isSuccess: false,
+        message: e.toString(),
+      );
+    }
+  }
+
+  Future<ResponseApi<void>> cancelBill(String invoiceId, String date) async {
+    try {
+      final option = BaseOptions(
+        connectTimeout: const Duration(seconds: 15),
+        receiveTimeout: const Duration(seconds: 15),
+      );
+      final dio = Dio(option);
+      final payload = {
+        "invoiceId": invoiceId,
+        "date": date,
+      };
+
+      final jwt = await getAppJWT();
+      final response = await dio.post(
+        "${AppConst.apiUrl}/lotlink/cancelBill",
+        data: payload,
+        options: Options(headers: {
+          "Authorization": "Bearer $jwt",
+        }),
+      );
+      logger.d(response.data);
+      return ResponseApi(
+        isSuccess: true,
+        message: "Success to cancel bill",
+      );
+    } on DioException catch (e) {
+      logger.e(e.response?.statusCode);
+      logger.e(e.response?.statusMessage);
+      logger.e(e.response?.data);
+      return ResponseApi(
+        isSuccess: false,
+        message: e.response?.statusMessage ?? "failed to cancel bill",
+      );
+    } catch (e) {
+      logger.e(e);
+      return ResponseApi(
+        isSuccess: false,
+        message: "$e",
+      );
+    }
+  }
+
+  Future<ResponseApi<List<SpecialReward>?>> listSpecialReward(
+      String lotteryDateId) async {
+    try {
+      final response = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: 'special_rewards',
+        queries: [
+          Query.equal(
+            'lotteryDateId',
+            lotteryDateId,
+          ),
+          Query.equal('is_active', true),
+          Query.equal('is_approve', '1'),
+        ],
+      );
+      return ResponseApi(
+        isSuccess: true,
+        message: "get special reward success",
+        data: response.documents.map((document) {
+          return SpecialReward.fromJson(document.data);
+        }).toList(),
+      );
+    } on AppwriteException catch (e) {
+      logger.e(e);
+      return ResponseApi(
+        isSuccess: false,
+        message: e.message ?? e.type ?? e.code?.toString() ?? 'appwrite error',
+      );
+    } catch (e) {
+      logger.e(e);
       return ResponseApi(
         isSuccess: false,
         message: e.toString(),

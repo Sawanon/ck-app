@@ -5,10 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:lottery_ck/components/coupons.dart';
 import 'package:lottery_ck/components/dialog.dart';
-import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/model/bank.dart';
 import 'package:lottery_ck/model/bill.dart';
 import 'package:lottery_ck/model/coupon.dart';
@@ -26,10 +24,8 @@ import 'package:lottery_ck/modules/payment/view/promotion_detail.dart';
 import 'package:lottery_ck/modules/payment/view/promotion_list.dart';
 import 'package:lottery_ck/modules/payment/view/use_point.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
-import 'package:lottery_ck/modules/pin/view/verify_pin.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
-import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/storage.dart';
@@ -66,6 +62,7 @@ class PaymentController extends GetxController {
   bool isCanUsePoint = false;
   List<Map> promotionList = [];
   List<Map> promotionBankList = [];
+  List promotionActive = [];
 
   void getPointRaio() async {
     final pointRatio = await AppWriteController.to.getPointRaio();
@@ -524,9 +521,8 @@ class PaymentController extends GetxController {
         ),
       );
       logger.w("responseTransaction");
-      logger.w(responseTransaction);
+      logger.w(responseTransaction.data);
       final result = responseTransaction.data['data'];
-      logger.w(result);
       if (bank.name == "bcel") {
         final payment = result['payment'];
         final invoiceMeta = result['invoiceMeta']['data'];
@@ -534,6 +530,7 @@ class PaymentController extends GetxController {
         final deeplink = payment['deeplink'];
         final uuid = payment['uuid'];
         logger.w("uuid: $uuid");
+        BuyLotteryController.to.invoiceMeta.value.billId = uuid;
         await launchUrl(Uri.parse('$deeplink'));
         BuyLotteryController.to.startCountDownInvoiceExpire(newExpire);
         subRealTime(uuid!, invoiceMeta['invoiceId']);
@@ -931,7 +928,8 @@ class PaymentController extends GetxController {
       invoice.lotteryDateStr,
       selectedBank?.$id,
     );
-    logger.w(response.data);
+    logger.w("response applyPromotion");
+    logger.d(response.data);
     onChangePoint(0);
     if (response.data == null || response.isSuccess == false) {
       Get.dialog(
@@ -951,6 +949,14 @@ class PaymentController extends GetxController {
       return false;
     }
     final data = response.data!['data'];
+    // final exPromotionActive = {
+    //   "promotionActive": [
+    //     {"promotionId": "680b3ec600369b7de577", "canUse": false},
+    //     {"promotionId": "67d3a3d10015cd0719dc", "canUse": true}
+    //   ],
+    // };
+    final promotionActive = data['promotionActive'];
+    this.promotionActive = promotionActive;
     final invoiceRes = data['invoice'];
 
     final InvoiceMetaData invoiceClone =
@@ -1211,6 +1217,17 @@ class PaymentController extends GetxController {
     BuyLotteryController.to.removeAllLottery(
       isKeepTransaction: true,
     );
+  }
+
+  bool isCanUse(String promotionId) {
+    promotionActive;
+    final result = promotionActive
+        .where((promotion) => promotion['promotionId'] == promotionId)
+        .toList();
+    if (result.isEmpty) {
+      return false;
+    }
+    return result.first['canUse'];
   }
 
   @override

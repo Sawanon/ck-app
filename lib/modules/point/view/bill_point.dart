@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/model/point_topup.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 
@@ -38,7 +40,7 @@ class BillPoint extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      "การซื้อสำเร็จ",
+                      AppLocale.purchaseCompleted.getString(context),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
@@ -53,7 +55,7 @@ class BillPoint extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("จำนวน point ที่ได้รับ"),
+                        Text(AppLocale.numberPointsReceived.getString(context)),
                         Text(
                           "+${CommonFn.parseMoney(pointTop.point?.toInt() ?? 0)}",
                           style: const TextStyle(
@@ -67,7 +69,7 @@ class BillPoint extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("ยอดเงินที่ชำระ"),
+                        Text(AppLocale.amountPaid.getString(context)),
                         Text(CommonFn.parseMoney(
                             pointTop.pointMoney?.toInt() ?? 0)),
                       ],
@@ -76,7 +78,7 @@ class BillPoint extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("วันที่เวลาที่ซื้อ"),
+                        Text(AppLocale.dateTimePurchase.getString(context)),
                         // Text("21/04/2025 11:23"),
                         Builder(builder: (context) {
                           final date = pointTop.paidAt != null
@@ -102,7 +104,7 @@ class BillPoint extends StatelessWidget {
                   backgroundColor: Colors.white,
                   onPressed: onBuyAgain,
                   child: Text(
-                    "ซื้อคะแนนเพิ่ม",
+                    AppLocale.buyMorePoints.getString(context),
                     style: TextStyle(
                       color: AppColors.primary,
                     ),
@@ -114,7 +116,7 @@ class BillPoint extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
                 child: LongButton(
                   onPressed: onBackHome,
-                  child: Text("กลับหน้าหลัก"),
+                  child: Text(AppLocale.returnToTheHomepage.getString(context)),
                 ),
               ),
             ],
