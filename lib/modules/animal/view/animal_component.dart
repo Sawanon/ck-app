@@ -2,30 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/header.dart';
-import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/main.dart';
 import 'package:lottery_ck/modules/animal/view/dialog_animal.dart';
-import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
-import 'package:lottery_ck/utils/common_fn.dart';
-import 'package:pinput/pinput.dart';
 
 class AnimalComponent extends StatefulWidget {
   final EdgeInsets? padding;
   final Future<void> Function(List<Map<String, dynamic>> lotterise)? onClickBuy;
   final bool? disableBuy;
   final void Function()? onBack;
+  final bool? enabledHeader;
   const AnimalComponent({
     super.key,
     this.onClickBuy,
     this.disableBuy,
     this.onBack,
     this.padding,
+    this.enabledHeader = false,
   });
 
   @override
@@ -390,33 +387,39 @@ class _AnimalComponentState extends State<AnimalComponent> {
       body: SafeArea(
         child: Column(
           children: [
-            // Header(
-            //   title: AppLocale.animalNumber.getString(context),
-            //   backgroundColor: AppColors.primary,
-            //   textColor: Colors.white,
-            // ),
-            Container(
-              color: AppColors.zinZaeBackground,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  GestureDetector(
-                    onTap: widget.onBack,
-                    child: Container(
-                      color: AppColors.zinZaeBackground,
-                      padding: const EdgeInsets.all(6),
-                      width: 48,
-                      height: 48,
-                      child: SvgPicture.asset(
-                        AppIcon.x,
-                        colorFilter: const ColorFilter.mode(
-                            Colors.white, BlendMode.srcIn),
+            if (widget.enabledHeader == true) ...[
+              Header(
+                title: AppLocale.animalNumber.getString(context),
+                // backgroundColor: AppColors.primary,
+                // textColor: Colors.white,
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+            ],
+            if (widget.enabledHeader == false)
+              Container(
+                color: AppColors.zinZaeBackground,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: widget.onBack,
+                      child: Container(
+                        color: AppColors.zinZaeBackground,
+                        padding: const EdgeInsets.all(6),
+                        width: 48,
+                        height: 48,
+                        child: SvgPicture.asset(
+                          AppIcon.x,
+                          colorFilter: const ColorFilter.mode(
+                              Colors.white, BlendMode.srcIn),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Container(

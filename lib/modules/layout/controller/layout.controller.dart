@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_screen_lock/flutter_screen_lock.dart';
 import 'package:flutter_svg/svg.dart';
@@ -12,19 +11,16 @@ import 'package:lottery_ck/components/cart.dart';
 import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/model/bill.dart';
-import 'package:lottery_ck/model/get_argument/otp.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery.page.dart';
 import 'package:lottery_ck/modules/history/view/history.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
-import 'package:lottery_ck/modules/home/view/home.dart';
 import 'package:lottery_ck/modules/home/view/home.v2.dart';
 import 'package:lottery_ck/modules/kyc/view/ask_kyc_dialog.dart';
 import 'package:lottery_ck/modules/notification/view/notification.dart';
 import 'package:lottery_ck/modules/pin/controller/passcode_verify.controller.dart';
-import 'package:lottery_ck/modules/pin/controller/pin_verify.controller.dart';
 import 'package:lottery_ck/modules/pin/view/pin_verify.dart';
 import 'package:lottery_ck/modules/point/view/bill_point.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
@@ -39,6 +35,8 @@ import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 
 enum TabApp { home, history, lottery, notifications, settings }
+
+enum SnackPositions { top, bottom }
 
 class LayoutController extends GetxController with WidgetsBindingObserver {
 // class LayoutController extends GetxController {
@@ -55,6 +53,10 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   UserApp? userApp;
   List<String> backgroundThemeList = [];
   bool isSessionTimeout = false;
+  RxBool isOpenSnackBar = false.obs;
+  RxBool isOpenSnackBarFade = false.obs;
+  RxString snackMessage = "".obs;
+  Rx<SnackPositions?> snackbarPosition = Rx<SnackPositions?>(null);
 
   void clearState() {
     isUsedBiometrics = false;
@@ -639,39 +641,30 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
         ),
         config: ScreenLockConfig(
           backgroundColor: Colors.white,
-          // titleTextStyle: TextStyle(
-          //   fontSize: 32,
-          //   fontWeight: FontWeight.w700,
-          // ),
-          // textStyle: TextStyle(
-          //   color: Colors.red,
-          // ),
-          // buttonStyle: ButtonStyle(
-          //   backgroundColor: WidgetStateProperty.all(
-          //     Colors.amber,
-          //   ),
-          // ),
         ),
       );
-      // Get.dialog(
-      //   const PinVerifyPage(
-      //     disabledBackButton: true,
-      //   ),
-      //   arguments: {
-      //     "userId": user.userId,
-      //     "whenSuccess": () {
-      //       logger.d("whenSuccess");
-      //       restartApp();
-      //       isSessionTimeout = false;
-      //       isUsedBiometrics = true;
-      //     },
-      //     "enableForgetPasscode": true,
-      //     "whenForgetPasscode": () {
-      //       logger.d("whenForgetPasscode");
-      //     }
-      //   },
-      // );
     }
+  }
+
+  void snackBar({
+    required String message,
+    Duration duration = const Duration(seconds: 3),
+    SnackPositions position = SnackPositions.bottom,
+  }) {
+    snackbarPosition.value = position;
+    isOpenSnackBar.value = true;
+    isOpenSnackBarFade.value = true;
+    snackMessage.value = message;
+    Future.delayed(
+      duration,
+      () {
+        isOpenSnackBarFade.value = false;
+        Future.delayed(const Duration(milliseconds: 250), () {
+          isOpenSnackBar.value = false;
+          snackbarPosition.value = SnackPositions.bottom;
+        });
+      },
+    );
   }
 
   @override

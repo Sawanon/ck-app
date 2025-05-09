@@ -10,15 +10,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
-import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottery_ck/binding/initial.binding.dart';
-import 'package:lottery_ck/modules/kyc/view/kyc.dart';
-import 'package:lottery_ck/modules/login/controller/login.controller.dart';
-import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/modules/splash_screen/controller/splash_screen.controller.dart';
 import 'package:lottery_ck/modules/splash_screen/view/splash_screen.dart';
-import 'package:lottery_ck/modules/test/video_toomany.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/route/routes.dart';
@@ -102,27 +97,12 @@ Future<void> setupLocalNotification() async {
 }
 
 Future checkDeeplink() async {
-  // StreamSubscription _sub;
   try {
-    // await getInitialLink();
     final _appLinks = AppLinks();
     _appLinks.uriLinkStream.listen(
       (uri) {
-        // if (uri.path == "/payment") {
-        // final invoiceId = uri.queryParameters['invoiceId'];
-        // if (invoiceId == null) return;
         Get.put(SplashScreenController());
         SplashScreenController.to.updateUrlPath(uri);
-        // Get.lazyPut<PaymentController>(
-        //   () => PaymentController(),
-        //   fenix: true,
-        // );
-        // PaymentController.to.showBill(invoiceId!);
-        // }
-        // else if (uri.path == "/bypass/4258c57e54eaeaf3") {
-        //   Get.put(SplashScreenController());
-        //   SplashScreenController.to.bypass();
-        // }
       },
     );
   } on PlatformException {

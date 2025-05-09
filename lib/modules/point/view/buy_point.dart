@@ -7,15 +7,11 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/input_text.dart';
 import 'package:lottery_ck/components/long_button.dart';
-import 'package:lottery_ck/model/point_topup.dart';
-import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/point/controller/buy_point.controller.dart';
-import 'package:lottery_ck/modules/point/view/bill_point.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
-import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:lottery_ck/utils/theme.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -170,7 +166,7 @@ class TopupPoint extends StatelessWidget {
                           ),
                           const SizedBox(height: 16),
                           Skeletonizer(
-                            enabled: controller.isLoading,
+                            enabled: controller.isLoadingPoint,
                             child: Row(
                               children: controller.pointList['1']!.map((point) {
                                 return Expanded(
@@ -232,7 +228,7 @@ class TopupPoint extends StatelessWidget {
                           ),
                           const SizedBox(height: 16),
                           Skeletonizer(
-                            enabled: controller.isLoading,
+                            enabled: controller.isLoadingPoint,
                             child: Row(
                               children: controller.pointList['2']!.map((point) {
                                 return Expanded(
@@ -338,7 +334,7 @@ class TopupPoint extends StatelessWidget {
                             children: [
                               Expanded(
                                 child: InputText(
-                                  disabled: controller.isLoading,
+                                  disabled: controller.isLoadingPoint,
                                   controller: controller.pointInpuController,
                                   inputFormatters: [
                                     FilteringTextInputFormatter.digitsOnly,
@@ -479,14 +475,15 @@ class TopupPoint extends StatelessWidget {
                   color: Colors.white,
                   boxShadow: [AppTheme.softShadow],
                 ),
-                child: Builder(builder: (context) {
-                  bool disabled =
-                      controller.selectedBank == null || controller.isLoading;
+                child: Obx(() {
+                  bool disabled = controller.selectedBank == null ||
+                      controller.isLoadingPoint;
                   if (controller.pointWantToBuy == null) {
                     disabled = true;
                   }
                   return LongButton(
                     disabled: disabled,
+                    isLoading: controller.isLoading.value,
                     onPressed: () {
                       controller.submitBuyPoint();
                     },

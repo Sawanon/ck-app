@@ -323,21 +323,6 @@ class PaymentController extends GetxController {
         point: invoiceDocuments.data['point'],
         pointMoney: invoiceDocuments.data['pointMoney'],
       );
-      // final bill = Bill(
-      //   firstName: userApp!.firstName,
-      //   lastName: userApp.lastName,
-      //   phoneNumber: userApp.phoneNumber,
-      //   dateTime: DateTime.parse(invoiceDocuments!.$createdAt),
-      //   lotteryDateStr: lotteryDateStrYMD!,
-      //   lotteryList: invoiceMeta.transactions,
-      //   totalAmount: invoiceMeta.totalAmount.toString(),
-      //   amount: invoiceMeta.amount,
-      //   billId: "2025011349fk9499f9",
-      //   // invoiceId: invoiceMeta,
-      //   // bankName: selectedBank!.fullName,
-      //   bankName: "Lao Development Bank (LDB)",
-      //   customerId: userApp.customerId!,
-      // );
       Get.offNamed(
         RouteName.bill,
         arguments: {
@@ -427,6 +412,9 @@ class PaymentController extends GetxController {
         (error, stackTrace) {
           logger.e(error);
           logger.e(stackTrace);
+          LayoutController.to.snackBar(
+            message: "$error",
+          );
         },
       );
     // ..onError((e) {

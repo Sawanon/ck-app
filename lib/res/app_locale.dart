@@ -408,6 +408,8 @@ mixin AppLocale {
   static const String amountPaid = "ຈຳນວນທີ່ຈ່າຍ";
   static const String dateTimePurchase = "ວັນທີ/ເວລາຂອງການຊື້";
   static const String buyMorePoints = "ຊື້ຄະແນນເພີ່ມເຕີມ";
+  static const String pointsFromPayment = "ຄະແນນຈາກການຈ່າຍເງິນ";
+  static const String servicePolicy = "ນະໂຍບາຍການບໍລິການ";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -776,6 +778,8 @@ mixin AppLocale {
     amountPaid: "ຈຳນວນທີ່ຈ່າຍ",
     dateTimePurchase: "ວັນທີ/ເວລາຂອງການຊື້",
     buyMorePoints: "ຊື້ຄະແນນເພີ່ມເຕີມ",
+    pointsFromPayment: "ຄະແນນຈາກການຈ່າຍເງິນ",
+    servicePolicy: "ນະໂຍບາຍການບໍລິການ",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -1145,6 +1149,8 @@ mixin AppLocale {
     amountPaid: "ยอดเงินที่ชำระ",
     dateTimePurchase: "วันที่เวลาที่ซื้อ",
     buyMorePoints: "ซื้อคะแนนเพิ่ม",
+    pointsFromPayment: "คะแนนจากชำระ",
+    servicePolicy: "นโยบาย การให้บริการ",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -1525,5 +1531,7 @@ mixin AppLocale {
     amountPaid: "Amount paid",
     dateTimePurchase: "Date-Time of Purchase",
     buyMorePoints: "Buy more points",
+    pointsFromPayment: "Points from payment",
+    servicePolicy: "Service Policy",
   };
 }

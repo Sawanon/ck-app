@@ -5,53 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1f1ed293-1839-463a-acb1-734d121a79cb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/ios/Runner/Runner.entitlements" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Podfile" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Podfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Podfile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Podfile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/AppDelegate.swift" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/AppDelegate.swift" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios/Runner/Info.plist" beforeDir="false" afterPath="$PROJECT_DIR$/ios/Runner/Info.plist" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/coupons.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/coupons.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/dialog_change_birthtime.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/dialog_change_birthtime.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/dialog_change_birthtime_v2.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/dialog_change_birthtime_v2.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/header.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/header.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/menu_grid.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/menu_grid.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/components/rating.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/components/rating.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/invoice_meta.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/invoice_meta.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/response/get_otp.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/response/get_otp.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/model/response/signup.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/model/response/signup.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/modules/appwrite/controller/appwrite.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/appwrite/controller/appwrite.controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/bill/controller/bill.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/bill/controller/bill.controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/bill/view/bill.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/bill/view/bill.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/firebase/controller/firebase_messaging.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/firebase/controller/firebase_messaging.controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/home/controller/home.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/home/controller/home.controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/home/view/home.v2.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/home/view/home.v2.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/horoscope_daily/view/horoscope_dialy.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/horoscope_daily/view/horoscope_dialy.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/kyc/controller/kyc.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/kyc/controller/kyc.controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/kyc/view/kyc.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/kyc/view/kyc.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/login/controller/login.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/login/controller/login.controller.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/layout/controller/layout.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/layout/controller/layout.controller.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/modules/layout/view/layout.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/layout/view/layout.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/modules/payment/controller/payment.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/payment/controller/payment.controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/payment/view/bank.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/payment/view/bank.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/modules/payment/view/payment.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/payment/view/payment.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/payment/view/use_point.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/payment/view/use_point.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/pin/controller/passcode_verify.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/pin/controller/passcode_verify.controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/pin/controller/pin.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/pin/controller/pin.controller.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/modules/point/controller/buy_point.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/point/controller/buy_point.controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/point/view/buy_point.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/point/view/buy_point.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/setting/controller/setting.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/setting/controller/setting.controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/signup/controller/signup.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/signup/controller/signup.controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/test/video_toomany.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/test/video_toomany.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/video/controller/video.controller.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/video/controller/video.controller.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/video/view/menu.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/video/view/menu.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/video/view/video_list.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/video/view/video_list.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/modules/wallpaper/view/wallpaper.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/modules/wallpaper/view/wallpaper.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/res/app_locale.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/res/app_locale.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/res/constant.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/res/constant.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/utils/common_fn.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils/common_fn.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,21 +44,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.cidr.known.project.marker": "true",
-    "RunOnceActivity.readMode.enableVisualFormatting": "true",
-    "cf.first.check.clang-format": "false",
-    "cidr.known.project.marker": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/sawanonwattanasit/Project/flutter/ck-app",
-    "settings.editor.selected.configurable": "device.mirroring",
-    "show.migrate.to.gradle.popup": "false"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/sawanonwattanasit/Project/flutter/ck-app&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;device.mirroring&quot;,
+    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

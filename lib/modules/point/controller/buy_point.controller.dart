@@ -24,11 +24,12 @@ class BuyPointController extends GetxController {
   int? pointWantToBuy;
   TextEditingController pointInpuController = TextEditingController();
   int pointRaio = 1;
-  bool isLoading = true;
+  bool isLoadingPoint = true;
   List<Bank> bankList = [];
   Bank? selectedBank;
   int selectedPointList = 0;
   Subscription? subscriptionPubnub;
+  RxBool isLoading = false.obs;
 
   void onClickPointList(int point) {
     selectedPointList = point;
@@ -119,67 +120,74 @@ class BuyPointController extends GetxController {
   }
 
   void submitBuyPoint() async {
-    logger.d("point: $pointWantToBuy");
-    if (pointWantToBuy == null) {
-      Get.dialog(
-        DialogApp(
-          title: Text(
-            AppLocale.somethingWentWrong.getString(Get.context!),
+    try {
+      logger.d("point: $pointWantToBuy");
+      if (pointWantToBuy == null) {
+        Get.dialog(
+          DialogApp(
+            title: Text(
+              AppLocale.somethingWentWrong.getString(Get.context!),
+            ),
+            details: Text(
+              "Please select point",
+            ),
           ),
-          details: Text(
-            "Please select point",
+        );
+        return;
+      }
+      if (selectedBank == null) {
+        Get.dialog(
+          DialogApp(
+            title: Text(
+              AppLocale.somethingWentWrong.getString(Get.context!),
+            ),
+            details: Text(
+              "Please select bank",
+            ),
           ),
-        ),
+        );
+        return;
+      }
+      if (pointWantToBuy! < 1000) {
+        Get.dialog(
+          DialogApp(
+            title: Text(
+              AppLocale.somethingWentWrong.getString(Get.context!),
+            ),
+            details: Text(
+              "Minimum point is 1000",
+            ),
+          ),
+        );
+        return;
+      }
+      isLoading.value = true;
+      final response = await AppWriteController.to.topup(
+        pointWantToBuy!,
+        selectedBank!.$id,
+        SettingController.to.user!.userId,
       );
-      return;
-    }
-    if (selectedBank == null) {
-      Get.dialog(
-        DialogApp(
-          title: Text(
-            AppLocale.somethingWentWrong.getString(Get.context!),
-          ),
-          details: Text(
-            "Please select bank",
-          ),
-        ),
-      );
-      return;
-    }
-    if (pointWantToBuy! < 1000) {
-      Get.dialog(
-        DialogApp(
-          title: Text(
-            AppLocale.somethingWentWrong.getString(Get.context!),
-          ),
-          details: Text(
-            "Minimum point is 1000",
-          ),
-        ),
-      );
-      return;
-    }
-    final response = await AppWriteController.to.topup(
-      pointWantToBuy!,
-      selectedBank!.$id,
-      SettingController.to.user!.userId,
-    );
-    logger.w("buy_point.controller.dart:147");
-    logger.d(response.data);
-    final result = response.data?['data'];
-    if (selectedBank?.name == "bcel") {
-      final payment = result['payment'];
-      final deeplink = payment['deeplink'];
-      final uuid = payment['uuid'];
-      logger.w("uuid: $uuid");
-      await launchUrl(Uri.parse('$deeplink'));
+      logger.w("buy_point.controller.dart:147");
+      logger.d(response.data);
+      final result = response.data?['data'];
+      if (selectedBank?.name == "bcel") {
+        final payment = result['payment'];
+        final deeplink = payment['deeplink'];
+        final uuid = payment['uuid'];
+        logger.w("uuid: $uuid");
+        await launchUrl(Uri.parse('$deeplink'));
 
-      subRealTime(uuid!);
+        subRealTime(uuid!);
+      }
+    } catch (e) {
+      logger.e(e);
+    } finally {
+      isLoading.value = false;
     }
   }
 
-  void setIsLoading(bool value) {
-    isLoading = value;
+  void setIsLoadingPoint(bool value) {
+    isLoadingPoint = value;
     update();
   }
 
@@ -230,7 +238,7 @@ class BuyPointController extends GetxController {
     await getPointRaio();
     await listBank();
     // pointRaio = (1000 / 100).round();
-    setIsLoading(false);
+    setIsLoadingPoint(false);
     update();
   }
 

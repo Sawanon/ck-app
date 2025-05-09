@@ -9,11 +9,11 @@ import 'package:lottery_ck/components/rating.dart';
 import 'package:lottery_ck/components/traslate.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
+import 'package:lottery_ck/modules/t_c/view/t_c.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/route/route_name.dart';
-import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 
 class SettingPage extends StatelessWidget {
@@ -22,14 +22,6 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SettingController>(
-      initState: (state) async {
-        // await Future.delayed(
-        //   const Duration(seconds: 1),
-        //   () {
-        // SettingController.to.setup();
-        //   },
-        // );
-      },
       builder: (controller) {
         if (controller.loading) {
           return Center(child: CircularProgressIndicator());
@@ -639,6 +631,81 @@ class SettingPage extends StatelessWidget {
                                       const SizedBox(width: 16),
                                       Text(
                                         AppLocale.security.getString(context),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: SvgPicture.asset(AppIcon.arrowRight),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          GestureDetector(
+                            onTap: () {
+                              Get.to(
+                                () => TCPage(
+                                  enabledAcceptBtn: false,
+                                ),
+                              );
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: AppColors.primary.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Container(
+                                        padding: EdgeInsets.all(2),
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              AppColors.redGradient,
+                                              AppColors.yellowGradient,
+                                            ],
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                          ),
+                                        ),
+                                        child: Container(
+                                          width: 48,
+                                          height: 48,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white,
+                                          ),
+                                          child: SizedBox(
+                                            width: 24,
+                                            height: 24,
+                                            child: SvgPicture.asset(
+                                              AppIcon.achiveBook,
+                                              colorFilter:
+                                                  const ColorFilter.mode(
+                                                AppColors.primary,
+                                                BlendMode.srcIn,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 16),
+                                      Text(
+                                        AppLocale.servicePolicy
+                                            .getString(context),
                                         style: TextStyle(
                                           fontWeight: FontWeight.w600,
                                         ),

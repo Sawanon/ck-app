@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/blur_app.dart';
@@ -10,6 +11,7 @@ import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/theme.dart';
 
 class LayoutPage extends StatelessWidget {
   const LayoutPage({super.key});
@@ -139,19 +141,57 @@ class LayoutPage extends StatelessWidget {
                           onChangeTab: controller.changeTab,
                         ),
                       ),
-                      // Align(
-                      //   alignment: Alignment.topRight,
-                      //   child: SafeArea(
-                      //     child: Padding(
-                      //       padding: const EdgeInsets.only(
-                      //         top: 48,
-                      //         right: 8,
-                      //       ),
-                      //       child:
-                      //           controller.renderMyCart(controller.currentTab),
-                      //     ),
-                      //   ),
-                      // ),
+                      Obx(() {
+                        return Positioned(
+                          bottom: controller.snackbarPosition.value ==
+                                  SnackPositions.bottom
+                              ? 0
+                              : null,
+                          top: controller.snackbarPosition.value ==
+                                  SnackPositions.top
+                              ? 0
+                              : null,
+                          left: 0,
+                          right: 0,
+                          child: Builder(builder: (context) {
+                            if (controller.isOpenSnackBar.value) {
+                              return Container(
+                                margin: const EdgeInsets.only(
+                                  left: 24,
+                                  right: 24,
+                                  bottom: 140,
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                  horizontal: 16,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey.shade200,
+                                  borderRadius: BorderRadius.circular(48),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      offset: const Offset(0, 1),
+                                      color: Colors.black.withOpacity(0.4),
+                                      blurRadius: 2,
+                                    )
+                                  ],
+                                ),
+                                child: Text(
+                                  controller.snackMessage.value,
+                                  textAlign: TextAlign.center,
+                                ),
+                              )
+                                  .animate(
+                                    target: controller.isOpenSnackBarFade.value
+                                        ? 1
+                                        : 0,
+                                  )
+                                  .fade();
+                            }
+                            return const SizedBox.shrink();
+                          }),
+                        );
+                      }),
                     ],
                   ),
                 ),

@@ -1083,40 +1083,24 @@ class BuyLotteryController extends GetxController {
           ),
         )
         .toList();
-    // final List<String> lotteryError = [];
-    // for (var lottery in lotteryList) {
-    //   logger.d("start run for");
-    //   final isMaxPerTimes = lotteryIsValid(
-    //     Lottery(
-    //       lottery: lottery.lottery,
-    //       amount: lottery.price,
-    //       lotteryType: lottery.type,
-    //       quota: lottery.price,
-    //     ),
-    //   );
-    //   if (isMaxPerTimes == false) {
-    //     logger.w("break");
-    //     lotteryError.add(lottery.lottery);
-    //     break;
-    //     return lottery.lottery;
-    //   }
-    // }
-    // logger.d("after break");
-    // logger.d(lotteryError);
-    // if (lotteryError.isNotEmpty) {
-    //   return null;
-    // }
-    for (var lottery in lotteryList) {
+    final lotteryNotZero =
+        lotteryList.where((lottery) => lottery.quota != 0).toList();
+    List<Lottery> successLottery = [];
+    bool someSuccess = false;
+    for (var lottery in lotteryNotZero) {
       // submitFormAddLotteryV2(lottery.lottery, lottery.quota);
       final result = await addTransactionIntoInvoice(lottery);
       logger.d("result: $result");
-      // if (result == false) {
-      //   break;
-      // }
+      if (result) {
+        successLottery.add(lottery);
+        someSuccess = true;
+      }
     }
     // await createTransaction(lotteryList);
-    Get.back();
-    showSnackbarSuccess(lotteryList);
+    if (someSuccess) {
+      Get.back();
+      showSnackbarSuccess(successLottery);
+    }
     return null;
   }
 

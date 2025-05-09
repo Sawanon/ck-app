@@ -144,25 +144,6 @@ class AppWriteController extends GetxController {
       await createTarget();
       final storageController = StorageController.to;
       storageController.setSessionId(session.$id);
-      // await StorageController.to.setSessionId(session.$id);
-      // final user = await account.get();
-      // logger.d(user.name);
-      // // final firebaseMessage = FirebaseMessagingController.to;
-      // // logger.d(firebaseMessage.token);
-      // logger.d(user.targets.length);
-      // for (var element in user.targets) {
-      //   logger.d(element.name);
-      //   logger.d(element.providerType);
-      // }
-      // final pushTarget = user.targets
-      //     .where((element) => element.providerType == 'push')
-      //     .toList();
-      // logger.d(pushTarget);
-      // logger.d(pushTarget.length);
-      // if (pushTarget.isEmpty) {
-      //   logger.w("create target is empty");
-      //   await createTarget();
-      // }
       return session;
     } on Exception catch (e) {
       logger.e(e.toString());
@@ -823,9 +804,9 @@ class AppWriteController extends GetxController {
 
   Future<List?> listWinInvoices(String collectionId) async {
     try {
-      // final userId = await user.then((value) => value.$id);
+      final userId = await user.then((value) => value.$id);
       // const userId = "67edf7a800193b9b4180"; // p nat
-      const userId = "680b37540010c6d7e604"; // p nueg
+      // const userId = "680b37540010c6d7e604"; // p nueg
       final invoiceList = await databases.listDocuments(
         databaseId: _databaseName,
         collectionId: collectionId,
@@ -931,6 +912,8 @@ class AppWriteController extends GetxController {
       List lotteryHistoryList = [];
       final lotteryHistoryListData =
           lotteryHistoryDocumentList.documents.map((document) => document.data);
+      logger.d("lotteryHistoryListData:934");
+      logger.w(lotteryHistoryListData);
       var newMap =
           groupBy(lotteryHistoryListData, (Map obj) => obj['lottery_date_id']);
       for (var lotteryByDate in newMap.entries) {

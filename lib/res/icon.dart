@@ -82,6 +82,7 @@ class AppIcon {
   static const String tickCircle = "assets/svg/vuesax/linear/tick-circle.svg";
   static const String kyc = "assets/png/KYC.png";
   static const String buyPoint = "assets/svg/vuesax/bold/empty-wallet-add.svg";
+  static const String achiveBook = "assets/svg/vuesax/linear/archive-book.svg";
 
   static const String lo = "assets/laos1.png";
   static const String th = "assets/Th1.png";
