@@ -34,8 +34,12 @@ class NewsListComponent extends StatelessWidget {
                       SizedBox(
                         width: 120,
                         height: 120,
-                        child: Image.asset(
+                        child: SvgPicture.asset(
                           AppIcon.news,
+                          colorFilter: const ColorFilter.mode(
+                            AppColors.disableText,
+                            BlendMode.srcIn,
+                          ),
                         ),
                         // child: SvgPicture.asset(
                         //   AppIcon.news,
@@ -45,6 +49,7 @@ class NewsListComponent extends StatelessWidget {
                         //   ),
                         // ),
                       ),
+                      const SizedBox(height: 16),
                       Text(
                         AppLocale.noNews.getString(context),
                         style: TextStyle(
@@ -104,8 +109,8 @@ class NewsListComponent extends StatelessWidget {
                                     begin: Alignment.bottomCenter,
                                     end: Alignment.topCenter,
                                     colors: [
-                                      AppColors.yellowGradient,
-                                      AppColors.redGradient,
+                                      AppColors.secondaryColor,
+                                      AppColors.primary,
                                     ],
                                   ),
                                 ),

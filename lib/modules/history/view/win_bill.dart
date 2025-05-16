@@ -75,6 +75,7 @@ class WinBillPage extends StatelessWidget {
                       Text(
                         AppLocale.youAreTheLuckyOneAndHaveWonPrizeSpecial
                             .getString(context),
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.amber.shade700,

@@ -3,12 +3,12 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog_kyc_pending.dart';
+import 'package:lottery_ck/components/more_menu.dart';
 import 'package:lottery_ck/components/user_qr.dart';
 import 'package:lottery_ck/model/menu.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
-import 'package:lottery_ck/modules/point/view/buy_point.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -27,32 +27,7 @@ class MenuGrid extends StatelessWidget {
     return GetBuilder<HomeController>(
       builder: (controller) {
         final List<MenuModel> menuList = [
-          MenuModel(
-            ontab: () {
-              // Get.toNamed(RouteName.scanQR);
-              Get.toNamed(RouteName.horoscopeDaily);
-            },
-            icon: SizedBox(
-              height: 32,
-              width: 32,
-              child: Image.asset(
-                AppIcon.dialyHoroscope,
-              ),
-            ),
-            name: Align(
-              alignment: Alignment.center,
-              child: Text(
-                AppLocale.dailyFortune.getString(context),
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 11,
-                  height: 1.2,
-                ),
-                textAlign: TextAlign.center,
-                softWrap: true,
-              ),
-            ),
-          ),
+          // 1
           MenuModel(
             ontab: () {
               if (SettingController.to.user == null) {
@@ -70,15 +45,20 @@ class MenuGrid extends StatelessWidget {
             icon: SizedBox(
               height: 32,
               width: 32,
-              child: Image.asset(
-                AppIcon.invateFriends,
+              child: SvgPicture.asset(
+                AppIcon.inviteFriends,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.secondaryColor,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
             name: Align(
               alignment: Alignment.center,
               child: Text(
                 AppLocale.shareAppToYourFriend.getString(context),
-                style: TextStyle(
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
                   fontWeight: FontWeight.w600,
                   fontSize: 11,
                   height: 1.2,
@@ -88,24 +68,7 @@ class MenuGrid extends StatelessWidget {
               ),
             ),
           ),
-          MenuModel(
-            ontab: controller.gotoWallPaperPage,
-            icon: SizedBox(
-              height: 32,
-              width: 32,
-              child: Image.asset(
-                AppIcon.wallpapers,
-              ),
-            ),
-            name: Text(
-              AppLocale.auspiciousWallpaper.getString(context),
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 11,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
+          // 2
           MenuModel(
             ontab: () {
               controller.gotoTopupPoint();
@@ -115,13 +78,18 @@ class MenuGrid extends StatelessWidget {
               width: 32,
               child: SvgPicture.asset(
                 AppIcon.buyPoint,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.secondaryColor,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
             name: Align(
               alignment: Alignment.center,
               child: Text(
                 AppLocale.topupPoints.getString(context),
-                style: TextStyle(
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
                   fontWeight: FontWeight.w600,
                   fontSize: 11,
                   height: 1.2,
@@ -131,6 +99,39 @@ class MenuGrid extends StatelessWidget {
               ),
             ),
           ),
+          // 3
+          MenuModel(
+            ontab: () {
+              // Get.toNamed(RouteName.scanQR);
+              Get.toNamed(RouteName.horoscopeDaily);
+            },
+            icon: SizedBox(
+              height: 32,
+              width: 32,
+              child: SvgPicture.asset(
+                AppIcon.dialyHoroscope,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.secondaryColor,
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
+            name: Align(
+              alignment: Alignment.center,
+              child: Text(
+                AppLocale.dailyFortune.getString(context),
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 11,
+                  height: 1.2,
+                ),
+                textAlign: TextAlign.center,
+                softWrap: true,
+              ),
+            ),
+          ),
+          // 4
           MenuModel(
             disabled: true,
             ontab: () {
@@ -139,8 +140,12 @@ class MenuGrid extends StatelessWidget {
             icon: SizedBox(
               height: 32,
               width: 32,
-              child: Image.asset(
+              child: SvgPicture.asset(
                 AppIcon.community,
+                colorFilter: ColorFilter.mode(
+                  Colors.grey.shade700,
+                  BlendMode.srcIn,
+                ),
               ),
             ),
             name: Align(
@@ -158,40 +163,7 @@ class MenuGrid extends StatelessWidget {
               ),
             ),
           ),
-          MenuModel(
-            disabled: true,
-            ontab: () async {
-              LayoutController.to.changeTab(TabApp.settings);
-              NotificationController.to.onChangeTab(1);
-            },
-            icon: SizedBox(
-              height: 32,
-              width: 32,
-              child: Image.asset(
-                AppIcon.news,
-              ),
-              // child: SvgPicture.asset(
-              //   AppIcon.news,
-              //   colorFilter: const ColorFilter.mode(
-              //     AppColors.primary,
-              //     BlendMode.srcIn,
-              //   ),
-              // ),
-            ),
-            name: Align(
-              alignment: Alignment.center,
-              child: Text(
-                AppLocale.news.getString(context),
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 11,
-                  height: 1.2,
-                ),
-                textAlign: TextAlign.center,
-                softWrap: true,
-              ),
-            ),
-          ),
+          // 5
           MenuModel(
             disabled: true,
             ontab: () {
@@ -201,8 +173,12 @@ class MenuGrid extends StatelessWidget {
             icon: SizedBox(
               height: 32,
               width: 32,
-              child: Image.asset(
+              child: SvgPicture.asset(
                 AppIcon.promotion,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.secondaryColor,
+                  BlendMode.srcIn,
+                ),
               ),
               // child: SvgPicture.asset(
               //   AppIcon.promotion,
@@ -216,7 +192,8 @@ class MenuGrid extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 AppLocale.promotion.getString(context),
-                style: TextStyle(
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
                   fontWeight: FontWeight.w600,
                   fontSize: 11,
                   height: 1.2,
@@ -226,6 +203,47 @@ class MenuGrid extends StatelessWidget {
               ),
             ),
           ),
+          // 6
+          MenuModel(
+            disabled: true,
+            ontab: () async {
+              LayoutController.to.changeTab(TabApp.settings);
+              NotificationController.to.onChangeTab(1);
+            },
+            icon: SizedBox(
+              height: 32,
+              width: 32,
+              child: SvgPicture.asset(
+                AppIcon.news,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.secondaryColor,
+                  BlendMode.srcIn,
+                ),
+              ),
+              // child: SvgPicture.asset(
+              //   AppIcon.news,
+              //   colorFilter: const ColorFilter.mode(
+              //     AppColors.primary,
+              //     BlendMode.srcIn,
+              //   ),
+              // ),
+            ),
+            name: Align(
+              alignment: Alignment.center,
+              child: Text(
+                AppLocale.news.getString(context),
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 11,
+                  height: 1.2,
+                ),
+                textAlign: TextAlign.center,
+                softWrap: true,
+              ),
+            ),
+          ),
+          // 7
           MenuModel(
             disabled: true,
             ontab: () {
@@ -245,8 +263,12 @@ class MenuGrid extends StatelessWidget {
             icon: SizedBox(
               height: 32,
               width: 32,
-              child: Image.asset(
+              child: SvgPicture.asset(
                 AppIcon.kyc,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.secondaryColor,
+                  BlendMode.srcIn,
+                ),
               ),
               // child: SvgPicture.asset(
               //   AppIcon.registerAndVerify,
@@ -260,7 +282,8 @@ class MenuGrid extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 AppLocale.verifyIdentity.getString(context),
-                style: TextStyle(
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
                   fontWeight: FontWeight.w600,
                   fontSize: 11,
                   height: 1.2,
@@ -270,6 +293,66 @@ class MenuGrid extends StatelessWidget {
               ),
             ),
           ),
+          // 8
+          MenuModel(
+            ontab: controller.gotoWallPaperPage,
+            icon: SizedBox(
+              height: 32,
+              width: 32,
+              child: SvgPicture.asset(
+                AppIcon.wallpapers,
+                colorFilter: const ColorFilter.mode(
+                  AppColors.secondaryColor,
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
+            name: Text(
+              AppLocale.auspiciousWallpaper.getString(context),
+              style: const TextStyle(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w600,
+                fontSize: 11,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          // MenuModel(
+          //   disabled: true,
+          //   ontab: () {
+          //     logger.d("comming soon");
+          //     // Get.toNamed('/test');
+          //   },
+          //   icon: SizedBox(
+          //     height: 32,
+          //     width: 32,
+          //     // child: Image.asset(
+          //     //   AppIcon.news,
+          //     // ),
+          //     child: SvgPicture.asset(
+          //       AppIcon.aiChat,
+          //       colorFilter: ColorFilter.mode(
+          //         Colors.grey.shade700,
+          //         BlendMode.srcIn,
+          //       ),
+          //     ),
+          //   ),
+          //   name: Align(
+          //     alignment: Alignment.center,
+          //     child: Text(
+          //       'CK-AI Chat',
+          //       style: TextStyle(
+          //         fontWeight: FontWeight.w600,
+          //         fontSize: 11,
+          //         height: 1.2,
+          //         color: AppColors.menuTextDisabled,
+          //       ),
+          //       textAlign: TextAlign.center,
+          //       softWrap: true,
+          //     ),
+          //   ),
+          // ),
+          // 9
           MenuModel(
             disabled: true,
             ontab: () {
@@ -283,7 +366,7 @@ class MenuGrid extends StatelessWidget {
               //   AppIcon.news,
               // ),
               child: SvgPicture.asset(
-                AppIcon.aiChat,
+                AppIcon.aiChatLinear,
                 colorFilter: ColorFilter.mode(
                   Colors.grey.shade700,
                   BlendMode.srcIn,
@@ -305,19 +388,25 @@ class MenuGrid extends StatelessWidget {
               ),
             ),
           ),
+          // 10
           MenuModel(
             disabled: true,
             ontab: () {
               logger.d("comming soon");
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return const MoreMenu();
+                },
+              );
             },
             icon: SizedBox(
               height: 32,
               width: 32,
               child: SvgPicture.asset(
-                AppIcon.allMenu,
+                AppIcon.moreMenu,
                 colorFilter: const ColorFilter.mode(
-                  // AppColors.redGradient,
-                  AppColors.disableText,
+                  AppColors.secondaryColor,
                   BlendMode.srcIn,
                 ),
               ),
@@ -325,9 +414,9 @@ class MenuGrid extends StatelessWidget {
             name: Align(
               alignment: Alignment.center,
               child: Text(
-                AppLocale.all.getString(context),
-                style: TextStyle(
-                  color: AppColors.disableText,
+                AppLocale.more.getString(context),
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
                   fontWeight: FontWeight.w600,
                   fontSize: 11,
                   height: 1.2,

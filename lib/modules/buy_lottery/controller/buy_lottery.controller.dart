@@ -150,23 +150,28 @@ class BuyLotteryController extends GetxController {
     String messageText = AppLocale.addedLottery.getString(Get.context!);
     messageText =
         messageText.replaceAll("{lottery}", onlyLotteryList.join(","));
-    Get.rawSnackbar(
-      animationDuration: const Duration(milliseconds: 300),
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: Colors.green.shade200,
-      overlayColor: Colors.green.shade800,
-      margin: const EdgeInsets.all(16),
-      borderRadius: 16,
-      messageText: Text(
-        messageText,
-        // "เพิ่มเลข ${onlyLotteryList.join(",")} เรียบร้อย",
-        style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
-          color: Colors.green.shade800,
-        ),
-      ),
+    LayoutController.to.snackBar(
+      message: messageText,
+      position: SnackPositions.top,
+      type: SnackBarType.success,
     );
+    // Get.rawSnackbar(
+    //   animationDuration: const Duration(milliseconds: 300),
+    //   snackPosition: SnackPosition.TOP,
+    //   backgroundColor: Colors.green.shade200,
+    //   overlayColor: Colors.green.shade800,
+    //   margin: const EdgeInsets.all(16),
+    //   borderRadius: 16,
+    //   messageText: Text(
+    //     messageText,
+    //     // "เพิ่มเลข ${onlyLotteryList.join(",")} เรียบร้อย",
+    //     style: TextStyle(
+    //       fontSize: 14,
+    //       fontWeight: FontWeight.bold,
+    //       color: Colors.green.shade800,
+    //     ),
+    //   ),
+    // );
   }
 
   bool lotteryIsValid(Lottery lottery, int line, [bool isEdit = false]) {

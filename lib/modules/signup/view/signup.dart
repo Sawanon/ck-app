@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -362,6 +363,41 @@ class SignupPage extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(height: 16),
+                                Row(
+                                  children: [
+                                    Text(
+                                      AppLocale.referralCode.getString(context),
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.textPrimary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 4),
+                                InputText(
+                                  validator: (value) {
+                                    final message = AppLocale.minLength
+                                        .getString(Get.context!)
+                                        .replaceAll("{length}", "5");
+                                    if (value != null &&
+                                        value != "" &&
+                                        value.length < 5) {
+                                      return "${AppLocale.referralCode.getString(Get.context!)}$message";
+                                    }
+                                    return null;
+                                  },
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(),
+                                  ],
+                                  onlyLaos: false,
+                                  onlyText: false,
+                                  onChanged: (value) {
+                                    controller.inviteCode = value;
+                                  },
+                                ),
+                                const SizedBox(height: 16),
                                 // Row(
                                 //   children: [
                                 //     Text(
@@ -451,6 +487,92 @@ class SignupPage extends StatelessWidget {
                 ],
               ),
             ),
+            Obx(() {
+              if (controller.isLoading.value) {
+                return Container(
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary20,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Stack(
+                          children: List.generate(
+                            controller.icons.length,
+                            (index) {
+                              final isVisible =
+                                  controller.currentIndex.value == index;
+                              final icon = controller.icons[index];
+                              return SizedBox(
+                                width: 180,
+                                height: 180,
+                                child: Icon(
+                                  icon,
+                                  size: 180,
+                                  color: AppColors.primary,
+                                ),
+                              )
+                                  .animate(
+                                    target: isVisible ? 1 : 0,
+                                    // delay: 1000.ms,
+                                    // onPlay: (controller) => controller.repeat(),
+                                  )
+                                  .fadeIn(
+                                    duration: 400.ms,
+                                    delay: 500.ms,
+                                  )
+                                  .moveY(
+                                    begin: 20,
+                                    end: 0,
+                                    duration: 1000.ms,
+                                    delay: 500.ms,
+                                    curve: Curves.easeOut,
+                                  );
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          AppLocale.loadingText1.getString(context),
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Container(
+                          clipBehavior: Clip.hardEdge,
+                          alignment: Alignment.centerLeft,
+                          width: (MediaQuery.of(context).size.width - 32),
+                          height: 16,
+                          decoration: BoxDecoration(
+                            color: AppColors.secondaryColor,
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: AppColors.primary,
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            width: double.infinity,
+                          )
+                              .animate(
+                                target: (controller.process.value / 100),
+                                // target: 1,
+                              )
+                              .moveX(
+                                begin: -MediaQuery.of(context).size.width,
+                                end: 0,
+                                duration: const Duration(seconds: 1),
+                                curve: Curves.linear,
+                              ),
+                        ),
+                      ],
+                    )).animate().fadeIn();
+              }
+              return const SizedBox.shrink();
+            }),
           ],
         ),
       );

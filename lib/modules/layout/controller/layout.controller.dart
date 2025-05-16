@@ -34,6 +34,8 @@ import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 
+enum SnackBarType { success, warning, error, normal }
+
 enum TabApp { home, history, lottery, notifications, settings }
 
 enum SnackPositions { top, bottom }
@@ -57,6 +59,8 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   RxBool isOpenSnackBarFade = false.obs;
   RxString snackMessage = "".obs;
   Rx<SnackPositions?> snackbarPosition = Rx<SnackPositions?>(null);
+  Rx<Color> snackbarBackgroundColor = Colors.grey.shade200.obs;
+  Rx<Color> snackbarTextColor = Colors.black.obs;
 
   void clearState() {
     isUsedBiometrics = false;
@@ -650,11 +654,24 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
     required String message,
     Duration duration = const Duration(seconds: 3),
     SnackPositions position = SnackPositions.bottom,
+    SnackBarType type = SnackBarType.normal,
   }) {
     snackbarPosition.value = position;
     isOpenSnackBar.value = true;
     isOpenSnackBarFade.value = true;
     snackMessage.value = message;
+    switch (type) {
+      case SnackBarType.success:
+        snackbarBackgroundColor.value = Colors.green.shade200;
+        snackbarTextColor.value = Colors.green.shade800;
+        break;
+      case SnackBarType.error:
+        snackbarBackgroundColor.value = Colors.red.shade200;
+        snackbarTextColor.value = Colors.red.shade800;
+        break;
+      default:
+        break;
+    }
     Future.delayed(
       duration,
       () {
@@ -662,6 +679,8 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
         Future.delayed(const Duration(milliseconds: 250), () {
           isOpenSnackBar.value = false;
           snackbarPosition.value = SnackPositions.bottom;
+          snackbarBackgroundColor = Colors.grey.shade200.obs;
+          snackbarTextColor = Colors.black.obs;
         });
       },
     );

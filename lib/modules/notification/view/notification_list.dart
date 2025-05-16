@@ -6,7 +6,6 @@ import 'package:lottery_ck/modules/notification/controller/notification.controll
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
-import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 
 class NotificationList extends StatelessWidget {
@@ -26,8 +25,9 @@ class NotificationList extends StatelessWidget {
                     controller.listNotification();
                   },
                   child: Obx(() {
-                    if (controller.notificationList.value?.data.isEmpty ==
-                        true) {
+                    if (controller.notificationList.value == null ||
+                        controller.notificationList.value?.data.isEmpty ==
+                            true) {
                       return ListView(
                         children: [
                           Container(
@@ -50,6 +50,7 @@ class NotificationList extends StatelessWidget {
                                     ),
                                   ),
                                 ),
+                                const SizedBox(height: 16),
                                 Text(
                                   AppLocale.noNotification.getString(context),
                                   style: TextStyle(
@@ -92,7 +93,7 @@ class NotificationList extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: notification.isRead
                                   ? Colors.white
-                                  : AppColors.primaryOpacity,
+                                  : AppColors.primary20,
                               borderRadius: BorderRadius.circular(10),
                               boxShadow: [
                                 BoxShadow(
@@ -115,8 +116,8 @@ class NotificationList extends StatelessWidget {
                                       begin: Alignment.bottomCenter,
                                       end: Alignment.topCenter,
                                       colors: [
-                                        AppColors.yellowGradient,
-                                        AppColors.redGradient,
+                                        AppColors.secondaryColor,
+                                        AppColors.primary,
                                       ],
                                     ),
                                   ),

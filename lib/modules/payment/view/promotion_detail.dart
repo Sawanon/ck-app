@@ -69,6 +69,7 @@ class PromotionDetail extends StatelessWidget {
               ),
               Text(
                 promotion['detail'] ?? "",
+                textAlign: TextAlign.start,
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.black.withOpacity(0.8),

@@ -29,7 +29,8 @@ class AppIcon {
   static const String phone = "assets/svg/vuesax/linear/call.svg";
   static const String location = "assets/svg/vuesax/linear/location.svg";
   // static const String promotion = "assets/svg/vuesax/bulk/ticket-discount.svg";
-  static const String promotion = "assets/png/promotion.png";
+  // static const String promotion = "assets/png/promotion.png";
+  static const String promotion = "assets/svg/promotion.svg";
   static const String promotionBold =
       "assets/svg/vuesax/bold/ticket-discount.svg";
   static const String download = "assets/svg/vuesax/linear/receive-square.svg";
@@ -40,7 +41,6 @@ class AppIcon {
   static const String edit = "assets/svg/vuesax/linear/edit.svg";
   static const String random = "assets/svg/random.svg";
   static const String kycFace = "assets/svg/ar_on_you.svg";
-  static const String card = "assets/svg/card.svg";
   static const String timer = "assets/svg/vuesax/linear/timer.svg";
   static const String setting_2 = "assets/svg/vuesax/linear/setting-2.svg";
   static const String groupAdd = "assets/svg/group_add.svg";
@@ -52,26 +52,33 @@ class AppIcon {
   static const String scanBold = "assets/svg/vuesax/bold/scan.svg";
   static const String gift = "assets/svg/vuesax/linear/gift.svg";
   static const String giftBold = "assets/svg/vuesax/bold/gift.svg";
-  static const String dialyHoroscope = "assets/png/today_horoscope.png";
+  // static const String dialyHoroscope = "assets/png/today_horoscope.png";
+  static const String dialyHoroscope = "assets/svg/card.svg";
   // static const String dialyHoroscope = "assets/svg/dialy_horoscope.svg";
-  static const String invateFriends = "assets/png/invite_friends.png";
-  static const String wallpapers = "assets/png/wallpapers.png";
+  // static const String inviteFriends = "assets/png/invite_friends.png";
+  static const String inviteFriends = "assets/svg/user.svg";
+  // static const String wallpapers = "assets/png/wallpapers.png";
+  static const String wallpapers = "assets/svg/photo.svg";
   static const String wallet = "assets/png/wallet.png";
-  static const String community = "assets/png/community.png";
+  // static const String community = "assets/png/community.png";
+  static const String community = "assets/svg/chat.svg";
   static const String todayHoroscope = "assets/png/horoscope.png";
   static const String todayCard = "assets/png/card.png";
   static const String todayBook = "assets/png/book.png";
   static const String copy = "assets/svg/vuesax/linear/copy.svg";
   static const String shoppingCart =
       "assets/svg/vuesax/linear/shopping-cart.svg";
-  // static const String news = "assets/svg/news.svg";
   // static const String news = "assets/svg/vuesax/bulk/subtitle.svg";
-  static const String news = "assets/png/news.png";
+  // static const String news = "assets/png/news.png";
+  static const String news = "assets/svg/news.svg";
   static const String newsBold = "assets/svg/vuesax/bold/subtitle.svg";
-  static const String aiChat = "assets/svg/vuesax/bulk/cpu-charge.svg";
+  static const String aiChatBulk = "assets/svg/vuesax/bulk/cpu-charge.svg";
+  static const String aiChatLinear = "assets/svg/vuesax/linear/cpu-charge.svg";
   static const String registerAndVerify =
       "assets/svg/vuesax/bulk/document-download.svg";
   static const String allMenu = "assets/svg/vuesax/bulk/element-3.svg";
+  // static const String moreMenu = "assets/svg/vuesax/bulk/element-plus.svg";
+  static const String moreMenu = "assets/svg/more.svg";
   static const String videoTodayHoroscope =
       "assets/png/video_today_horoscope.png";
   static const String videoLuckyNumber = "assets/png/video_lucky_number.png";
@@ -80,9 +87,15 @@ class AppIcon {
   static const String user = "assets/svg/vuesax/bold/user.svg";
   static const String userTick = "assets/svg/vuesax/bold/user-tick.svg";
   static const String tickCircle = "assets/svg/vuesax/linear/tick-circle.svg";
-  static const String kyc = "assets/png/KYC.png";
-  static const String buyPoint = "assets/svg/vuesax/bold/empty-wallet-add.svg";
+  // static const String kyc = "assets/png/KYC.png";
+  static const String kyc = "assets/svg/scan.svg";
+  // static const String buyPoint = "assets/svg/vuesax/bold/empty-wallet-add.svg";
+  static const String buyPoint = "assets/svg/wallet.svg";
   static const String achiveBook = "assets/svg/vuesax/linear/archive-book.svg";
+  static const String calendarTickBulk =
+      "assets/svg/vuesax/bulk/calendar-tick.svg";
+  static const String calendarTickLinear =
+      "assets/svg/vuesax/linear/calendar-tick.svg";
 
   static const String lo = "assets/laos1.png";
   static const String th = "assets/Th1.png";

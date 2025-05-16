@@ -208,8 +208,10 @@ class LotteryHistoryPage extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(100),
                                   gradient: LinearGradient(
                                     colors: [
-                                      AppColors.yellowGradient,
-                                      AppColors.redGradient,
+                                      AppColors.secondaryColor,
+                                      AppColors.primary,
+                                      // AppColors.yellowGradient,
+                                      // AppColors.redGradient,
                                     ],
                                     begin: Alignment.bottomCenter,
                                     end: Alignment.topCenter,

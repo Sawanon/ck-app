@@ -279,7 +279,6 @@ class AppWriteController extends GetxController {
       return Bank.fromJson(bankDocument.data);
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(message: "$e");
       return null;
     }
   }
@@ -324,7 +323,6 @@ class AppWriteController extends GetxController {
       );
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(message: "$e");
       return null;
     }
   }
@@ -352,10 +350,6 @@ class AppWriteController extends GetxController {
       );
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(
-        title: 'Something went wrong appwrite:264',
-        message: "Transaction: please try again later or contact admin",
-      );
       return null;
     }
   }
@@ -435,7 +429,6 @@ class AppWriteController extends GetxController {
       );
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(message: "$e");
       return null;
     }
   }
@@ -455,7 +448,6 @@ class AppWriteController extends GetxController {
       // account.deleteSession(sessionId: )
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(message: "$e");
     }
   }
 
@@ -525,7 +517,6 @@ class AppWriteController extends GetxController {
       return lotteryDateList;
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(message: "$e");
       return null;
     }
   }
@@ -550,7 +541,6 @@ class AppWriteController extends GetxController {
       return historyBuy;
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(message: "$e");
       return null;
     }
   }
@@ -568,7 +558,6 @@ class AppWriteController extends GetxController {
       );
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(message: "$e");
       return null;
     }
   }
@@ -592,7 +581,6 @@ class AppWriteController extends GetxController {
       // );
     } catch (e) {
       logger.e("$e");
-      // Get.rawSnackbar(message: "$e");
       return null;
     }
   }
@@ -607,7 +595,6 @@ class AppWriteController extends GetxController {
       );
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(message: "$e");
       return null;
     }
   }
@@ -623,7 +610,6 @@ class AppWriteController extends GetxController {
       return userDocument.data["passcode"];
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(message: "$e");
       return null;
     }
   }
@@ -704,7 +690,6 @@ class AppWriteController extends GetxController {
       return promotionList;
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(message: "$e");
       return null;
     }
   }
@@ -719,7 +704,6 @@ class AppWriteController extends GetxController {
       return News.fromJson(newsDocument.data);
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(message: "$e");
       return null;
     }
   }
@@ -734,7 +718,6 @@ class AppWriteController extends GetxController {
       return newsDocument.data;
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(message: "$e");
       return null;
     }
   }
@@ -781,7 +764,6 @@ class AppWriteController extends GetxController {
       // return response.data["collectionList"];
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(message: "$e");
       return null;
     }
   }
@@ -797,15 +779,15 @@ class AppWriteController extends GetxController {
       return lotteryHistory.data;
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(message: "$e");
       return null;
     }
   }
 
   Future<List?> listWinInvoices(String collectionId) async {
     try {
-      final userId = await user.then((value) => value.$id);
-      // const userId = "67edf7a800193b9b4180"; // p nat
+      // FIXME: remove hardcode
+      // final userId = await user.then((value) => value.$id);
+      const userId = "67edf7a800193b9b4180"; // p nat
       // const userId = "680b37540010c6d7e604"; // p nueg
       final invoiceList = await databases.listDocuments(
         databaseId: _databaseName,
@@ -841,7 +823,6 @@ class AppWriteController extends GetxController {
       }).toList();
     } catch (e) {
       logger.e("$e");
-      Get.rawSnackbar(message: "$e");
       return null;
     }
   }
@@ -948,7 +929,6 @@ class AppWriteController extends GetxController {
       return lotteryHistoryList;
     } catch (e) {
       logger.e("$e");
-      // Get.rawSnackbar(message: "$e");
       return null;
     }
   }
@@ -2988,6 +2968,53 @@ class AppWriteController extends GetxController {
       return ResponseApi(
         isSuccess: false,
         message: e.toString(),
+      );
+    }
+  }
+
+  Future<ResponseApi<Map>> findInfluencer(String influenCode) async {
+    try {
+      final response = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: USER,
+        queries: [
+          Query.equal("influencer", influenCode),
+          Query.select(["ref_code"]),
+        ],
+      );
+      logger.w("response findInfluencer");
+      for (var document in response.documents) {
+        logger.w(document.data);
+      }
+      if (response.documents.isEmpty) {
+        return ResponseApi(
+          isSuccess: false,
+          message: AppLocale.notFoundInfluencer.getString(Get.context!),
+        );
+      }
+      if (response.documents.length > 1) {
+        return ResponseApi(
+          isSuccess: false,
+          message: "This code is used by multiple influencers",
+        );
+      }
+      final influenCerRefCode = response.documents.first.data;
+      return ResponseApi(
+        isSuccess: true,
+        message: "success to get influencer",
+        data: influenCerRefCode,
+      );
+    } on AppwriteException catch (e) {
+      logger.e(e);
+      return ResponseApi(
+        isSuccess: false,
+        message: e.message ?? "${e.code ?? ""}",
+      );
+    } catch (e) {
+      logger.e("$e");
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to get influencer",
       );
     }
   }

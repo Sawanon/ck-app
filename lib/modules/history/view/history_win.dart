@@ -111,11 +111,6 @@ class HistoryWinPage extends StatelessWidget {
                       }
                       return GestureDetector(
                         onTap: () {
-                          // TODO: hard code
-                          // logger.d(
-                          //     controller.winInvoice[index]['\$collectionId']);
-                          // return;
-                          final winInvoice = controller.winInvoice[index];
                           final lotteryDateStr = winInvoice['\$collectionId']
                               .toString()
                               .split("_")
@@ -135,6 +130,7 @@ class HistoryWinPage extends StatelessWidget {
                             ],
                           ),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -169,8 +165,8 @@ class HistoryWinPage extends StatelessWidget {
                                             BorderRadius.circular(100),
                                         gradient: LinearGradient(
                                           colors: [
-                                            AppColors.yellowGradient,
-                                            AppColors.redGradient,
+                                            AppColors.secondaryColor,
+                                            AppColors.primary,
                                           ],
                                           begin: Alignment.bottomCenter,
                                           end: Alignment.topCenter,
@@ -232,61 +228,42 @@ class HistoryWinPage extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              SizedBox(height: 4),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('เลขที่ซื้อ'),
-                                  SizedBox(width: 8),
-                                  Expanded(
-                                    child: Wrap(
-                                      spacing: 8.0,
-                                      runSpacing: 6.0,
-                                      children: (controller.winInvoice[index]
-                                              ["transactionList"] as List)
-                                          .map((transaction) {
-                                        return Builder(builder: (context) {
-                                          logger.w("winInvoice");
-                                          logger.d(winInvoice);
-                                          final winNumber =
-                                              controller.findWinNumber(
-                                                  controller.winInvoice[index]
-                                                      ["transactionList"]);
-                                          if (winInvoice['is_special_win'] ==
-                                              true) {
-                                            return FutureBuilder(
-                                              future: controller
-                                                  .checkSpecialLottery(
-                                                      winInvoice[
-                                                          '\$collectionId'],
-                                                      transaction['lottery']),
-                                              builder: (context, snapshot) {
+                              // SizedBox(height: 4),
+                              Builder(
+                                builder: (context) {
+                                  logger.d(winInvoice);
+                                  final transactionList =
+                                      winInvoice['transactionList'] as List;
+                                  final isWin =
+                                      transactionList.where((transaction) {
+                                    return transaction?['is_win'] == true;
+                                  }).toList();
+                                  if (isWin.isNotEmpty) {
+                                    return Container(
+                                      margin: EdgeInsets.only(
+                                        top: 8,
+                                      ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text("ถูกรางวัล"),
+                                          SizedBox(height: 4),
+                                          Wrap(
+                                            spacing: 8.0,
+                                            runSpacing: 6.0,
+                                            children: isWin.map((transaction) {
+                                              return Builder(
+                                                  builder: (context) {
+                                                final winNumber = controller
+                                                    .findWinNumber(controller
+                                                            .winInvoice[index]
+                                                        ["transactionList"]);
                                                 Color backgroundColor =
-                                                    Colors.grey.shade200;
-                                                Color borderColor =
-                                                    Colors.transparent;
-                                                if (snapshot.hasData) {
-                                                  backgroundColor = snapshot
-                                                              .data ==
-                                                          true
-                                                      ? AppColors.winContainer
-                                                      : Colors.grey.shade200;
-                                                  borderColor = snapshot.data ==
-                                                          true
-                                                      ? Colors.amber.shade600
-                                                      : Colors.transparent;
-                                                }
+                                                    AppColors.winContainer;
+
                                                 return Container(
                                                   decoration: BoxDecoration(
                                                     color: backgroundColor,
-                                                    border: Border.all(
-                                                        width: snapshot.data ==
-                                                                true
-                                                            ? 1
-                                                            : 0,
-                                                        color: borderColor,
-                                                        strokeAlign: BorderSide
-                                                            .strokeAlignOutside),
                                                     borderRadius:
                                                         const BorderRadius.all(
                                                             Radius.circular(5)),
@@ -301,34 +278,271 @@ class HistoryWinPage extends StatelessWidget {
                                                         fontSize: 14),
                                                   ),
                                                 );
-                                              },
-                                            );
-                                          }
 
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                              color: checkWin(
-                                                transaction['lottery'],
-                                                winNumber ?? "",
-                                              ),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5)),
-                                            ),
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 8),
-                                            width: 74,
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              transaction['lottery'],
-                                              style: TextStyle(fontSize: 14),
-                                            ),
-                                          );
-                                        });
-                                      }).toList(),
-                                    ),
-                                  ),
-                                ],
-                              )
+                                                return Container(
+                                                  decoration: BoxDecoration(
+                                                    color: checkWin(
+                                                      transaction['lottery'],
+                                                      winNumber ?? "",
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(5)),
+                                                  ),
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 8),
+                                                  width: 74,
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    transaction['lottery'],
+                                                    style:
+                                                        TextStyle(fontSize: 14),
+                                                  ),
+                                                );
+                                              });
+                                            }).toList(),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }
+                                  return const SizedBox.shrink();
+                                },
+                              ),
+                              Builder(
+                                builder: (context) {
+                                  logger.d(winInvoice);
+                                  final transactionList =
+                                      winInvoice['transactionList'] as List;
+                                  final isSpecialWin =
+                                      transactionList.where((transaction) {
+                                    return transaction?['is_special_win'] ==
+                                        true;
+                                  }).toList();
+                                  logger.w("isSpecialWin");
+                                  logger.d(transactionList);
+                                  if (winInvoice['is_special_win']) {
+                                    return Container(
+                                      margin: EdgeInsets.only(
+                                        top: 8,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        // crossAxisAlignment:
+                                        //     CrossAxisAlignment.start,
+                                        children: [
+                                          Text("ถูกรางวัลพิเศษจาก CK Lotto"),
+                                          SizedBox(height: 4),
+                                          Wrap(
+                                            spacing: 8.0,
+                                            runSpacing: 6.0,
+                                            children: transactionList
+                                                .map((transaction) {
+                                              return Builder(
+                                                  builder: (context) {
+                                                final winNumber = controller
+                                                    .findWinNumber(controller
+                                                            .winInvoice[index]
+                                                        ["transactionList"]);
+                                                if (winInvoice[
+                                                        'is_special_win'] ==
+                                                    true) {
+                                                  return FutureBuilder(
+                                                    future: controller
+                                                        .checkSpecialLottery(
+                                                            winInvoice[
+                                                                '\$collectionId'],
+                                                            transaction[
+                                                                'lottery']),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      Color backgroundColor =
+                                                          Colors.grey.shade200;
+                                                      Color borderColor =
+                                                          Colors.transparent;
+                                                      if (snapshot.hasData) {
+                                                        backgroundColor =
+                                                            snapshot.data ==
+                                                                    true
+                                                                ? AppColors
+                                                                    .winContainer
+                                                                : Colors.grey
+                                                                    .shade200;
+                                                        borderColor = snapshot
+                                                                    .data ==
+                                                                true
+                                                            ? Colors
+                                                                .amber.shade600
+                                                            : Colors
+                                                                .transparent;
+                                                      }
+                                                      return Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              backgroundColor,
+                                                          border: Border.all(
+                                                              width:
+                                                                  snapshot.data ==
+                                                                          true
+                                                                      ? 1
+                                                                      : 0,
+                                                              color:
+                                                                  borderColor,
+                                                              strokeAlign:
+                                                                  BorderSide
+                                                                      .strokeAlignOutside),
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                  .all(Radius
+                                                                      .circular(
+                                                                          5)),
+                                                        ),
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .symmetric(
+                                                                vertical: 8),
+                                                        width: 74,
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          transaction[
+                                                              'lottery'],
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 14),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                }
+
+                                                return Container(
+                                                  decoration: BoxDecoration(
+                                                    color: checkWin(
+                                                      transaction['lottery'],
+                                                      winNumber ?? "",
+                                                    ),
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(5)),
+                                                  ),
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 8),
+                                                  width: 74,
+                                                  alignment: Alignment.center,
+                                                  child: Text(
+                                                    transaction['lottery'],
+                                                    style:
+                                                        TextStyle(fontSize: 14),
+                                                  ),
+                                                );
+                                              });
+                                            }).toList(),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }
+                                  return const SizedBox.shrink();
+                                },
+                              ),
+                              // Row(
+                              //   crossAxisAlignment: CrossAxisAlignment.start,
+                              //   children: [
+                              //     Text('เลขที่ซื้อ'),
+                              //     SizedBox(width: 8),
+                              //     Expanded(
+                              //       child: Wrap(
+                              //         spacing: 8.0,
+                              //         runSpacing: 6.0,
+                              //         children: (controller.winInvoice[index]
+                              //                 ["transactionList"] as List)
+                              //             .map((transaction) {
+                              //           return Builder(builder: (context) {
+                              //             final winNumber =
+                              //                 controller.findWinNumber(
+                              //                     controller.winInvoice[index]
+                              //                         ["transactionList"]);
+                              //             if (winInvoice['is_special_win'] ==
+                              //                 true) {
+                              //               return FutureBuilder(
+                              //                 future: controller
+                              //                     .checkSpecialLottery(
+                              //                         winInvoice[
+                              //                             '\$collectionId'],
+                              //                         transaction['lottery']),
+                              //                 builder: (context, snapshot) {
+                              //                   Color backgroundColor =
+                              //                       Colors.grey.shade200;
+                              //                   Color borderColor =
+                              //                       Colors.transparent;
+                              //                   if (snapshot.hasData) {
+                              //                     backgroundColor = snapshot
+                              //                                 .data ==
+                              //                             true
+                              //                         ? AppColors.winContainer
+                              //                         : Colors.grey.shade200;
+                              //                     borderColor = snapshot.data ==
+                              //                             true
+                              //                         ? Colors.amber.shade600
+                              //                         : Colors.transparent;
+                              //                   }
+                              //                   return Container(
+                              //                     decoration: BoxDecoration(
+                              //                       color: backgroundColor,
+                              //                       border: Border.all(
+                              //                           width: snapshot.data ==
+                              //                                   true
+                              //                               ? 1
+                              //                               : 0,
+                              //                           color: borderColor,
+                              //                           strokeAlign: BorderSide
+                              //                               .strokeAlignOutside),
+                              //                       borderRadius:
+                              //                           const BorderRadius.all(
+                              //                               Radius.circular(5)),
+                              //                     ),
+                              //                     padding: const EdgeInsets
+                              //                         .symmetric(vertical: 8),
+                              //                     width: 74,
+                              //                     alignment: Alignment.center,
+                              //                     child: Text(
+                              //                       transaction['lottery'],
+                              //                       style: const TextStyle(
+                              //                           fontSize: 14),
+                              //                     ),
+                              //                   );
+                              //                 },
+                              //               );
+                              //             }
+
+                              //             return Container(
+                              //               decoration: BoxDecoration(
+                              //                 color: checkWin(
+                              //                   transaction['lottery'],
+                              //                   winNumber ?? "",
+                              //                 ),
+                              //                 borderRadius: BorderRadius.all(
+                              //                     Radius.circular(5)),
+                              //               ),
+                              //               padding: EdgeInsets.symmetric(
+                              //                   vertical: 8),
+                              //               width: 74,
+                              //               alignment: Alignment.center,
+                              //               child: Text(
+                              //                 transaction['lottery'],
+                              //                 style: TextStyle(fontSize: 14),
+                              //               ),
+                              //             );
+                              //           });
+                              //         }).toList(),
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
                             ],
                           ),
                         ),

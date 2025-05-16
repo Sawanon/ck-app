@@ -7,9 +7,6 @@ import 'package:lottery_ck/modules/notification/view/notification_list.dart';
 import 'package:lottery_ck/modules/notification/view/promotion_list_component.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
-import 'package:lottery_ck/route/route_name.dart';
-import 'package:lottery_ck/utils.dart';
-import 'package:lottery_ck/utils/common_fn.dart';
 
 class NotificationPage extends StatelessWidget {
   const NotificationPage({super.key});

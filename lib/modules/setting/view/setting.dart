@@ -65,8 +65,8 @@ class SettingPage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8),
                                 gradient: const LinearGradient(
                                   colors: [
-                                    AppColors.redGradient,
-                                    AppColors.yellowGradient,
+                                    AppColors.secondaryColor,
+                                    AppColors.primary,
                                   ],
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
@@ -90,8 +90,8 @@ class SettingPage extends StatelessWidget {
                                             shape: BoxShape.circle,
                                             gradient: LinearGradient(
                                               colors: [
-                                                AppColors.redGradient,
-                                                AppColors.yellowGradient,
+                                                AppColors.secondaryColor,
+                                                AppColors.primary,
                                               ],
                                               begin: Alignment.topLeft,
                                               end: Alignment.bottomRight,
@@ -301,8 +301,8 @@ class SettingPage extends StatelessWidget {
                                           shape: BoxShape.circle,
                                           gradient: LinearGradient(
                                             colors: [
-                                              AppColors.redGradient,
-                                              AppColors.yellowGradient,
+                                              AppColors.secondaryColor,
+                                              AppColors.primary,
                                             ],
                                             begin: Alignment.topLeft,
                                             end: Alignment.bottomRight,
@@ -383,8 +383,8 @@ class SettingPage extends StatelessWidget {
                                           shape: BoxShape.circle,
                                           gradient: LinearGradient(
                                             colors: [
-                                              AppColors.redGradient,
-                                              AppColors.yellowGradient,
+                                              AppColors.secondaryColor,
+                                              AppColors.primary,
                                             ],
                                             begin: Alignment.topLeft,
                                             end: Alignment.bottomRight,
@@ -453,8 +453,8 @@ class SettingPage extends StatelessWidget {
                           //                 shape: BoxShape.circle,
                           //                 gradient: LinearGradient(
                           //                   colors: [
-                          //                     AppColors.redGradient,
-                          //                     AppColors.yellowGradient,
+                          //                     AppColors.secondaryColor,
+                          //                     AppColors.primary,
                           //                   ],
                           //                   begin: Alignment.topLeft,
                           //                   end: Alignment.bottomRight,
@@ -524,8 +524,8 @@ class SettingPage extends StatelessWidget {
                           //                 shape: BoxShape.circle,
                           //                 gradient: LinearGradient(
                           //                   colors: [
-                          //                     AppColors.redGradient,
-                          //                     AppColors.yellowGradient,
+                          //                     AppColors.secondaryColor,
+                          //                     AppColors.primary,
                           //                   ],
                           //                   begin: Alignment.topLeft,
                           //                   end: Alignment.bottomRight,
@@ -599,8 +599,8 @@ class SettingPage extends StatelessWidget {
                                           shape: BoxShape.circle,
                                           gradient: LinearGradient(
                                             colors: [
-                                              AppColors.redGradient,
-                                              AppColors.yellowGradient,
+                                              AppColors.secondaryColor,
+                                              AppColors.primary,
                                             ],
                                             begin: Alignment.topLeft,
                                             end: Alignment.bottomRight,
@@ -673,8 +673,8 @@ class SettingPage extends StatelessWidget {
                                           shape: BoxShape.circle,
                                           gradient: LinearGradient(
                                             colors: [
-                                              AppColors.redGradient,
-                                              AppColors.yellowGradient,
+                                              AppColors.secondaryColor,
+                                              AppColors.primary,
                                             ],
                                             begin: Alignment.topLeft,
                                             end: Alignment.bottomRight,

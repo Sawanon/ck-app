@@ -26,6 +26,11 @@ class SplashScreenPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
+                      width: 170,
+                      height: 170,
+                      child: Image.asset(Logo.lotto),
+                    ),
+                    Container(
                       width: 150,
                       height: 150,
                       margin: EdgeInsets.only(top: 8),
@@ -40,11 +45,6 @@ class SplashScreenPage extends StatelessWidget {
                         height: 200,
                         scale: 2.2,
                       ),
-                    ),
-                    Container(
-                      width: 170,
-                      height: 170,
-                      child: Image.asset(Logo.lotto),
                     ),
                   ],
                 ),

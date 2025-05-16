@@ -38,8 +38,12 @@ class PromotionListComponent extends StatelessWidget {
                           SizedBox(
                             width: 120,
                             height: 120,
-                            child: Image.asset(
+                            child: SvgPicture.asset(
                               AppIcon.promotion,
+                              colorFilter: const ColorFilter.mode(
+                                AppColors.disableText,
+                                BlendMode.srcIn,
+                              ),
                             ),
                             // child: SvgPicture.asset(
                             //   AppIcon.promotion,
@@ -49,6 +53,7 @@ class PromotionListComponent extends StatelessWidget {
                             //   ),
                             // ),
                           ),
+                          const SizedBox(height: 16),
                           Text(
                             AppLocale.noPromotion.getString(context),
                             style: const TextStyle(
@@ -118,8 +123,8 @@ class PromotionListComponent extends StatelessWidget {
                                     begin: Alignment.bottomCenter,
                                     end: Alignment.topCenter,
                                     colors: [
-                                      AppColors.yellowGradient,
-                                      AppColors.redGradient,
+                                      AppColors.secondaryColor,
+                                      AppColors.primary,
                                     ],
                                   ),
                                 ),

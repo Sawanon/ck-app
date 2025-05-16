@@ -442,6 +442,7 @@ class PayMentPage extends StatelessWidget {
                             final invoice =
                                 BuyLotteryController.to.invoiceMeta.value;
                             final List<String> selectedPromotionList = [];
+                            Map? promotion;
                             if (invoice.promotionIds?.isNotEmpty == true &&
                                 controller.promotionList.isNotEmpty) {
                               for (var selectedPromotion
@@ -452,6 +453,7 @@ class PayMentPage extends StatelessWidget {
                                     .firstWhere((promotion) {
                                   return promotion['\$id'] == selectedPromotion;
                                 });
+                                promotion = promotionDetail;
                                 selectedPromotionList
                                     .add(promotionDetail['name']);
                               }
@@ -472,6 +474,13 @@ class PayMentPage extends StatelessWidget {
                                 //   // TODO: show promotion Detail
                                 //   return;
                                 // }
+                                if (isCanUse == false && promotion != null) {
+                                  controller.showPromotionDetail(
+                                    context,
+                                    promotion,
+                                  );
+                                  return;
+                                }
                                 if (controller.point != null) {
                                   return;
                                 }

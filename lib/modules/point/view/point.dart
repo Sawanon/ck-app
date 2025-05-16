@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/modules/point/controller/point.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
-import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
@@ -43,8 +42,8 @@ class PointPage extends StatelessWidget {
                             shaderCallback: (bounds) {
                               // Gradient gradient;
                               Gradient gradient = const LinearGradient(colors: [
-                                AppColors.redGradient,
-                                AppColors.yellowGradient,
+                                AppColors.primary,
+                                AppColors.secondaryColor,
                               ]);
                               return gradient.createShader(
                                 Rect.fromLTWH(
@@ -95,8 +94,8 @@ class PointPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(60),
                             gradient: LinearGradient(
                               colors: [
-                                AppColors.redGradient,
-                                AppColors.yellowGradient,
+                                AppColors.primary,
+                                AppColors.secondaryColor,
                               ],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,

@@ -7,10 +7,10 @@ mixin AppLocale {
   static const String horoscope = 'ດູດວງ';
   static const String wallpaper = 'ຮູບວໍເປເປີ';
   static const String lotteryResult = 'ຜົນຫວຍ';
-  static const String animal = 'ຕໍາຣາ';
+  static const String animal = 'ຕຳລາເລກ';
   static const String lotteryDateAt = 'ງວດວັນທີ';
   static const String lotteryPredict = 'ເລກໂຊກດີ';
-  static const String horoscopeToday = 'ດູດວງຂອງ​ມື້​ນີ້​';
+  static const String horoscopeToday = 'ເບິ່ງດວງມື້ນີ້';
   static const String day = 'ມື້';
   static const String hour = 'ຊົ່ວໂມງ';
   static const String minute = 'ນາທີ';
@@ -44,7 +44,7 @@ mixin AppLocale {
   static const String amountNotCorrect = 'ສາມາດຊື້ໄດ້ສະເພາະຈຳນວນເຕັມພັນ';
   static const String logout = 'ອອກຈາກລະບົບ';
   static const String cancel = 'ຍົກເລີກ';
-  static const String lotteryList = 'ເລກທີ່ເລືອກ';
+  static const String lotteryList = 'ເລກສ່ຽງ';
   static const String amount = 'ຈໍານວນເງິນ';
   static const String areYouSureYouWantToLogout = 'ທ່ານແນ່ໃຈບໍ່ວ່າອອກຈາກລະບົບ?';
   static const String thereIsNoNextDrawYet =
@@ -56,7 +56,7 @@ mixin AppLocale {
   static const String birthTimeHoroscope =
       'ກະລຸນາໃສ່ວັນເດືອນປີເກີດຂອງທ່ານເພື່ອປະສົບການບອກໂຊກອັນຍິ່ງໃຫຍ່';
   static const String feedback = 'ແນະນຳບໍລິການ';
-  static const String shareAppToYourFriend = 'ແນະນໍາໃຫ້ຫມູ່ເພື່ອນ';
+  static const String shareAppToYourFriend = 'ແນະນຳໝູ່';
   static const String myScore = 'ຄະແນນຂອງຂ້ອຍ';
   static const String security = 'ຄວາມປອດໄພ';
   static const String luckyNumber = 'ເລກໂຊກດີ';
@@ -126,15 +126,15 @@ mixin AppLocale {
   static const String verified = "ຢັ້ງຢືນຕົວຕົນແລ້ວ";
   static const String notVerified = "ບໍ່ໄດ້ຢັ້ງຢືນຕົວຕົນ";
   static const String verifyYourIdentity = "ຢືນຢັນຕົວຕົນຂອງທ່ານ";
-  static const String randomCard = "ບັດໂຊກ";
+  static const String randomCard = "ວັດດວງ";
   static const String downtimeBank = "ບໍ່ສາມາດຊໍາລະໄດ້ໃນລະຫວ່າງໄລຍະເວລາ";
-  static const String auspiciousWallpaper = "ຮູບວໍເປເປີທີ່ປະເສີດ";
+  static const String auspiciousWallpaper = "ຮູບພາບມຸງຄຸນ";
   static const String login = "ເຂົ້າສູ່ລະບົບ";
   static const String rateLimit =
       "ທ່ານໄດ້ຮ້ອງຂໍຫຼາຍເກີນໄປໃນໄລຍະເວລາສັ້ນໆ, ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ";
   static const String totalOrderAmount = "ຈໍານວນຄໍາສັ່ງທັງຫມົດ";
   static const String lak = "ກີບ";
-  static const String paymentMethod = "ຊ່ອງທາງການຈ່າຍເງິນ";
+  static const String paymentMethod = "ຊຳລະຜ່ານທາງ";
   static const String confirmLotteryPurchase = "ຢືນຢັນການຊື້ຫວຍ";
   static const String confirmLotteryPurchaseText =
       "ຕ້ອງການຊື້ຫວຍເລກ {lottery} ລາຄາ {price} ກີບບໍ?";
@@ -159,12 +159,12 @@ mixin AppLocale {
   static const String welcome = "ຍິນດີຕ້ອນຮັບ";
   static const String inviteFriends = "ແນະນໍາຫມູ່";
   static const String inviteAccept = "ເຊີນ/ຍອມຮັບ";
-  static const String youHaveScore = "ທ່ານມີ/ຈຸດ";
+  static const String youHavePoint = "ທ່ານມີຄະແນນ";
   static const String amountInWallet = "ຈຳນວນເງິນໃນກະເປົາເງິນ";
   static const String quickMenu = "ເມນູດ່ວນ";
   static const String dailyFortune = "ໂຊກ​ປະ​ຈໍາ​ວັນ​";
   static const String wallet = "ກະເປົາເງິນ";
-  static const String chatWithFriends = "ສົນທະນາກັບຫມູ່ເພື່ອນ";
+  static const String chatWithFriends = "ສົນທະນາກັບໝູ່";
   static const String verifyIdentity = "ຢືນຢັນຕົວຕົນ";
   static const String all = "ທັງໝົດ";
   static const String save = "ບັນທຶກ";
@@ -185,7 +185,7 @@ mixin AppLocale {
   static const String deleteAll = "ລຶບທັງໝົດ";
   static const String areYouSureYouWantToDeleteAllLottery =
       "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບລາຍການຫວຍທັງໝົດ?";
-  static const String thisInvoiceExpiresOn = "ໃບເກັບເງິນນີ້ໝົດອາຍຸໃນ";
+  static const String thisInvoiceExpiresOn = "ກະລຸນາຊຳລະເງິນກ່ອນໝົດເວລາ";
   static const String identityVerificationRequired = "ຕ້ອງການການຢັ້ງຢືນຕົວຕົນ";
   static const String collectCoupons = "ເກັບກໍາຄູປ໋ອງ";
   static const String expiresIn = "ໝົດອາຍຸໃນ";
@@ -343,7 +343,7 @@ mixin AppLocale {
   static const String youAreTheLuckyOneAndHaveWonPrize =
       "ເຈົ້າເປັນຜູ້ໂຊກດີ ແລະໄດ້ຮັບລາງວັນ";
   static const String youAreTheLuckyOneAndHaveWonPrizeSpecial =
-      "ເຈົ້າເປັນຜູ້ໂຊກດີ ແລະໄດ້ຮັບລາງວັນພິເສດ";
+      "ເຈົ້າເປັນຜູ້ໂຊກດີ ແລະໄດ້ຮັບລາງວັນພິເສດຈາກ CK lotto";
   static const String validUntil = "ໃຊ້ໄດ້ເຖິງ";
   static const String used = "ໃຊ້ແລ້ວ";
   static const String thisLotteryNumberIsNotYetOnSale =
@@ -410,6 +410,16 @@ mixin AppLocale {
   static const String buyMorePoints = "ຊື້ຄະແນນເພີ່ມເຕີມ";
   static const String pointsFromPayment = "ຄະແນນຈາກການຈ່າຍເງິນ";
   static const String servicePolicy = "ນະໂຍບາຍການບໍລິການ";
+  static const String more = "ເພີ່ມເຕີມ";
+  static const String referralCode = "ລະຫັດການອ້າງອີງ";
+  static const String confirmPay = "ຊຳລະເງິນ";
+  static const String hihtLotteryInput = "ປ້ອນເລກ";
+  static const String hihtPriceInput = "ຈຳນວນເງິນ";
+  static const String numberOfLottery = "ຈຳນວນເລກສ່ຽງ";
+  static const String minLength = "ຕ້ອງມີຢ່າງໜ້ອຍ {length} ຕົວອັກສອນ";
+  static const String notFoundInfluencer =
+      "ບໍ່ພົບລະຫັດອິນຟລູເອນເຊີນີ້ ກະລຸນາກວດສອບອີກຄັ້ງ";
+  static const String loadingText1 = "ກຳລັງກວດສອບຂໍ້ມູນຂອງທ່ານ";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -420,10 +430,10 @@ mixin AppLocale {
     horoscope: 'ດູດວງ',
     wallpaper: 'ຮູບວໍເປເປີ',
     lotteryResult: 'ຜົນຫວຍ',
-    animal: 'ຕໍາຣາ',
+    animal: 'ຕຳລາເລກ',
     lotteryDateAt: 'ງວດວັນທີ',
     lotteryPredict: 'ເລກໂຊກດີ',
-    horoscopeToday: 'ດູດວງຂອງ​ມື້​ນີ້​',
+    horoscopeToday: 'ເບິ່ງດວງມື້ນີ້',
     day: 'ມື້',
     hour: 'ຊົ່ວໂມງ',
     minute: 'ນາທີ',
@@ -455,7 +465,7 @@ mixin AppLocale {
     amountNotCorrect: 'ສາມາດຊື້ໄດ້ສະເພາະຈຳນວນເຕັມພັນ',
     logout: 'ອອກຈາກລະບົບ',
     cancel: 'ຍົກເລີກ',
-    lotteryList: 'ເລກທີ່ເລືອກ',
+    lotteryList: 'ເລກສ່ຽງ',
     amount: 'ຈໍານວນເງິນ',
     areYouSureYouWantToLogout: 'ທ່ານແນ່ໃຈບໍ່ວ່າອອກຈາກລະບົບ?',
     thereIsNoNextDrawYet: 'ຍັງບໍ່ທັນມີການຈັບສະຫລາກເທື່ອຕໍ່ໄປ',
@@ -466,7 +476,7 @@ mixin AppLocale {
     birthTimeHoroscope:
         'ກະລຸນາໃສ່ວັນເດືອນປີເກີດຂອງທ່ານເພື່ອປະສົບການບອກໂຊກອັນຍິ່ງໃຫຍ່',
     feedback: 'ແນະນຳບໍລິການ',
-    shareAppToYourFriend: 'ແນະນໍາໃຫ້ຫມູ່ເພື່ອນ',
+    shareAppToYourFriend: 'ແນະນຳໝູ່',
     myScore: 'ຄະແນນຂອງຂ້ອຍ',
     security: 'ຄວາມປອດໄພ',
     randomTitle: 'ຕົວເລກທີ່ແນະນໍາສໍາລັບໂຊກຂອງທ່ານໃນມື້ນີ້',
@@ -530,14 +540,14 @@ mixin AppLocale {
     verified: "ຢັ້ງຢືນຕົວຕົນແລ້ວ",
     notVerified: "ບໍ່ໄດ້ຢັ້ງຢືນຕົວຕົນ",
     verifyYourIdentity: "ຢືນຢັນຕົວຕົນຂອງທ່ານ",
-    randomCard: "ບັດໂຊກ",
+    randomCard: "ວັດດວງ",
     downtimeBank: "ບໍ່ສາມາດຊໍາລະໄດ້ໃນລະຫວ່າງໄລຍະເວລາ",
-    auspiciousWallpaper: "ຮູບວໍເປເປີທີ່ປະເສີດ",
+    auspiciousWallpaper: "ຮູບພາບມຸງຄຸນ",
     login: "ເຂົ້າສູ່ລະບົບ",
     rateLimit: "ທ່ານໄດ້ຮ້ອງຂໍຫຼາຍເກີນໄປໃນໄລຍະເວລາສັ້ນໆ, ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ",
     totalOrderAmount: "ຈໍານວນຄໍາສັ່ງທັງຫມົດ",
     lak: "ກີບ",
-    paymentMethod: "ຊ່ອງທາງການຈ່າຍເງິນ",
+    paymentMethod: "ຊຳລະຜ່ານທາງ",
     confirmLotteryPurchase: "ຢືນຢັນການຊື້ຫວຍ",
     confirmLotteryPurchaseText:
         "ຕ້ອງການຊື້ຫວຍເລກ {lottery} ລາຄາ {price} ກີບບໍ?",
@@ -559,12 +569,12 @@ mixin AppLocale {
     welcome: "ຍິນດີຕ້ອນຮັບ",
     inviteFriends: "ແນະນໍາຫມູ່",
     inviteAccept: "ເຊີນ/ຍອມຮັບ",
-    youHaveScore: "ທ່ານມີ/ຄະແນນ",
+    youHavePoint: "ທ່ານມີຄະແນນ",
     amountInWallet: "ຈຳນວນເງິນໃນກະເປົາເງິນ",
     quickMenu: "ເມນູດ່ວນ",
     dailyFortune: "ໂຊກ​ປະ​ຈໍາ​ວັນ​",
     wallet: "ກະເປົາເງິນ",
-    chatWithFriends: "ສົນທະນາກັບຫມູ່ເພື່ອນ",
+    chatWithFriends: "ສົນທະນາກັບໝູ່",
     verifyIdentity: "ຢືນຢັນຕົວຕົນ",
     all: "ທັງໝົດ",
     save: "ບັນທຶກ",
@@ -584,7 +594,7 @@ mixin AppLocale {
     deleteAll: "ລຶບທັງໝົດ",
     areYouSureYouWantToDeleteAllLottery:
         "ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບລາຍການຫວຍທັງໝົດ?",
-    thisInvoiceExpiresOn: "ໃບບິນເງິນນີ້ໝົດອາຍຸໃນ",
+    thisInvoiceExpiresOn: "ກະລຸນາຊຳລະເງິນກ່ອນໝົດເວລາ",
     identityVerificationRequired: "ຕ້ອງການການຢັ້ງຢືນຕົວຕົນ",
     collectCoupons: "ເກັບກໍາຄູປ໋ອງ",
     expiresIn: "ໝົດອາຍຸໃນ",
@@ -720,7 +730,7 @@ mixin AppLocale {
     downloadFile: "ດາວໂຫຼດໄຟລ໌",
     youAreTheLuckyOneAndHaveWonPrize: "ເຈົ້າເປັນຜູ້ໂຊກດີ ແລະໄດ້ຮັບລາງວັນ",
     youAreTheLuckyOneAndHaveWonPrizeSpecial:
-        "ເຈົ້າເປັນຜູ້ໂຊກດີ ແລະໄດ້ຮັບລາງວັນພິເສດ",
+        "ເຈົ້າເປັນຜູ້ໂຊກດີ ແລະໄດ້ຮັບລາງວັນພິເສດຈາກ CK lotto",
     validUntil: "ໃຊ້ໄດ້ເຖິງ",
     used: "ໃຊ້ແລ້ວ",
     thisLotteryNumberIsNotYetOnSale: "ເລກຫວຍນີ້ຍັງບໍ່ໄດ້ຂາຍເທື່ອ",
@@ -780,6 +790,15 @@ mixin AppLocale {
     buyMorePoints: "ຊື້ຄະແນນເພີ່ມເຕີມ",
     pointsFromPayment: "ຄະແນນຈາກການຈ່າຍເງິນ",
     servicePolicy: "ນະໂຍບາຍການບໍລິການ",
+    more: "ເພີ່ມເຕີມ",
+    referralCode: "ລະຫັດການອ້າງອີງ",
+    confirmPay: "ຊຳລະເງິນ",
+    hihtLotteryInput: "ປ້ອນເລກ",
+    hihtPriceInput: "ຈຳນວນເງິນ",
+    numberOfLottery: "ຈຳນວນເລກສ່ຽງ",
+    minLength: "ຕ້ອງມີຢ່າງໜ້ອຍ {length} ຕົວອັກສອນ",
+    notFoundInfluencer: "ບໍ່ພົບລະຫັດອິນຟລູເອນເຊີນີ້ ກະລຸນາກວດສອບອີກຄັ້ງ",
+    loadingText1: "ກຳລັງກວດສອບຂໍ້ມູນຂອງທ່ານ",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -790,7 +809,7 @@ mixin AppLocale {
     horoscope: 'ดูดวง',
     wallpaper: 'วอลเปเปอร์',
     lotteryResult: 'ผลหวย',
-    animal: 'ตำรา',
+    animal: 'ตำราเลข',
     lotteryDateAt: 'งวดวันที่',
     lotteryPredict: 'เลขมงคล',
     horoscopeToday: 'ดวงวันนี้',
@@ -908,7 +927,7 @@ mixin AppLocale {
         "คุณทำการร้องขอมากเกินไปในช่วงเวลาสั้น ๆ โปรดลองใหม่อีกครั้งในภายหลัง",
     totalOrderAmount: "รวมยอดสั่งซื้อ",
     lak: "กีบ",
-    paymentMethod: "ช่องทางการชำระเงิน",
+    paymentMethod: "ชำระผ่านทาง",
     confirmLotteryPurchase: "ยืนยันการซื้อหวย",
     confirmLotteryPurchaseText:
         "คุณต้องการซื้อหวยเลข {lottery} ในราคา {price} กีบ ใช่หรือไม่?",
@@ -930,7 +949,7 @@ mixin AppLocale {
     welcome: "ยินดีต้อนรับ",
     inviteFriends: "แนะนำเพื่อน",
     inviteAccept: "ชวน/รับ",
-    youHaveScore: "คุณมี/คะแนน",
+    youHavePoint: "คุณมีคะแนน",
     amountInWallet: "จำนวนเงินในกระเป๋าตัง",
     quickMenu: "เมนูด่วน",
     dailyFortune: "โชคลาภประจำวัน",
@@ -955,7 +974,7 @@ mixin AppLocale {
     deleteAll: "ลบทั้งหมด",
     areYouSureYouWantToDeleteAllLottery:
         "คุณแน่ใจหรือไม่ว่าต้องการลบรายการลอตเตอรี่ทั้งหมด?",
-    thisInvoiceExpiresOn: "บิลนี้จะหมดอายุใน",
+    thisInvoiceExpiresOn: "กรุณาชำระเงินก่อนหมดเวลา",
     identityVerificationRequired: "ต้องการการยืนยันตัวตน",
     collectCoupons: "เก็บคูปอง",
     expiresIn: "หมดอายุใน",
@@ -1090,7 +1109,7 @@ mixin AppLocale {
     downloadFile: "ดาวน์โหลดไฟล์",
     youAreTheLuckyOneAndHaveWonPrize: "คุณคือผู้โชคดีและได้รับรางวัล",
     youAreTheLuckyOneAndHaveWonPrizeSpecial:
-        "คุณคือผู้โชคดีและได้รับรางวัลพิเศษ",
+        "คุณคือผู้โชคดีและได้รับรางวัลพิเศษจาก CK lotto",
     validUntil: "ใช้ได้ถึง",
     used: "ใช้แล้ว",
     thisLotteryNumberIsNotYetOnSale: "หวยเลขนี้ยังไม่วางขาย",
@@ -1151,6 +1170,15 @@ mixin AppLocale {
     buyMorePoints: "ซื้อคะแนนเพิ่ม",
     pointsFromPayment: "คะแนนจากชำระ",
     servicePolicy: "นโยบาย การให้บริการ",
+    more: "เพิ่มเติม",
+    referralCode: "รหัสอ้างอิง",
+    confirmPay: "ชำระเงิน",
+    hihtLotteryInput: "ป้อนเลข",
+    hihtPriceInput: "จำนวนเงิน",
+    numberOfLottery: "จำนวนเลขเสี่ยง",
+    minLength: "ต้องมีอย่างน้อย {length} ตัวอักษร",
+    notFoundInfluencer: "ไม่พบรหัสอินฟลูเอนเซอร์นี้ กรุณาตรวจสอบอีกครั้ง",
+    loadingText1: "กำลังตรวจสอบข้อมูลของท่าน",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -1302,7 +1330,7 @@ mixin AppLocale {
     welcome: "Welcome",
     inviteFriends: "Invite friends",
     inviteAccept: "Invite/Accept",
-    youHaveScore: "You have/score",
+    youHavePoint: "You have point",
     amountInWallet: "Amount in wallet",
     quickMenu: "Quick Menu",
     dailyFortune: "Daily Fortune",
@@ -1327,7 +1355,7 @@ mixin AppLocale {
     deleteAll: "Delete all",
     areYouSureYouWantToDeleteAllLottery:
         "Are you sure you want to delete all lottery entries?",
-    thisInvoiceExpiresOn: "This invoice expires on",
+    thisInvoiceExpiresOn: "Please pay before time runs out",
     identityVerificationRequired: "Identity verification required",
     collectCoupons: "Collect coupons",
     expiresIn: "Expires in",
@@ -1470,7 +1498,7 @@ mixin AppLocale {
     youAreTheLuckyOneAndHaveWonPrize:
         "You are the lucky one and have won a prize",
     youAreTheLuckyOneAndHaveWonPrizeSpecial:
-        "You are the lucky one and have won a special prize",
+        "You are the lucky one and have won a special prize from CK Lotto",
     validUntil: "Valid until",
     used: "Used",
     thisLotteryNumberIsNotYetOnSale: "This lottery number is not yet on sale",
@@ -1533,5 +1561,14 @@ mixin AppLocale {
     buyMorePoints: "Buy more points",
     pointsFromPayment: "Points from payment",
     servicePolicy: "Service Policy",
+    more: "More",
+    referralCode: "Referral Code",
+    confirmPay: "Pay",
+    hihtLotteryInput: "Enter number",
+    hihtPriceInput: "Enter price",
+    numberOfLottery: "Total lottery",
+    minLength: "Must contain at least {length} characters",
+    notFoundInfluencer: "Influencer code not found. Please check and try again",
+    loadingText1: "Checking your information",
   };
 }

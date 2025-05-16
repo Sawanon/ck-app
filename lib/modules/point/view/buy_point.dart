@@ -61,8 +61,8 @@ class TopupPoint extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(60),
                                       gradient: const LinearGradient(
                                         colors: [
-                                          AppColors.redGradient,
-                                          AppColors.yellowGradient,
+                                          AppColors.primary,
+                                          AppColors.secondaryColor,
                                         ],
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,

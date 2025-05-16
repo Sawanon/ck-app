@@ -1,14 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
-import 'package:lottery_ck/components/switch.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
-import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
@@ -475,6 +471,28 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(AppLocale.numberOfLottery
+                                        .getString(context)),
+                                    Text(
+                                      "${controller.invoiceMeta.value.transactions.length}",
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppColors.textPrimary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 16,
                                   vertical: 8,
@@ -523,7 +541,7 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                               decoration: InputDecoration(
                                                 counterText: "",
                                                 hintText: AppLocale
-                                                    .purchaseNumber
+                                                    .hihtLotteryInput
                                                     .getString(context),
                                                 errorStyle:
                                                     TextStyle(height: 0),
@@ -600,7 +618,8 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                             child: TextFormField(
                                               textAlign: TextAlign.center,
                                               decoration: InputDecoration(
-                                                hintText: AppLocale.price
+                                                hintText: AppLocale
+                                                    .hihtPriceInput
                                                     .getString(context),
                                                 errorStyle:
                                                     const TextStyle(height: 0),
@@ -724,7 +743,7 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                           },
                                           disabled: disabled,
                                           child: Text(
-                                            AppLocale.billSummary
+                                            AppLocale.confirmPay
                                                 .getString(context),
                                             // AppLocale.confirmBuyLottery
                                             //     .getString(context),

@@ -145,11 +145,11 @@ class LayoutPage extends StatelessWidget {
                         return Positioned(
                           bottom: controller.snackbarPosition.value ==
                                   SnackPositions.bottom
-                              ? 0
+                              ? 140
                               : null,
                           top: controller.snackbarPosition.value ==
                                   SnackPositions.top
-                              ? 0
+                              ? 60
                               : null,
                           left: 0,
                           right: 0,
@@ -159,14 +159,14 @@ class LayoutPage extends StatelessWidget {
                                 margin: const EdgeInsets.only(
                                   left: 24,
                                   right: 24,
-                                  bottom: 140,
                                 ),
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 12,
                                   horizontal: 16,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
+                                  color:
+                                      controller.snackbarBackgroundColor.value,
                                   borderRadius: BorderRadius.circular(48),
                                   boxShadow: [
                                     BoxShadow(
@@ -179,6 +179,9 @@ class LayoutPage extends StatelessWidget {
                                 child: Text(
                                   controller.snackMessage.value,
                                   textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: controller.snackbarTextColor.value,
+                                  ),
                                 ),
                               )
                                   .animate(

@@ -1,4 +1,5 @@
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:logger/web.dart';
 import 'package:lottery_ck/components/dialog_change_birthtime.dart';
@@ -49,4 +50,17 @@ Future<String?> createZZUrl(String url, [bool? isUnknowBirthTime]) async {
   );
   // return "https://staging.daily-ce2.pages.dev/?payload=$payload";
   return "$url$payload";
+}
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+    TextEditingValue oldValue,
+    TextEditingValue newValue,
+  ) {
+    return newValue.copyWith(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
+    );
+  }
 }
