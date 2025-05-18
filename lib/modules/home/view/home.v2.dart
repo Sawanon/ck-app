@@ -18,6 +18,7 @@ import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/res/icon.dart';
+import 'package:lottery_ck/res/logo.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
@@ -686,54 +687,55 @@ class HomePageV2 extends StatelessWidget {
                                                     ],
                                                   ),
                                                 ),
-                                                Expanded(
-                                                  child: Align(
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        controller
-                                                            .gotoBuyLottery();
-                                                      },
-                                                      child: Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(12),
-                                                          color:
-                                                              AppColors.primary,
-                                                          // gradient:
-                                                          //     AppColors.primayBtn,
-                                                        ),
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                          vertical: 6,
-                                                          horizontal: 32,
-                                                        ),
-                                                        child: Row(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Text(
-                                                              AppLocale
-                                                                  .buyLottery
-                                                                  .getString(
-                                                                      context),
-                                                              style: TextStyle(
-                                                                fontSize: 14,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
+                                                Align(
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      controller
+                                                          .gotoBuyLottery();
+                                                    },
+                                                    child: Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
+                                                        color:
+                                                            AppColors.primary,
+                                                        // gradient:
+                                                        //     AppColors.primayBtn,
+                                                      ),
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                        vertical: 6,
+                                                        horizontal: 16,
+                                                      ),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Image.asset(
+                                                            Logo.lottoMini,
+                                                            width: 28,
+                                                            height: 28,
+                                                          ),
+                                                          const SizedBox(
+                                                              width: 16),
+                                                          Text(
+                                                            AppLocale.buyLottery
+                                                                .getString(
+                                                                    context),
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  Colors.white,
                                                             ),
-                                                          ],
-                                                        ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
                                                   ),

@@ -1,8 +1,8 @@
 class AppConst {
   static const String cloudfareUrl = "http://demo.mylaos.life:3000";
   static String apiUrl = "https://demo.mylaos.life/api";
-  // static String apiInviteFriends = "https://demo.mylaos.life/api/invite-friend";
-  static String apiInviteFriends = "http://192.168.1.120:3001/api";
+  static String apiInviteFriends = "https://demo.mylaos.life/api/invite-friend";
+  // static String apiInviteFriends = "http://192.168.1.120:3001/api";
 
   static String videoUrl = "10.101.23.10:3000/api";
 

@@ -420,6 +420,7 @@ mixin AppLocale {
   static const String notFoundInfluencer =
       "ບໍ່ພົບລະຫັດອິນຟລູເອນເຊີນີ້ ກະລຸນາກວດສອບອີກຄັ້ງ";
   static const String loadingText1 = "ກຳລັງກວດສອບຂໍ້ມູນຂອງທ່ານ";
+  static const String closeSaleIn = "ປິດການຂາຍໃນ(ເວລາ)";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -799,6 +800,7 @@ mixin AppLocale {
     minLength: "ຕ້ອງມີຢ່າງໜ້ອຍ {length} ຕົວອັກສອນ",
     notFoundInfluencer: "ບໍ່ພົບລະຫັດອິນຟລູເອນເຊີນີ້ ກະລຸນາກວດສອບອີກຄັ້ງ",
     loadingText1: "ກຳລັງກວດສອບຂໍ້ມູນຂອງທ່ານ",
+    closeSaleIn: "ປິດການຂາຍໃນ(ເວລາ)",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -1179,6 +1181,7 @@ mixin AppLocale {
     minLength: "ต้องมีอย่างน้อย {length} ตัวอักษร",
     notFoundInfluencer: "ไม่พบรหัสอินฟลูเอนเซอร์นี้ กรุณาตรวจสอบอีกครั้ง",
     loadingText1: "กำลังตรวจสอบข้อมูลของท่าน",
+    closeSaleIn: "ปิดการขายใน(เวลา)",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -1570,5 +1573,6 @@ mixin AppLocale {
     minLength: "Must contain at least {length} characters",
     notFoundInfluencer: "Influencer code not found. Please check and try again",
     loadingText1: "Checking your information",
+    closeSaleIn: "Close the sale at (time)",
   };
 }

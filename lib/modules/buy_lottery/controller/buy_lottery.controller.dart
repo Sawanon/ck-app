@@ -545,15 +545,16 @@ class BuyLotteryController extends GetxController {
         totalAmount: price,
       );
       final result = await addTransactionIntoInvoice(lotteryClass);
-      if (result) {
-        await Future.delayed(
-          const Duration(milliseconds: 150),
-          () {
-            // Get.back();
-            showSnackbarSuccess([lotteryClass]);
-          },
-        );
-      }
+      // if success show snack bar success
+      // if (result) {
+      //   await Future.delayed(
+      //     const Duration(milliseconds: 150),
+      //     () {
+      //       // Get.back();
+      //       showSnackbarSuccess([lotteryClass]);
+      //     },
+      //   );
+      // }
       return result;
     }
     return false;
