@@ -193,7 +193,7 @@ class _AnimalPageState extends State<AnimalPage> {
       "th": "นกแกนแก",
       "lo": "ນົກແກ້ນແກ",
       "en": "Pigeon",
-      "image": "pigeon.png",
+      "image": "birdgangare.png",
       // "lotteries": ["92", "51", "21"],
       "lotteries": ["22", "62"],
     },
@@ -407,7 +407,7 @@ class _AnimalPageState extends State<AnimalPage> {
                               children: [
                                 Image(
                                   image: AssetImage(
-                                      'assets/animalphoto/${animal['image']}'),
+                                      'assets/animal/${animal['image']}'),
                                   height: 48,
                                   width: 48,
                                 ),

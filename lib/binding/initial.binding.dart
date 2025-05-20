@@ -27,6 +27,7 @@ import 'package:lottery_ck/modules/pin/controller/pin.controller.dart';
 import 'package:lottery_ck/modules/pin/controller/pin_verify.controller.dart';
 import 'package:lottery_ck/modules/point/controller/buy_point.controller.dart';
 import 'package:lottery_ck/modules/point/controller/point.controller.dart';
+import 'package:lottery_ck/modules/random/random.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/signup/controller/signup.controller.dart';
 import 'package:lottery_ck/modules/splash_screen/controller/splash_screen.controller.dart';
@@ -96,5 +97,6 @@ class LayoutBindings extends Bindings {
     Get.put<VideoController>(VideoController());
     Get.lazyPut<BuyPointController>(() => BuyPointController(), fenix: true);
     Get.put<LocationService>(LocationService());
+    Get.lazyPut<RandomController>(() => RandomController(), fenix: true);
   }
 }

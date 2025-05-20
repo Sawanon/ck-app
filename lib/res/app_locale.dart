@@ -24,7 +24,7 @@ mixin AppLocale {
   static const String buyerName = 'ຊື່ຜູ້ຊື້';
   static const String date = 'ວັນທີ';
   static const String buyHistory = 'ປະຫວັດການຊື້';
-  static const String winHistory = 'ປະຫວັດຖືກ';
+  static const String winHistory = 'ປະຫວັດຖືກເລກ';
   static const String reportAccountDeletion = 'ແຈ້ງ​ການ​ລຶບ​ບັນ​ຊີ​';
   static const String information = 'ຂໍ້ມູນ';
   static const String profile = 'ໂປຣໄຟລ໌';
@@ -132,7 +132,7 @@ mixin AppLocale {
   static const String login = "ເຂົ້າສູ່ລະບົບ";
   static const String rateLimit =
       "ທ່ານໄດ້ຮ້ອງຂໍຫຼາຍເກີນໄປໃນໄລຍະເວລາສັ້ນໆ, ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ";
-  static const String totalOrderAmount = "ຈໍານວນຄໍາສັ່ງທັງຫມົດ";
+  static const String totalOrderAmount = "ລວມເງິນທີ່ຕ້ອງຊຳລະ";
   static const String lak = "ກີບ";
   static const String paymentMethod = "ຊຳລະຜ່ານທາງ";
   static const String confirmLotteryPurchase = "ຢືນຢັນການຊື້ຫວຍ";
@@ -143,8 +143,7 @@ mixin AppLocale {
   static const String pleaseEnterPointsWantUse =
       "ກະລຸນາໃສ່ຄະແນນທີ່ທ່ານຕ້ອງການໃຊ້";
   static const String minimumAmount = "ຂັ້ນຕ່ຳ {price} ກີບ";
-  static const String scanQRCodeBeFriends =
-      "ສະແກນລະຫັດ QR ນີ້ເພື່ອກາຍເປັນເພື່ອນ";
+  static const String scanQRCodeBeFriends = "ສະແກນ QR ນີ້ເພື່ອເປັນໝູ່";
   static const String coupon = "ຄູປ໋ອງ";
   static const String useCoupon = "ໃຊ້ຄູປ໋ອງ";
   static const String pleaseEnterYourPhoneNumberToLogin =
@@ -265,8 +264,8 @@ mixin AppLocale {
       "ທ່ານຈ່າຍເງິນພຽງ 1,000 ກີບ ແຕ່ໄດ້ໂບນັດເພີ່ມຟຣີ 100 ກີບ ທໍາໃຫ້ມີໂອກາດໄດ້ຮັບເງິນລາງວັນຫຼາຍຂື້ນ (ອິງຈາກຍອດ 1,100 ກີບ)";
   static const String bonusDesSummaryDetail_2 =
       "ໂບນັດນີ້ເປັນຂໍ້ດີທີ່ຊ່ວຍເພີ່ມຄຸ້ນຄ່າໃຫ້ກັບການລົງທຶນຂອງທ່ານ!";
-  static const String paymentInformation = "ຂໍ້ມູນການຈ່າຍເງິນ";
-  static const String totalPayment = "ການຈ່າຍເງິນທັງໝົດ";
+  static const String paymentInformation = "ຂໍ້ມູນການຊຳລະ";
+  static const String totalPayment = "ລວມມູນຄ່າການຊື້";
   static const String createNewAccount = "ສ້າງບັນຊີໃໝ່";
   static const String pleaseFillInTheInformationToCreateAnAccount =
       "ກະລຸນາຕື່ມຂໍ້ມູນເພື່ອສ້າງບັນຊີ";
@@ -421,6 +420,13 @@ mixin AppLocale {
       "ບໍ່ພົບລະຫັດອິນຟລູເອນເຊີນີ້ ກະລຸນາກວດສອບອີກຄັ້ງ";
   static const String loadingText1 = "ກຳລັງກວດສອບຂໍ້ມູນຂອງທ່ານ";
   static const String closeSaleIn = "ປິດການຂາຍໃນ(ເວລາ)";
+  static const String confirmPayment = "ຍືນຍັນການຊຳລະ";
+  static const String add = "ເພີ່ມ";
+  static const String selectDigit = "ເລືອກຫຼັກ";
+  static const String enterLotteryNumber = "ປ້ອນເລກສ່ຽງໂຊກ";
+  static const String valueOfMoney = "ມູນຄ່າເງິນ";
+  static const String randomNumber = "ສຸ່ມເລກ";
+  static const String optional = "ໃສ່ຫຼືບໍ່ໃສ່ກໍ່ໄດ້";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -448,7 +454,7 @@ mixin AppLocale {
     buyerName: 'ຊື່ຜູ້ຊື້',
     date: 'ວັນທີ',
     buyHistory: 'ປະຫວັດການຊື້',
-    winHistory: 'ປະຫວັດຖືກ',
+    winHistory: 'ປະຫວັດຖືກເລກ',
     reportAccountDeletion: 'ແຈ້ງ​ການ​ລຶບ​ບັນ​ຊີ​',
     information: 'ຂໍ້ມູນ',
     profile: 'ໂປຣໄຟລ໌',
@@ -546,7 +552,7 @@ mixin AppLocale {
     auspiciousWallpaper: "ຮູບພາບມຸງຄຸນ",
     login: "ເຂົ້າສູ່ລະບົບ",
     rateLimit: "ທ່ານໄດ້ຮ້ອງຂໍຫຼາຍເກີນໄປໃນໄລຍະເວລາສັ້ນໆ, ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ",
-    totalOrderAmount: "ຈໍານວນຄໍາສັ່ງທັງຫມົດ",
+    totalOrderAmount: "ລວມເງິນທີ່ຕ້ອງຊຳລະ",
     lak: "ກີບ",
     paymentMethod: "ຊຳລະຜ່ານທາງ",
     confirmLotteryPurchase: "ຢືນຢັນການຊື້ຫວຍ",
@@ -556,7 +562,7 @@ mixin AppLocale {
     pleaseSelectPaymentMethod: "ກະລຸນາເລືອກວິທີການຊໍາລະເງິນ",
     pleaseEnterPointsWantUse: "ກະລຸນາໃສ່ຄະແນນທີ່ທ່ານຕ້ອງການໃຊ້",
     minimumAmount: "ຂັ້ນຕ່ຳ {price} ກີບ",
-    scanQRCodeBeFriends: "ສະແກນລະຫັດ QR ນີ້ເພື່ອກາຍເປັນເພື່ອນ",
+    scanQRCodeBeFriends: "ສະແກນ QR ນີ້ເພື່ອເປັນໝູ່",
     coupon: "ຄູປ໋ອງ",
     useCoupon: "ໃຊ້ຄູປ໋ອງ",
     pleaseEnterYourPhoneNumberToLogin:
@@ -665,8 +671,8 @@ mixin AppLocale {
         "ທ່ານຈ່າຍເງິນພຽງ 1,000 ກີບ ແຕ່ໄດ້ໂບນັດເພີ່ມຟຣີ 100 ກີບ ທໍາໃຫ້ມີໂອກາດໄດ້ຮັບເງິນລາງວັນຫຼາຍຂື້ນ (ອິງຈາກຍອດ 1,100 ກີບ)",
     bonusDesSummaryDetail_2:
         "ໂບນັດນີ້ເປັນຂໍ້ດີທີ່ຊ່ວຍເພີ່ມຄຸ້ນຄ່າໃຫ້ກັບການລົງທຶນຂອງທ່ານ!",
-    paymentInformation: "ຂໍ້ມູນການຈ່າຍເງິນ",
-    totalPayment: "ການຈ່າຍເງິນທັງໝົດ",
+    paymentInformation: "ຂໍ້ມູນການຊຳລະ",
+    totalPayment: "ລວມມູນຄ່າການຊື້",
     createNewAccount: "ສ້າງບັນຊີໃໝ່",
     pleaseFillInTheInformationToCreateAnAccount:
         "ກະລຸນາຕື່ມຂໍ້ມູນເພື່ອສ້າງບັນຊີ",
@@ -801,6 +807,13 @@ mixin AppLocale {
     notFoundInfluencer: "ບໍ່ພົບລະຫັດອິນຟລູເອນເຊີນີ້ ກະລຸນາກວດສອບອີກຄັ້ງ",
     loadingText1: "ກຳລັງກວດສອບຂໍ້ມູນຂອງທ່ານ",
     closeSaleIn: "ປິດການຂາຍໃນ(ເວລາ)",
+    confirmPayment: "ຍືນຍັນການຊຳລະ",
+    add: "ເພີ່ມ",
+    selectDigit: "ເລືອກຫຼັກ",
+    enterLotteryNumber: "ປ້ອນເລກສ່ຽງໂຊກ",
+    valueOfMoney: "ມູນຄ່າເງິນ",
+    randomNumber: "ສຸ່ມເລກ",
+    optional: "ໃສ່ຫຼືບໍ່ໃສ່ກໍ່ໄດ້",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -828,7 +841,7 @@ mixin AppLocale {
     buyerName: 'ชื่อผู้ซื้อ',
     date: 'วันที่',
     buyHistory: 'ประวัติการซื้อ',
-    winHistory: 'ประวัติรางวัล',
+    winHistory: 'ประวัติถูกเลข',
     reportAccountDeletion: 'แจ้งลบบัญชี',
     information: 'ข้อมูล',
     profile: 'โปรไฟล์',
@@ -927,7 +940,7 @@ mixin AppLocale {
     login: "เข้าสู่ระบบ",
     rateLimit:
         "คุณทำการร้องขอมากเกินไปในช่วงเวลาสั้น ๆ โปรดลองใหม่อีกครั้งในภายหลัง",
-    totalOrderAmount: "รวมยอดสั่งซื้อ",
+    totalOrderAmount: "รวมเงินที่ต้องชำระ",
     lak: "กีบ",
     paymentMethod: "ชำระผ่านทาง",
     confirmLotteryPurchase: "ยืนยันการซื้อหวย",
@@ -937,7 +950,7 @@ mixin AppLocale {
     pleaseSelectPaymentMethod: "กรุณาเลือกวิธีการชำระเงิน",
     pleaseEnterPointsWantUse: "กรุณากรอกคะแนนที่ต้องการใช้",
     minimumAmount: "ยอดขั้นต่ำ {price} กีบ",
-    scanQRCodeBeFriends: "สแกน QR code นี้เพื่อเป็นเพื่อนกัน",
+    scanQRCodeBeFriends: "แสกน QR นี้เพื่อเป็นหมู่",
     coupon: "คูปอง",
     useCoupon: "ใช้คูปอง",
     pleaseEnterYourPhoneNumberToLogin:
@@ -1046,7 +1059,7 @@ mixin AppLocale {
     bonusDesSummaryDetail_2:
         "โบนัสนี้เป็นข้อได้เปรียบที่ช่วยเพิ่มมูลค่าให้การลงทุนของคุณ!",
     paymentInformation: "ข้อมูลการชำระเงิน",
-    totalPayment: "ยอดชำระเงินทั้งหมด",
+    totalPayment: "รวมมูลค่าการซื้อ",
     createNewAccount: "สร้างบัญชีใหม่",
     pleaseFillInTheInformationToCreateAnAccount:
         "กรุณากรอกข้อมูลเพื่อสร้างบัญชี",
@@ -1182,6 +1195,13 @@ mixin AppLocale {
     notFoundInfluencer: "ไม่พบรหัสอินฟลูเอนเซอร์นี้ กรุณาตรวจสอบอีกครั้ง",
     loadingText1: "กำลังตรวจสอบข้อมูลของท่าน",
     closeSaleIn: "ปิดการขายใน(เวลา)",
+    confirmPayment: "ยืนยันการชำระ",
+    add: "เพิ่ม",
+    selectDigit: "เลือกหลัก",
+    enterLotteryNumber: "ป้อนเลขเสี่ยงโชค",
+    valueOfMoney: "มูลค่าเงิน",
+    randomNumber: "สุ่มเลข",
+    optional: "ใส่หรือไม่ใส่ก็ได้",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -1309,7 +1329,7 @@ mixin AppLocale {
     login: "Login",
     rateLimit:
         "You have made too many requests in a short period of time. Please try again later",
-    totalOrderAmount: "Total order amount",
+    totalOrderAmount: "Total amount to pay",
     lak: "LAK",
     paymentMethod: "Payment method",
     confirmLotteryPurchase: "Confirm lottery purchase",
@@ -1432,7 +1452,7 @@ mixin AppLocale {
     bonusDesSummaryDetail_2:
         "This bonus is a great advantage that boosts the value of your investment!",
     paymentInformation: "Payment information",
-    totalPayment: "Total Payment",
+    totalPayment: "Total purchase value",
     createNewAccount: "Create a new account",
     pleaseFillInTheInformationToCreateAnAccount:
         "Please fill in the information to create an account",
@@ -1574,5 +1594,12 @@ mixin AppLocale {
     notFoundInfluencer: "Influencer code not found. Please check and try again",
     loadingText1: "Checking your information",
     closeSaleIn: "Close the sale at (time)",
+    confirmPayment: "Confirm payment",
+    add: "Add",
+    selectDigit: "Select digit",
+    enterLotteryNumber: "Enter your lucky number",
+    valueOfMoney: "Value of money",
+    randomNumber: "Random number",
+    optional: "Optional",
   };
 }

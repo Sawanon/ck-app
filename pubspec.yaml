@@ -131,6 +131,7 @@ flutter:
     - assets/svg/vuesax/linear/
     - assets/svg/vuesax/bulk/
     - assets/animalphoto/
+    - assets/animal/
     - assets/font/
     - assets/png/
   #   - images/a_dot_burr.jpeg

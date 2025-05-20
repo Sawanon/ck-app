@@ -29,7 +29,7 @@ class AskKycDialog extends StatelessWidget {
             children: [
               Container(
                 padding: const EdgeInsets.all(16),
-                color: AppColors.kycBanner,
+                color: AppColors.primary,
                 width: double.infinity,
                 child: SizedBox(
                   width: 100,

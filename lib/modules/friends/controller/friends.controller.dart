@@ -24,6 +24,7 @@ class FriendsController extends GetxController {
     }
     final response =
         await AppWriteController.to.listMyFriendsUser(user.refCode!);
+    logger.w(response.data);
     if (response.isSuccess) {
       listMyFriends.clear();
       listMyFriends.addAll(response.data!);

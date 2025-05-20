@@ -5,7 +5,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
+import 'package:lottery_ck/modules/buy_lottery/view/animal_lottery.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
+import 'package:lottery_ck/modules/random/view/random_page.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
@@ -393,17 +395,33 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                       child: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
-                                                                .spaceBetween,
+                                                                .start,
                                                         children: [
-                                                          Text(
-                                                            lotteryData.lottery,
-                                                            style: TextStyle(
-                                                              color: AppColors
-                                                                  .textPrimary,
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                          SizedBox(
+                                                            width: 110,
+                                                            child: Text(
+                                                              lotteryData
+                                                                  .lottery,
+                                                              style: TextStyle(
+                                                                color: AppColors
+                                                                    .textPrimary,
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            child: Container(
+                                                              alignment: Alignment
+                                                                  .centerLeft,
+                                                              child:
+                                                                  AnimalLottery(
+                                                                lottery:
+                                                                    lotteryData
+                                                                        .lottery,
+                                                              ),
                                                             ),
                                                           ),
                                                           Row(
@@ -562,8 +580,129 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
+                                      // Row(
+                                      //   children: [
+                                      //     Expanded(
+                                      //       child: TextFormField(
+                                      //         maxLength: 6,
+                                      //         textAlign: TextAlign.center,
+                                      //         decoration: InputDecoration(
+                                      //           counterText: "",
+                                      //           hintText: AppLocale
+                                      //               .hihtLotteryInput
+                                      //               .getString(context),
+                                      //           errorStyle:
+                                      //               TextStyle(height: 0),
+                                      //           contentPadding:
+                                      //               const EdgeInsets.symmetric(
+                                      //                   horizontal: 8),
+                                      //           enabledBorder:
+                                      //               OutlineInputBorder(
+                                      //             borderRadius:
+                                      //                 BorderRadius.circular(8),
+                                      //             borderSide: const BorderSide(
+                                      //               color: AppColors.borderGray,
+                                      //             ),
+                                      //           ),
+                                      //           focusedBorder:
+                                      //               OutlineInputBorder(
+                                      //             borderRadius:
+                                      //                 BorderRadius.circular(8),
+                                      //             borderSide: const BorderSide(
+                                      //               color: AppColors.borderGray,
+                                      //               width: 1,
+                                      //             ),
+                                      //           ),
+                                      //           errorBorder: OutlineInputBorder(
+                                      //             borderRadius:
+                                      //                 BorderRadius.circular(8),
+                                      //             borderSide: const BorderSide(
+                                      //               color:
+                                      //                   AppColors.errorBorder,
+                                      //               width: 2,
+                                      //             ),
+                                      //           ),
+                                      //           focusedErrorBorder:
+                                      //               OutlineInputBorder(
+                                      //             borderRadius:
+                                      //                 BorderRadius.circular(8),
+                                      //             borderSide: const BorderSide(
+                                      //               color:
+                                      //                   AppColors.errorBorder,
+                                      //               width: 2,
+                                      //             ),
+                                      //           ),
+                                      //         ),
+                                      //         focusNode: controller.lotteryNode,
+                                      //         controller: controller
+                                      //             .lotteryTextController,
+                                      //         keyboardType:
+                                      //             TextInputType.number,
+                                      //         inputFormatters: [
+                                      //           FilteringTextInputFormatter
+                                      //               .digitsOnly
+                                      //         ],
+                                      //         validator: (value) {
+                                      //           logger.d("validator: $value");
+                                      //           if (value == null ||
+                                      //               value == "") {
+                                      //             controller
+                                      //                 .alertLotteryEmpty();
+                                      //             return "";
+                                      //           }
+                                      //           return null;
+                                      //         },
+                                      //         onChanged: (value) {
+                                      //           controller.lottery = value;
+                                      //         },
+                                      //       ),
+                                      //     ),
+                                      //   ],
+                                      // ),
+                                      // const SizedBox(height: 8),
                                       Row(
                                         children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Get.to(
+                                                () => RandomPage(),
+                                              );
+                                            },
+                                            child: Container(
+                                              width: 48,
+                                              height: 48,
+                                              decoration: BoxDecoration(
+                                                color: AppColors.primary,
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  SizedBox(
+                                                    width: 24,
+                                                    height: 24,
+                                                    child: SvgPicture.asset(
+                                                      AppIcon.random,
+                                                      colorFilter:
+                                                          const ColorFilter
+                                                              .mode(
+                                                        Colors.white,
+                                                        BlendMode.srcIn,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    AppLocale.random
+                                                        .getString(context),
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(width: 4),
                                           Expanded(
                                             child: TextFormField(
                                               maxLength: 6,
@@ -639,11 +778,7 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                               },
                                             ),
                                           ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Row(
-                                        children: [
+                                          const SizedBox(width: 4),
                                           Expanded(
                                             child: TextFormField(
                                               textAlign: TextAlign.center,
@@ -741,17 +876,32 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                   borderRadius:
                                                       BorderRadius.circular(8),
                                                 ),
-                                                child: SvgPicture.asset(
-                                                  AppIcon.add,
-                                                  colorFilter: ColorFilter.mode(
-                                                    controller.disabledBuy.value
-                                                        ? Colors.black
-                                                            .withOpacity(0.6)
-                                                        : Colors.white,
-                                                    BlendMode.srcIn,
-                                                  ),
-                                                  width: 36,
-                                                  height: 36,
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                      AppIcon.add,
+                                                      colorFilter:
+                                                          ColorFilter.mode(
+                                                        controller.disabledBuy
+                                                                .value
+                                                            ? Colors.black
+                                                                .withOpacity(
+                                                                    0.6)
+                                                            : Colors.white,
+                                                        BlendMode.srcIn,
+                                                      ),
+                                                      width: 24,
+                                                      height: 24,
+                                                    ),
+                                                    Text(
+                                                      AppLocale.add,
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             );

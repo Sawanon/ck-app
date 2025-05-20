@@ -111,9 +111,9 @@ class SignupController extends GetxController {
       }
       if (inviteCode != "" && inviteCode.length >= 5) {
         final responseVerifyInfluencer = await verifyInfluWithCode(inviteCode);
-        Get.rawSnackbar(
-          message: "response is $responseVerifyInfluencer",
-        );
+        // Get.rawSnackbar(
+        //   message: "response is $responseVerifyInfluencer",
+        // );
         setProcess(40);
         if (responseVerifyInfluencer == false) {
           return;
@@ -236,13 +236,27 @@ class SignupController extends GetxController {
       logger.e("myRefCode is $myRefCode");
       return false;
     }
+    final influencerRefCode =
+        await AppWriteController.to.findInfluencer(inviteCode);
+    influencerRefCode.data?['ref_code'];
+    if (influencerRefCode.data == null) {
+      Get.rawSnackbar(message: "influencer ref_code is empty");
+      return false;
+    }
     final responseConnectInfluencer = await AppWriteController.to.connectFriend(
-      inviteCode,
+      influencerRefCode.data!['ref_code'],
       myRefCode,
     );
-    logger.d("response");
+    final responseAcceptInfluencer = await AppWriteController.to.acceptFriend(
+      influencerRefCode.data!['ref_code'],
+      myRefCode,
+    );
+    logger.d("response connect");
     logger.w(responseConnectInfluencer.isSuccess);
     logger.w(responseConnectInfluencer.message);
+    logger.d("response accept");
+    logger.w(responseAcceptInfluencer.isSuccess);
+    logger.w(responseAcceptInfluencer.message);
     return true;
   }
 

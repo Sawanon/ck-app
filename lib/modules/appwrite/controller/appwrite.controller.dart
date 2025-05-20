@@ -2055,6 +2055,7 @@ class AppWriteController extends GetxController {
         receiveTimeout: const Duration(seconds: 15),
       );
       final dio = Dio(option);
+      logger.w("refCode: $refCode");
       final response = await dio.get(
         "${AppConst.apiInviteFriends}/myFriends/listUser/$refCode",
         options: Options(

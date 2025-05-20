@@ -1105,7 +1105,7 @@ class BuyLotteryController extends GetxController {
     // await createTransaction(lotteryList);
     if (someSuccess) {
       Get.back();
-      showSnackbarSuccess(successLottery);
+      // showSnackbarSuccess(successLottery);
     }
     return null;
   }

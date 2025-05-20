@@ -19,6 +19,9 @@ class InputText extends StatelessWidget {
   final bool onlyLaos;
   final bool onlyText;
   final TextAlign textAlign;
+  final String? hintText;
+  final bool? disableMaxlengthText;
+  final FocusNode? focusNode;
 
   const InputText({
     super.key,
@@ -38,11 +41,15 @@ class InputText extends StatelessWidget {
     this.onlyLaos = true,
     this.onlyText = false,
     this.textAlign = TextAlign.start,
+    this.hintText,
+    this.disableMaxlengthText,
+    this.focusNode,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      focusNode: focusNode,
       initialValue: initialValue,
       controller: controller,
       readOnly: disabled,
@@ -63,7 +70,18 @@ class InputText extends StatelessWidget {
       ],
       maxLength: maxLength,
       textAlign: textAlign,
+      buildCounter: (context,
+          {required currentLength, required isFocused, required maxLength}) {
+        if (disableMaxlengthText == true) {
+          return null;
+        }
+        if (maxLength != null) {
+          return Text("$currentLength/$maxLength");
+        }
+        return null;
+      },
       decoration: InputDecoration(
+        hintText: hintText,
         counterText: counterText,
         label: label,
         errorText: errorText,
@@ -77,7 +95,7 @@ class InputText extends StatelessWidget {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(4),
           borderSide: BorderSide(
-            color: isError ? AppColors.errorBorder : AppColors.inputBorder,
+            color: isError ? AppColors.errorBorder : AppColors.primary,
             width: 2,
           ),
         ),

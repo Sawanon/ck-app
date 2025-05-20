@@ -116,19 +116,19 @@ class LotteryHistoryPage extends StatelessWidget {
                   return GestureDetector(
                     onTap: () {
                       logger.d(lotteryHistory);
-                      BuyLotteryController.to
-                          .setLottery(lotteryHistory['lottery']);
-                      Clipboard.setData(
-                        ClipboardData(
-                          text: lotteryHistory['lottery'],
-                        ),
-                      );
-                      Get.rawSnackbar(
-                        message: 'คัดลอกแล้ว',
-                        margin: EdgeInsets.only(
-                          bottom: 24,
-                        ),
-                      );
+                      // BuyLotteryController.to
+                      //     .setLottery(lotteryHistory['lottery']);
+                      // Clipboard.setData(
+                      //   ClipboardData(
+                      //     text: lotteryHistory['lottery'],
+                      //   ),
+                      // );
+                      // Get.rawSnackbar(
+                      //   message: 'คัดลอกแล้ว',
+                      //   margin: EdgeInsets.only(
+                      //     bottom: 24,
+                      //   ),
+                      // );
                     },
                     child: Container(
                       margin: const EdgeInsets.all(8),
@@ -166,29 +166,29 @@ class LotteryHistoryPage extends StatelessWidget {
                                   fontSize: 14,
                                 ),
                               ),
-                              Row(
-                                children: [
-                                  Text(
-                                    "คัดลอกเลข",
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      decoration: TextDecoration.underline,
-                                      decorationThickness: 1.4,
-                                      height: 1.4,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 4,
-                                  ),
-                                  SizedBox(
-                                    width: 16,
-                                    height: 16,
-                                    child: SvgPicture.asset(
-                                      AppIcon.copy,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              // Row(
+                              //   children: [
+                              //     Text(
+                              //       "คัดลอกเลข",
+                              //       style: TextStyle(
+                              //         fontSize: 14,
+                              //         decoration: TextDecoration.underline,
+                              //         decorationThickness: 1.4,
+                              //         height: 1.4,
+                              //       ),
+                              //     ),
+                              //     const SizedBox(
+                              //       width: 4,
+                              //     ),
+                              //     SizedBox(
+                              //       width: 16,
+                              //       height: 16,
+                              //       child: SvgPicture.asset(
+                              //         AppIcon.copy,
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
                             ],
                           ),
                           SizedBox(height: 10),

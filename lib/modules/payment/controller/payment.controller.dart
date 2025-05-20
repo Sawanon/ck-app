@@ -271,18 +271,20 @@ class PaymentController extends GetxController {
       final bankValid = validBank(bank);
       if (!bankValid) return;
     }
-    Get.to(
-      PinVerifyPage(disabledBackButton: false),
-      arguments: {
-        "userId": LayoutController.to.userApp!.userId,
-        "whenSuccess": () async {
-          logger.d("boom !");
-          Get.back();
-          createInvoice(bank);
-          // logger.d("should back !");
-        }
-      },
-    );
+    isLoading.value = true;
+    // Get.to(
+    //   PinVerifyPage(disabledBackButton: false),
+    //   arguments: {
+    //     "userId": LayoutController.to.userApp!.userId,
+    //     "whenSuccess": () async {
+    //       logger.d("boom !");
+    //       Get.back();
+    createInvoice(bank);
+    isLoading.value = false;
+    // logger.d("should back !");
+    //     }
+    //   },
+    // );
     // await Pin.verifyPin(
     //   context,
     //   () {
@@ -451,7 +453,7 @@ class PaymentController extends GetxController {
     return true;
   }
 
-  void createInvoice(Bank bank) async {
+  Future<void> createInvoice(Bank bank) async {
     try {
       if (bank.downtime != null) {
         final bankValid = validBank(bank);

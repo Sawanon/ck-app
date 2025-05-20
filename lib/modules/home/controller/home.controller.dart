@@ -592,6 +592,7 @@ class HomeController extends GetxController {
       return;
     }
     final response = await AppWriteController.to.getMyFriends(user.refCode!);
+    logger.w(response.data?.toJson());
     if (response.isSuccess) {
       myFriends = response.data;
       update();

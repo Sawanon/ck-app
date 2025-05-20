@@ -11,6 +11,7 @@ import 'package:lottery_ck/components/point_icon.dart';
 import 'package:lottery_ck/components/switch.dart';
 import 'package:lottery_ck/modules/bill/view/bill.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
+import 'package:lottery_ck/modules/buy_lottery/view/animal_lottery.dart';
 import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
@@ -110,9 +111,9 @@ class PayMentPage extends StatelessWidget {
                               return Table(
                                 // border: TableBorder.all(color: Colors.blue),
                                 columnWidths: const {
-                                  0: FlexColumnWidth(50),
-                                  1: FlexColumnWidth(50),
-                                  // 2: FlexColumnWidth(25),
+                                  0: FlexColumnWidth(30),
+                                  1: FlexColumnWidth(40),
+                                  2: FlexColumnWidth(30),
                                 },
                                 defaultVerticalAlignment:
                                     TableCellVerticalAlignment.middle,
@@ -127,6 +128,19 @@ class PayMentPage extends StatelessWidget {
                                           child: Text(
                                             AppLocale.lotteryList
                                                 .getString(context),
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const TableCell(
+                                        verticalAlignment:
+                                            TableCellVerticalAlignment.middle,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(0),
+                                          child: Text(
+                                            "",
                                             style: const TextStyle(
                                               fontSize: 14,
                                             ),
@@ -184,6 +198,17 @@ class PayMentPage extends StatelessWidget {
                                                 style: const TextStyle(
                                                   fontSize: 14,
                                                 ),
+                                              ),
+                                            ),
+                                          ),
+                                          TableCell(
+                                            verticalAlignment:
+                                                TableCellVerticalAlignment
+                                                    .middle,
+                                            child: SizedBox(
+                                              width: 24,
+                                              child: AnimalLottery(
+                                                lottery: transaction.lottery,
                                               ),
                                             ),
                                           ),
@@ -377,16 +402,31 @@ class PayMentPage extends StatelessWidget {
                                   Obx(() {
                                     final invoice = BuyLotteryController
                                         .to.invoiceMeta.value;
-                                    return Text(
-                                      controller.isCanUsePoint
-                                          ? "${AppLocale.useAll.getString(context)} ${CommonFn.parseMoney(invoice.quota)} ${AppLocale.point.getString(context)}"
-                                          : AppLocale.pointsCannotBeUsed
-                                              .getString(context),
-                                      // AppLocale.point.getString(context),
-                                      style: const TextStyle(
-                                        // fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                      ),
+                                    return Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          controller.isCanUsePoint
+                                              ? "${AppLocale.useAll.getString(context)} ${CommonFn.parseMoney(invoice.quota)} ${AppLocale.point.getString(context)}"
+                                              : AppLocale.pointsCannotBeUsed
+                                                  .getString(context),
+                                          // AppLocale.point.getString(context),
+                                          style: const TextStyle(
+                                            // fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        if (controller.isCanUsePoint)
+                                          Text(
+                                            "ท่านมี (${CommonFn.parseMoney(SettingController.to.user?.point ?? 0)} ${AppLocale.point.getString(context)})",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                              color: AppColors.secodaryText,
+                                            ),
+                                          ),
+                                      ],
                                     );
                                   }),
                                   Expanded(
@@ -986,26 +1026,28 @@ class PayMentPage extends StatelessWidget {
                               disableBank = controller
                                   .disableBank(controller.selectedBank!);
                             }
-                            return LongButton(
-                              minimumSize: const Size(100, 48),
-                              maximumSize: const Size(110, 48),
-                              disabled: !controller.enablePay ||
-                                  invoiceRemainExpireStr == "" ||
-                                  disableBank,
-                              onPressed: () {
-                                if (controller.selectedBank == null) {
-                                  return;
-                                }
-                                controller.payLottery(
-                                  controller.selectedBank!,
-                                  context,
-                                );
-                              },
-                              child: Text(
-                                AppLocale.pay.getString(context),
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
+                            return Expanded(
+                              child: LongButton(
+                                // minimumSize: const Size(100, 48),
+                                // maximumSize: const Size(150, 48),
+                                disabled: !controller.enablePay ||
+                                    invoiceRemainExpireStr == "" ||
+                                    disableBank,
+                                onPressed: () {
+                                  if (controller.selectedBank == null) {
+                                    return;
+                                  }
+                                  controller.payLottery(
+                                    controller.selectedBank!,
+                                    context,
+                                  );
+                                },
+                                child: Text(
+                                  AppLocale.confirmPayment.getString(context),
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
                               ),
                             );
