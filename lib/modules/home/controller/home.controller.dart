@@ -130,7 +130,6 @@ class HomeController extends GetxController {
         );
         return;
       }
-      // // FIXME: fake now remove on production
       // final now = DateTime.parse("2024-10-28 20:09:40");
       final nowLocal = now.toLocal();
       final nowMidnight =
@@ -185,7 +184,6 @@ class HomeController extends GetxController {
       }
       final nowStr = dateServer![0];
       final now = DateTime.parse(nowStr);
-      // TODO: fake date time for test - sawanon
       // final now = DateTime.now().add(const Duration(days: -5));
       return now;
     } catch (e) {

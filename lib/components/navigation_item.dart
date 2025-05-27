@@ -53,9 +53,7 @@ class NavigationItem extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   // fontWeight:
                   //     currentTab == tab ? FontWeight.w700 : FontWeight.w500,
-                  color: currentTab == tab
-                      ? AppColors.secondaryColor
-                      : Colors.black,
+                  color: currentTab == tab ? AppColors.primary : Colors.black,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

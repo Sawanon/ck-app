@@ -66,7 +66,7 @@ class PointController extends GetxController {
       // return "ไพ่มงคล";
       return AppLocale.randomCard.getString(context);
     }
-    if (type.toLowerCase().contains("bankpromtion")) {
+    if (type.toLowerCase().contains("bankpromotion")) {
       final result = type.split(":");
       String bank = "";
       if (result.length > 1) {

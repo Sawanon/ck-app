@@ -8,12 +8,22 @@ import 'package:lottery_ck/modules/notification/view/promotion_list_component.da
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 
-class NotificationPage extends StatelessWidget {
+class NotificationPage extends StatefulWidget {
   const NotificationPage({super.key});
 
   @override
+  State<NotificationPage> createState() => _NotificationPageState();
+}
+
+class _NotificationPageState extends State<NotificationPage>
+    with TickerProviderStateMixin {
+  @override
   Widget build(BuildContext context) {
     return GetBuilder<NotificationController>(
+      initState: (state) {
+        NotificationController.to.tabController =
+            TabController(length: 3, vsync: this);
+      },
       builder: (controller) {
         return DefaultTabController(
           length: 3,
@@ -27,6 +37,7 @@ class NotificationPage extends StatelessWidget {
               titleSpacing: 0,
               toolbarHeight: 42,
               title: TabBar(
+                controller: controller.tabController,
                 unselectedLabelColor: Colors.grey,
                 dividerColor: Colors.transparent,
                 labelColor: Colors.white,
@@ -78,6 +89,7 @@ class NotificationPage extends StatelessWidget {
             ),
             body: TabBarView(
               physics: const NeverScrollableScrollPhysics(),
+              controller: controller.tabController,
               children: [
                 PromotionListComponent(),
                 NewsListComponent(),

@@ -17,11 +17,11 @@ import 'package:unique_identifier/unique_identifier.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginController extends GetxController {
-  final devPhone = "+8562055265064";
-  final appleAccount = "+8562012121313";
-  final nonAccount = "+8562013131414";
-  final nonAccount2 = "+8562014141515";
-  final nonAccount3 = "+8562015151616";
+  // final devPhone = "+8562055265064";
+  // final appleAccount = "+8562012121313";
+  // final nonAccount = "+8562013131414";
+  // final nonAccount2 = "+8562014141515";
+  // final nonAccount3 = "+8562015151616";
   static LoginController get to => Get.find();
   String phoneNumber = '';
   GlobalKey<FormState> keyForm = GlobalKey();
@@ -122,14 +122,13 @@ class LoginController extends GetxController {
 
   Future<void> getOTPandCreatePin(Map<String, dynamic> responseUser) async {
     // Get.toNamed(
-    if (phoneNumber == devPhone ||
-        phoneNumber == appleAccount ||
-        phoneNumber == nonAccount ||
-        phoneNumber == nonAccount2 ||
-        phoneNumber == nonAccount3) {
-      gotoPinverifyDev(responseUser['data']['userId']);
-      return;
-    }
+    // if (phoneNumber == appleAccount ||
+    //     phoneNumber == nonAccount ||
+    //     phoneNumber == nonAccount2 ||
+    //     phoneNumber == nonAccount3) {
+    //   gotoPinverifyDev(responseUser['data']['userId']);
+    //   return;
+    // }
     String? otpRef;
     Get.offNamed(
       RouteName.otp,

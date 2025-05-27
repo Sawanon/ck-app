@@ -41,10 +41,14 @@ class _WebviewPageV2State extends State<WebviewPageV2> {
         onPageStarted: (String url) {},
         onPageFinished: (String url) {},
         onHttpError: (HttpResponseError error) {
-          logger.d("error onHttpError");
+          logger.e("error onHttpError: $error");
+          logger.e(
+              "error onHttpError: ${error.response?.headers}, code:${error.response?.statusCode}");
         },
         onWebResourceError: (WebResourceError error) {
           logger.d("error onWebResourceError");
+          logger
+              .e('❌ WebView Error: ${error.errorCode} - ${error.description}');
         },
         onNavigationRequest: (NavigationRequest request) {
           // block localhost ! - sawanon:20240805

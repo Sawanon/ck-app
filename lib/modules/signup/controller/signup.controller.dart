@@ -78,23 +78,6 @@ class SignupController extends GetxController {
 
   Future<void> createUserAppwrite() async {
     // go to OTP when sucecess run function - sawanon:20240806
-    // TODO: continue dev / step 1. verify influencer code. 2. if work register. 3. delay 3 second for get ref_code and connect with influencer.
-    // process.value = 20;
-    // await Future.delayed(
-    //   const Duration(seconds: 3),
-    //   () {
-    //     process.value = 40;
-    //     logger.w("20 process");
-    //   },
-    // );
-    // await Future.delayed(
-    //   const Duration(seconds: 3),
-    //   () {
-    //     process.value = 100;
-    //     logger.w("100 process");
-    //   },
-    // );
-    // await Future.delayed(1.seconds);
     try {
       setProcess(20);
       // return;
@@ -240,7 +223,6 @@ class SignupController extends GetxController {
         await AppWriteController.to.findInfluencer(inviteCode);
     influencerRefCode.data?['ref_code'];
     if (influencerRefCode.data == null) {
-      Get.rawSnackbar(message: "influencer ref_code is empty");
       return false;
     }
     final responseConnectInfluencer = await AppWriteController.to.connectFriend(

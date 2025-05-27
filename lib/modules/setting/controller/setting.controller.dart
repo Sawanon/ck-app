@@ -8,6 +8,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottery_ck/components/dev/dialog_otp.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/model/get_argument/otp.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
@@ -25,6 +26,7 @@ import 'package:image/image.dart' as img;
 class SettingController extends GetxController {
   static SettingController get to => Get.find();
   UserApp? user;
+  RxBool isLoadingUser = false.obs;
   // bool isLogin = true;
   bool loading = false;
   RxBool enabledBiometrics = false.obs;
@@ -72,11 +74,13 @@ class SettingController extends GetxController {
   }
 
   Future<void> getUser([bool forceReloadProfile = false]) async {
+    isLoadingUser.value = true;
     final user = await AppWriteController.to.getUserApp();
     if (user == null) return;
     this.user = user;
     update();
     getPoint();
+    isLoadingUser.value = false;
     await listGroup(user.userId);
     AppWriteController.to.subscribeTopic(user.userId);
     update();
@@ -309,6 +313,9 @@ class SettingController extends GetxController {
           getUser(true);
           isLoadingProfile.value = false;
           // getProfileImage(user!, true);
+          if (user != null) {
+            UserController.to.getProfileImage(user!);
+          }
         }
       },
     );

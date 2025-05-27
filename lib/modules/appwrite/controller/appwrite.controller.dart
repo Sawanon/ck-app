@@ -785,9 +785,8 @@ class AppWriteController extends GetxController {
 
   Future<List?> listWinInvoices(String collectionId) async {
     try {
-      // FIXME: remove hardcode
-      // final userId = await user.then((value) => value.$id);
-      const userId = "67edf7a800193b9b4180"; // p nat
+      final userId = await user.then((value) => value.$id);
+      // const userId = "67edf7a800193b9b4180"; // p nat
       // const userId = "680b37540010c6d7e604"; // p nueg
       final invoiceList = await databases.listDocuments(
         databaseId: _databaseName,

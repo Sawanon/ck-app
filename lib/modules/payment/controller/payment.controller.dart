@@ -32,6 +32,7 @@ import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:lottery_ck/utils/location.dart';
+import 'package:pubnub/networking.dart';
 import 'package:pubnub/pubnub.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -63,6 +64,19 @@ class PaymentController extends GetxController {
   List<Map> promotionList = [];
   List<Map> promotionBankList = [];
   List promotionActive = [];
+  double? latitude;
+  double? longitude;
+
+  Future<void> getPosition() async {
+    logger.w("start: getPosition");
+    final stopwatch = Stopwatch()..start();
+    final position = await LocationService.getCurrentLocation();
+    stopwatch.stop();
+    logger.f("stopwatch: getPosition ${stopwatch.elapsedMilliseconds} ms");
+    latitude = position.latitude;
+    longitude = position.longitude;
+    logger.w("end: getPosition");
+  }
 
   void getPointRaio() async {
     final pointRatio = await AppWriteController.to.getPointRaio();
@@ -81,15 +95,6 @@ class PaymentController extends GetxController {
   Future<void> getBank() async {
     final appwriteController = AppWriteController.to;
     final bankList = await appwriteController.listBank();
-    // TODO: develop remove on production
-    // bankList?.add(
-    //   Bank(
-    //     $id: 'fake',
-    //     name: 'BCEL',
-    //     fullName: 'BCEL',
-    //     downtime: '21:00-00:00',
-    //   ),
-    // );
     if (bankList != null) {
       this.bankList = bankList;
       update();
@@ -200,6 +205,7 @@ class PaymentController extends GetxController {
   void setup() async {
     isLoading.value = true;
     point = null;
+    getPosition();
     setLotteryDate();
     await getBank();
     listenInvoiceExpire();
@@ -279,7 +285,7 @@ class PaymentController extends GetxController {
     //     "whenSuccess": () async {
     //       logger.d("boom !");
     //       Get.back();
-    createInvoice(bank);
+    await createInvoice(bank);
     isLoading.value = false;
     // logger.d("should back !");
     //     }
@@ -325,12 +331,14 @@ class PaymentController extends GetxController {
         point: invoiceDocuments.data['point'],
         pointMoney: invoiceDocuments.data['pointMoney'],
       );
-      Get.offNamed(
+      Get.toNamed(
         RouteName.bill,
         arguments: {
           "bill": bill,
           "onClose": () {
-            Get.offNamed(RouteName.layout);
+            // Get.offNamed(RouteName.layout);
+            Get.back();
+            Get.back();
           },
         },
       );
@@ -378,63 +386,89 @@ class PaymentController extends GetxController {
   }
 
   Future<void> subRealTime(String uuid, String invoiceId) async {
-    // Create PubNub instance with default keyset.
-    // publishKey: 'pub-c-ff681b02-4518-4dbd-a081-f98d1b2fcef6',
-    // subscribeKey: 'sub-c-8ae0d87d-51b2-4f42-83b6-e201bb96d7bd',
-    var pubnub = PubNub(
-      defaultKeyset: Keyset(
-        subscribeKey: 'sub-c-91489692-fa26-11e9-be22-ea7c5aada356',
-        userId: const UserId('BCELBANK'),
-      ),
-    );
-
-    // Subscribe to a channel
-    const mcid = 'mch5c2f0404102fb';
-    var channel = "uuid-$mcid-$uuid";
-    subscriptionPubnub = pubnub.subscribe(channels: {channel});
-    logger.d("channel: $channel");
-    logger.d("subscription start: $invoiceId");
-    // Print every message
-    subscriptionPubnub?.messages.listen((message) {
-      final contentJson = jsonDecode(message.content);
-      logger.w(contentJson);
-      final String? fccref = contentJson['fccref'];
-      subscriptionPubnub?.dispose();
-      showBill(invoiceId, fccref);
-      BuyLotteryController.to.removeInvoiceWhenPaymentSuccess();
-      // subscriptionPubnub?.unsubscribe();
-      // subscriptionPubnub?.cancel();
-    })
-      ?..onDone(
-        () {
-          logger.d("subscription done");
-        },
-      )
-      ..onError(
-        (error, stackTrace) {
-          logger.e(error);
-          logger.e(stackTrace);
-          LayoutController.to.snackBar(
-            message: "$error",
-          );
-        },
+    try {
+      // Create PubNub instance with default keyset.
+      // publishKey: 'pub-c-ff681b02-4518-4dbd-a081-f98d1b2fcef6',
+      // subscribeKey: 'sub-c-8ae0d87d-51b2-4f42-83b6-e201bb96d7bd',
+      var pubnub = PubNub(
+        networking: NetworkingModule(
+          retryPolicy: RetryPolicy.exponential(maxRetries: 10),
+        ),
+        defaultKeyset: Keyset(
+          subscribeKey: AppConst.pubNubSubscribeKeyBCEL,
+          userId: const UserId(AppConst.pubNubUserIdBCEL),
+        ),
       );
-    // ..onError((e) {
-    //   logger.e(e);
-    // })
-    // ..onDone(
-    //   () {
-    //     logger.d("subscription success");
-    //   },
-    // );
-    // Send a message every second for 5 seconds
-    // for (var i = 1; i <= 5; i++) {
-    //   await pubnub.publish(channel, 'Message no. $i');
-    //   await Future.delayed(Duration(seconds: 1));
-    // }
 
-    // Unsubscribe and quit
-    // await subscription.dispose();
+      // Subscribe to a channel
+      const mcid = 'mch5c2f0404102fb';
+      var channel = "uuid-$mcid-$uuid";
+      subscriptionPubnub = pubnub.subscribe(channels: {channel});
+      logger.d("channel: $channel");
+      logger.d("subscription start: $invoiceId");
+      Get.rawSnackbar(
+        icon: const Icon(Icons.check),
+        message: "subscription start: $invoiceId",
+        backgroundColor: Colors.green,
+        overlayColor: Colors.white,
+      );
+      // Print every message
+      subscriptionPubnub?.messages.listen((message) {
+        final contentJson = jsonDecode(message.content);
+        logger.w(contentJson);
+        final String? fccref = contentJson['fccref'];
+        subscriptionPubnub?.dispose();
+        showBill(invoiceId, fccref);
+        BuyLotteryController.to.removeInvoiceWhenPaymentSuccess();
+        // subscriptionPubnub?.unsubscribe();
+        // subscriptionPubnub?.cancel();
+      })
+        ?..onDone(
+          () {
+            logger.d("subscription done");
+          },
+        )
+        ..onError(
+          (error, stackTrace) {
+            logger.e(error);
+            logger.e(stackTrace);
+            Get.dialog(
+              DialogApp(
+                title: Text("$error"),
+                details: Text("$stackTrace"),
+                disableConfirm: true,
+              ),
+            );
+            LayoutController.to.snackBar(
+              message: "$error",
+            );
+          },
+        );
+      // ..onError((e) {
+      //   logger.e(e);
+      // })
+      // ..onDone(
+      //   () {
+      //     logger.d("subscription success");
+      //   },
+      // );
+      // Send a message every second for 5 seconds
+      // for (var i = 1; i <= 5; i++) {
+      //   await pubnub.publish(channel, 'Message no. $i');
+      //   await Future.delayed(Duration(seconds: 1));
+      // }
+
+      // Unsubscribe and quit
+      // await subscription.dispose();
+    } catch (e) {
+      Get.dialog(
+        DialogApp(
+          title: const Text("error"),
+          details: Text("$e"),
+          disableConfirm: true,
+        ),
+      );
+    }
   }
 
   bool validBank(Bank bank) {
@@ -478,14 +512,17 @@ class PaymentController extends GetxController {
       }
       isLoading.value = true;
       // final user = await AppWriteController.to.user;
-      final userApp = LayoutController.to.userApp;
+      final userApp = SettingController.to.user;
       if (userApp == null) throw "not found user please login";
       final storage = StorageController.to;
+      final stopwatchGetSessionId = Stopwatch()..start();
       final sessionId = await storage.getSessionId();
+      stopwatchGetSessionId.stop();
+      logger.f(
+          "stopwatch: getSessionId ${stopwatchGetSessionId.elapsedMilliseconds} ms");
       final credential = "$sessionId:${userApp.userId}";
       final bearer = base64Encode(utf8.encode(credential));
       final dio = Dio();
-      final position = await LocationService.getCurrentLocation();
       final payload = {
         "bankId": bank.$id,
         "phone": userApp.phoneNumber,
@@ -494,12 +531,13 @@ class PaymentController extends GetxController {
         "lotteryDateStr": invoiceMeta.lotteryDateStr,
         "customerId": userApp.customerId,
         "point": point,
-        "lat": position.latitude,
-        "long": position.longitude,
+        "lat": latitude,
+        "long": longitude,
       };
       logger.w(payload);
       // const url =
       //     "https://a8d4-2405-9800-b920-2d16-41b3-6892-29cb-c9f3.ngrok-free.app/api/payment";
+      final stopwatchAPI = Stopwatch()..start();
       final responseTransaction = await dio.post(
         // url,
         "${AppConst.apiUrl}/payment",
@@ -510,6 +548,8 @@ class PaymentController extends GetxController {
           },
         ),
       );
+      stopwatchAPI.stop();
+      logger.f("stopwatch: API ${stopwatchAPI.elapsedMilliseconds} ms");
       logger.w("responseTransaction");
       logger.w(responseTransaction.data);
       final result = responseTransaction.data['data'];
@@ -520,10 +560,10 @@ class PaymentController extends GetxController {
         final deeplink = payment['deeplink'];
         final uuid = payment['uuid'];
         logger.w("uuid: $uuid");
+        await subRealTime(uuid!, invoiceMeta['invoiceId']);
         BuyLotteryController.to.invoiceMeta.value.billId = uuid;
         await launchUrl(Uri.parse('$deeplink'));
         BuyLotteryController.to.startCountDownInvoiceExpire(newExpire);
-        subRealTime(uuid!, invoiceMeta['invoiceId']);
       }
       // if (bank.name == "ldb") {
       //   final canLaunch = await canLaunchUrl(Uri.parse("ldbpay://ldblao.la"));
@@ -572,6 +612,13 @@ class PaymentController extends GetxController {
         logger.e(e.response?.headers);
         logger.e(e.response?.requestOptions);
         isOpenedDialog = true;
+        String? message;
+        try {
+          final dataMap = jsonDecode(e.response?.data['message']);
+          message = dataMap['message'];
+        } catch (e) {
+          logger.e("error jsonDecode $e");
+        }
         Get.dialog(
           DialogApp(
             disableConfirm: true,
@@ -579,9 +626,7 @@ class PaymentController extends GetxController {
               AppLocale.somethingWentWrong.getString(Get.context!),
             ),
             details: Text(
-              e.response?.data['message']?['message'] ??
-                  e.response?.statusMessage ??
-                  "",
+              message ?? e.response?.statusMessage ?? "",
             ),
           ),
         ).whenComplete(

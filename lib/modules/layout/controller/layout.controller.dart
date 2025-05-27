@@ -306,7 +306,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
       }
       isUserLogined = true;
     } catch (e) {
-      logger.e("log out auto");
+      logger.e("log out auto $e");
       SettingController.to.logout();
     }
   }

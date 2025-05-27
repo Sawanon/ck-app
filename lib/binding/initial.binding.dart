@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/bill/controller/bill.controller.dart';
 import 'package:lottery_ck/modules/biometrics/controller/enable_biometrics.controller.dart';
@@ -43,6 +44,8 @@ class InitialBinding extends Bindings {
   void dependencies() {
     // Get.lazyPut<SplashScreenController>(() => SplashScreenController());
     Get.put<SplashScreenController>(SplashScreenController());
+    Get.put<AppWriteController>(AppWriteController());
+    Get.put<UserController>(UserController());
   }
 }
 

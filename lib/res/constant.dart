@@ -50,9 +50,9 @@ class AppConst {
       "lotteries": ["01", "41", "81"],
     },
     {
-      "name": "หอยทาก",
-      "th": "หอยทาก",
-      "lo": "ຫອຍທາກ",
+      "name": "หอย",
+      "th": "หอย",
+      "lo": "ຫອຍ",
       "en": "Snail",
       "image": "shell.png",
       "lotteries": ["02", "42", "82"],
@@ -60,7 +60,7 @@ class AppConst {
     {
       "name": "ห่าน",
       "th": "ห่าน",
-      "lo": "ຂວານ",
+      "lo": "ຫ່ານ",
       "en": "Goose",
       "image": "goose.png",
       "lotteries": ["03", "43", "83"],
@@ -76,7 +76,7 @@ class AppConst {
     {
       "name": "สิงโต",
       "th": "สิงโต",
-      "lo": "ສິງໂຕ",
+      "lo": "ສິງ",
       "en": "Lion",
       "image": "lion.png",
       "lotteries": ["05", "45", "85"],
@@ -116,7 +116,7 @@ class AppConst {
     {
       "name": "นาก",
       "th": "นาก",
-      "lo": "ນາກ",
+      "lo": "ນາກນ້ໍາ",
       "en": "Otter",
       "image": "otter.png",
       "lotteries": ["10", "50", "90"],
@@ -172,7 +172,7 @@ class AppConst {
     {
       "name": "นกกระยาง",
       "th": "นกกระยาง",
-      "lo": "ນົກກະຍາງ",
+      "lo": "ນົກຍາງ",
       "en": "Egret",
       "image": "egret.png",
       "lotteries": ["17", "57", "97"],
@@ -188,7 +188,7 @@ class AppConst {
     {
       "name": "ผีเสื้อ",
       "th": "ผีเสื้อ",
-      "lo": "ຜີເສື້ອ",
+      "lo": "ກະເບື້ອ",
       "en": "Butterfly",
       "image": "butterfly.png",
       "lotteries": ["19", "59", "99"],
@@ -196,7 +196,7 @@ class AppConst {
     {
       "name": "ตะขาบ",
       "th": "ตะขาบ",
-      "lo": "ຕະຂາບ",
+      "lo": "ຂີ້ເຂັບ",
       "en": "Centipede",
       "image": "centipede.png",
       "lotteries": ["00", "20", "60"],
@@ -204,7 +204,7 @@ class AppConst {
     {
       "name": "นกนางแอ่น",
       "th": "นกนางแอ่น",
-      "lo": "ນົກນາງແອ່ນ",
+      "lo": "ນົກແອ່ນ",
       "en": "Swallow",
       "image": "swallow2.png",
       "lotteries": ["21", "61"],
@@ -212,7 +212,7 @@ class AppConst {
     {
       "name": "นกแกนแก",
       "th": "นกแกนแก",
-      "lo": "ນົກແກ້ນແກ",
+      "lo": "ແຫຼວ",
       "en": "Pigeon",
       "image": "birdgangare.png",
       // "lotteries": ["92", "51", "21"],
@@ -245,7 +245,7 @@ class AppConst {
     {
       "name": "มังกร",
       "th": "มังกร",
-      "lo": "ມັງກອນ",
+      "lo": "ນາກບິນ",
       "en": "Dragon",
       "image": "dragon.png",
       "lotteries": ["26", "66"],
@@ -269,7 +269,7 @@ class AppConst {
     {
       "name": "ปลาไหล",
       "th": "ปลาไหล",
-      "lo": "ປາໄຫຼ",
+      "lo": "ອ່ຽນ",
       "en": "Eel",
       "image": "eel.png",
       "lotteries": ["29", "69"],
@@ -317,7 +317,7 @@ class AppConst {
     {
       "name": "แพะ",
       "th": "แพะ",
-      "lo": "ແພະ",
+      "lo": "ແບ້",
       "en": "Goat",
       "image": "goat.png",
       "lotteries": ["35", "75"],
@@ -325,7 +325,7 @@ class AppConst {
     {
       "name": "อีเห็น",
       "th": "อีเห็น",
-      "lo": "ອີເຫັນ",
+      "lo": "ເຫງັນ",
       "en": "Weasel",
       "image": "weasel.png",
       "lotteries": ["36", "76"],
@@ -333,7 +333,7 @@ class AppConst {
     {
       "name": "ตัวนิ่ม",
       "th": "ตัวนิ่ม",
-      "lo": "ຕົວນິ່ມ",
+      "lo": "ລິ່ນ",
       "en": "Armadillo",
       "image": "armadillo.png",
       "lotteries": ["37", "77"],
@@ -341,7 +341,7 @@ class AppConst {
     {
       "name": "เม่น",
       "th": "เม่น",
-      "lo": "ເມ່ນ",
+      "lo": "ເໝັ້ນ",
       "en": "Porcupine",
       "image": "porcupine.png",
       "lotteries": ["38", "78"],
@@ -357,10 +357,14 @@ class AppConst {
     {
       "name": "อินทรี",
       "th": "อินทรี",
-      "lo": "ອິນທຣີ",
+      "lo": "ນົກອິນຊີ",
       "en": "Eagle",
       "image": "eagle.png",
       "lotteries": ["40", "80"],
     },
   ];
+
+  static const String pubNubSubscribeKeyBCEL =
+      'sub-c-91489692-fa26-11e9-be22-ea7c5aada356';
+  static const String pubNubUserIdBCEL = 'BCELBANK';
 }

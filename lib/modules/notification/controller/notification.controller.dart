@@ -22,6 +22,7 @@ class NotificationController extends GetxController {
   ScrollController notificationScrollController = ScrollController();
   int notificationCurrentPage = 1;
   bool notificationLoading = false;
+  late TabController tabController;
 
   Future<void> listNews() async {
     try {

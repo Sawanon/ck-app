@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/no_network_dialog.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
@@ -37,7 +38,6 @@ class SplashScreenController extends GetxController {
   }
 
   Future<void> checkUser() async {
-    Get.put<AppWriteController>(AppWriteController());
     final isActive = await AppWriteController.to.isActiveUser();
     // logger.d("isActive: $isActive");
     if (isActive == false) {
@@ -114,7 +114,9 @@ class SplashScreenController extends GetxController {
   }
 
   void _handleMessage(RemoteMessage event) async {
-    Get.put(LayoutController());
+    // Get.put(LayoutController());
+    gotoLayout();
+    setStop(true);
     await Future.delayed(
       const Duration(seconds: 1),
       () async {
@@ -127,16 +129,22 @@ class SplashScreenController extends GetxController {
           logger.d("link: $link");
           if (link.contains("/news")) {
             logger.d("goto news page");
-            LayoutController.to.changeTab(TabApp.notifications);
+            LayoutController.to.changeTab(TabApp.settings);
             final newsId = link.split("/").last;
             logger.d(newsId);
             NotificationController.to.openNewsDetail(newsId);
+            Future.delayed(const Duration(milliseconds: 250), () {
+              NotificationController.to.tabController.animateTo(1);
+            });
           } else if (link.contains("/promotion")) {
             logger.d("goto news page");
-            LayoutController.to.changeTab(TabApp.notifications);
+            LayoutController.to.changeTab(TabApp.settings);
             final promotionId = link.split("/").last;
             logger.d(promotionId);
             NotificationController.to.openPromotionDetail(promotionId);
+            Future.delayed(const Duration(milliseconds: 250), () {
+              NotificationController.to.tabController.animateTo(0);
+            });
           } else if (link.contains("/win")) {
             logger.d("goto win page");
             final lotteryStr = event.data["lotteryDate"];
@@ -199,6 +207,7 @@ class SplashScreenController extends GetxController {
         NoNetworkDialog(
           identifier: 'noNetwork',
           onConfirm: () {
+            UserController.to.setup();
             checkNetWork();
           },
         ),

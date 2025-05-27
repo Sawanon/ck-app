@@ -129,6 +129,8 @@ class TCController extends GetxController {
     ],
   };
   bool isLoading = false;
+  ScrollController scrollController = ScrollController();
+  RxBool disabledButton = true.obs;
 
   void listKYC() async {
     logger.d("listKYC");
@@ -159,6 +161,20 @@ class TCController extends GetxController {
   @override
   void onInit() {
     listKYC();
+    scrollController.addListener(
+      () {
+        if (scrollController.position.pixels ==
+            scrollController.position.maxScrollExtent) {
+          disabledButton.value = false;
+        }
+      },
+    );
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    scrollController.dispose();
+    super.onClose();
   }
 }

@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 class AppColors {
   // static const Color primary = Color.fromRGBO(0, 209, 255, 1);
   static const Color background = Color.fromRGBO(245, 245, 245, 1);
-  // static const Color primary = Color.fromRGBO(242, 49, 55, 1);
-  static const Color primary = Color.fromRGBO(54, 70, 116, 1);
-  static const Color primary20 = Color.fromRGBO(210, 213, 223, 1);
+  static const Color primary = Color.fromRGBO(242, 49, 55, 1);
+  // static const Color primary = Color.fromRGBO(54, 70, 116, 1);
+  static const Color primary20 = Color.fromRGBO(252, 214, 215, 1);
+  // static const Color primary20 = Color.fromRGBO(210, 213, 223, 1);
   static const Color primaryBackground = Color.fromRGBO(238, 239, 239, 1);
   static const Color primaryOpacity = Color.fromRGBO(253, 233, 228, 1);
   static const Color primaryEnd = Color.fromRGBO(253, 150, 153, 1);

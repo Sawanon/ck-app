@@ -104,7 +104,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                 activeIcon: SvgPicture.asset(
                   AppIcon.homeBold,
                   colorFilter: const ColorFilter.mode(
-                    AppColors.secondaryColor,
+                    AppColors.primary,
                     BlendMode.srcIn,
                   ),
                 ),
@@ -125,7 +125,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                 activeIcon: SvgPicture.asset(
                   AppIcon.historyBold,
                   colorFilter: const ColorFilter.mode(
-                    AppColors.secondaryColor,
+                    AppColors.primary,
                     BlendMode.srcIn,
                   ),
                 ),
@@ -180,7 +180,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                   child: SvgPicture.asset(
                     AppIcon.scanBold,
                     colorFilter: const ColorFilter.mode(
-                      AppColors.secondaryColor,
+                      AppColors.primary,
                       BlendMode.srcIn,
                     ),
                   ),
@@ -203,7 +203,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                 activeIcon: SvgPicture.asset(
                   AppIcon.giftBold,
                   colorFilter: const ColorFilter.mode(
-                    AppColors.secondaryColor,
+                    AppColors.primary,
                     BlendMode.srcIn,
                   ),
                 ),
@@ -273,7 +273,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                     fontWeight: FontWeight.w700,
                     fontSize: 12,
                     color: widget.currentTab == TabApp.lottery
-                        ? AppColors.secondaryColor
+                        ? AppColors.primary
                         : Colors.black,
                   ),
                 ),

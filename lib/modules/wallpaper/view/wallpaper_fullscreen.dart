@@ -36,7 +36,6 @@ class WallpaperFullscreenPage extends StatefulWidget {
 class _WallpaperFullscreenPageState extends State<WallpaperFullscreenPage> {
   bool isLoading = false;
 
-// TODO: continue create animation flip wallpaper to description
   bool isOpen = false;
   bool isChangeToDes = false;
 

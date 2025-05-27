@@ -420,7 +420,7 @@ class PayMentPage extends StatelessWidget {
                                         ),
                                         if (controller.isCanUsePoint)
                                           Text(
-                                            "ท่านมี (${CommonFn.parseMoney(SettingController.to.user?.point ?? 0)} ${AppLocale.point.getString(context)})",
+                                            "${AppLocale.youHave.getString(context)} (${CommonFn.parseMoney(SettingController.to.user?.point ?? 0)} ${AppLocale.point.getString(context)})",
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: AppColors.secodaryText,
@@ -1030,6 +1030,7 @@ class PayMentPage extends StatelessWidget {
                               child: LongButton(
                                 // minimumSize: const Size(100, 48),
                                 // maximumSize: const Size(150, 48),
+                                isLoading: controller.isLoading.value,
                                 disabled: !controller.enablePay ||
                                     invoiceRemainExpireStr == "" ||
                                     disableBank,

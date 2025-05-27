@@ -11,6 +11,7 @@ import 'package:lottery_ck/components/friends.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/menu_card.dart';
 import 'package:lottery_ck/components/menu_grid.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
@@ -39,7 +40,7 @@ class HomePageV2 extends StatelessWidget {
             controller.setup();
           },
           child: Scaffold(
-            backgroundColor: AppColors.primaryBackground,
+            // backgroundColor: AppColors.primaryBackground,
             body: Stack(
               fit: StackFit.expand,
               children: [
@@ -164,7 +165,7 @@ class HomePageV2 extends StatelessWidget {
                                   // ),
                                   clipBehavior: Clip.hardEdge,
                                   decoration: BoxDecoration(
-                                      color: AppColors.primary20,
+                                      color: Colors.white,
                                       borderRadius: BorderRadius.circular(8),
                                       boxShadow: const [
                                         AppTheme.softShadow,
@@ -180,6 +181,9 @@ class HomePageV2 extends StatelessWidget {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Obx(() {
+                                                  final profileByte =
+                                                      UserController
+                                                          .to.profileByte.value;
                                                   return Container(
                                                     clipBehavior: Clip.hardEdge,
                                                     width: 48,
@@ -192,53 +196,48 @@ class HomePageV2 extends StatelessWidget {
                                                             boxShadow: [
                                                           AppTheme.softShadow,
                                                         ]),
-                                                    child: SettingController
-                                                                .to
-                                                                .profileByte
-                                                                .value ==
-                                                            null
+                                                    child: profileByte == null
                                                         ? const Icon(
                                                             Icons.person)
                                                         : Image.memory(
-                                                            SettingController
-                                                                .to
-                                                                .profileByte
-                                                                .value!,
+                                                            profileByte,
                                                             fit: BoxFit.cover,
                                                           ),
                                                   );
                                                 }),
                                                 const SizedBox(width: 16),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      SettingController.to.user
-                                                              ?.firstName ??
-                                                          AppLocale.firstName
-                                                              .getString(
-                                                                  context),
-                                                      style: const TextStyle(
-                                                        fontSize: 16,
-                                                        fontWeight:
-                                                            FontWeight.w500,
+                                                Obx(() {
+                                                  final user = UserController
+                                                      .to.user.value;
+                                                  return Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        user?.firstName ??
+                                                            AppLocale.firstName
+                                                                .getString(
+                                                                    context),
+                                                        style: const TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    Text(
-                                                      CommonFn.hidePhoneNumber(
-                                                        SettingController
-                                                                .to
-                                                                .user
-                                                                ?.phoneNumber ??
-                                                            "+856XXXXXXXXXX",
+                                                      Text(
+                                                        CommonFn
+                                                            .hidePhoneNumber(
+                                                          user?.phoneNumber ??
+                                                              "+856XXXXXXXXXX",
+                                                        ),
+                                                        style: const TextStyle(
+                                                          fontSize: 14,
+                                                        ),
                                                       ),
-                                                      style: const TextStyle(
-                                                        fontSize: 14,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
+                                                    ],
+                                                  );
+                                                }),
                                               ],
                                             ),
                                             const SizedBox(height: 8),
@@ -277,31 +276,31 @@ class HomePageV2 extends StatelessWidget {
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(12),
-                                                        color:
-                                                            AppColors.primary,
-                                                        // gradient:
-                                                        //     const LinearGradient(
-                                                        //   colors: [
-                                                        //     Color.fromRGBO(
-                                                        //         225, 126, 61, 1),
-                                                        //     Color.fromRGBO(
-                                                        //         235, 157, 100, 1),
-                                                        //     Color.fromRGBO(
-                                                        //         235, 157, 100, 1),
-                                                        //     Color.fromRGBO(
-                                                        //         225, 126, 61, 1),
-                                                        //   ],
-                                                        //   begin: Alignment
-                                                        //       .centerLeft,
-                                                        //   end: Alignment
-                                                        //       .centerRight,
-                                                        //   stops: [
-                                                        //     0,
-                                                        //     0.28,
-                                                        //     0.72,
-                                                        //     1,
-                                                        //   ],
-                                                        // ),
+                                                        // color:
+                                                        //     AppColors.primary,
+                                                        gradient:
+                                                            const LinearGradient(
+                                                          colors: [
+                                                            Color.fromRGBO(225,
+                                                                126, 61, 1),
+                                                            Color.fromRGBO(235,
+                                                                157, 100, 1),
+                                                            Color.fromRGBO(235,
+                                                                157, 100, 1),
+                                                            Color.fromRGBO(225,
+                                                                126, 61, 1),
+                                                          ],
+                                                          begin: Alignment
+                                                              .centerLeft,
+                                                          end: Alignment
+                                                              .centerRight,
+                                                          stops: [
+                                                            0,
+                                                            0.28,
+                                                            0.72,
+                                                            1,
+                                                          ],
+                                                        ),
                                                       ),
                                                       child: Row(
                                                         mainAxisAlignment:
@@ -356,8 +355,12 @@ class HomePageV2 extends StatelessWidget {
                                                                   colorFilter:
                                                                       ColorFilter
                                                                           .mode(
-                                                                    AppColors
-                                                                        .primary,
+                                                                    Color
+                                                                        .fromRGBO(
+                                                                            225,
+                                                                            126,
+                                                                            61,
+                                                                            1),
                                                                     BlendMode
                                                                         .srcIn,
                                                                   ),
@@ -506,29 +509,32 @@ class HomePageV2 extends StatelessWidget {
                                                         right: 0,
                                                       ),
                                                       decoration: BoxDecoration(
-                                                        color:
-                                                            AppColors.primary,
-                                                        // gradient: LinearGradient(
-                                                        //   colors: [
-                                                        //     Color.fromRGBO(
-                                                        //         33, 165, 81, 1),
-                                                        //     Color.fromRGBO(33,
-                                                        //             165, 81, 1)
-                                                        //         .withOpacity(0.5),
-                                                        //     Color.fromRGBO(33,
-                                                        //             165, 81, 1)
-                                                        //         .withOpacity(0.8),
-                                                        //   ],
-                                                        //   begin: Alignment
-                                                        //       .centerLeft,
-                                                        //   end: Alignment
-                                                        //       .centerRight,
-                                                        //   stops: const [
-                                                        //     0,
-                                                        //     0.53,
-                                                        //     1,
-                                                        //   ],
-                                                        // ),
+                                                        // color:
+                                                        //     AppColors.primary,
+                                                        gradient:
+                                                            LinearGradient(
+                                                          colors: [
+                                                            Color.fromRGBO(
+                                                                33, 165, 81, 1),
+                                                            Color.fromRGBO(33,
+                                                                    165, 81, 1)
+                                                                .withOpacity(
+                                                                    0.5),
+                                                            Color.fromRGBO(33,
+                                                                    165, 81, 1)
+                                                                .withOpacity(
+                                                                    0.8),
+                                                          ],
+                                                          begin: Alignment
+                                                              .centerLeft,
+                                                          end: Alignment
+                                                              .centerRight,
+                                                          stops: const [
+                                                            0,
+                                                            0.53,
+                                                            1,
+                                                          ],
+                                                        ),
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(12),
@@ -545,12 +551,13 @@ class HomePageV2 extends StatelessWidget {
                                                             decoration:
                                                                 BoxDecoration(
                                                               color:
-                                                                  Colors.white,
-                                                              // Color.fromRGBO(
-                                                              //     33,
-                                                              //     165,
-                                                              //     81,
-                                                              //     1),
+                                                                  // Colors.white,
+                                                                  Color
+                                                                      .fromRGBO(
+                                                                          33,
+                                                                          165,
+                                                                          81,
+                                                                          1),
                                                               shape: BoxShape
                                                                   .circle,
                                                               border:
@@ -581,8 +588,14 @@ class HomePageV2 extends StatelessWidget {
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold,
-                                                                  color: AppColors
-                                                                      .primary,
+                                                                  color: Color
+                                                                      .fromRGBO(
+                                                                          33,
+                                                                          165,
+                                                                          81,
+                                                                          1),
+                                                                  // AppColors
+                                                                  //     .primary,
                                                                 ),
                                                               ),
                                                             ),
@@ -603,17 +616,15 @@ class HomePageV2 extends StatelessWidget {
                                                                 ),
                                                               ),
                                                               Obx(() {
-                                                                final point =
-                                                                    SettingController
+                                                                final user =
+                                                                    UserController
                                                                         .to
-                                                                        .point
+                                                                        .user
                                                                         .value;
+                                                                final point =
+                                                                    user?.point;
                                                                 return Text(
-                                                                  SettingController
-                                                                              .to
-                                                                              .user
-                                                                              ?.point !=
-                                                                          null
+                                                                  point != null
                                                                       ? CommonFn
                                                                           .parseMoney(
                                                                               point)
@@ -670,7 +681,8 @@ class HomePageV2 extends StatelessWidget {
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           height: 1,
-                                                          color: Colors.white,
+                                                          color:
+                                                              AppColors.disable,
                                                         ),
                                                       ),
                                                       Text(
@@ -681,7 +693,8 @@ class HomePageV2 extends StatelessWidget {
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 12,
-                                                          color: Colors.white,
+                                                          color:
+                                                              AppColors.disable,
                                                         ),
                                                       ),
                                                     ],
@@ -700,10 +713,10 @@ class HomePageV2 extends StatelessWidget {
                                                         borderRadius:
                                                             BorderRadius
                                                                 .circular(12),
-                                                        color:
-                                                            AppColors.primary,
-                                                        // gradient:
-                                                        //     AppColors.primayBtn,
+                                                        // color:
+                                                        //     AppColors.primary,
+                                                        gradient:
+                                                            AppColors.primayBtn,
                                                       ),
                                                       padding:
                                                           EdgeInsets.symmetric(
@@ -745,70 +758,117 @@ class HomePageV2 extends StatelessWidget {
                                           ],
                                         ),
                                       ),
-                                      if (SettingController.to.user == null)
-                                        Positioned(
-                                          top: 0,
-                                          left: 0,
-                                          right: 0,
-                                          bottom: 0,
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                colors: [
-                                                  AppColors.primary20
-                                                      .withOpacity(0.6),
-                                                  AppColors.primary20,
-                                                  // Colors.white.withOpacity(0.6),
-                                                  // Colors.white,
-                                                ],
-                                                begin: Alignment.topCenter,
-                                                end: Alignment.bottomCenter,
-                                              ),
-                                            ),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                Get.toNamed(RouteName.login);
-                                              },
+                                      Obx(
+                                        () {
+                                          final isLoading = UserController
+                                              .to.isLoadingUser.value;
+                                          final user =
+                                              UserController.to.user.value;
+                                          // if (isLoading) {
+                                          //   return Text("Loading...");
+                                          // }
+                                          // return Text("${user?.fullName}!!");
+                                          if (isLoading) {
+                                            return Positioned(
+                                              top: 0,
+                                              right: 0,
+                                              bottom: 0,
+                                              left: 0,
                                               child: Container(
-                                                padding: const EdgeInsets.only(
-                                                  top: 12,
-                                                  bottom: 12,
-                                                  left: 16,
-                                                  right: 24,
-                                                ),
+                                                alignment: Alignment.center,
                                                 decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  color: AppColors.primary,
-                                                  // gradient: AppColors.primayBtn,
+                                                  gradient: LinearGradient(
+                                                    colors: [
+                                                      Colors.white
+                                                          .withOpacity(0.6),
+                                                      Colors.white
+                                                          .withOpacity(0.4),
+                                                    ],
+                                                  ),
                                                 ),
-                                                child: Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    const Icon(
-                                                      Icons.lock_open_rounded,
-                                                      color: Colors.white,
-                                                    ),
-                                                    const SizedBox(width: 12),
-                                                    Text(
-                                                      AppLocale.login
-                                                          .getString(context),
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    )
-                                                  ],
+                                                child:
+                                                    const CircularProgressIndicator(
+                                                  color: AppColors.primary,
                                                 ),
                                               ),
-                                            ),
-                                          ),
-                                        )
+                                            );
+                                          }
+                                          if (user == null) {
+                                            Positioned(
+                                              top: 0,
+                                              left: 0,
+                                              right: 0,
+                                              bottom: 0,
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                  gradient: LinearGradient(
+                                                    colors: [
+                                                      AppColors.primary20
+                                                          .withOpacity(0.6),
+                                                      AppColors.primary20,
+                                                      // Colors.white.withOpacity(0.6),
+                                                      // Colors.white,
+                                                    ],
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                  ),
+                                                ),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Get.toNamed(
+                                                        RouteName.login);
+                                                  },
+                                                  child: Container(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      top: 12,
+                                                      bottom: 12,
+                                                      left: 16,
+                                                      right: 24,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                      color: AppColors.primary,
+                                                      // gradient: AppColors.primayBtn,
+                                                    ),
+                                                    child: Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        const Icon(
+                                                          Icons
+                                                              .lock_open_rounded,
+                                                          color: Colors.white,
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 12),
+                                                        Text(
+                                                          AppLocale.login
+                                                              .getString(
+                                                                  context),
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                          return const SizedBox.shrink();
+                                        },
+                                      ),
                                     ],
                                   ),
                                 ),

@@ -31,6 +31,8 @@ class RandomController extends GetxController {
   int? numberLottery;
   int? price;
 
+  bool get disabledConfirm => numberLottery == null || price == null;
+
   void onChangeDigit(int value) {
     digit.value = value;
     if (value <= 2) {
@@ -102,6 +104,7 @@ class RandomController extends GetxController {
   void onChangeNumberLottery(String value) {
     try {
       numberLottery = isNumber(value) ? int.parse(value) : null;
+      update();
     } catch (e) {
       logger.e(e);
     }
@@ -110,6 +113,7 @@ class RandomController extends GetxController {
   void onChangePrice(String value) {
     try {
       price = isNumber(value) ? int.parse(value) : null;
+      update();
     } catch (e) {
       logger.e(e);
     }
@@ -161,6 +165,10 @@ class RandomController extends GetxController {
       return;
     }
     if (price == null) {
+      return;
+    }
+    if (price % 1000 != 0) {
+      BuyLotteryController.to.showInvalidPrice();
       return;
     }
     List<String> lotteryList = [];
@@ -236,18 +244,5 @@ class RandomController extends GetxController {
         BuyLotteryController.to.onClickAnimalBuy(lotteryMapList);
       },
     );
-    // TODO: lotteryMap add to lottery
-    // logger.w("all data");
-    // logger.d({
-    //   "digit": digit.value,
-    //   "digit1": digit1,
-    //   "digit2": digit2,
-    //   "digit3": digit3,
-    //   "digit4": digit4,
-    //   "digit5": digit5,
-    //   "digit6": digit6,
-    //   "number": numberLottery,
-    //   "price": price,
-    // });
   }
 }

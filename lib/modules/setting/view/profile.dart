@@ -186,30 +186,29 @@ class ProfilePage extends StatelessWidget {
                                     padding: EdgeInsets.all(8),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8),
-                                      color: Colors.blue.shade100,
+                                      color: Colors.red.shade100,
                                     ),
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
                                         Icon(
-                                          Icons.verified_user_rounded,
-                                          color: Colors.blue.shade900,
+                                          Icons.cancel_outlined,
+                                          color: Colors.red.shade900,
                                         ),
                                         const SizedBox(width: 8),
                                         Expanded(
                                           child: Text(
-                                            AppLocale.identityVerification
-                                                .getString(context),
+                                            AppLocale.notKYC.getString(context),
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              color: Colors.blue.shade900,
+                                              color: Colors.red.shade900,
                                             ),
                                           ),
                                         ),
                                         Icon(
                                           Icons.arrow_forward_ios_rounded,
-                                          color: Colors.blue.shade900,
+                                          color: Colors.red.shade900,
                                         )
                                       ],
                                     ),

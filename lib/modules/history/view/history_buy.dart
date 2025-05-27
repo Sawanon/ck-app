@@ -145,9 +145,7 @@ class HistoryBuyPage extends StatelessWidget {
                                             ),
                                           ),
                                           Text(
-                                            CommonFn.parseMoney(history.quota -
-                                                (history.pointMoney ?? 0) -
-                                                (history.discount ?? 0)),
+                                            CommonFn.parseMoney(history.quota),
                                             style: TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,

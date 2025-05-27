@@ -40,7 +40,7 @@ class CommonFn {
         0, (previousValue, element) => previousValue + element.amount);
   }
 
-  static String parseMoney(int money) {
+  static String parseMoney(num money) {
     try {
       final formatter = NumberFormat('#,###,###');
       return formatter.format(money);

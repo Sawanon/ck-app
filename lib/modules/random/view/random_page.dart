@@ -351,7 +351,7 @@ class RandomPage extends StatelessWidget {
                           const SizedBox(height: 8),
                           InputText(
                             keyboardType: TextInputType.number,
-                            maxValue: 10,
+                            maxValue: 500,
                             onChanged: (value) =>
                                 controller.onChangeNumberLottery(value),
                           ),
@@ -379,10 +379,11 @@ class RandomPage extends StatelessWidget {
                   ],
                 ),
               ),
-              const Expanded(child: const SizedBox.shrink()),
+              const Expanded(child: SizedBox.shrink()),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: LongButton(
+                  disabled: controller.disabledConfirm,
                   onPressed: () => controller.submitRandom(),
                   child: Text(
                     AppLocale.randomNumber.getString(context),

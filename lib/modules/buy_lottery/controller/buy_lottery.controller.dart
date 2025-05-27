@@ -214,7 +214,6 @@ class BuyLotteryController extends GetxController {
                 details: Text(
                   AppLocale.pleaseBuyMax.getString(Get.context!).replaceAll(
                       "{max}", CommonFn.parseMoney(config.max ?? 0)),
-                  // TODO: language
                   // "กรุณาซื้อไม่เกิน ${CommonFn.parseMoney(config.max ?? 0)} กีบ ต่อเลข",
                   style: const TextStyle(
                     color: AppColors.textPrimary,
@@ -1102,6 +1101,10 @@ class BuyLotteryController extends GetxController {
         someSuccess = true;
       }
     }
+    logger.w("invoice 1104");
+    Future.delayed(const Duration(milliseconds: 250), () {
+      logger.d(invoiceMeta.value.toJson('fake'));
+    });
     // await createTransaction(lotteryList);
     if (someSuccess) {
       Get.back();
@@ -1947,6 +1950,12 @@ class BuyLotteryController extends GetxController {
           changeTab(index);
           Get.back();
         },
+        cancelText: Text(
+          AppLocale.cancel.getString(Get.context!),
+          style: const TextStyle(
+            color: AppColors.primary,
+          ),
+        ),
       ),
     );
   }
@@ -1962,6 +1971,12 @@ class BuyLotteryController extends GetxController {
           SettingController.to.getPoint();
           Get.back();
         },
+        cancelText: Text(
+          AppLocale.cancel.getString(Get.context!),
+          style: const TextStyle(
+            color: AppColors.primary,
+          ),
+        ),
       ),
     );
   }
@@ -1976,6 +1991,12 @@ class BuyLotteryController extends GetxController {
           changeTab(index);
           Get.back();
         },
+        cancelText: Text(
+          AppLocale.cancel.getString(Get.context!),
+          style: const TextStyle(
+            color: AppColors.primary,
+          ),
+        ),
       ),
     );
   }
