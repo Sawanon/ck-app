@@ -27,8 +27,9 @@ class AppConst {
   // static const String horoScopeUrl = "https://daily.horodd.win/?payload=";
 
   // staging
-  static const String horoScopeUrl =
-      "https://staging.daily-ce2.pages.dev/?payload=";
+  // static const String horoScopeUrl =
+  //     "https://staging.daily-ce2.pages.dev/?payload=";
+  static const String horoScopeUrl = "https://demo.mylaos.life/daily/?payload=";
 
   // production
   // https://randomcards.horodd.win/?payload=<token>
@@ -36,8 +37,10 @@ class AppConst {
   //     "https://randomcards.horodd.win/?payload=";
 
   // staging
+  // static const String randomCardUrl =
+  //     "https://staging.randomcards.pages.dev/?payload=";
   static const String randomCardUrl =
-      "https://staging.randomcards.pages.dev/?payload=";
+      "https://demo.mylaos.life/randomcards/?payload=";
 
   static const animalDatas = [
     {

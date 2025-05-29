@@ -104,3 +104,10 @@ class AppIcon {
   static const String starhalf = "assets/starhalf.png";
   static const String starempty = "assets/starempty.png";
 }
+
+class ImagePng {
+  static const String gift = "assets/gift.png";
+  static const String logo = "assets/png/logo.png";
+  static const String wheel = "assets/png/wheel.png";
+  static const String wheelArrow = "assets/png/wheel-arrow.png";
+}

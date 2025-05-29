@@ -43,10 +43,19 @@ class AppColors {
   static const Color foregroundBorder = Color.fromRGBO(241, 240, 240, 1);
 
   static const Color zinZaeBackground = Color.fromRGBO(36, 36, 68, 1);
-
   static const Color redTone = Color.fromRGBO(239, 45, 41, 1);
-
   static const Color kycBanner = Color.fromRGBO(255, 93, 93, 1);
+
+  static const Color wheelOdd = Color.fromRGBO(153, 28, 10, 1);
+  static const Color wheelEven = Color.fromRGBO(119, 19, 8, 1);
+  static const Color wheelItemBorder = Color.fromRGBO(185, 38, 14, 1);
+  static const Color wheelText = Color.fromRGBO(249, 211, 124, 1);
+  static const Color wheelBackground = Color.fromRGBO(142, 24, 9, 1);
+  static const Color wheelBorderStart = Color.fromRGBO(250, 186, 65, 1);
+  static const Color wheelBorderEnd = Color.fromRGBO(174, 87, 17, 1);
+  static const Color wheelBorder = Color.fromRGBO(255, 213, 77, 1);
+  static const Color wheelInnerBackgroundStart = Color.fromRGBO(153, 31, 11, 1);
+  static const Color wheelInnerBackgroundEnd = Color.fromRGBO(126, 23, 8, 1);
 
   static LinearGradient primayBtn = LinearGradient(
     colors: [

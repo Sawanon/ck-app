@@ -42,7 +42,6 @@ import 'package:lottery_ck/utils/location.dart';
 class InitialBinding extends Bindings {
   @override
   void dependencies() {
-    // Get.lazyPut<SplashScreenController>(() => SplashScreenController());
     Get.put<SplashScreenController>(SplashScreenController());
     Get.put<AppWriteController>(AppWriteController());
     Get.put<UserController>(UserController());

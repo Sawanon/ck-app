@@ -10,6 +10,7 @@ import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
+import 'package:lottery_ck/modules/wheel/wheel_page.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
@@ -357,6 +358,7 @@ class MenuGrid extends StatelessWidget {
             disabled: true,
             ontab: () {
               logger.d("comming soon");
+              Get.to(() => const WheelPage());
               // Get.toNamed('/test');
             },
             icon: SizedBox(
@@ -365,23 +367,17 @@ class MenuGrid extends StatelessWidget {
               // child: Image.asset(
               //   AppIcon.news,
               // ),
-              child: SvgPicture.asset(
-                AppIcon.aiChatLinear,
-                colorFilter: ColorFilter.mode(
-                  Colors.grey.shade700,
-                  BlendMode.srcIn,
-                ),
-              ),
+              child: Image.asset(ImagePng.wheel),
             ),
             name: Align(
               alignment: Alignment.center,
               child: Text(
-                'CK-AI Chat',
-                style: TextStyle(
+                AppLocale.wheelOfFortune.getString(context),
+                style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 11,
                   height: 1.2,
-                  color: AppColors.menuTextDisabled,
+                  color: AppColors.textPrimary,
                 ),
                 textAlign: TextAlign.center,
                 softWrap: true,

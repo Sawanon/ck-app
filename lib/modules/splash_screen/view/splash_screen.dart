@@ -40,7 +40,7 @@ class SplashScreenPage extends StatelessWidget {
                       ),
                       child: Image.asset(
                         // Logo.app,
-                        "assets/png/logo.png",
+                        "assets/png/logo-t-bl.png",
                         fit: BoxFit.none,
                         width: 150,
                         height: 150,

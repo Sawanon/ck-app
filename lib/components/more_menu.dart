@@ -43,6 +43,41 @@ class MoreMenu extends StatelessWidget {
           ),
         ),
       ),
+      MenuModel(
+        disabled: true,
+        ontab: () {
+          logger.d("comming soon");
+          // Get.toNamed('/test');
+        },
+        icon: SizedBox(
+          height: 32,
+          width: 32,
+          // child: Image.asset(
+          //   AppIcon.news,
+          // ),
+          child: SvgPicture.asset(
+            AppIcon.aiChatLinear,
+            colorFilter: ColorFilter.mode(
+              Colors.grey.shade700,
+              BlendMode.srcIn,
+            ),
+          ),
+        ),
+        name: Align(
+          alignment: Alignment.center,
+          child: Text(
+            'CK-AI Chat',
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 11,
+              height: 1.2,
+              color: AppColors.menuTextDisabled,
+            ),
+            textAlign: TextAlign.center,
+            softWrap: true,
+          ),
+        ),
+      ),
     ];
     return Container(
       padding: const EdgeInsets.symmetric(

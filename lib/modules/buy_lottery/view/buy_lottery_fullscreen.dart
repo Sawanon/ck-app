@@ -340,7 +340,7 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                     ),
                                                     const SizedBox(width: 8),
                                                     Image.asset(
-                                                      "assets/png/logo.png",
+                                                      "assets/png/logo-t-bl.png",
                                                       width: 100,
                                                       height: 100,
                                                     ),

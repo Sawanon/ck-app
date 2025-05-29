@@ -7,6 +7,7 @@ import 'package:lottery_ck/modules/animal/view/animal_component.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery_fullscreen.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
+import 'package:lottery_ck/modules/webview/view/in_app_web_view_page.dart';
 import 'package:lottery_ck/modules/webview/view/webview_component.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -168,8 +169,20 @@ class _BuyLotteryPageState extends State<BuyLotteryPage> {
                             );
                           } else if (controller.currentTab.value == 2 &&
                               controller.luckyCardUrl.value != "") {
+                            // return InAppWebViewPage(
+                            //   // url: "https://staging.randomcards.pages.dev",
+                            //   // url: "https://demo.mylaos.life/zz/",
+                            //   // url: "http://192.168.1.40:3000",
+                            //   // url: "https://www.google.com/",
+                            //   url: controller.luckyCardUrl.value,
+                            //   onBack: () {
+                            //     controller.confirmOutTodayLuckyCard(0);
+                            //   },
+                            // );
                             return WebviewPageV2(
                               url: controller.luckyCardUrl.value,
+                              // url: "http://192.168.1.40:3000",
+                              // url: "https://staging.randomcards.pages.dev",
                               padding: EdgeInsets.only(bottom: 102),
                               onBack: () {
                                 controller.confirmOutTodayLuckyCard(0);

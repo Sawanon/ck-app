@@ -429,6 +429,7 @@ mixin AppLocale {
   static const String optional = "ໃສ່ຫຼືບໍ່ໃສ່ກໍ່ໄດ້";
   static const String notKYC = "ຍັງບໍ່ໄດ້ຢັ້ງຢືນຕົວຕົນເທື່ອ";
   static const String youHave = "ທ່ານມີ";
+  static const String wheelOfFortune = "ວົງລໍ້ສ່ຽງດວງ";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -818,6 +819,7 @@ mixin AppLocale {
     optional: "ໃສ່ຫຼືບໍ່ໃສ່ກໍ່ໄດ້",
     notKYC: "ຍັງບໍ່ໄດ້ຢັ້ງຢືນຕົວຕົນເທື່ອ",
     youHave: "ທ່ານມີ",
+    wheelOfFortune: "ວົງລໍ້ສ່ຽງດວງ",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -1208,6 +1210,7 @@ mixin AppLocale {
     optional: "ใส่หรือไม่ใส่ก็ได้",
     notKYC: "ยังไม่ได้ยืนยันตัวตน",
     youHave: "ท่านมี",
+    wheelOfFortune: "วงล้อเสี่ยงดวง",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -1609,5 +1612,6 @@ mixin AppLocale {
     optional: "Optional",
     notKYC: "Identity not verified yet",
     youHave: "You have",
+    wheelOfFortune: "Wheel of fortune",
   };
 }
