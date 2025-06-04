@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/input_text.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/modules/point/controller/buy_point.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
@@ -94,7 +95,7 @@ class TopupPoint extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 8),
                                   Builder(builder: (context) {
-                                    final user = SettingController.to.user;
+                                    final user = UserController.to.user.value;
                                     return Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,

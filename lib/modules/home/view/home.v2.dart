@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lottery_ck/components/banner.dart';
 import 'package:lottery_ck/components/dev/dialog_change_url.dart';
 import 'package:lottery_ck/components/friends.dart';
+import 'package:lottery_ck/components/input_text.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/menu_card.dart';
 import 'package:lottery_ck/components/menu_grid.dart';
@@ -794,7 +795,7 @@ class HomePageV2 extends StatelessWidget {
                                             );
                                           }
                                           if (user == null) {
-                                            Positioned(
+                                            return Positioned(
                                               top: 0,
                                               left: 0,
                                               right: 0,
@@ -804,9 +805,9 @@ class HomePageV2 extends StatelessWidget {
                                                 decoration: BoxDecoration(
                                                   gradient: LinearGradient(
                                                     colors: [
-                                                      AppColors.primary20
+                                                      Colors.white
                                                           .withOpacity(0.6),
-                                                      AppColors.primary20,
+                                                      Colors.white,
                                                       // Colors.white.withOpacity(0.6),
                                                       // Colors.white,
                                                     ],
@@ -917,6 +918,16 @@ class HomePageV2 extends StatelessWidget {
                                 ),
                               );
                             }
+                            // return Column(
+                            //   mainAxisSize: MainAxisSize.min,
+                            //   children: controller.bannerContent.value.map((v) {
+                            //     return TextFormField(
+                            //       initialValue: v['imageUrl'],
+                            //     );
+                            //   }).toList(),
+                            // );
+                            // return Text(
+                            //     "${controller.bannerContent.value.map((v) => "${v['imageUrl']}")}");
                             return BannerComponent(
                               // items: [
                               //   "https://baas.moevedigital.com/v1/storage/buckets/news_image/files/66d532000003e376a41c/view?project=667afb24000fbd66b4df&mode=admin",
@@ -937,6 +948,14 @@ class HomePageV2 extends StatelessWidget {
                                     child: CachedNetworkImage(
                                       imageUrl: element['imageUrl'] ?? '-',
                                       fit: BoxFit.fitWidth,
+                                      progressIndicatorBuilder:
+                                          (context, url, progress) {
+                                        return Center(
+                                          child: CircularProgressIndicator(
+                                            color: AppColors.primary,
+                                          ),
+                                        );
+                                      },
                                       errorWidget: (context, url, error) {
                                         return Container(
                                           width: 100,

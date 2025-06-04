@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/model/coupon.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
@@ -37,7 +38,7 @@ class PromotionController extends GetxController {
   Future<void> collectCoupons() async {
     final promotionId = argument['promotionId'];
     logger.d("promotionId: $promotionId");
-    final user = SettingController.to.user;
+    final user = UserController.to.user.value;
     if (user?.userId == null) {
       LayoutController.to.showDialogLogin();
     }
@@ -95,7 +96,7 @@ class PromotionController extends GetxController {
 
   Future<void> listMyCoupons() async {
     logger.d("listMyCoupons");
-    final user = SettingController.to.user;
+    final user = UserController.to.user.value;
     if (user == null) {
       return;
     }

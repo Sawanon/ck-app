@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:pinput/pinput.dart';
 
 class RandomController extends GetxController {
@@ -27,6 +28,8 @@ class RandomController extends GetxController {
   TextEditingController controller4 = TextEditingController();
   TextEditingController controller5 = TextEditingController();
   TextEditingController controller6 = TextEditingController();
+
+  TextEditingController priceTextController = TextEditingController();
 
   int? numberLottery;
   int? price;
@@ -112,7 +115,13 @@ class RandomController extends GetxController {
 
   void onChangePrice(String value) {
     try {
-      price = isNumber(value) ? int.parse(value) : null;
+      logger.w("value: $value");
+      final valueRemoveComma = value.replaceAll(",", "");
+      logger.w("valueRemoveComma: $valueRemoveComma");
+      price = isNumber(valueRemoveComma) ? int.parse(valueRemoveComma) : null;
+      if (price != null) {
+        priceTextController.text = CommonFn.parseMoney(price!);
+      }
       update();
     } catch (e) {
       logger.e(e);

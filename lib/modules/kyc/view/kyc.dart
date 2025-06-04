@@ -9,6 +9,7 @@ import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/input_text.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/prefix_radio.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/main.dart';
 import 'package:lottery_ck/modules/kyc/controller/kyc.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
@@ -796,24 +797,29 @@ class UserBannerComponent extends StatelessWidget {
                         ),
                 ),
                 const SizedBox(height: 16),
-                Text(
-                  LayoutController.to.userApp?.fullName ??
-                      "${AppLocale.firstName.getString(context)} ${AppLocale.lastName.getString(context)}",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
+                Obx(() {
+                  return Text(
+                    UserController.to.user.value?.fullName ??
+                        "${AppLocale.firstName.getString(context)} ${AppLocale.lastName.getString(context)}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  );
+                }),
                 const SizedBox(height: 8),
-                Text(
-                  LayoutController.to.userApp?.phoneNumber ?? "+8562012341234",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                    fontSize: 16,
-                  ),
-                ),
+                Obx(() {
+                  return Text(
+                    UserController.to.user.value?.phoneNumber ??
+                        "+85620xxxxxxxx",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  );
+                }),
               ],
             ),
           ),

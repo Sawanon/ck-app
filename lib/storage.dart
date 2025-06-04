@@ -60,9 +60,9 @@ class StorageController extends GetxController {
   }
 
   Future<void> clear() async {
-    await storage?.delete(key: "sessionId");
-    await storage?.delete(key: "enableBio");
-    // await storage?.deleteAll();
+    // await storage?.delete(key: "sessionId");
+    // await storage?.delete(key: "enableBio");
+    await storage?.deleteAll();
   }
 
   Future<void> setEnableBio() async {

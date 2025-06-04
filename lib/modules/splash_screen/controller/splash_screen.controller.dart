@@ -168,7 +168,7 @@ class SplashScreenController extends GetxController {
     );
   }
 
-  void checkNetWork() async {
+  Future<void> checkNetWork() async {
     final List<ConnectivityResult> connectivityResult =
         await (Connectivity().checkConnectivity());
 
@@ -206,9 +206,11 @@ class SplashScreenController extends GetxController {
       Get.dialog(
         NoNetworkDialog(
           identifier: 'noNetwork',
-          onConfirm: () {
-            UserController.to.setup();
-            checkNetWork();
+          onConfirm: () async {
+            logger.w("start loading");
+            await UserController.to.setup();
+            await checkNetWork();
+            logger.w("end loading");
           },
         ),
         barrierDismissible: false,

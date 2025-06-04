@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog_kyc_pending.dart';
 import 'package:lottery_ck/components/more_menu.dart';
 import 'package:lottery_ck/components/user_qr.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/model/menu.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
@@ -31,7 +32,7 @@ class MenuGrid extends StatelessWidget {
           // 1
           MenuModel(
             ontab: () {
-              if (SettingController.to.user == null) {
+              if (UserController.to.user.value == null) {
                 LayoutController.to.showDialogLogin();
                 return;
               }
@@ -248,7 +249,7 @@ class MenuGrid extends StatelessWidget {
           MenuModel(
             disabled: true,
             ontab: () {
-              final user = SettingController.to.user;
+              final user = UserController.to.user.value;
               if (user == null) {
                 LayoutController.to.showDialogLogin();
                 return;

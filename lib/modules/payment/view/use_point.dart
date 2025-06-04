@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:get/get.dart';
 import 'package:lottery_ck/components/input_text.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/utils.dart';
@@ -97,9 +99,11 @@ class _UsePointComponentState extends State<UsePointComponent> {
               Text(
                 AppLocale.yourScoreIs.getString(context),
               ),
-              Text(
-                "${CommonFn.parseMoney(SettingController.to.user?.point ?? 0)} ${AppLocale.point.getString(context)}",
-              ),
+              Obx(() {
+                return Text(
+                  "${CommonFn.parseMoney(UserController.to.user.value?.point ?? 0)} ${AppLocale.point.getString(context)}",
+                );
+              }),
             ],
           ),
           const SizedBox(height: 12),

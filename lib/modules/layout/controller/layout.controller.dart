@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/components/cart.dart';
 import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/model/bill.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
@@ -52,7 +53,6 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   bool noNetwork = false;
   bool isBlur = false;
   StreamSubscription? useBiometricsTimeout;
-  UserApp? userApp;
   List<String> backgroundThemeList = [];
   bool isSessionTimeout = false;
   RxBool isOpenSnackBar = false.obs;
@@ -80,11 +80,12 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
     }
     bool isEnable = await CommonFn.requestBiometrics();
     logger.d("isEnable: $isEnable");
+    final user = UserController.to.user.value;
     if (!isEnable) {
       await Get.dialog(
         PinVerifyPage(),
         arguments: {
-          "userId": userApp?.userId,
+          "userId": user?.userId,
           "whenSuccess": () {
             logger.d("success");
             Get.back();
@@ -198,7 +199,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   }
 
   void showDialogKYC() async {
-    final user = SettingController.to.user;
+    final user = UserController.to.user.value;
     final kycData = SettingController.to.kycData;
     final kycLater = await StorageController.to.getKYCLater();
     final kycLaterDate = kycLater != null ? DateTime.parse(kycLater) : null;
@@ -300,10 +301,11 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   Future<void> checkUser() async {
     try {
       // logger.d("checkUser");
-      userApp = await AppWriteController.to.getUserApp();
-      if (userApp == null) {
-        throw "userApp is null";
-      }
+      UserController.to.setup();
+      // userApp = await AppWriteController.to.getUserApp();
+      // if (userApp == null) {
+      //   throw "userApp is null";
+      // }
       isUserLogined = true;
     } catch (e) {
       logger.e("log out auto $e");
@@ -502,7 +504,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   }
 
   void showDialogVerifyPasscode() async {
-    final user = SettingController.to.user;
+    final user = UserController.to.user.value;
     if (user == null) {
       return;
     }

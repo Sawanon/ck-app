@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -33,8 +34,8 @@ class _ChangeBirthPageState extends State<ChangeBirthPage> {
 
   @override
   void initState() {
-    birthDate = SettingController.to.user?.birthDate;
-    final initBirthTime = SettingController.to.user?.birthTime;
+    birthDate = UserController.to.user.value?.birthDate;
+    final initBirthTime = UserController.to.user.value?.birthTime;
     logger.d(initBirthTime);
     logger.d(initBirthTime != null);
     logger.d(initBirthTime == "");

@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/gender_radio.dart';
 import 'package:lottery_ck/components/prefix_radio.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/modules/kyc/view/success_kyc_dialog.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
@@ -332,7 +333,7 @@ class KYCController extends GetxController {
       if (!validFormResendKYC()) {
         return;
       }
-      final userApp = LayoutController.to.userApp;
+      final userApp = UserController.to.user.value;
       Map<String, dynamic> data = {
         'id': idKYC,
         'userId': userApp!.userId,
@@ -423,7 +424,7 @@ class KYCController extends GetxController {
         Get.rawSnackbar(message: "Please enter info");
         return;
       }
-      final userApp = SettingController.to.user;
+      final userApp = UserController.to.user.value;
       final data = {
         "userId": userApp!.userId,
         "idCard": idCard,
@@ -486,7 +487,7 @@ class KYCController extends GetxController {
   }
 
   void setup() {
-    final user = SettingController.to.user;
+    final user = UserController.to.user.value;
     if (user == null) {
       return;
     }

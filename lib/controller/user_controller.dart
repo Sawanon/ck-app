@@ -1,8 +1,10 @@
 import 'dart:typed_data';
 
+import 'package:appwrite/models.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
+import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 
 class UserController extends GetxController {
@@ -16,7 +18,6 @@ class UserController extends GetxController {
   Future<UserApp?> getUser() async {
     try {
       isLoadingUser.value = true;
-      await Future.delayed(const Duration(seconds: 10), () {});
       final userApp = await AppWriteController.to.getUserApp();
       if (userApp == null) {
         return null;
@@ -26,6 +27,34 @@ class UserController extends GetxController {
       return null;
     } finally {
       isLoadingUser.value = false;
+    }
+  }
+
+  Future<void> reLoadUser() async {
+    try {
+      final userApp = await getUser();
+      user.value = userApp;
+      if (userApp == null) {
+        return;
+      }
+      final profile = await getProfileImage(userApp);
+      profileByte.value = profile;
+    } catch (e) {
+      logger.e(e);
+    }
+  }
+
+  Future<void> reloadUserProfile() async {
+    try {
+      final userApp = user.value;
+      if (userApp == null) {
+        logger.e("reloadUserProfile: userApp is empty");
+        return;
+      }
+      final profile = await getProfileImage(userApp);
+      profileByte.value = profile;
+    } catch (e) {
+      logger.e(e);
     }
   }
 
@@ -45,7 +74,6 @@ class UserController extends GetxController {
   Future<Uint8List?> getProfileImage(UserApp user,
       [bool forseReload = false]) async {
     if (user.profile == null || user.profile == "") {
-      // profileByte.value = null;
       return null;
     }
     if (profileByte.value != null && forseReload == false) return null;
@@ -55,7 +83,31 @@ class UserController extends GetxController {
     return fileByte;
   }
 
-  void setup() async {
+  void clearUser() {
+    user.value = null;
+    profileByte.value = null;
+  }
+
+  Future<Session?> login({
+    required String userId,
+    required String secret,
+  }) async {
+    try {
+      await StorageController.to.clear();
+      final session = await AppWriteController.to.createSession(userId, secret);
+      return session;
+    } catch (e) {
+      logger.e(e);
+      return null;
+    }
+  }
+
+  Future<void> logout() async {
+    await AppWriteController.to.logout();
+    clearUser();
+  }
+
+  Future<void> setup() async {
     final userApp = await getUser();
     user.value = userApp;
     if (userApp == null) {

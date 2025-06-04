@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/upload_image.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/res/app_locale.dart';
@@ -153,14 +154,15 @@ class ProfilePage extends StatelessWidget {
                                   Container(
                                     alignment: Alignment.center,
                                     child: Text(
-                                      "${controller.user?.fullName}",
+                                      "${UserController.to.user.value?.fullName}",
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w700,
                                       ),
                                     ),
                                   ),
-                                  if (controller.user?.isKYC == true) ...[
+                                  if (UserController.to.user.value?.isKYC ==
+                                      true) ...[
                                     const SizedBox(
                                       width: 4,
                                     ),
@@ -314,7 +316,7 @@ class ProfilePage extends StatelessWidget {
                                         ),
                                         const SizedBox(width: 8),
                                         Text(
-                                          "${controller.user?.fullName}",
+                                          "${UserController.to.user.value?.fullName}",
                                         ),
                                       ],
                                     ),
@@ -348,7 +350,8 @@ class ProfilePage extends StatelessWidget {
                                         const SizedBox(width: 8),
                                         Text(
                                           CommonFn.hidePhoneNumber(
-                                              controller.user?.phoneNumber),
+                                              UserController
+                                                  .to.user.value?.phoneNumber),
                                         ),
                                       ],
                                     ),
@@ -488,9 +491,10 @@ class ProfilePage extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
-                                    controller.user?.birthDate != null
-                                        ? CommonFn.parseDMY(
-                                            controller.user!.birthDate)
+                                    UserController.to.user.value?.birthDate !=
+                                            null
+                                        ? CommonFn.parseDMY(UserController
+                                            .to.user.value!.birthDate)
                                         : "-",
                                   ),
                                 ],
@@ -507,9 +511,13 @@ class ProfilePage extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
-                                    (controller.user?.birthTime != null &&
-                                            controller.user?.birthTime != "")
-                                        ? controller.user!.birthTime!
+                                    (UserController.to.user.value?.birthTime !=
+                                                null &&
+                                            UserController
+                                                    .to.user.value?.birthTime !=
+                                                "")
+                                        ? UserController
+                                            .to.user.value!.birthTime!
                                         : "-",
                                   ),
                                 ],

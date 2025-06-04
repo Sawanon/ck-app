@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/header.dart';
@@ -370,8 +371,15 @@ class RandomPage extends StatelessWidget {
                           const SizedBox(height: 8),
                           InputText(
                             keyboardType: TextInputType.number,
-                            onChanged: (value) =>
-                                controller.onChangePrice(value),
+                            controller: controller.priceTextController,
+                            maxValue: 1000000,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            onChanged: (value) {
+                              logger.w("value widget: $value");
+                              controller.onChangePrice(value);
+                            },
                           ),
                         ],
                       ),

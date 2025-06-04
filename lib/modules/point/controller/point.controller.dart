@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/model/user_point.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
@@ -113,14 +114,14 @@ class PointController extends GetxController {
   }
 
   void setupTotalPoint() {
-    totalPoint.value = SettingController.to.user?.point ?? 0;
+    totalPoint.value = UserController.to.user.value?.point ?? 0;
     // totalPoint.value = userPointList.fold(
     //     0, (previousValue, element) => previousValue + element.point);
   }
 
   @override
   void onInit() {
-    userApp = LayoutController.to.userApp;
+    userApp = UserController.to.user.value;
     scrollController.addListener(
       () {
         if (scrollController.position.pixels ==

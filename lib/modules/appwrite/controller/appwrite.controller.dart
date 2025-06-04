@@ -28,6 +28,7 @@ import 'package:lottery_ck/model/response/bytedance_get_snapshot.dart';
 import 'package:lottery_ck/model/response/bytedance_get_video_info.dart';
 import 'package:lottery_ck/model/response/bytedance_list_video.dart';
 import 'package:lottery_ck/model/response/bytedance_response.dart';
+import 'package:lottery_ck/model/response/find_influencer.dart';
 import 'package:lottery_ck/model/response/get_my_friends.dart';
 import 'package:lottery_ck/model/response/get_otp.dart';
 import 'package:lottery_ck/model/response/get_user_by_ref_code.dart';
@@ -99,9 +100,10 @@ class AppWriteController extends GetxController {
       final jwt = JWT({
         "token": AppConst.publicToken,
       });
-      final secretKey = await StorageController.to.getSecretKey();
+      // final secretKey = await StorageController.to.getSecretKey();
+      const secretKey = AppConst.secret;
       final token =
-          jwt.sign(SecretKey('$secretKey'), algorithm: JWTAlgorithm.HS384);
+          jwt.sign(SecretKey(secretKey), algorithm: JWTAlgorithm.HS384);
       final response = await dio.post(
         "${AppConst.apiUrl}/auth",
         data: {
@@ -125,12 +127,6 @@ class AppWriteController extends GetxController {
         logger.e(e.response?.headers);
         logger.e(e.response?.requestOptions);
       }
-      Get.snackbar(
-        "Something went wrong appwrite:66 getAuthToken",
-        "Please try again later or plaese contact admin",
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
     }
   }
 
@@ -1117,7 +1113,11 @@ class AppWriteController extends GetxController {
 
   Future<String> getAppJWT() async {
     final appToken = await StorageController.to.getAppToken();
-    if (appToken == null) throw "app token is empty";
+    // if (appToken == null) throw "app token is empty";
+    if (appToken == null) {
+      final appJWT = await refreshToken();
+      return appJWT.jwt;
+    }
     if (appToken.expire
         .isBefore(DateTime.now().add(const Duration(seconds: 30)))) {
       // refresh token
@@ -1133,9 +1133,9 @@ class AppWriteController extends GetxController {
     final jwt = JWT({
       "token": AppConst.publicToken,
     });
-    final secretKey = await StorageController.to.getSecretKey();
-    final token =
-        jwt.sign(SecretKey('$secretKey'), algorithm: JWTAlgorithm.HS384);
+    // final secretKey = await StorageController.to.getSecretKey();
+    const secretKey = AppConst.secret;
+    final token = jwt.sign(SecretKey(secretKey), algorithm: JWTAlgorithm.HS384);
     final response = await dio.post(
       "${AppConst.apiUrl}/auth",
       data: {
@@ -1206,12 +1206,12 @@ class AppWriteController extends GetxController {
 
   Future<Session?> createSession(String userId, String secret) async {
     try {
+      await createTarget();
       final session = await account.createSession(
         userId: userId,
         secret: secret,
       );
       await clearOtherSession(session.$id);
-      await createTarget();
       final storageController = StorageController.to;
       storageController.setSessionId(session.$id);
       return session;
@@ -1308,7 +1308,7 @@ class AppWriteController extends GetxController {
   Future<void> intialTokenToStorage() async {
     try {
       Get.put<StorageController>(StorageController());
-      await StorageController.to.setSecretKey(AppConst.secret);
+      // await StorageController.to.setSecretKey(AppConst.secret);
       getAuthJWTToken();
     } catch (e) {
       logger.e("$e");
@@ -2972,20 +2972,18 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<ResponseApi<Map>> findInfluencer(String influenCode) async {
+  Future<ResponseApi<FindInfluencer>> findInfluencer(String influenCode) async {
     try {
       final response = await databases.listDocuments(
         databaseId: _databaseName,
         collectionId: USER,
         queries: [
+          // TODO: query expire date
           Query.equal("influencer", influenCode),
-          Query.select(["ref_code"]),
+          // TODO: select first_name, last_name, profile for show dialog influencer infomation confirm
+          Query.select(["firstname", "lastname", "profile", "ref_code"]),
         ],
       );
-      logger.w("response findInfluencer");
-      for (var document in response.documents) {
-        logger.w(document.data);
-      }
       if (response.documents.isEmpty) {
         return ResponseApi(
           isSuccess: false,
@@ -3002,7 +3000,7 @@ class AppWriteController extends GetxController {
       return ResponseApi(
         isSuccess: true,
         message: "success to get influencer",
-        data: influenCerRefCode,
+        data: FindInfluencer.fromJson(influenCerRefCode),
       );
     } on AppwriteException catch (e) {
       logger.e(e);

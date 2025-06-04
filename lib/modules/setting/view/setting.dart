@@ -7,6 +7,7 @@ import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/rating.dart';
 import 'package:lottery_ck/components/traslate.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/t_c/view/t_c.dart';
@@ -53,7 +54,7 @@ class SettingPage extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              if (controller.user == null) {
+                              if (UserController.to.user.value == null) {
                                 LayoutController.to.showDialogLogin();
                                 return;
                               }
@@ -131,9 +132,11 @@ class SettingPage extends StatelessWidget {
                                                 ),
                                               ),
                                               const SizedBox(width: 8),
-                                              Text(controller.user?.fullName ??
+                                              Text(UserController.to.user.value
+                                                      ?.fullName ??
                                                   "-"),
-                                              if (controller.user?.isKYC ==
+                                              if (UserController
+                                                      .to.user.value?.isKYC ==
                                                   true) ...[
                                                 const SizedBox(width: 4),
                                                 const Icon(
@@ -155,8 +158,8 @@ class SettingPage extends StatelessWidget {
                                               ),
                                               const SizedBox(width: 8),
                                               Text(CommonFn.hidePhoneNumber(
-                                                  controller
-                                                      .user?.phoneNumber)),
+                                                  UserController.to.user.value
+                                                      ?.phoneNumber)),
                                             ],
                                           ),
                                           const SizedBox(height: 4),
@@ -168,16 +171,18 @@ class SettingPage extends StatelessWidget {
                                                   horizontal: 8,
                                                 ),
                                                 decoration: BoxDecoration(
-                                                  color:
-                                                      controller.user?.isKYC ==
-                                                              true
-                                                          ? Colors.green
-                                                          : Colors.red,
+                                                  color: UserController.to.user
+                                                              .value?.isKYC ==
+                                                          true
+                                                      ? Colors.green
+                                                      : Colors.red,
                                                   borderRadius:
                                                       BorderRadius.circular(4),
                                                 ),
                                                 child: Text(
-                                                  controller.user?.isKYC == true
+                                                  UserController.to.user.value
+                                                              ?.isKYC ==
+                                                          true
                                                       ? AppLocale.verified
                                                           .getString(context)
                                                       : AppLocale.notVerified
@@ -351,7 +356,7 @@ class SettingPage extends StatelessWidget {
                           const SizedBox(height: 4),
                           GestureDetector(
                             onTap: () {
-                              if (controller.user == null) {
+                              if (UserController.to.user.value == null) {
                                 LayoutController.to.showDialogLogin();
                                 return;
                               }
@@ -574,7 +579,7 @@ class SettingPage extends StatelessWidget {
                           // const SizedBox(height: 4),
                           GestureDetector(
                             onTap: () {
-                              if (controller.user == null) {
+                              if (UserController.to.user.value == null) {
                                 LayoutController.to.showDialogLogin();
                                 return;
                               }
@@ -725,7 +730,7 @@ class SettingPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (controller.user == null)
+                  if (UserController.to.user.value == null)
                     LongButton(
                       onPressed: () {
                         Get.toNamed(RouteName.login);

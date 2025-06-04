@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/dialog_change_birthtime.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/model/lottery_date.dart';
 import 'package:lottery_ck/model/response/get_my_friends.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
@@ -548,7 +549,7 @@ class HomeController extends GetxController {
   }
 
   void gotoWallPaperPage() {
-    if (SettingController.to.user == null) {
+    if (UserController.to.user.value == null) {
       LayoutController.to.showDialogLogin();
       return;
     }
@@ -581,7 +582,7 @@ class HomeController extends GetxController {
   }
 
   Future<void> getMyFriends() async {
-    final user = SettingController.to.user;
+    final user = UserController.to.user.value;
     if (user == null) {
       return;
     }
@@ -606,7 +607,7 @@ class HomeController extends GetxController {
   }
 
   // Future<void> listMyFriendsUser() async {
-  //   final user = SettingController.to.user;
+  //   final user = UserController.to.user.value;
   //   if (user == null) {
   //     return;
   //   }
@@ -637,7 +638,7 @@ class HomeController extends GetxController {
   }
 
   void gotoSetting() async {
-    if (SettingController.to.user == null) {
+    if (UserController.to.user.value == null) {
       LayoutController.to.showDialogLogin();
       return;
     }
@@ -645,7 +646,7 @@ class HomeController extends GetxController {
   }
 
   void gotoTopupPoint() async {
-    if (SettingController.to.user == null) {
+    if (UserController.to.user.value == null) {
       LayoutController.to.showDialogLogin();
       return;
     }
@@ -656,7 +657,7 @@ class HomeController extends GetxController {
   }
 
   void gotoVideo() {
-    if (SettingController.to.user == null) {
+    if (UserController.to.user.value == null) {
       LayoutController.to.showDialogLogin();
       return;
     }

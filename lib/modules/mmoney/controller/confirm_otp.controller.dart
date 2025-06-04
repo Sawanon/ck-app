@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
@@ -152,7 +153,7 @@ class MonneyConfirmOTPController extends GetxController {
       final invoiceId = argrument['invoiceId'];
       final lotteryDateStr = argrument['lotteryDateStr'];
       final int? point = argrument['point'];
-      final userApp = LayoutController.to.userApp;
+      final userApp = UserController.to.user.value;
       final dio = Dio();
       final token = await AppWriteController.to.getCredential();
       Map payload = {

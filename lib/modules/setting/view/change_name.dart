@@ -3,6 +3,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -33,8 +34,8 @@ class _ChangeNamePageState extends State<ChangeNamePage> {
 
   @override
   void initState() {
-    firstName = SettingController.to.user?.firstName;
-    lastName = SettingController.to.user?.lastName;
+    firstName = UserController.to.user.value?.firstName;
+    lastName = UserController.to.user.value?.lastName;
     super.initState();
   }
 
@@ -67,7 +68,7 @@ class _ChangeNamePageState extends State<ChangeNamePage> {
                     ),
                     const SizedBox(height: 4),
                     TextFormField(
-                      initialValue: SettingController.to.user?.firstName,
+                      initialValue: UserController.to.user.value?.firstName,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(horizontal: 8),
                         enabledBorder: OutlineInputBorder(
@@ -124,7 +125,7 @@ class _ChangeNamePageState extends State<ChangeNamePage> {
                     ),
                     const SizedBox(height: 4),
                     TextFormField(
-                      initialValue: SettingController.to.user?.lastName,
+                      initialValue: UserController.to.user.value?.lastName,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(horizontal: 8),
                         enabledBorder: OutlineInputBorder(

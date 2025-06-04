@@ -14,6 +14,7 @@ import 'package:lottery_ck/components/dialog_change_birthtime_v2.dart';
 import 'package:lottery_ck/components/dialog_promotion.dart';
 import 'package:lottery_ck/components/dialog_transaction_error.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/model/buy_lottery_configs.dart';
 import 'package:lottery_ck/model/invoice_meta.dart';
 import 'package:lottery_ck/model/lottery.dart';
@@ -297,7 +298,7 @@ class BuyLotteryController extends GetxController {
       final payload = invoiceMeta.toJson(userApp!.userId);
       // payload['lat'] = position.latitude;
       // payload['long'] = position.longitude;
-      final user = SettingController.to.user;
+      final user = UserController.to.user.value;
       if (user == null) return null;
       payload['userId'] = user.userId;
       logger.w(payload);
@@ -562,7 +563,7 @@ class BuyLotteryController extends GetxController {
   Future<bool> addTransactionIntoInvoice(Lottery lottery) async {
     logger.d("my lottery ${lottery.toJson()}");
     // get user
-    final userApp = SettingController.to.user;
+    final userApp = UserController.to.user.value;
     // check user
     if (userApp == null) {
       showLoginDialog();

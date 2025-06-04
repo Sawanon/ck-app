@@ -7,7 +7,6 @@ import 'package:lottery_ck/modules/animal/view/animal_component.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/buy_lottery_fullscreen.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
-import 'package:lottery_ck/modules/webview/view/in_app_web_view_page.dart';
 import 'package:lottery_ck/modules/webview/view/webview_component.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';

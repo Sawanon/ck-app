@@ -7,6 +7,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/coupons.dart';
 import 'package:lottery_ck/components/dialog.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/model/bank.dart';
 import 'package:lottery_ck/model/bill.dart';
 import 'package:lottery_ck/model/coupon.dart';
@@ -156,7 +157,7 @@ class PaymentController extends GetxController {
 
   void checkCanUsePoint() {
     final invoice = BuyLotteryController.to.invoiceMeta.value;
-    final user = SettingController.to.user;
+    final user = UserController.to.user.value;
     if (user == null) {
       return;
     }
@@ -169,7 +170,7 @@ class PaymentController extends GetxController {
   }
 
   Future<void> listPromotion() async {
-    final user = SettingController.to.user;
+    final user = UserController.to.user.value;
     if (user == null) return;
     final userGroups = await AppWriteController.to.listMyGroup(user.userId);
     // logger.w("userGroups: $userGroups");
@@ -512,7 +513,7 @@ class PaymentController extends GetxController {
       }
       isLoading.value = true;
       // final user = await AppWriteController.to.user;
-      final userApp = SettingController.to.user;
+      final userApp = UserController.to.user.value;
       if (userApp == null) throw "not found user please login";
       final storage = StorageController.to;
       final stopwatchGetSessionId = Stopwatch()..start();
@@ -802,8 +803,8 @@ class PaymentController extends GetxController {
   }
 
   void showBottomModalPoint(BuildContext context) {
-    final int myPoint = SettingController.to.user?.point != null
-        ? SettingController.to.user!.point
+    final int myPoint = UserController.to.user.value?.point != null
+        ? UserController.to.user.value!.point
         : 0;
     int maxPointCanUse = 0;
     final invoice = BuyLotteryController.to.invoiceMeta.value;
@@ -838,7 +839,7 @@ class PaymentController extends GetxController {
   }
 
   Future<void> listMyCoupons() async {
-    final user = SettingController.to.user;
+    final user = UserController.to.user.value;
     if (user == null) {
       logger.w("user is empty");
       return;

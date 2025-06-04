@@ -6,9 +6,12 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/gender_radio.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
+import 'package:lottery_ck/model/response/find_influencer.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
+import 'package:lottery_ck/modules/signup/view/influencer_card.dart';
 import 'package:lottery_ck/repository/user_repository/user.repository.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/route/route_name.dart';
@@ -38,10 +41,33 @@ class SignupController extends GetxController {
 
   Future<void> register(BuildContext context) async {
     if (keyForm.currentState != null && keyForm.currentState!.validate()) {
-      // isLoading.value = true;
+      if (inviteCode != "" && inviteCode.length >= 5) {
+        isLoading.value = true;
+        final responseVerifyInfluencer = await getInfluencerData(inviteCode);
+        isLoading.value = false;
+        // Get.rawSnackbar(
+        //   message: "response is $responseVerifyInfluencer",
+        // );
+        // if (responseVerifyInfluencer == false) {
+        //   return;
+        // }
+        logger.w(responseVerifyInfluencer?.toJson());
+        if (responseVerifyInfluencer == null) {
+          return;
+        }
+        Get.dialog(
+          InfluencerCard(
+            influencerData: responseVerifyInfluencer,
+            onConfirm: () async {
+              await createUserAppwrite();
+            },
+          ),
+          barrierDismissible: false,
+        );
+        return;
+      }
       submitting(true);
-      await createUserAppwrite();
-      // isLoading.value = false;
+      // await createUserAppwrite();
       submitting(false);
     }
   }
@@ -126,8 +152,12 @@ class SignupController extends GetxController {
         return;
       }
       setProcess(60);
-      final session = await appwriteController.createSession(
-          response.user.$id, response.secret);
+      // final session = await appwriteController.createSession(
+      //     response.user.$id, response.secret);
+      final session = await UserController.to.login(
+        userId: response.user.$id,
+        secret: response.secret,
+      );
       if (session == null) {
         Get.rawSnackbar(message: "create session failed");
         return;
@@ -177,6 +207,24 @@ class SignupController extends GetxController {
     }
   }
 
+  Future<FindInfluencer?> getInfluencerData(String inviteCode) async {
+    final responseFindInfuencer =
+        await AppWriteController.to.findInfluencer(inviteCode);
+    if (responseFindInfuencer.isSuccess == false) {
+      Get.dialog(
+        DialogApp(
+          title: Text(AppLocale.somethingWentWrong.getString(Get.context!)),
+          details: Text(
+            responseFindInfuencer.message,
+          ),
+          disableConfirm: true,
+        ),
+      );
+      return null;
+    }
+    return responseFindInfuencer.data;
+  }
+
   Future<bool> verifyInfluWithCode(String inviteCode) async {
     final responseFindInfuencer =
         await AppWriteController.to.findInfluencer(inviteCode);
@@ -221,16 +269,16 @@ class SignupController extends GetxController {
     }
     final influencerRefCode =
         await AppWriteController.to.findInfluencer(inviteCode);
-    influencerRefCode.data?['ref_code'];
+    influencerRefCode.data?.refCode;
     if (influencerRefCode.data == null) {
       return false;
     }
     final responseConnectInfluencer = await AppWriteController.to.connectFriend(
-      influencerRefCode.data!['ref_code'],
+      influencerRefCode.data!.refCode,
       myRefCode,
     );
     final responseAcceptInfluencer = await AppWriteController.to.acceptFriend(
-      influencerRefCode.data!['ref_code'],
+      influencerRefCode.data!.refCode,
       myRefCode,
     );
     logger.d("response connect");

@@ -23,8 +23,6 @@ import 'package:lottery_ck/utils.dart';
 import 'package:upgrader/upgrader.dart';
 import 'firebase_options.dart';
 
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -81,10 +79,6 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   initTTSDK();
   setupLocalNotification();
-
-  if (Platform.isAndroid) {
-    await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
-  }
 
   runApp(const MyApp());
 }

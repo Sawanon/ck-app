@@ -25,7 +25,7 @@ import 'package:image/image.dart' as img;
 
 class SettingController extends GetxController {
   static SettingController get to => Get.find();
-  UserApp? user;
+  // UserApp? user;
   RxBool isLoadingUser = false.obs;
   // bool isLogin = true;
   bool loading = false;
@@ -42,8 +42,9 @@ class SettingController extends GetxController {
   RxInt point = 0.obs;
 
   Future<void> logout() async {
-    await AppWriteController.to.logout();
-    user = null;
+    // await AppWriteController.to.logout();
+    await UserController.to.logout();
+    // user = null;
     update();
     HomeController.to.updateController();
     profileByte.value = null;
@@ -52,14 +53,15 @@ class SettingController extends GetxController {
   }
 
   Future<void> getKYC() async {
+    final user = UserController.to.user.value;
     if (user == null) return;
-    final kycData = await AppWriteController.to.getKYC(user!.userId);
+    final kycData = await AppWriteController.to.getKYC(user.userId);
     this.kycData = kycData;
     update();
   }
 
   Future<void> getPoint() async {
-    final user = this.user;
+    final user = UserController.to.user.value;
     if (user == null) {
       return;
     }
@@ -69,15 +71,20 @@ class SettingController extends GetxController {
       return;
     }
     logger.w("new point: ${responsePoint.data ?? 0}");
-    this.user?.point = responsePoint.data ?? 0;
+    // this.user?.point = responsePoint.data ?? 0;
+    // TODO: remove this point
     point.value = responsePoint.data ?? 0;
   }
 
   Future<void> getUser([bool forceReloadProfile = false]) async {
     isLoadingUser.value = true;
-    final user = await AppWriteController.to.getUserApp();
-    if (user == null) return;
-    this.user = user;
+    // final user = await AppWriteController.to.getUserApp();
+    // this.user = user;
+    final user = UserController.to.user.value;
+    if (user == null) {
+      logger.e("getUser: user is null");
+      return;
+    }
     update();
     getPoint();
     isLoadingUser.value = false;
@@ -185,7 +192,7 @@ class SettingController extends GetxController {
       return;
     }
     if (enableBioMetrics) {
-      final userApp = LayoutController.to.userApp;
+      final userApp = UserController.to.user.value;
       Get.to(
         PinVerifyPage(disabledBackButton: false),
         arguments: {
@@ -212,6 +219,7 @@ class SettingController extends GetxController {
 
   void changePasscode() async {
     try {
+      final user = UserController.to.user.value;
       Get.to(
         PinVerifyPage(disabledBackButton: false),
         arguments: {
@@ -224,10 +232,10 @@ class SettingController extends GetxController {
               RouteName.otp,
               arguments: OTPArgument(
                 action: OTPAction.changePasscode,
-                phoneNumber: user!.phoneNumber,
+                phoneNumber: user.phoneNumber,
                 onInit: () async {
                   final response =
-                      await AppWriteController.to.getOTPUser(user!.phoneNumber);
+                      await AppWriteController.to.getOTPUser(user.phoneNumber);
                   if (response.isSuccess == false || response.data == null) {
                     return null;
                   }
@@ -313,9 +321,7 @@ class SettingController extends GetxController {
           getUser(true);
           isLoadingProfile.value = false;
           // getProfileImage(user!, true);
-          if (user != null) {
-            UserController.to.getProfileImage(user!);
-          }
+          UserController.to.reloadUserProfile();
         }
       },
     );
@@ -337,6 +343,7 @@ class SettingController extends GetxController {
   }
 
   void changePhoneNumber() async {
+    final user = UserController.to.user.value;
     Get.toNamed(
       RouteName.pinVerify,
       arguments: {
@@ -545,6 +552,7 @@ class SettingController extends GetxController {
   Future<Document?> changeBirthTime(TimeOfDay birthTime) async {
     final birthTimeStr =
         "${birthTime.hour.toString().padLeft(2, "0")}:${birthTime.minute.toString().padLeft(2, "0")}";
+    final user = UserController.to.user.value;
     final userDocument =
         await AppWriteController.to.changeBirth(user!.birthDate, birthTimeStr);
     if (userDocument == null) {

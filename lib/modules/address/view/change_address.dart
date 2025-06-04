@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/loading.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/res/app_locale.dart';
@@ -61,7 +62,8 @@ class ChangeAddressPage extends StatelessWidget {
                             key: controller.keyFormAddress,
                             child: TextFormField(
                               // textAlign: TextAlign.center,
-                              initialValue: controller.user?.address,
+                              initialValue:
+                                  UserController.to.user.value?.address,
                               maxLines: 4,
                               decoration: InputDecoration(
                                 hintText: '',

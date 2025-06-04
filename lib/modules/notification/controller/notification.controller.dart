@@ -3,6 +3,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/model/news.dart';
 import 'package:lottery_ck/model/notification.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
@@ -197,7 +198,7 @@ class NotificationController extends GetxController {
   void onClickNotification(NotificationModel notification) async {
     final link = notification.link;
     logger.d(link);
-    final user = SettingController.to.user;
+    final user = UserController.to.user.value;
     if (link != null) {
       if (link.contains("/news")) {
         final newsId = link.split("/").last;

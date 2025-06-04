@@ -9,6 +9,7 @@ import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/point_icon.dart';
 import 'package:lottery_ck/components/switch.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/modules/bill/view/bill.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/animal_lottery.dart';
@@ -420,7 +421,7 @@ class PayMentPage extends StatelessWidget {
                                         ),
                                         if (controller.isCanUsePoint)
                                           Text(
-                                            "${AppLocale.youHave.getString(context)} (${CommonFn.parseMoney(SettingController.to.user?.point ?? 0)} ${AppLocale.point.getString(context)})",
+                                            "${AppLocale.youHave.getString(context)} (${CommonFn.parseMoney(UserController.to.user.value?.point ?? 0)} ${AppLocale.point.getString(context)})",
                                             style: TextStyle(
                                               fontSize: 12,
                                               color: AppColors.secodaryText,

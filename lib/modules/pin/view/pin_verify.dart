@@ -4,6 +4,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_screen_lock/flutter_screen_lock.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/pin/controller/pin_verify.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
@@ -57,7 +58,7 @@ class PinVerifyPage extends StatelessWidget {
                     }),
                     const SizedBox(height: 8),
                     Text(
-                      SettingController.to.user?.fullName ?? "",
+                      UserController.to.user.value?.fullName ?? "",
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -66,7 +67,7 @@ class PinVerifyPage extends StatelessWidget {
                     ),
                     Text(
                       CommonFn.hidePhoneNumber(
-                          SettingController.to.user?.phoneNumber),
+                          UserController.to.user.value?.phoneNumber),
                       style: TextStyle(
                         fontSize: 12,
                         color: AppColors.textPrimary.withOpacity(0.6),

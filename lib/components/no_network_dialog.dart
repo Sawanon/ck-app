@@ -2,15 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/res/app_locale.dart';
+import 'package:lottery_ck/utils.dart';
 
-class NoNetworkDialog extends StatelessWidget {
+class NoNetworkDialog extends StatefulWidget {
   final String identifier;
-  final void Function() onConfirm;
+  final Future<void> Function() onConfirm;
   const NoNetworkDialog({
     super.key,
     required this.identifier,
     required this.onConfirm,
   });
+
+  @override
+  State<NoNetworkDialog> createState() => _NoNetworkDialogState();
+}
+
+class _NoNetworkDialogState extends State<NoNetworkDialog> {
+  bool isLoading = false;
+
+  void setIsLoading(bool value) {
+    print("isLoading: $value");
+    setState(() {
+      isLoading = value;
+    });
+  }
+
+  Future<void> handleOnConfirm() async {
+    try {
+      setIsLoading(true);
+      await widget.onConfirm();
+    } catch (e) {
+      logger.e(e);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +70,8 @@ class NoNetworkDialog extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 LongButton(
-                  onPressed: onConfirm,
+                  onPressed: handleOnConfirm,
+                  isLoading: isLoading,
                   child: Text(
                     AppLocale.retry.getString(context),
                   ),

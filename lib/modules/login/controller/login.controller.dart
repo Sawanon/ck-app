@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
+import 'package:lottery_ck/components/dev/dialog_otp.dart';
 import 'package:lottery_ck/components/dialog.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/model/get_argument/otp.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/couldflare/controller/cloudflare.controller.dart';
@@ -90,11 +92,13 @@ class LoginController extends GetxController {
             return null;
           }
           otpRef = result.otpRef;
-          // Get.dialog(
-          //   DialogOtpComponent(
-          //     otp: result.otp,
-          //   ),
-          // );
+          if (phoneNumber == "+8562013131414") {
+            Get.dialog(
+              DialogOtpComponent(
+                otp: result.otp ?? 'empty',
+              ),
+            );
+          }
           return result.otpRef;
         },
         whenConfirmOTP: (otp) async {
@@ -152,9 +156,11 @@ class LoginController extends GetxController {
             return null;
           }
           final data = response.data!;
-          // Get.dialog(
-          //   DialogOtpComponent(otp: data.otp),
-          // );
+          if (phoneNumber == "+8562013131414") {
+            Get.dialog(
+              DialogOtpComponent(otp: data.otp ?? 'empty'),
+            );
+          }
           otpRef = data.otpRef;
           return data.otpRef;
         },
@@ -198,9 +204,11 @@ class LoginController extends GetxController {
                         return null;
                       }
                       final data = response.data!;
-                      // Get.dialog(
-                      //   DialogOtpComponent(otp: data.otp),
-                      // );
+                      if (phoneNumber == "+8562013131414") {
+                        Get.dialog(
+                          DialogOtpComponent(otp: data.otp ?? 'empty'),
+                        );
+                      }
                       otpRef = data.otpRef;
                       return data.otpRef;
                     },
@@ -216,9 +224,13 @@ class LoginController extends GetxController {
                         arguments: {
                           "userId": responseUser['data']['userId'],
                           "whenSuccess": () async {
-                            final session = await AppWriteController.to
-                                .createSession(
-                                    responseUser['data']["userId"], secret);
+                            final session = await UserController.to.login(
+                              userId: responseUser['data']['userId'],
+                              secret: secret,
+                            );
+                            // final session = await AppWriteController.to
+                            //     .createSession(
+                            //         responseUser['data']["userId"], secret);
                             if (session == null) {
                               Get.snackbar(
                                 "Something went wrong login:65",
@@ -251,8 +263,12 @@ class LoginController extends GetxController {
                 );
               },
               "whenSuccess": () async {
-                final session = await AppWriteController.to
-                    .createSession(responseUser['data']["userId"], secret);
+                final session = await UserController.to.login(
+                  userId: responseUser['data']['userId'],
+                  secret: secret,
+                );
+                // final session = await AppWriteController.to
+                //     .createSession(responseUser['data']["userId"], secret);
                 if (session == null) {
                   Get.snackbar(
                     "Something went wrong login:65",
@@ -287,89 +303,6 @@ class LoginController extends GetxController {
     logger.d("logout");
     final appwriteController = AppWriteController.to;
     await appwriteController.logout();
-  }
-
-  void gotoPinverifyDev(String userId) {
-    Get.offNamed(
-      RouteName.pinVerify,
-      arguments: {
-        "disabledBioMetrics": true,
-        "userId": userId,
-        "enableForgetPasscode": true,
-        "whenForgetPasscode": () async {
-          Get.rawSnackbar(message: "verify otp");
-          Get.toNamed(
-            RouteName.otp,
-            arguments: OTPArgument(
-              action: OTPAction.changePasscode,
-              phoneNumber: phoneNumber,
-              onInit: () async {
-                return "devacc";
-              },
-              whenConfirmOTP: (otp) async {
-                // final session =
-                //     await AppWriteController.to.createSession(userId, secret);
-                final session = await AppWriteController.to.login(
-                  "$phoneNumber@ckmail.com",
-                  phoneNumber,
-                );
-                if (session == null) {
-                  Get.snackbar(
-                    "Something went wrong login:65",
-                    "session is null Please try again later or plaese contact admin",
-                  );
-                  navigator?.pop();
-                  return;
-                }
-                final availableBiometrics =
-                    await CommonFn.availableBiometrics();
-                if (availableBiometrics) {
-                  Get.toNamed(RouteName.enableBiometrics, arguments: {
-                    "whenSuccess": () async {
-                      LayoutController.to.intialApp();
-                      Get.offAllNamed(RouteName.layout);
-                      return;
-                    }
-                  });
-                  return;
-                }
-                LayoutController.to.intialApp();
-                Get.offAllNamed(RouteName.layout);
-              },
-            ),
-          );
-        },
-        "whenSuccess": () async {
-          // final session = await AppWriteController.to
-          //     .createSession(responseUser['data']["userId"], secret);
-          final session = await AppWriteController.to.login(
-            "$phoneNumber@ckmail.com",
-            phoneNumber,
-          );
-          if (session == null) {
-            Get.snackbar(
-              "Something went wrong login:65",
-              "session is null Please try again later or plaese contact admin",
-            );
-            // navigator?.pop();
-            return;
-          }
-          final availableBiometrics = await CommonFn.availableBiometrics();
-          if (availableBiometrics) {
-            Get.toNamed(RouteName.enableBiometrics, arguments: {
-              "whenSuccess": () async {
-                LayoutController.to.intialApp();
-                Get.offAllNamed(RouteName.layout);
-                return;
-              }
-            });
-            return;
-          }
-          LayoutController.to.intialApp();
-          Get.offAllNamed(RouteName.layout);
-        }
-      },
-    );
   }
 
   void checkDevice() async {

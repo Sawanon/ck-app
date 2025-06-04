@@ -9,6 +9,7 @@ import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/friend_confirm.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/user_qr.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
@@ -81,7 +82,7 @@ class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
         try {
           setIsLoading(true);
           controller.stop();
-          final userApp = SettingController.to.user;
+          final userApp = UserController.to.user.value;
           if (userApp == null) {
             Get.dialog(
               DialogApp(

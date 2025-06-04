@@ -8,6 +8,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -103,9 +104,9 @@ class _UserQRState extends State<UserQR> {
                   ),
                   width: 240,
                   height: 240,
-                  child: SettingController.to.user?.refCode != null
+                  child: UserController.to.user.value?.refCode != null
                       ? QrImageView(
-                          data: SettingController.to.user!.refCode!,
+                          data: UserController.to.user.value!.refCode!,
                           version: QrVersions.auto,
                           embeddedImage: Image.asset(
                             "assets/icon/icon.png",
@@ -142,7 +143,7 @@ class _UserQRState extends State<UserQR> {
               child: GestureDetector(
                 onTap: () {
                   // QrImageView(data: data).
-                  if (SettingController.to.user?.refCode == null) {
+                  if (UserController.to.user.value?.refCode == null) {
                     return;
                   }
                   _saveQRCode();

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/dialog.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/model/bank.dart';
 import 'package:lottery_ck/model/point_topup.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
@@ -165,7 +166,7 @@ class BuyPointController extends GetxController {
       final response = await AppWriteController.to.topup(
         pointWantToBuy!,
         selectedBank!.$id,
-        SettingController.to.user!.userId,
+        UserController.to.user.value!.userId,
       );
       logger.w("buy_point.controller.dart:147");
       logger.d(response.data);
