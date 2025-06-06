@@ -23,6 +23,7 @@ class RandomPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Header(title: AppLocale.randomNumber),
+              Text("${controller.maxNumberLottery}"),
               const SizedBox(height: 16),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -351,8 +352,12 @@ class RandomPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           InputText(
+                            controller: controller.numberLotteryController,
                             keyboardType: TextInputType.number,
-                            maxValue: 500,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            maxValue: controller.maxNumberLottery,
                             onChanged: (value) =>
                                 controller.onChangeNumberLottery(value),
                           ),

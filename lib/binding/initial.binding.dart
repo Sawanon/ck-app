@@ -35,6 +35,7 @@ import 'package:lottery_ck/modules/splash_screen/controller/splash_screen.contro
 import 'package:lottery_ck/modules/t_c/controller/t_c.controller.dart';
 import 'package:lottery_ck/modules/video/controller/video.controller.dart';
 import 'package:lottery_ck/modules/webview/controller/webview.controller.dart';
+import 'package:lottery_ck/modules/wheel/controller/wheel_controller.dart';
 import 'package:lottery_ck/repository/user_repository/user.repository.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils/location.dart';
@@ -100,5 +101,6 @@ class LayoutBindings extends Bindings {
     Get.lazyPut<BuyPointController>(() => BuyPointController(), fenix: true);
     Get.put<LocationService>(LocationService());
     Get.lazyPut<RandomController>(() => RandomController(), fenix: true);
+    // Get.put<WheelController>(WheelController());
   }
 }

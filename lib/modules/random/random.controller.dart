@@ -32,7 +32,9 @@ class RandomController extends GetxController {
   TextEditingController priceTextController = TextEditingController();
 
   int? numberLottery;
+  TextEditingController numberLotteryController = TextEditingController();
   int? price;
+  int maxNumberLottery = 100;
 
   bool get disabledConfirm => numberLottery == null || price == null;
 
@@ -63,6 +65,15 @@ class RandomController extends GetxController {
       controller1.setText("");
       digit1 = null;
     }
+    final maxNumberLottery = pow(10, value).toInt();
+    final currentValue = numberLotteryController.text == ""
+        ? 0
+        : int.parse(numberLotteryController.text.replaceAll(",", ""));
+    if (currentValue > maxNumberLottery) {
+      onChangeNumberLottery('$maxNumberLottery');
+    }
+    this.maxNumberLottery = maxNumberLottery;
+    update();
   }
 
   bool isNumber(String value) {
@@ -106,8 +117,14 @@ class RandomController extends GetxController {
 
   void onChangeNumberLottery(String value) {
     try {
-      numberLottery = isNumber(value) ? int.parse(value) : null;
+      final numberLottery = isNumber(value) ? int.parse(value) : null;
+      this.numberLottery = numberLottery;
       update();
+      if (numberLottery == null) {
+        numberLotteryController.setText("");
+        return;
+      }
+      numberLotteryController.setText(CommonFn.parseMoney(numberLottery));
     } catch (e) {
       logger.e(e);
     }

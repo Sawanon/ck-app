@@ -4,6 +4,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
+import 'package:lottery_ck/main.dart';
 import 'package:lottery_ck/modules/buy_lottery/controller/buy_lottery.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/animal_lottery.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
@@ -518,6 +519,120 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
+                              Obx(() {
+                                final lottery = controller.lottery;
+                                final lotteryLength = lottery?.length ?? 0;
+                                if (controller.isFocusLottery.value &&
+                                    lotteryLength > 1 &&
+                                    lottery != null) {
+                                  return SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width - 32,
+                                    height: 40,
+                                    child: ListView(
+                                      scrollDirection: Axis.horizontal,
+                                      shrinkWrap: true,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () {
+                                            // controller.onClickAnimalBuy()
+                                            final lotterySet = controller
+                                                .buyAnimalSet(lottery);
+                                            logger.w("lotterySet: $lotterySet");
+                                            if (lotterySet == null) return;
+                                            controller
+                                                .onClickAnimalBuy(lotterySet
+                                                    .map((lottery) => {
+                                                          "lottery": lottery,
+                                                          "price": "1000",
+                                                        })
+                                                    .toList());
+                                            controller.onChangeLottery("");
+                                          },
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 4,
+                                              horizontal: 8,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              color: Colors.white,
+                                              border: Border.all(
+                                                width: 1,
+                                                color: AppColors.primary,
+                                              ),
+                                            ),
+                                            child: Row(
+                                              children: [
+                                                AnimalLottery(
+                                                  lottery: lottery,
+                                                  size: 20,
+                                                  showName: true,
+                                                  showLottery: true,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                                if (controller.isFocusPrice.value) {
+                                  return SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width - 32,
+                                    height: 40,
+                                    // color: Colors.red.shade200,
+                                    child: ListView(
+                                        scrollDirection: Axis.horizontal,
+                                        shrinkWrap: true,
+                                        children: controller.presentPrice.map(
+                                          (price) {
+                                            return GestureDetector(
+                                              onTap: () {
+                                                logger.w("message");
+                                                controller
+                                                    .onChangePrice("$price");
+                                                controller.priceNode
+                                                    .nextFocus();
+                                              },
+                                              child: Container(
+                                                margin: const EdgeInsets.only(
+                                                    right: 4),
+                                                alignment: Alignment.center,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  vertical: 4,
+                                                  horizontal: 8,
+                                                ),
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  color: Colors.white,
+                                                  border: Border.all(
+                                                    width: 1,
+                                                    color: AppColors.primary,
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  "${CommonFn.parseMoney(price)} ${AppLocale.lak.getString(context)}",
+                                                  style: const TextStyle(
+                                                    color:
+                                                        AppColors.textPrimary,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ).toList()),
+                                  );
+                                }
+                                return const SizedBox.shrink();
+                              }),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                   horizontal: 16,
@@ -580,86 +695,6 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      // Row(
-                                      //   children: [
-                                      //     Expanded(
-                                      //       child: TextFormField(
-                                      //         maxLength: 6,
-                                      //         textAlign: TextAlign.center,
-                                      //         decoration: InputDecoration(
-                                      //           counterText: "",
-                                      //           hintText: AppLocale
-                                      //               .hihtLotteryInput
-                                      //               .getString(context),
-                                      //           errorStyle:
-                                      //               TextStyle(height: 0),
-                                      //           contentPadding:
-                                      //               const EdgeInsets.symmetric(
-                                      //                   horizontal: 8),
-                                      //           enabledBorder:
-                                      //               OutlineInputBorder(
-                                      //             borderRadius:
-                                      //                 BorderRadius.circular(8),
-                                      //             borderSide: const BorderSide(
-                                      //               color: AppColors.borderGray,
-                                      //             ),
-                                      //           ),
-                                      //           focusedBorder:
-                                      //               OutlineInputBorder(
-                                      //             borderRadius:
-                                      //                 BorderRadius.circular(8),
-                                      //             borderSide: const BorderSide(
-                                      //               color: AppColors.borderGray,
-                                      //               width: 1,
-                                      //             ),
-                                      //           ),
-                                      //           errorBorder: OutlineInputBorder(
-                                      //             borderRadius:
-                                      //                 BorderRadius.circular(8),
-                                      //             borderSide: const BorderSide(
-                                      //               color:
-                                      //                   AppColors.errorBorder,
-                                      //               width: 2,
-                                      //             ),
-                                      //           ),
-                                      //           focusedErrorBorder:
-                                      //               OutlineInputBorder(
-                                      //             borderRadius:
-                                      //                 BorderRadius.circular(8),
-                                      //             borderSide: const BorderSide(
-                                      //               color:
-                                      //                   AppColors.errorBorder,
-                                      //               width: 2,
-                                      //             ),
-                                      //           ),
-                                      //         ),
-                                      //         focusNode: controller.lotteryNode,
-                                      //         controller: controller
-                                      //             .lotteryTextController,
-                                      //         keyboardType:
-                                      //             TextInputType.number,
-                                      //         inputFormatters: [
-                                      //           FilteringTextInputFormatter
-                                      //               .digitsOnly
-                                      //         ],
-                                      //         validator: (value) {
-                                      //           logger.d("validator: $value");
-                                      //           if (value == null ||
-                                      //               value == "") {
-                                      //             controller
-                                      //                 .alertLotteryEmpty();
-                                      //             return "";
-                                      //           }
-                                      //           return null;
-                                      //         },
-                                      //         onChanged: (value) {
-                                      //           controller.lottery = value;
-                                      //         },
-                                      //       ),
-                                      //     ),
-                                      //   ],
-                                      // ),
-                                      // const SizedBox(height: 8),
                                       Row(
                                         children: [
                                           GestureDetector(
@@ -773,9 +808,8 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                 }
                                                 return null;
                                               },
-                                              onChanged: (value) {
-                                                controller.lottery = value;
-                                              },
+                                              onChanged:
+                                                  controller.onChangeLottery,
                                             ),
                                           ),
                                           const SizedBox(width: 4),

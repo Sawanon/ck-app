@@ -29,9 +29,11 @@ import 'package:lottery_ck/model/response/bytedance_get_video_info.dart';
 import 'package:lottery_ck/model/response/bytedance_list_video.dart';
 import 'package:lottery_ck/model/response/bytedance_response.dart';
 import 'package:lottery_ck/model/response/find_influencer.dart';
+import 'package:lottery_ck/model/response/get_current_time.dart';
 import 'package:lottery_ck/model/response/get_my_friends.dart';
 import 'package:lottery_ck/model/response/get_otp.dart';
 import 'package:lottery_ck/model/response/get_user_by_ref_code.dart';
+import 'package:lottery_ck/model/response/get_wheel_active.dart';
 import 'package:lottery_ck/model/response/list_my_friends_user.dart';
 import 'package:lottery_ck/model/response/response_api.dart';
 import 'package:lottery_ck/model/response/signup.dart';
@@ -75,9 +77,11 @@ class AppWriteController extends GetxController {
   static const String APP_WALLPAPERS = 'appWallpapers';
   static const String COUPON = '67762ef9003b9b51c763';
   static const String GROUP_USER = 'group_users';
+  static const String WHEEL_PROMOTION = 'wheel_promotions';
 
   static const String FN_SIGNIN = '6759aebe003c92a6fa81';
   static const String FN_LOTTERY_DATE = '67949bd30000dc05f940';
+  static const String FN_GET_TIME = '6841389000233c734ab1';
 
   static const String TOPIC_ALL_USER = '66d2abc9003c1c06ac97';
 
@@ -3013,6 +3017,116 @@ class AppWriteController extends GetxController {
       return ResponseApi(
         isSuccess: false,
         message: "failed to get influencer",
+      );
+    }
+  }
+
+  Future<ResponseApi<GetCurrentTime>> getCurrentTime() async {
+    try {
+      final response = await functions.createExecution(
+        functionId: FN_GET_TIME,
+        method: ExecutionMethod.gET,
+        path: "/",
+      );
+      logger.w(response.responseBody);
+      return ResponseApi(
+        isSuccess: true,
+        message: "Success to get current time",
+        data: GetCurrentTime.fromJson(jsonDecode(response.responseBody)),
+      );
+    } catch (e) {
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to get current time",
+      );
+    }
+  }
+
+  Future<ResponseApi<GetWheelActive>> getWheelActive() async {
+    try {
+      final responseCurrentTime = await AppWriteController.to.getCurrentTime();
+      final currentTime = responseCurrentTime.data;
+      if (responseCurrentTime.isSuccess == false || currentTime == null) {
+        return ResponseApi(isSuccess: false, message: "Can't get current time");
+      }
+      final now = currentTime.dateTime.toIso8601String();
+      logger.w("now: $now");
+      final response = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: WHEEL_PROMOTION,
+        queries: [
+          Query.lessThanEqual('start_date', now),
+          Query.greaterThanEqual("end_date", now),
+          Query.equal('is_active', true),
+          Query.equal('is_approve', '3'),
+          Query.orderAsc('\$createdAt'),
+        ],
+      );
+      logger.w(response);
+      if (response.documents.isEmpty) {
+        return ResponseApi(
+          isSuccess: false,
+          message: "wheel is empty",
+        );
+      }
+      final wheel = response.documents.first;
+      return ResponseApi(
+        isSuccess: true,
+        message: "Success to get fortune wheel",
+        data: GetWheelActive.fromJson(wheel.data),
+      );
+    } on AppwriteException catch (e) {
+      logger.e(e);
+      return ResponseApi(
+        isSuccess: false,
+        message: e.message ?? "${e.code ?? "appwrite: error"}",
+      );
+    } catch (e) {
+      logger.e(e);
+      return ResponseApi(
+          isSuccess: false, message: "failed to get fortune wheel");
+    }
+  }
+
+  Future<ResponseApi<void>> listWheelReward(
+      String invoiceId, String date) async {
+    try {
+      final option = BaseOptions(
+        connectTimeout: const Duration(seconds: 15),
+        receiveTimeout: const Duration(seconds: 15),
+      );
+      final dio = Dio(option);
+      final payload = {
+        "invoiceId": invoiceId,
+        "date": date,
+      };
+
+      final jwt = await getAppJWT();
+      final response = await dio.post(
+        "${AppConst.apiUrl}/lotlink/cancelBill",
+        data: payload,
+        options: Options(headers: {
+          "Authorization": "Bearer $jwt",
+        }),
+      );
+      logger.d(response.data);
+      return ResponseApi(
+        isSuccess: true,
+        message: "Success to cancel bill",
+      );
+    } on DioException catch (e) {
+      logger.e(e.response?.statusCode);
+      logger.e(e.response?.statusMessage);
+      logger.e(e.response?.data);
+      return ResponseApi(
+        isSuccess: false,
+        message: e.response?.statusMessage ?? "failed to cancel bill",
+      );
+    } catch (e) {
+      logger.e(e);
+      return ResponseApi(
+        isSuccess: false,
+        message: "$e",
       );
     }
   }

@@ -67,6 +67,26 @@ class BuyLotteryController extends GetxController {
   RxBool disabledBuy = true.obs;
   RxString horoscopeUrl = "".obs;
   RxString luckyCardUrl = "".obs;
+  RxBool isFocusPrice = false.obs;
+  RxBool isFocusLottery = false.obs;
+  final presentPrice = [10000, 20000, 50000, 100000];
+
+  List<String>? buyAnimalSet(String lottery) {
+    final lastTwo =
+        lottery.length > 2 ? lottery.substring(lottery.length - 2) : lottery;
+    final animal = AppConst.animalDatas.where((animal) {
+      final lotteries = animal['lotteries'] as List<String>;
+      final result = lotteries.where((_lottery) => _lottery == lastTwo);
+      return result.isNotEmpty;
+    }).toList();
+    if (animal.isEmpty) return null;
+    return animal[0]['lotteries'] as List<String>;
+  }
+
+  void onChangeLottery(String value) {
+    lottery = value;
+    update();
+  }
 
   void enableBuy() {
     disabledBuy.value = false;
@@ -99,6 +119,18 @@ class BuyLotteryController extends GetxController {
 
   void onFocus() {
     onFucusTextInput(priceNode.hasFocus || lotteryNode.hasFocus);
+    onFocusPrice();
+    onFocusLottery();
+  }
+
+  void onFocusPrice() {
+    final isFocus = priceNode.hasFocus;
+    isFocusPrice.value = isFocus;
+  }
+
+  void onFocusLottery() {
+    final isFocus = lotteryNode.hasFocus;
+    isFocusLottery.value = isFocus;
   }
 
   void setupNode() {

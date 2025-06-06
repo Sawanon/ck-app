@@ -3,10 +3,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_fortune_wheel/flutter_fortune_wheel.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:get/get.dart';
+import 'package:lottery_ck/components/header.dart';
+import 'package:lottery_ck/modules/wheel/controller/wheel_controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
-import 'package:lottery_ck/utils/theme.dart';
 
 class WheelPage extends StatefulWidget {
   const WheelPage({super.key});
@@ -41,6 +45,7 @@ class _WheelPageState extends State<WheelPage> {
       '50K',
       '100K',
     ];
+    final wheelController = Get.put(WheelController());
 
     return Scaffold(
       backgroundColor: AppColors.wheelBackground,
@@ -48,6 +53,11 @@ class _WheelPageState extends State<WheelPage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Header(
+              title: AppLocale.wheelOfFortune.getString(context),
+              backgroundColor: AppColors.wheelBackground,
+              textColor: Colors.white,
+            ),
             const SizedBox(height: 24),
             Text(
               "วงล้อเสี่ยงดวง",
@@ -109,113 +119,137 @@ class _WheelPageState extends State<WheelPage> {
                     alignment: Alignment.center,
                     clipBehavior: Clip.none,
                     children: [
-                      FortuneWheel(
-                        selected: selected.stream,
-                        alignment: Alignment.centerRight,
-                        animateFirst: false,
-                        physics: NoPanPhysics(),
-                        curve: Curves.easeInOutExpo,
-                        duration: const Duration(seconds: 10),
-                        indicators: [
-                          FortuneIndicator(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  width: 1,
-                                  color: AppColors.wheelBorder,
-                                  strokeAlign: BorderSide.strokeAlignOutside,
+                      Obx(() {
+                        return FortuneWheel(
+                          selected: selected.stream,
+                          alignment: Alignment.centerRight,
+                          animateFirst: false,
+                          physics: NoPanPhysics(),
+                          curve: Curves.easeInOutExpo,
+                          duration: const Duration(seconds: 10),
+                          indicators: [
+                            FortuneIndicator(
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1,
+                                    color: AppColors.wheelBorder,
+                                    strokeAlign: BorderSide.strokeAlignOutside,
+                                  ),
+                                  shape: BoxShape.circle,
                                 ),
-                                shape: BoxShape.circle,
                               ),
                             ),
-                          ),
-                          FortuneIndicator(
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: 80,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                // color: AppColors.wheelBackground,
-                                gradient: LinearGradient(
-                                  colors: [
-                                    AppColors.wheelBorderStart,
-                                    AppColors.wheelBorderEnd,
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                                border: Border.all(
-                                  width: 1,
-                                  color: AppColors.wheelBorder,
-                                ),
-                                shape: BoxShape.circle,
-                              ),
-                              padding: EdgeInsets.all(4),
+                            FortuneIndicator(
                               child: Container(
+                                alignment: Alignment.center,
+                                width: 80,
+                                height: 80,
                                 decoration: BoxDecoration(
                                   // color: AppColors.wheelBackground,
                                   gradient: LinearGradient(
                                     colors: [
-                                      AppColors.wheelInnerBackgroundStart,
-                                      AppColors.wheelInnerBackgroundEnd,
+                                      AppColors.wheelBorderStart,
+                                      AppColors.wheelBorderEnd,
                                     ],
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                   ),
-                                  shape: BoxShape.circle,
                                   border: Border.all(
                                     width: 1,
                                     color: AppColors.wheelBorder,
                                   ),
+                                  shape: BoxShape.circle,
                                 ),
-                                child: AspectRatio(
-                                  aspectRatio: 1,
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    child: Image.asset(
-                                      ImagePng.gift,
-                                      width: 50,
-                                      height: 50,
+                                padding: EdgeInsets.all(4),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    // color: AppColors.wheelBackground,
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        AppColors.wheelInnerBackgroundStart,
+                                        AppColors.wheelInnerBackgroundEnd,
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      width: 1,
+                                      color: AppColors.wheelBorder,
+                                    ),
+                                  ),
+                                  child: AspectRatio(
+                                    aspectRatio: 1,
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      child: Image.asset(
+                                        ImagePng.gift,
+                                        width: 50,
+                                        height: 50,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                        // rotationCount: 5,
-                        items: items.asMap().entries.map(
-                          (entry) {
-                            final index = entry.key;
-                            final value = entry.value;
-                            return FortuneItem(
-                              style: FortuneItemStyle(
-                                color: index % 2 == 0
-                                    ? AppColors.wheelOdd
-                                    : AppColors.wheelEven,
-                                borderColor: AppColors.wheelItemBorder,
-                              ),
-                              child: Container(
-                                margin: const EdgeInsets.only(left: 32),
-                                child: Text(
-                                  value,
-                                  style: TextStyle(
-                                    color: AppColors.wheelText,
-                                    fontWeight: FontWeight.w900,
-                                    fontSize: 30,
-                                    shadows: [
-                                      BoxShadow(
-                                        offset: const Offset(0, 1),
-                                        color: Colors.black.withOpacity(0.7),
-                                        blurRadius: 5,
-                                      )
-                                    ],
+                          ],
+                          // rotationCount: 5,
+                          // items: items.asMap().entries.map(
+                          items:
+                              wheelController.wheelRewards.asMap().entries.map(
+                            (entry) {
+                              final index = entry.key;
+                              final value = entry.value;
+                              return FortuneItem(
+                                style: FortuneItemStyle(
+                                  color: index % 2 == 0
+                                      ? AppColors.wheelOdd
+                                      : AppColors.wheelEven,
+                                  borderColor: AppColors.wheelItemBorder,
+                                ),
+                                child: Container(
+                                  margin: const EdgeInsets.only(left: 32),
+                                  child: Text(
+                                    "${value.amount ?? 0}",
+                                    style: TextStyle(
+                                      color: AppColors.wheelText,
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 30,
+                                      shadows: [
+                                        BoxShadow(
+                                          offset: const Offset(0, 1),
+                                          color: Colors.black.withOpacity(0.7),
+                                          blurRadius: 5,
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
+                              );
+                            },
+                          ).toList(),
+                        );
+                      }),
+                      Obx(
+                        () {
+                          if (wheelController.isLoading.value) {
+                            return Container(
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              height: double.infinity,
+                              decoration: BoxDecoration(
+                                color:
+                                    AppColors.wheelBackground.withOpacity(0.8),
+                                shape: BoxShape.circle,
+                              ),
+                              child: const CircularProgressIndicator(
+                                color: Colors.white,
                               ),
                             );
-                          },
-                        ).toList(),
+                          }
+                          return const SizedBox.shrink();
+                        },
                       ),
                       Positioned(
                         right: -24,
