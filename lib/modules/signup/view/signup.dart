@@ -14,6 +14,7 @@ import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/res/logo.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({super.key});
@@ -54,7 +55,7 @@ class SignupPage extends StatelessWidget {
                       children: [
                         Text(
                           AppLocale.createNewAccount.getString(context),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 36,
                             fontWeight: FontWeight.w700,
                             color: AppColors.textPrimary,
@@ -63,7 +64,7 @@ class SignupPage extends StatelessWidget {
                         Text(
                           AppLocale.pleaseFillInTheInformationToCreateAnAccount
                               .getString(context),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w400,
                             color: AppColors.textPrimary,
@@ -84,14 +85,14 @@ class SignupPage extends StatelessWidget {
                                   children: [
                                     Text(
                                       AppLocale.prefix.getString(context),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w700,
                                         color: AppColors.textPrimary,
                                       ),
                                     ),
                                     const SizedBox(width: 4),
-                                    const Text(
+                                    Text(
                                       "*",
                                       style: TextStyle(
                                         color: AppColors.errorBorder,
@@ -110,14 +111,14 @@ class SignupPage extends StatelessWidget {
                                   children: [
                                     Text(
                                       AppLocale.firstName.getString(context),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w700,
                                         color: AppColors.textPrimary,
                                       ),
                                     ),
                                     const SizedBox(width: 4),
-                                    const Text(
+                                    Text(
                                       "*",
                                       style: TextStyle(
                                         color: AppColors.errorBorder,
@@ -188,14 +189,14 @@ class SignupPage extends StatelessWidget {
                                   children: [
                                     Text(
                                       AppLocale.lastName.getString(context),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w700,
                                         color: AppColors.textPrimary,
                                       ),
                                     ),
                                     const SizedBox(width: 4),
-                                    const Text(
+                                    Text(
                                       "*",
                                       style: TextStyle(
                                         color: AppColors.errorBorder,
@@ -266,14 +267,14 @@ class SignupPage extends StatelessWidget {
                                   children: [
                                     Text(
                                       AppLocale.birthDate.getString(context),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w700,
                                         color: AppColors.textPrimary,
                                       ),
                                     ),
                                     const SizedBox(width: 4),
-                                    const Text(
+                                    Text(
                                       "*",
                                       style: TextStyle(
                                         color: AppColors.errorBorder,
@@ -318,7 +319,7 @@ class SignupPage extends StatelessWidget {
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     AppLocale.birthTime.getString(context),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.textPrimary,
@@ -367,7 +368,7 @@ class SignupPage extends StatelessWidget {
                                   children: [
                                     Text(
                                       AppLocale.referralCode.getString(context),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w700,
                                         color: AppColors.textPrimary,
@@ -402,7 +403,7 @@ class SignupPage extends StatelessWidget {
                                 //   children: [
                                 //     Text(
                                 //       AppLocale.address.getString(context),
-                                //       style: const TextStyle(
+                                //       style: TextStyle(
                                 //         fontSize: 14,
                                 //         fontWeight: FontWeight.w700,
                                 //         color: AppColors.textPrimary,
@@ -594,31 +595,41 @@ class HeaderCK extends StatelessWidget {
     final enable = (disabledBackButton == null || disabledBackButton == false);
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Stack(
+        // mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (enable)
-            Material(
-              color: AppColors.backButton,
-              borderRadius: BorderRadius.circular(10),
-              clipBehavior: Clip.hardEdge,
-              child: InkWell(
-                overlayColor:
-                    WidgetStateProperty.all<Color>(AppColors.backButtonHover),
-                onTap: enable ? onTap : null,
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  padding: const EdgeInsets.all(12),
-                  child: SvgPicture.asset(AppIcon.arrowLeft),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Material(
+                color: AppColors.backButton,
+                borderRadius: BorderRadius.circular(10),
+                clipBehavior: Clip.hardEdge,
+                child: InkWell(
+                  overlayColor:
+                      WidgetStateProperty.all<Color>(AppColors.backButtonHover),
+                  onTap: enable ? onTap : null,
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    padding: const EdgeInsets.all(12),
+                    child: SvgPicture.asset(AppIcon.arrowLeft),
+                  ),
                 ),
               ),
             ),
-          const SizedBox(width: 16),
-          Image.asset(
-            Logo.ck,
-            height: 40,
-          ),
+          // const SizedBox(width: 16),
+          Align(
+            alignment: Alignment.center,
+            child: SvgPicture.asset(
+              AppIcon.ckLotto,
+              height: 40,
+            ),
+          )
+          // Image.asset(
+          //   Logo.ck,
+          //   height: 40,
+          // ),
         ],
       ),
     );

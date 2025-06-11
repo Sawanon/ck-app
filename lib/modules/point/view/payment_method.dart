@@ -5,6 +5,7 @@ import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/modules/point/controller/buy_point.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PaymentMethod extends StatelessWidget {
   const PaymentMethod({super.key});
@@ -86,7 +87,7 @@ class PaymentMethod extends StatelessWidget {
                                   //               "{price}", "$minimumPrice");
                                   //       return Text(
                                   //         detail,
-                                  //         style: const TextStyle(
+                                  //         style: TextStyle(
                                   //           fontSize: 12,
                                   //           color: AppColors.disableText,
                                   //         ),
@@ -98,7 +99,7 @@ class PaymentMethod extends StatelessWidget {
                                     Text(
                                       "${AppLocale.downtimeBank.getString(context)} ${bank.downtime!}",
                                       softWrap: true,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 12,
                                         color: AppColors.disableText,
                                       ),

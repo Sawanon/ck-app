@@ -26,6 +26,7 @@ import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeController extends GetxController {
   static HomeController get to => Get.find();
@@ -117,7 +118,7 @@ class HomeController extends GetxController {
       final now = await getCurrentDatetime();
       if (now == null) {
         Get.dialog(
-          const DialogApp(
+          DialogApp(
             title: Text(
               "Can't get current time from server",
               style: TextStyle(
@@ -370,10 +371,10 @@ class HomeController extends GetxController {
 
   Future<void> listBanner() async {
     final response = await AppWriteController.to.listBanner();
+    logger.w("listBanner: $response");
     if (response == null) {
       return;
     }
-    logger.w("listBanner: $response");
     bannerContent.clear();
     List<Map<dynamic, dynamic>> _banner = [];
     for (var banner in response) {

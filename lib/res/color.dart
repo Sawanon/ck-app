@@ -23,6 +23,8 @@ class AppColors {
   static const Color menuIconDisabled = Color.fromRGBO(204, 204, 204, 1);
   static const Color menuBackgroundDisabled = Color.fromRGBO(235, 235, 235, 1);
   static const Color menuTextDisabled = Color.fromRGBO(137, 136, 136, 1);
+  static const Color ckOrange = Color.fromRGBO(255, 135, 50, 1);
+  static const Color ckRed = Color.fromRGBO(214, 35, 0, 1);
 
   static const Color shadow = Color.fromRGBO(174, 174, 192, 0.4);
   static const Color yellowGradient = Color.fromRGBO(255, 194, 36, 1);

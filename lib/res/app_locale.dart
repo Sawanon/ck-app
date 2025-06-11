@@ -87,6 +87,7 @@ mixin AppLocale {
       "ກະລຸນາລອງໃໝ່ພາຍຫຼັງ {minute} ນາທີ";
   static const String blockMessage =
       "ຕອນນີ້ເຈົ້າຖືກບລັອກເປັນເວລາ {minute} ນາທີ";
+  static const String blockMessageTitle = "ຕອນນີ້ເຈົ້າຖືກບລັອກ";
   static const String pleaseWait = "ກະລຸນາລໍຖ້າ";
   static const String pointRef = "ທີ່ມາຂອງຄະແນນ";
   static const String quantity = "ຈໍານວນ";
@@ -430,6 +431,12 @@ mixin AppLocale {
   static const String notKYC = "ຍັງບໍ່ໄດ້ຢັ້ງຢືນຕົວຕົນເທື່ອ";
   static const String youHave = "ທ່ານມີ";
   static const String wheelOfFortune = "ວົງລໍ້ສ່ຽງດວງ";
+  static const String wheelOfFortuneBonus = "ໂບນັດວົງລໍ້ສ່ຽງດວງ";
+  static const String pointRatio = "{point} ຄະແນນ ມູນຄ່າ {lak} ກີບ";
+  static const String spin = "ໝຸນ";
+  static const String congrate = "ຍິນດີດ້ວຍ";
+  static const String youGotPrize = "ທ່ານໄດ້ລາງວັນ";
+  static const String awardsYouHaveReceived = "ລາງວັນທີ່ທ່ານເຄີຍໄດ້";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -513,6 +520,7 @@ mixin AppLocale {
     passcodeRemain: "ເຫຼືອ {remain} ເທື່ອ",
     passcodeTryAgainTime: "ກະລຸນາລອງໃໝ່ພາຍຫຼັງ {minute} ນາທີ",
     blockMessage: "ຕອນນີ້ເຈົ້າຖືກບລັອກເປັນເວລາ {minute} ນາທີ",
+    blockMessageTitle: "ຕອນນີ້ເຈົ້າຖືກບລັອກ",
     pleaseWait: "ກະລຸນາລໍຖ້າ",
     pointRef: "ທີ່ມາຂອງຄະແນນ",
     quantity: "ຈໍານວນ",
@@ -557,7 +565,7 @@ mixin AppLocale {
     rateLimit: "ທ່ານໄດ້ຮ້ອງຂໍຫຼາຍເກີນໄປໃນໄລຍະເວລາສັ້ນໆ, ກະລຸນາລອງໃໝ່ໃນພາຍຫຼັງ",
     totalOrderAmount: "ລວມເງິນທີ່ຕ້ອງຊຳລະ",
     lak: "ກີບ",
-    paymentMethod: "ຊຳລະຜ່ານທາງ",
+    paymentMethod: "ຊ່ອງທາງການຈ່າຍເງິນ",
     confirmLotteryPurchase: "ຢືນຢັນການຊື້ຫວຍ",
     confirmLotteryPurchaseText:
         "ຕ້ອງການຊື້ຫວຍເລກ {lottery} ລາຄາ {price} ກີບບໍ?",
@@ -819,7 +827,13 @@ mixin AppLocale {
     optional: "ໃສ່ຫຼືບໍ່ໃສ່ກໍ່ໄດ້",
     notKYC: "ຍັງບໍ່ໄດ້ຢັ້ງຢືນຕົວຕົນເທື່ອ",
     youHave: "ທ່ານມີ",
-    wheelOfFortune: "ວົງລໍ້ສ່ຽງດວງ",
+    wheelOfFortune: "ວົງລໍ້ໂຊກດີ",
+    wheelOfFortuneBonus: "ໂບນັດວົງລໍ້ສ່ຽງດວງ",
+    pointRatio: "{point} ຄະແນນ ມູນຄ່າ {lak} ກີບ",
+    spin: "ໝຸນ",
+    congrate: "ຍິນດີດ້ວຍ",
+    youGotPrize: "ທ່ານໄດ້ລາງວັນ",
+    awardsYouHaveReceived: "ລາງວັນທີ່ທ່ານເຄີຍໄດ້",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -903,6 +917,7 @@ mixin AppLocale {
     passcodeRemain: "เหลืออีก {remain} ครั้ง",
     passcodeTryAgainTime: "โปรดลองอีกครั้งหลังจาก {minute} นาที",
     blockMessage: "ขณะนี้คุณถูกบล็อคเป็นเวลา {minute} นาที",
+    blockMessageTitle: "ขณะนี้คุณถูกบล็อค",
     pleaseWait: "โปรดรอ",
     pointRef: "ที่มาของคะแนน",
     quantity: "จำนวน",
@@ -927,7 +942,7 @@ mixin AppLocale {
     district: "แขวง",
     yourDocumentPhoto: "รูปเอกสารของท่าน",
     pleaseEnterInformationAndPhotoIDCard:
-        "กรุณาป้อนข้อมูลและถ่ายรูปบัตรประชาชนของท่าน",
+        "กรุณาป้อนหมายเลขบัตรประชาชนและถ่ายรูปบัตรประชาชนของท่าน",
     example: "ตัวอย่าง",
     takePhoto: "ถ่ายรูป",
     verificationPhoto: "รูปภาพยืนยันตัวตน",
@@ -948,7 +963,7 @@ mixin AppLocale {
         "คุณทำการร้องขอมากเกินไปในช่วงเวลาสั้น ๆ โปรดลองใหม่อีกครั้งในภายหลัง",
     totalOrderAmount: "รวมเงินที่ต้องชำระ",
     lak: "กีบ",
-    paymentMethod: "ชำระผ่านทาง",
+    paymentMethod: "ช่องทางการชำระเงิน",
     confirmLotteryPurchase: "ยืนยันการซื้อหวย",
     confirmLotteryPurchaseText:
         "คุณต้องการซื้อหวยเลข {lottery} ในราคา {price} กีบ ใช่หรือไม่?",
@@ -956,7 +971,7 @@ mixin AppLocale {
     pleaseSelectPaymentMethod: "กรุณาเลือกวิธีการชำระเงิน",
     pleaseEnterPointsWantUse: "กรุณากรอกคะแนนที่ต้องการใช้",
     minimumAmount: "ยอดขั้นต่ำ {price} กีบ",
-    scanQRCodeBeFriends: "แสกน QR นี้เพื่อเป็นหมู่",
+    scanQRCodeBeFriends: "แสกน QR นี้เพื่อเป็นเพื่อนกัน",
     coupon: "คูปอง",
     useCoupon: "ใช้คูปอง",
     pleaseEnterYourPhoneNumberToLogin:
@@ -1158,7 +1173,7 @@ mixin AppLocale {
     bankErrorMinimum:
         "ไม่สามารถใช้ได้เนื่องจากยอดชำระของท่านไม่ถึง {price} กีบ",
     topupPoints: "เติมคะแนน",
-    or: "หรืิอ",
+    or: "หรือ",
     notIncludedWithOtherPromotions: "ไม่รวมกับโปรโมชั่นอื่น",
     clearPointTitle: "คะแนนถูกรีเซ็ตแล้ว",
     clearPointDetail: "กรุณาเลือกคะแนนที่คุณต้องการใช้",
@@ -1210,7 +1225,13 @@ mixin AppLocale {
     optional: "ใส่หรือไม่ใส่ก็ได้",
     notKYC: "ยังไม่ได้ยืนยันตัวตน",
     youHave: "ท่านมี",
-    wheelOfFortune: "วงล้อเสี่ยงดวง",
+    wheelOfFortune: "วงล้อโชคดี",
+    wheelOfFortuneBonus: "โบนัสวงล้อเสี่ยงดวง",
+    pointRatio: "{point} คะแนน มีมูลค่าเท่ากับ {lak} กีบ",
+    spin: "หมุน",
+    congrate: "ยินดีด้วย",
+    youGotPrize: "คุณได้รางวัล",
+    awardsYouHaveReceived: "รางวัลที่คุณเคยได้",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -1295,6 +1316,7 @@ mixin AppLocale {
     passcodeRemain: "{remain} more times left",
     passcodeTryAgainTime: "Please try again after {minute} minutes.",
     blockMessage: "You are currently blocked for {minute} minutes.",
+    blockMessageTitle: "You are currently blocked",
     pleaseWait: "Please wait",
     pointRef: "Source of scores",
     quantity: "Quantity",
@@ -1613,5 +1635,11 @@ mixin AppLocale {
     notKYC: "Identity not verified yet",
     youHave: "You have",
     wheelOfFortune: "Wheel of fortune",
+    wheelOfFortuneBonus: "Wheel Fortune Bonus",
+    pointRatio: "{point} points are worth {lak} LAK",
+    spin: "Spin",
+    congrate: "Congratulations",
+    youGotPrize: "You got the prize",
+    awardsYouHaveReceived: "Awards you have received",
   };
 }

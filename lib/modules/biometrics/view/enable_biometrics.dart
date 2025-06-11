@@ -5,6 +5,7 @@ import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/biometrics/controller/enable_biometrics.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EnableBiometricsPage extends StatelessWidget {
   const EnableBiometricsPage({super.key});

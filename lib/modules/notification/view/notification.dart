@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
 import 'package:lottery_ck/modules/notification/view/news_list_component.dart';
 import 'package:lottery_ck/modules/notification/view/notification_list.dart';
@@ -17,6 +18,13 @@ class NotificationPage extends StatefulWidget {
 
 class _NotificationPageState extends State<NotificationPage>
     with TickerProviderStateMixin {
+  @override
+  void initState() {
+    NotificationController.to.tabController =
+        TabController(length: 3, vsync: this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<NotificationController>(
@@ -37,11 +45,11 @@ class _NotificationPageState extends State<NotificationPage>
               titleSpacing: 0,
               toolbarHeight: 42,
               title: TabBar(
-                controller: controller.tabController,
+                // controller: controller.tabController,
                 unselectedLabelColor: Colors.grey,
                 dividerColor: Colors.transparent,
                 labelColor: Colors.white,
-                labelStyle: const TextStyle(
+                labelStyle: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -63,15 +71,16 @@ class _NotificationPageState extends State<NotificationPage>
                   Tab(
                     child: Text(
                       AppLocale.promotion.getString(context),
-                      style: TextStyle(
+                      style: GoogleFonts.prompt(
                         fontSize: 14,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
                   Tab(
                     child: Text(
                       AppLocale.news.getString(context),
-                      style: TextStyle(
+                      style: GoogleFonts.prompt(
                         fontSize: 14,
                       ),
                     ),
@@ -79,7 +88,7 @@ class _NotificationPageState extends State<NotificationPage>
                   Tab(
                     child: Text(
                       AppLocale.notification.getString(context),
-                      style: TextStyle(
+                      style: GoogleFonts.prompt(
                         fontSize: 14,
                       ),
                     ),
@@ -89,7 +98,7 @@ class _NotificationPageState extends State<NotificationPage>
             ),
             body: TabBarView(
               physics: const NeverScrollableScrollPhysics(),
-              controller: controller.tabController,
+              // controller: controller.tabController,
               children: [
                 PromotionListComponent(),
                 NewsListComponent(),

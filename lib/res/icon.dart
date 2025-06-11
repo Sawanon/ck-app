@@ -103,6 +103,8 @@ class AppIcon {
   static const String star = "assets/star.png";
   static const String starhalf = "assets/starhalf.png";
   static const String starempty = "assets/starempty.png";
+
+  static const String ckLotto = "assets/svg/CK-Lotto-Logo.svg";
 }
 
 class ImagePng {
@@ -110,4 +112,37 @@ class ImagePng {
   static const String logo = "assets/png/logo.png";
   static const String wheel = "assets/png/wheel.png";
   static const String wheelArrow = "assets/png/wheel-arrow.png";
+  static const String logoBackDrop = "assets/png/logo-backdrop.png";
+  static const String placeHolderBanner = "assets/png/placeholder-banner.png";
+}
+
+class NavbarIcon {
+  static const String home = "assets/svg/navbar/home.svg";
+  static const String history = "assets/svg/navbar/history.svg";
+  static const String buyLottory = "assets/svg/navbar/buy_lottory.svg";
+  static const String scan = "assets/svg/navbar/scan.svg";
+  static const String privileges = "assets/svg/navbar/privileges.svg";
+}
+
+class MenuIcon {
+  static const String inviteFriend = "assets/svg/menu/invite_friend.svg";
+  static const String inviteFriend2 = "assets/svg/menu/invite_friend-2.svg";
+  static const String dialyHoroscope = "assets/svg/menu/horoscope.svg";
+  static const String dialyHoroscope2 = "assets/svg/menu/horoscope-2.svg";
+  static const String wallpapers = "assets/svg/menu/wallpaper.svg";
+  static const String wallpapers2 = "assets/svg/menu/wallpaper-2.svg";
+  static const String wheelFortune = "assets/svg/menu/wheelfortune-2.svg";
+  static const String lottery = "assets/svg/menu/lottery.svg";
+  static const String news = "assets/svg/menu/news.svg";
+  static const String news2 = "assets/svg/menu/news-2.svg";
+  static const String promotion = "assets/svg/menu/promotion.svg";
+  static const String promotion2 = "assets/svg/menu/promotion-2.svg";
+  static const String topup = "assets/svg/menu/topup.svg";
+  static const String topup2 = "assets/svg/menu/topup-2.svg";
+  static const String kyc = "assets/svg/menu/kyc.svg";
+  static const String kyc2 = "assets/svg/menu/kyc-2.svg";
+  static const String more = "assets/svg/menu/more.svg";
+  static const String more2 = "assets/svg/menu/more-2.svg";
+  static const String chatWithFriend = "assets/svg/menu/chat_with_friend.svg";
+  static const String ckAI = "assets/svg/menu/ck-ai.svg";
 }

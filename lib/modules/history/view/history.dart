@@ -11,6 +11,7 @@ import 'package:lottery_ck/modules/lottery_history/view/lottery_history.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/route/route_name.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HistoryPage extends StatelessWidget {
   const HistoryPage({super.key});
@@ -46,7 +47,7 @@ class HistoryPage extends StatelessWidget {
                         unselectedLabelColor: Colors.grey,
                         dividerColor: Colors.transparent,
                         labelColor: Colors.white,
-                        labelStyle: const TextStyle(
+                        labelStyle: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
                         ),
@@ -62,7 +63,7 @@ class HistoryPage extends StatelessWidget {
                           Tab(
                             child: Text(
                               AppLocale.buyHistory.getString(context),
-                              style: const TextStyle(
+                              style: GoogleFonts.prompt(
                                 fontSize: 14,
                               ),
                             ),
@@ -70,7 +71,7 @@ class HistoryPage extends StatelessWidget {
                           Tab(
                             child: Text(
                               AppLocale.winHistory.getString(context),
-                              style: const TextStyle(
+                              style: GoogleFonts.prompt(
                                 fontSize: 14,
                               ),
                             ),
@@ -78,7 +79,7 @@ class HistoryPage extends StatelessWidget {
                           Tab(
                             child: Text(
                               AppLocale.lotteryResult.getString(context),
-                              style: const TextStyle(
+                              style: GoogleFonts.prompt(
                                 fontSize: 14,
                               ),
                             ),

@@ -14,6 +14,7 @@ import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:lottery_ck/utils/theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -464,7 +465,7 @@ class ProfilePage extends StatelessWidget {
                                         Text(
                                           AppLocale.dateAndTimeOfBirth
                                               .getString(context),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
                                           ),

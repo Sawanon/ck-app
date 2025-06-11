@@ -16,6 +16,7 @@ import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:lottery_ck/utils/theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PromotionDetailPage extends StatelessWidget {
   const PromotionDetailPage({super.key});
@@ -115,7 +116,7 @@ class PromotionDetailPage extends StatelessWidget {
                                 child: Text(
                                   AppLocale.identityVerificationRequired
                                       .getString(context),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 10,
                                     color: AppColors.primary,
                                   ),
@@ -198,7 +199,7 @@ class PromotionDetailPage extends StatelessWidget {
                 //         if (controller.promotion != null && isNotBuyType) ...[
                 //           Text(
                 //             "🎉 ${AppLocale.thisPromotionIsAvailableImmediatelyWithoutCollectingCoupons.getString(context)}",
-                //             style: const TextStyle(
+                //             style: TextStyle(
                 //               fontSize: 12,
                 //             ),
                 //           ),
@@ -235,7 +236,7 @@ class PromotionDetailPage extends StatelessWidget {
                 //               const SizedBox(width: 10),
                 //               Text(
                 //                 message,
-                //                 style: const TextStyle(
+                //                 style: TextStyle(
                 //                   fontSize: 16,
                 //                 ),
                 //               ),

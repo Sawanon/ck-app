@@ -5,6 +5,7 @@ import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 /// Stateful widget to fetch and then display video content.
 class VideoList extends StatefulWidget {

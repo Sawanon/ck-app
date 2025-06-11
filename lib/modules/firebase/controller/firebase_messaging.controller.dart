@@ -10,6 +10,7 @@ import 'package:lottery_ck/modules/notification/controller/notification.controll
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FirebaseMessagingController extends GetxController {
   static FirebaseMessagingController get to => Get.find();

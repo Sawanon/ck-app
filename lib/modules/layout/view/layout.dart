@@ -12,6 +12,7 @@ import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LayoutPage extends StatelessWidget {
   const LayoutPage({super.key});
@@ -58,7 +59,7 @@ class LayoutPage extends StatelessWidget {
                       children: [
                         Text(
                           "${AppLocale.areYouSureYouWantExitApp.getString(context)}?",
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
                           ),
                         ),
@@ -91,7 +92,7 @@ class LayoutPage extends StatelessWidget {
                                 },
                                 child: Text(
                                   AppLocale.leave.getString(context),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: AppColors.errorBorder,
                                   ),
                                 ),

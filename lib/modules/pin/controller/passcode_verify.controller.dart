@@ -13,6 +13,7 @@ import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PasscodeVerifyController extends GetxController {
   static PasscodeVerifyController get to => Get.find();
@@ -253,7 +254,7 @@ class PasscodeVerifyController extends GetxController {
           disableConfirm: true,
           cancelText: Text(
             AppLocale.close.getString(Get.context!),
-            style: const TextStyle(
+            style: TextStyle(
               color: AppColors.errorBorder,
             ),
           ),

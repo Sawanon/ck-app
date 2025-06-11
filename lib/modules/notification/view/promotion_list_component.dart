@@ -10,6 +10,7 @@ import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PromotionListComponent extends StatelessWidget {
   const PromotionListComponent({
@@ -56,7 +57,7 @@ class PromotionListComponent extends StatelessWidget {
                           const SizedBox(height: 16),
                           Text(
                             AppLocale.noPromotion.getString(context),
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: AppColors.disableText,
                               fontSize: 16,
                             ),
@@ -180,7 +181,7 @@ class PromotionListComponent extends StatelessWidget {
                                             AppLocale
                                                 .identityVerificationRequired
                                                 .getString(context),
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 10,
                                               color: AppColors.primary,
                                             ),

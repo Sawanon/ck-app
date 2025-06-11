@@ -11,6 +11,7 @@ import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class RandomPage extends StatefulWidget {
   const RandomPage({super.key});

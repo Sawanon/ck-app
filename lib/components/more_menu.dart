@@ -8,6 +8,7 @@ import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MoreMenu extends StatelessWidget {
   const MoreMenu({super.key});
@@ -15,6 +16,37 @@ class MoreMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<MenuModel> menuList = [
+      MenuModel(
+        disabled: true,
+        ontab: () {
+          logger.d("comming soon");
+        },
+        icon: SizedBox(
+          height: 32,
+          width: 32,
+          child: SvgPicture.asset(
+            MenuIcon.chatWithFriend,
+            colorFilter: ColorFilter.mode(
+              Colors.grey.shade700,
+              BlendMode.srcIn,
+            ),
+          ),
+        ),
+        name: Align(
+          alignment: Alignment.center,
+          child: Text(
+            AppLocale.chatWithFriends.getString(context),
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 11,
+              height: 1.2,
+              color: AppColors.menuTextDisabled,
+            ),
+            textAlign: TextAlign.center,
+            softWrap: true,
+          ),
+        ),
+      ),
       MenuModel(
         ontab: () {},
         icon: SizedBox(
@@ -56,7 +88,7 @@ class MoreMenu extends StatelessWidget {
           //   AppIcon.news,
           // ),
           child: SvgPicture.asset(
-            AppIcon.aiChatLinear,
+            MenuIcon.ckAI,
             colorFilter: ColorFilter.mode(
               Colors.grey.shade700,
               BlendMode.srcIn,
@@ -97,7 +129,7 @@ class MoreMenu extends StatelessWidget {
             children: [
               Text(
                 AppLocale.more.getString(context),
-                style: const TextStyle(
+                style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textPrimary),

@@ -15,6 +15,7 @@ import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MonneyConfirmOTPController extends GetxController {
   static MonneyConfirmOTPController get to => Get.find();
@@ -182,7 +183,7 @@ class MonneyConfirmOTPController extends GetxController {
         Get.dialog(
           DialogApp(
             disableConfirm: true,
-            cancelText: const Text(
+            cancelText: Text(
               "Close",
               style: TextStyle(
                 color: AppColors.primary,
@@ -190,14 +191,14 @@ class MonneyConfirmOTPController extends GetxController {
             ),
             title: Text(
               "${response.data['data']['payment']['responseStatus']}",
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
             details: Text(
               "${response.data['data']['payment']['responseMessage']}",
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
@@ -244,7 +245,7 @@ class MonneyConfirmOTPController extends GetxController {
     final String message = errorData['message'];
     Get.dialog(
       DialogApp(
-        title: const Text(
+        title: Text(
           "Error",
           style: TextStyle(
             fontSize: 18,

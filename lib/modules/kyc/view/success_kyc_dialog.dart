@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SuccessKycDialog extends StatelessWidget {
   const SuccessKycDialog({super.key});
@@ -35,7 +36,7 @@ class SuccessKycDialog extends StatelessWidget {
                 padding: const EdgeInsets.all(24),
                 child: Text(
                   "${AppLocale.titleKYCSuccess.getString(context)} !",
-                  style: const TextStyle(
+                  style: TextStyle(
                     height: 1.3,
                     fontSize: 20,
                     color: AppColors.textPrimary,
@@ -52,7 +53,7 @@ class SuccessKycDialog extends StatelessWidget {
                   },
                   child: Text(
                     "${AppLocale.acknowledge.getString(context)} !",
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),

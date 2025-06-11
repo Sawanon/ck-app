@@ -11,6 +11,7 @@ import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils/theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class WallpaperFullscreenPage extends StatefulWidget {
   final String url;
@@ -227,7 +228,7 @@ class _WallpaperFullscreenPageState extends State<WallpaperFullscreenPage> {
                         const SizedBox(width: 8),
                         Text(
                           AppLocale.save.getString(context),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,

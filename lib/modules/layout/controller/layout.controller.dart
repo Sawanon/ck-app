@@ -34,6 +34,7 @@ import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 enum SnackBarType { success, warning, error, normal }
 
@@ -48,7 +49,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   var tabIndex = 0;
   TabApp currentTab = TabApp.home;
   double bottomPadding = 74;
-  bool isUserLogined = false;
+  // bool isUserLogined = false;
   StreamSubscription<List<ConnectivityResult>>? subscriptionNetwork;
   bool noNetwork = false;
   bool isBlur = false;
@@ -64,7 +65,6 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
 
   void clearState() {
     isUsedBiometrics = false;
-    isUserLogined = false;
   }
 
   void onChangeTabIndex(TabApp tab) {
@@ -223,7 +223,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
         onChangeTabIndex(tab);
         break;
       case TabApp.history:
-        if (!isUserLogined) {
+        if (UserController.to.user.value == null) {
           showDialogLogin();
           return;
         }
@@ -240,7 +240,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
         break;
       case TabApp.notifications:
         // onChangeTabIndex(tab);
-        if (!isUserLogined) {
+        if (UserController.to.user.value == null) {
           showDialogLogin();
           return;
         }
@@ -306,7 +306,6 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
       // if (userApp == null) {
       //   throw "userApp is null";
       // }
-      isUserLogined = true;
     } catch (e) {
       logger.e("log out auto $e");
       SettingController.to.logout();
@@ -499,6 +498,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
     cancelCountdownBiometrics();
     isBlur = false;
     update();
+    Get.put<BuyLotteryController>(BuyLotteryController());
     BuyLotteryController.to.getQuota();
     showDialogVerifyPasscode();
   }
@@ -532,7 +532,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
             },
             child: Text(
               "${AppLocale.forgetPasscode.getString(Get.context!)}?",
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textPrimary,
@@ -547,7 +547,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
         delayBuilder: (context, delay) {
           return Text(
             controller.delayMessage ?? "-",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               color: AppColors.errorBorder,
             ),
@@ -569,7 +569,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
           children: [
             Text(
               AppLocale.confirmYourPasscode.getString(Get.context!),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary,
@@ -579,7 +579,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
             if (controller.errorMessage != null) ...[
               Text(
                 controller.errorMessage!,
-                style: const TextStyle(
+                style: TextStyle(
                   color: AppColors.errorBorder,
                   fontSize: 16,
                 ),

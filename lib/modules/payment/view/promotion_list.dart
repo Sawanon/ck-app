@@ -12,6 +12,7 @@ import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:lottery_ck/utils/theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PromotionListPage extends StatefulWidget {
   final List<Map> promotionList;
@@ -129,7 +130,7 @@ class _PromotionListPageState extends State<PromotionListPage> {
                               ),
                               Text(
                                 AppLocale.youDontHaveCoupon.getString(context),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: AppColors.disableText,
                                   fontSize: 16,
                                 ),
@@ -213,7 +214,7 @@ class _PromotionListPageState extends State<PromotionListPage> {
                                             children: [
                                               Text(
                                                 "${promotion['name'] ?? "Not found promotion"}",
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontSize: 16,
                                                 ),
                                               ),
@@ -221,7 +222,7 @@ class _PromotionListPageState extends State<PromotionListPage> {
                                               // Text(
                                               //   "${coupon.promotion?['detail'] ?? "Not found promotion"}",
                                               //   maxLines: 2,
-                                              //   style: const TextStyle(
+                                              //   style: TextStyle(
                                               //     fontSize: 14,
                                               //   ),
                                               // ),
@@ -294,7 +295,7 @@ class _PromotionListPageState extends State<PromotionListPage> {
                                                       const SizedBox(height: 8),
                                                       Text(
                                                         "${AppLocale.used.getString(context)} ${percentStr.toStringAsFixed(0)}%",
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                           fontSize: 12,
                                                           color: AppColors
                                                               .textPrimary,
@@ -333,8 +334,7 @@ class _PromotionListPageState extends State<PromotionListPage> {
                                                             child: Text(
                                                               "${AppLocale.validUntil.getString(context)} ${CommonFn.parseDMY(expireDate)} ${CommonFn.parseHM(expireDate)}",
                                                               // "asd",
-                                                              style:
-                                                                  const TextStyle(
+                                                              style: TextStyle(
                                                                 fontSize: 12,
                                                                 color: AppColors
                                                                     .textPrimary,
@@ -358,7 +358,8 @@ class _PromotionListPageState extends State<PromotionListPage> {
                                                                     .getString(
                                                                         context),
                                                                 style:
-                                                                    TextStyle(
+                                                                    GoogleFonts
+                                                                        .prompt(
                                                                   fontSize: 12,
                                                                   color: Colors
                                                                       .blue
@@ -420,7 +421,7 @@ class _PromotionListPageState extends State<PromotionListPage> {
                                       //       child: Text(
                                       //         AppLocale.apply
                                       //             .getString(context),
-                                      //         style: const TextStyle(
+                                      //         style: TextStyle(
                                       //           color: Colors.white,
                                       //         ),
                                       //       ),

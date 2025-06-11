@@ -16,6 +16,7 @@ import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:lottery_ck/utils/theme.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TopupPoint extends StatelessWidget {
   const TopupPoint({super.key});
@@ -102,7 +103,7 @@ class TopupPoint extends StatelessWidget {
                                       children: [
                                         Text(
                                           user?.firstName ?? "-",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 16,
                                           ),
@@ -110,7 +111,7 @@ class TopupPoint extends StatelessWidget {
                                         Text(
                                           CommonFn.hidePhoneNumber(
                                               user?.phoneNumber),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 12,
                                             color: AppColors.textPrimary,
@@ -132,13 +133,13 @@ class TopupPoint extends StatelessWidget {
                                     Text(
                                       AppLocale.remainingPoints
                                           .getString(context),
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 12,
                                       ),
                                     ),
                                     Text(
                                       "${CommonFn.parseMoney(point)} ${AppLocale.point.getString(context)}",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -159,11 +160,30 @@ class TopupPoint extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            AppLocale.selectNumberOfPoints.getString(context),
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                AppLocale.selectNumberOfPoints
+                                    .getString(context),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 2),
+                                child: Text(
+                                  """(${AppLocale.pointRatio.getString(context).replaceAll("{point}", "1,000").replaceAll(
+                                        "{lak}",
+                                        "${CommonFn.parseMoney(1000 * controller.pointRaio)}",
+                                      )})""",
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           const SizedBox(height: 16),
                           Skeletonizer(
@@ -216,8 +236,8 @@ class TopupPoint extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
-                                        "${CommonFn.parseMoney(point * controller.pointRaio)} ${AppLocale.lak.getString(context)}",
-                                        style: const TextStyle(
+                                        "${AppLocale.price.getString(context)} ${CommonFn.parseMoney(point * controller.pointRaio)} ${AppLocale.lak.getString(context)}",
+                                        style: TextStyle(
                                           fontSize: 12,
                                         ),
                                       ),
@@ -278,8 +298,8 @@ class TopupPoint extends StatelessWidget {
                                       ),
                                       const SizedBox(height: 8),
                                       Text(
-                                        "${CommonFn.parseMoney(point * controller.pointRaio)} ${AppLocale.lak.getString(context)}",
-                                        style: const TextStyle(
+                                        "${AppLocale.price.getString(context)} ${CommonFn.parseMoney(point * controller.pointRaio)} ${AppLocale.lak.getString(context)}",
+                                        style: TextStyle(
                                           fontSize: 12,
                                         ),
                                       ),
@@ -311,7 +331,7 @@ class TopupPoint extends StatelessWidget {
                       alignment: Alignment.center,
                       child: Text(
                         AppLocale.or.getString(context),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                         ),
@@ -374,7 +394,7 @@ class TopupPoint extends StatelessWidget {
                                 }
                                 return Text(
                                   "${CommonFn.parseMoney(money)} ${AppLocale.lak.getString(context)}",
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,
                                   ),
@@ -407,7 +427,7 @@ class TopupPoint extends StatelessWidget {
                           children: [
                             Text(
                               AppLocale.paymentMethod.getString(context),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -424,7 +444,7 @@ class TopupPoint extends StatelessWidget {
                                         child: Text(
                                           AppLocale.pleaseSelectPaymentMethod
                                               .getString(context),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: AppColors.disableText,
                                           ),
                                         ),

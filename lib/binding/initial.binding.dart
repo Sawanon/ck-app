@@ -8,6 +8,7 @@ import 'package:lottery_ck/modules/couldflare/controller/cloudflare.controller.d
 import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
 import 'package:lottery_ck/modules/friends/controller/friends.controller.dart';
 import 'package:lottery_ck/modules/history/controller/history.controller.dart';
+import 'package:lottery_ck/modules/history/controller/history_buy.controller.dart';
 import 'package:lottery_ck/modules/history/controller/history_win.controller.dart';
 import 'package:lottery_ck/modules/history/controller/win_bill.contoller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
@@ -102,5 +103,6 @@ class LayoutBindings extends Bindings {
     Get.put<LocationService>(LocationService());
     Get.lazyPut<RandomController>(() => RandomController(), fenix: true);
     // Get.put<WheelController>(WheelController());
+    Get.put<HistoryBuyController>(HistoryBuyController());
   }
 }

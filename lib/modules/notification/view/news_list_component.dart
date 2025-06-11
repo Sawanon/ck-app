@@ -7,6 +7,7 @@ import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class NewsListComponent extends StatelessWidget {
   const NewsListComponent({

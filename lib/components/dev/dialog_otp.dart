@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils/theme.dart';

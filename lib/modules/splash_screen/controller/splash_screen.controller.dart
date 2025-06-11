@@ -19,6 +19,7 @@ import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SplashScreenController extends GetxController {
   static SplashScreenController get to => Get.find();
@@ -83,7 +84,7 @@ class SplashScreenController extends GetxController {
               borderRadius: BorderRadius.circular(10),
               color: AppColors.primary,
             ),
-            child: const Text(
+            child: Text(
               "Close",
               style: TextStyle(
                 color: Colors.white,

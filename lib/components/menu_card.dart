@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils/theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MenuCardComponent extends StatelessWidget {
   final String title;

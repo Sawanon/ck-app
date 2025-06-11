@@ -25,6 +25,7 @@ import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:lottery_ck/utils/theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePageV2 extends StatelessWidget {
   const HomePageV2({super.key});
@@ -45,38 +46,38 @@ class HomePageV2 extends StatelessWidget {
             body: Stack(
               fit: StackFit.expand,
               children: [
-                // Align(
-                //   alignment: Alignment.topCenter,
-                //   child: Container(
-                //     clipBehavior: Clip.hardEdge,
-                //     width: double.infinity,
-                //     height: 200,
-                //     decoration: BoxDecoration(
-                //       color: Colors.red.shade100,
-                //       borderRadius: BorderRadius.only(
-                //         bottomLeft: Radius.circular(64),
-                //         bottomRight: Radius.circular(64),
-                //       ),
-                //     ),
-                //     child: Obx(() {
-                //       return CachedNetworkImage(
-                //         color: Colors.black.withOpacity(0.2),
-                //         colorBlendMode: BlendMode.darken,
-                //         fit: BoxFit.fitWidth,
-                //         imageUrl: controller.wallpaperUrl.value != ''
-                //             ? controller.wallpaperUrl.value
-                //             : 'https://baas.moevedigital.com/v1/storage/buckets/66fa748a001a67ac8a70/files/67613b9300325a54f182/view?project=667afb24000fbd66b4df',
-                //       );
-                //     }),
-                //     // child: CachedNetworkImage(
-                //     //   color: Colors.black.withOpacity(0.2),
-                //     //   colorBlendMode: BlendMode.darken,
-                //     //   fit: BoxFit.fitWidth,
-                //     //   imageUrl:
-                //     //       'https://baas.moevedigital.com/v1/storage/buckets/66fa748a001a67ac8a70/files/67613b9300325a54f182/view?project=667afb24000fbd66b4df',
-                //     // ),
-                //   ),
-                // ),
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    clipBehavior: Clip.hardEdge,
+                    width: double.infinity,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade100,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(64),
+                        bottomRight: Radius.circular(64),
+                      ),
+                    ),
+                    child: Obx(() {
+                      return CachedNetworkImage(
+                        color: Colors.black.withOpacity(0.2),
+                        colorBlendMode: BlendMode.darken,
+                        fit: BoxFit.fitWidth,
+                        imageUrl: controller.wallpaperUrl.value != ''
+                            ? controller.wallpaperUrl.value
+                            : 'https://baas.moevedigital.com/v1/storage/buckets/66fa748a001a67ac8a70/files/67613b9300325a54f182/view?project=667afb24000fbd66b4df',
+                      );
+                    }),
+                    // child: CachedNetworkImage(
+                    //   color: Colors.black.withOpacity(0.2),
+                    //   colorBlendMode: BlendMode.darken,
+                    //   fit: BoxFit.fitWidth,
+                    //   imageUrl:
+                    //       'https://baas.moevedigital.com/v1/storage/buckets/66fa748a001a67ac8a70/files/67613b9300325a54f182/view?project=667afb24000fbd66b4df',
+                    // ),
+                  ),
+                ),
                 SafeArea(
                   top: false,
                   child: ListView(
@@ -129,7 +130,7 @@ class HomePageV2 extends StatelessWidget {
                                 child: Text(
                                   AppLocale.hello.getString(context),
                                   style: TextStyle(
-                                    color: AppColors.primary,
+                                    color: Colors.white,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -148,7 +149,7 @@ class HomePageV2 extends StatelessWidget {
                                   child: Text(
                                     AppLocale.welcome.getString(context),
                                     style: TextStyle(
-                                      color: AppColors.primary,
+                                      color: Colors.white,
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -220,7 +221,7 @@ class HomePageV2 extends StatelessWidget {
                                                             AppLocale.firstName
                                                                 .getString(
                                                                     context),
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                           fontSize: 16,
                                                           fontWeight:
                                                               FontWeight.w500,
@@ -232,7 +233,7 @@ class HomePageV2 extends StatelessWidget {
                                                           user?.phoneNumber ??
                                                               "+856XXXXXXXXXX",
                                                         ),
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                           fontSize: 14,
                                                         ),
                                                       ),
@@ -376,7 +377,8 @@ class HomePageV2 extends StatelessWidget {
                                                                   .inviteFriends
                                                                   .getString(
                                                                       context),
-                                                              style: TextStyle(
+                                                              style: GoogleFonts
+                                                                  .prompt(
                                                                 fontSize: 10,
                                                                 color: Colors
                                                                     .white,
@@ -429,7 +431,8 @@ class HomePageV2 extends StatelessWidget {
                                                                     GoogleFonts
                                                                         .prompt(
                                                                   textStyle:
-                                                                      TextStyle(
+                                                                      GoogleFonts
+                                                                          .prompt(
                                                                     color: Colors
                                                                         .white,
                                                                     fontSize:
@@ -446,7 +449,8 @@ class HomePageV2 extends StatelessWidget {
                                                                 Text(
                                                                   "0/0",
                                                                   style:
-                                                                      TextStyle(
+                                                                      GoogleFonts
+                                                                          .prompt(
                                                                     color: Colors
                                                                         .white,
                                                                     fontSize:
@@ -461,7 +465,8 @@ class HomePageV2 extends StatelessWidget {
                                                                 Text(
                                                                   "${controller.myFriends!.total}/${controller.myFriends!.accepted}",
                                                                   style:
-                                                                      TextStyle(
+                                                                      GoogleFonts
+                                                                          .prompt(
                                                                     color: Colors
                                                                         .white,
                                                                     fontSize:
@@ -584,7 +589,8 @@ class HomePageV2 extends StatelessWidget {
                                                               child: Text(
                                                                 "P",
                                                                 style:
-                                                                    TextStyle(
+                                                                    GoogleFonts
+                                                                        .prompt(
                                                                   fontSize: 14,
                                                                   fontWeight:
                                                                       FontWeight
@@ -609,7 +615,8 @@ class HomePageV2 extends StatelessWidget {
                                                                     .getString(
                                                                         context),
                                                                 style:
-                                                                    TextStyle(
+                                                                    GoogleFonts
+                                                                        .prompt(
                                                                   fontSize: 12,
                                                                   color: Colors
                                                                       .white,
@@ -631,7 +638,8 @@ class HomePageV2 extends StatelessWidget {
                                                                               point)
                                                                       : '100,000',
                                                                   style:
-                                                                      TextStyle(
+                                                                      GoogleFonts
+                                                                          .prompt(
                                                                     fontSize:
                                                                         14,
                                                                     fontWeight:
@@ -740,7 +748,8 @@ class HomePageV2 extends StatelessWidget {
                                                             AppLocale.buyLottery
                                                                 .getString(
                                                                     context),
-                                                            style: TextStyle(
+                                                            style: GoogleFonts
+                                                                .prompt(
                                                               fontSize: 14,
                                                               fontWeight:
                                                                   FontWeight
@@ -853,8 +862,8 @@ class HomePageV2 extends StatelessWidget {
                                                           AppLocale.login
                                                               .getString(
                                                                   context),
-                                                          style:
-                                                              const TextStyle(
+                                                          style: GoogleFonts
+                                                              .prompt(
                                                             color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight.bold,
@@ -885,6 +894,18 @@ class HomePageV2 extends StatelessWidget {
                           () {
                             // CarouselSlider
                             if (controller.bannerContent.value.isEmpty) {
+                              return AspectRatio(
+                                aspectRatio: 21 / 9,
+                                child: Container(
+                                  clipBehavior: Clip.hardEdge,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Image.asset(
+                                    ImagePng.placeHolderBanner,
+                                  ),
+                                ),
+                              );
                               return Container(
                                 padding: const EdgeInsets.all(24),
                                 decoration: BoxDecoration(
@@ -961,7 +982,7 @@ class HomePageV2 extends StatelessWidget {
                                           width: 100,
                                           height: 100,
                                           color: Colors.white,
-                                          child: const Text(
+                                          child: Text(
                                             "Image not found",
                                             style: TextStyle(
                                               color: Colors.black,
@@ -986,18 +1007,18 @@ class HomePageV2 extends StatelessWidget {
                           },
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                        child: Text(
-                          AppLocale.quickMenu.getString(context),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      // const SizedBox(height: 8),
+                      // const SizedBox(height: 4),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      //   child: Text(
+                      //     AppLocale.quickMenu.getString(context),
+                      //     style: TextStyle(
+                      //       fontSize: 16,
+                      //       fontWeight: FontWeight.bold,
+                      //     ),
+                      //   ),
+                      // ),
+                      const SizedBox(height: 8),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24.0),
                         child: MenuGrid(),
@@ -1314,7 +1335,7 @@ class HomePageV2 extends StatelessWidget {
                             return Text(
                               CommonFn.renderCountdown(
                                   controller.remainingDateTime.value),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,

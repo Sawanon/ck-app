@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottery_ck/components/checkbox.dart';
 import 'package:lottery_ck/components/dialog.dart';
 import 'package:lottery_ck/components/header.dart';
@@ -66,7 +67,7 @@ class _CouponsPageState extends State<CouponsPage> {
     //     DialogApp(
     //       title: Text(
     //         AppLocale.recalculateScores.getString(context),
-    //         style: const TextStyle(
+    //         style: TextStyle(
     //           fontSize: 16,
     //           fontWeight: FontWeight.bold,
     //         ),
@@ -159,7 +160,7 @@ class _CouponsPageState extends State<CouponsPage> {
                               ),
                               Text(
                                 AppLocale.youDontHaveCoupon.getString(context),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: AppColors.disableText,
                                   fontSize: 16,
                                 ),
@@ -235,7 +236,7 @@ class _CouponsPageState extends State<CouponsPage> {
                                             children: [
                                               Text(
                                                 "${coupon.promotion?['name'] ?? "Not found promotion"}",
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontSize: 16,
                                                 ),
                                               ),
@@ -243,7 +244,7 @@ class _CouponsPageState extends State<CouponsPage> {
                                               // Text(
                                               //   "${coupon.promotion?['detail'] ?? "Not found promotion"}",
                                               //   maxLines: 2,
-                                              //   style: const TextStyle(
+                                              //   style: TextStyle(
                                               //     fontSize: 14,
                                               //   ),
                                               // ),
@@ -317,7 +318,7 @@ class _CouponsPageState extends State<CouponsPage> {
                                                       const SizedBox(height: 8),
                                                       Text(
                                                         "${AppLocale.used.getString(context)} ${percentStr.toStringAsFixed(0)}%",
-                                                        style: const TextStyle(
+                                                        style: TextStyle(
                                                           fontSize: 12,
                                                           color: AppColors
                                                               .textPrimary,
@@ -373,7 +374,8 @@ class _CouponsPageState extends State<CouponsPage> {
                                                                     .getString(
                                                                         context),
                                                                 style:
-                                                                    TextStyle(
+                                                                    GoogleFonts
+                                                                        .prompt(
                                                                   fontSize: 12,
                                                                   color: Colors
                                                                       .blue
@@ -424,7 +426,7 @@ class _CouponsPageState extends State<CouponsPage> {
                                       //       child: Text(
                                       //         AppLocale.apply
                                       //             .getString(context),
-                                      //         style: const TextStyle(
+                                      //         style: TextStyle(
                                       //           color: Colors.white,
                                       //         ),
                                       //       ),

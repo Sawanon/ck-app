@@ -9,6 +9,7 @@ import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PromotionController extends GetxController {
   static PromotionController get to => Get.find();
@@ -105,7 +106,7 @@ class PromotionController extends GetxController {
       Get.dialog(DialogApp(
         title: Text(
           AppLocale.somethingWentWrong.getString(Get.context!),
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
           ),
         ),

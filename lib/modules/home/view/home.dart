@@ -14,6 +14,7 @@ import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/res/logo.dart';
 import 'package:lottery_ck/utils/theme.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -568,7 +569,7 @@ class HomePage extends StatelessWidget {
                               child: Text(
                                 AppLocale.thereIsNoNextDrawYet
                                     .getString(context),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,

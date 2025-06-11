@@ -14,6 +14,7 @@ import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PinVerifyPage extends StatelessWidget {
   final bool? disabledBackButton;
@@ -59,7 +60,7 @@ class PinVerifyPage extends StatelessWidget {
                     const SizedBox(height: 8),
                     Text(
                       UserController.to.user.value?.fullName ?? "",
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: AppColors.textPrimary,
@@ -81,34 +82,57 @@ class PinVerifyPage extends StatelessWidget {
                     ? Container(
                         padding: const EdgeInsets.all(16),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          // mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Container(
+                              width: 100,
+                              height: 100,
+                              alignment: Alignment.center,
+                              decoration: const BoxDecoration(
+                                // color: AppColors.secondary,
+                                shape: BoxShape.circle,
+                                gradient: LinearGradient(
+                                  colors: [
+                                    AppColors.ckOrange,
+                                    AppColors.ckRed,
+                                  ],
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                ),
+                              ),
+                              child: const Icon(
+                                Icons.lock,
+                                size: 36,
+                                color: Colors.white,
+                              ),
+                              // child: SvgPicture.asset(
+                              //   AppIcon.lock,
+                              //   width: 36,
+                              //   height: 36,
+                              //   colorFilter: const ColorFilter.mode(
+                              //     Colors.white,
+                              //     BlendMode.srcIn,
+                              //   ),
+                              // ),
+                            ),
+                            const SizedBox(height: 24),
                             Text(
                               controller.blockMessage ?? "-",
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: AppColors.textPrimary,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             const SizedBox(height: 16),
-                            Container(
-                              width: 100,
-                              height: 100,
-                              alignment: Alignment.center,
-                              decoration: const BoxDecoration(
-                                color: AppColors.secondary,
-                                shape: BoxShape.circle,
-                              ),
-                              child: SvgPicture.asset(
-                                AppIcon.lock,
-                                width: 36,
-                                height: 36,
-                                colorFilter: const ColorFilter.mode(
-                                    Colors.white, BlendMode.srcIn),
+                            Text(
+                              "${controller.remainingTime.inHours.remainder(24).toString().padLeft(2, "0")}:${controller.remainingTime.inMinutes.remainder(60).toString().padLeft(2, "0")}:${controller.remainingTime.inSeconds.remainder(60).toString().padLeft(2, "0")}",
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.textPrimary,
                               ),
                             ),
-                            const SizedBox(height: 96),
                           ],
                         ),
                       )
@@ -119,7 +143,7 @@ class PinVerifyPage extends StatelessWidget {
                         delayBuilder: (context, delay) {
                           return Text(
                             controller.delayMessage ?? "-",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 16,
                               color: AppColors.errorBorder,
                             ),
@@ -150,7 +174,7 @@ class PinVerifyPage extends StatelessWidget {
                             if (controller.errorMessage != null) ...[
                               Text(
                                 controller.errorMessage!,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   color: AppColors.errorBorder,
                                   fontSize: 16,
                                 ),

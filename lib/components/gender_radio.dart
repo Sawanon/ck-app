@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 enum Gender { female, male }
 
@@ -160,7 +161,7 @@ class _GenderRadioState extends State<GenderRadio> {
           const SizedBox(height: 8),
           Text(
             widget.errorText!,
-            style: const TextStyle(
+            style: TextStyle(
               color: AppColors.errorBorder,
               fontSize: 12,
             ),
@@ -190,7 +191,7 @@ class _GenderRadioState extends State<GenderRadio> {
             ),
             label: Text(
               AppLocale.female.getString(context),
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -227,7 +228,7 @@ class _GenderRadioState extends State<GenderRadio> {
             ),
             label: Text(
               AppLocale.male.getString(context),
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),

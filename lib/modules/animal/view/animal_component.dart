@@ -9,6 +9,7 @@ import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AnimalComponent extends StatefulWidget {
   final EdgeInsets? padding;
@@ -401,7 +402,7 @@ class _AnimalComponentState extends State<AnimalComponent> {
               Container(
                 color: AppColors.zinZaeBackground,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     GestureDetector(
                       onTap: widget.onBack,
@@ -411,9 +412,11 @@ class _AnimalComponentState extends State<AnimalComponent> {
                         width: 48,
                         height: 48,
                         child: SvgPicture.asset(
-                          AppIcon.x,
+                          AppIcon.arrowLeft,
                           colorFilter: const ColorFilter.mode(
-                              Colors.white, BlendMode.srcIn),
+                            Colors.white,
+                            BlendMode.srcIn,
+                          ),
                         ),
                       ),
                     ),

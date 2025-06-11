@@ -17,6 +17,7 @@ import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/theme.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class UserQR extends StatefulWidget {
   const UserQR({super.key});

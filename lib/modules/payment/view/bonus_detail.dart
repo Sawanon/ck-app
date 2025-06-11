@@ -3,6 +3,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/res/app_locale.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BonusDetailComponent extends StatelessWidget {
   const BonusDetailComponent({super.key});

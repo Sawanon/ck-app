@@ -9,6 +9,7 @@ import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:pinput/pinput.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AnimalPage extends StatefulWidget {
   const AnimalPage({super.key});
@@ -491,7 +492,8 @@ class _AnimalPageState extends State<AnimalPage> {
                                                               .pleaseEnterPrice
                                                               .getString(
                                                                   context),
-                                                          style: TextStyle(
+                                                          style: GoogleFonts
+                                                              .prompt(
                                                             color: Colors.white,
                                                             fontSize: 16,
                                                             fontWeight:
@@ -595,7 +597,8 @@ class _AnimalPageState extends State<AnimalPage> {
                                                                 child: Text(
                                                                   '${lottery}',
                                                                   style:
-                                                                      TextStyle(
+                                                                      GoogleFonts
+                                                                          .prompt(
                                                                     fontSize:
                                                                         16,
                                                                     fontWeight:
@@ -777,7 +780,8 @@ class _AnimalPageState extends State<AnimalPage> {
                                                             AppLocale.confirm
                                                                 .getString(
                                                                     context),
-                                                            style: TextStyle(
+                                                            style: GoogleFonts
+                                                                .prompt(
                                                               fontSize: 20,
                                                               fontWeight:
                                                                   FontWeight

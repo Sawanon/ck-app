@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 
@@ -30,7 +31,7 @@ class DialogKycPending extends StatelessWidget {
               const SizedBox(height: 16),
               Text(
                 AppLocale.kycPendingTitle.getString(context),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
@@ -38,7 +39,7 @@ class DialogKycPending extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 AppLocale.kycPendingDescription.getString(context),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                 ),
               ),

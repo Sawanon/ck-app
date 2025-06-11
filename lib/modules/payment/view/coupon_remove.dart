@@ -3,6 +3,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CouponRemove extends StatelessWidget {
   final void Function() onConfirm;
@@ -28,7 +29,7 @@ class CouponRemove extends StatelessWidget {
         children: [
           Text(
             AppLocale.removeThisCoupon.getString(context),
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
@@ -36,7 +37,7 @@ class CouponRemove extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             AppLocale.noProblemWeKeepThisCouponForYouLater.getString(context),
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               color: AppColors.textPrimary,
             ),

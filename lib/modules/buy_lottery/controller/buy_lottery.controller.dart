@@ -19,12 +19,14 @@ import 'package:lottery_ck/model/buy_lottery_configs.dart';
 import 'package:lottery_ck/model/invoice_meta.dart';
 import 'package:lottery_ck/model/lottery.dart';
 import 'package:lottery_ck/model/user.dart';
+import 'package:lottery_ck/modules/animal/view/animal_component.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/buy_lottery/view/dialog_edit_lottery.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/modules/mmoney/controller/confirm_otp.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
+import 'package:lottery_ck/modules/webview/view/webview_component.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/constant.dart';
@@ -33,6 +35,7 @@ import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:lottery_ck/utils/location.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BuyLotteryController extends GetxController {
   static BuyLotteryController get to => Get.find();
@@ -238,7 +241,7 @@ class BuyLotteryController extends GetxController {
                 title: Text(
                   AppLocale.exceededQuota.getString(Get.context!),
                   // "เกินจำนวนการซื้อสูงสุดต่อเลข",
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -248,13 +251,13 @@ class BuyLotteryController extends GetxController {
                   AppLocale.pleaseBuyMax.getString(Get.context!).replaceAll(
                       "{max}", CommonFn.parseMoney(config.max ?? 0)),
                   // "กรุณาซื้อไม่เกิน ${CommonFn.parseMoney(config.max ?? 0)} กีบ ต่อเลข",
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppColors.textPrimary,
                   ),
                 ),
                 cancelText: Text(
                   AppLocale.acknowledge.getString(Get.context!),
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppColors.primary,
                   ),
                 ),
@@ -292,7 +295,7 @@ class BuyLotteryController extends GetxController {
             DialogApp(
               title: Text(
                 AppLocale.lessThanQuota.getString(Get.context!),
-                style: const TextStyle(
+                style: TextStyle(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
@@ -302,7 +305,7 @@ class BuyLotteryController extends GetxController {
                 AppLocale.pleaseBuyMin
                     .getString(Get.context!)
                     .replaceAll("{min}", CommonFn.parseMoney(config.min ?? 0)),
-                style: const TextStyle(
+                style: TextStyle(
                   color: AppColors.textPrimary,
                 ),
               ),
@@ -377,7 +380,7 @@ class BuyLotteryController extends GetxController {
                   children: [
                     Text(
                       AppLocale.yourAccountIsBlock.getString(Get.context!),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
@@ -415,7 +418,7 @@ class BuyLotteryController extends GetxController {
         DialogApp(
           title: Text(
             AppLocale.somethingWentWrong.getString(Get.context!),
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18,
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w600,
@@ -547,7 +550,7 @@ class BuyLotteryController extends GetxController {
       DialogApp(
         title: Text(
           AppLocale.amountNotCorrect.getString(Get.context!),
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
           ),
@@ -774,7 +777,7 @@ class BuyLotteryController extends GetxController {
                 children: [
                   Text(
                     AppLocale.pleaseSignin.getString(context),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w700,
                     ),
@@ -782,7 +785,7 @@ class BuyLotteryController extends GetxController {
                   Text(
                     AppLocale.pleaseLogInBeforePurchasingLottery
                         .getString(context),
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: AppColors.textPrimary,
                     ),
                   ),
@@ -795,7 +798,7 @@ class BuyLotteryController extends GetxController {
                     },
                     child: Text(
                       AppLocale.login.getString(context),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -1083,7 +1086,7 @@ class BuyLotteryController extends GetxController {
       DialogApp(
         title: Text(
           AppLocale.closeSale.getString(Get.context!),
-          style: const TextStyle(
+          style: TextStyle(
             color: AppColors.textPrimary,
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -1325,7 +1328,7 @@ class BuyLotteryController extends GetxController {
       //     disableConfirm: true,
       //     cancelText: Text(
       //       AppLocale.close.getString(Get.context!),
-      //       style: const TextStyle(
+      //       style: TextStyle(
       //         color: AppColors.primary,
       //       ),
       //     ),
@@ -1772,7 +1775,7 @@ class BuyLotteryController extends GetxController {
       final quotaList = await AppWriteController.to.getQuota();
       if (quotaList == null) {
         Get.dialog(
-          const DialogApp(
+          DialogApp(
             title: Text(
               "Server error",
               style: TextStyle(
@@ -1919,6 +1922,33 @@ class BuyLotteryController extends GetxController {
         return false;
       }
       horoscopeUrl.value = result;
+      Get.to(
+        () => PopScope(
+          canPop: false,
+          onPopInvoked: (didPop) async {
+            // await confirmOutTodayHoroscope(index);
+          },
+          child: WebviewPageV2(
+            url: result,
+            onBack: () async {
+              await confirmOutTodayHoroscope(index);
+              // controller.confirmOutTodayHoroscope(0);
+              // Get.dialog(
+              //   DialogApp(
+              //     title: Text("คุณต้องการออกจากดวงวันนี้?"),
+              //     onConfirm: () async {
+              //       controller.onChangeTab(0);
+              //       Get.back();
+              //     },
+              //   ),
+              // );
+            },
+            onMessageReceived: (data) {
+              logger.w(data);
+            },
+          ),
+        ),
+      );
       return true;
     } catch (e) {
       logger.e("$e");
@@ -1957,12 +1987,40 @@ class BuyLotteryController extends GetxController {
             },
           ),
         );
+
         return false;
       } else if (result == null) {
         logger.e("result createZZUrl is: $result");
         return false;
       }
       luckyCardUrl.value = result;
+      Get.to(
+        () => PopScope(
+          canPop: false,
+          onPopInvoked: (didPop) async {
+            // await confirmOutTodayHoroscope(index);
+          },
+          child: WebviewPageV2(
+            url: result,
+            onBack: () async {
+              confirmOutTodayLuckyCard(index);
+              // controller.confirmOutTodayHoroscope(0);
+              // Get.dialog(
+              //   DialogApp(
+              //     title: Text("คุณต้องการออกจากดวงวันนี้?"),
+              //     onConfirm: () async {
+              //       controller.onChangeTab(0);
+              //       Get.back();
+              //     },
+              //   ),
+              // );
+            },
+            onMessageReceived: (data) {
+              logger.w(data);
+            },
+          ),
+        ),
+      );
       return true;
     } catch (e) {
       logger.e("$e");
@@ -1972,25 +2030,38 @@ class BuyLotteryController extends GetxController {
     }
   }
 
-  void confirmOutTodayHoroscope(int index) async {
+  Future<bool> confirmOutTodayHoroscope(int index) async {
     logger.d("message");
+    bool isClose = false;
     Get.dialog(
       DialogApp(
         // title: Text("คุณต้องการออกจากดวงวันนี้?"),
         title: Text(
             "${AppLocale.youWantToGetOutOf.getString(Get.context!)} ${AppLocale.horoscopeToday.getString(Get.context!)}?"),
         onConfirm: () async {
-          changeTab(index);
+          currentTab.value = 0;
+          logger.w("confirm back");
           Get.back();
+          isClose = true;
+          Future.delayed(
+            const Duration(
+              milliseconds: 500,
+            ),
+            () {
+              logger.w("back again");
+              Get.back();
+            },
+          );
         },
         cancelText: Text(
           AppLocale.cancel.getString(Get.context!),
-          style: const TextStyle(
+          style: TextStyle(
             color: AppColors.primary,
           ),
         ),
       ),
     );
+    return isClose;
   }
 
   void confirmOutTodayLuckyCard(int index) async {
@@ -2000,13 +2071,23 @@ class BuyLotteryController extends GetxController {
             "${AppLocale.youWantToGetOutOf.getString(Get.context!)} ${AppLocale.randomCard.getString(Get.context!)}?"),
         // title: Text("คุณต้องการออกจากไพ่นำโชค?"),
         onConfirm: () async {
-          changeTab(index);
+          // changeTab(index);
+          currentTab.value = 0;
           SettingController.to.getPoint();
           Get.back();
+          Future.delayed(
+            const Duration(
+              milliseconds: 500,
+            ),
+            () {
+              logger.w("back again");
+              Get.back();
+            },
+          );
         },
         cancelText: Text(
           AppLocale.cancel.getString(Get.context!),
-          style: const TextStyle(
+          style: TextStyle(
             color: AppColors.primary,
           ),
         ),
@@ -2021,12 +2102,22 @@ class BuyLotteryController extends GetxController {
             "${AppLocale.youWantToGetOutOf.getString(Get.context!)} ${AppLocale.animal.getString(Get.context!)}?"),
         // title: Text("คุณต้องการออกจากตำรา?"),
         onConfirm: () async {
-          changeTab(index);
+          currentTab.value = 0;
+          // changeTab(index);
           Get.back();
+          Future.delayed(
+            const Duration(
+              milliseconds: 500,
+            ),
+            () {
+              logger.w("back again");
+              Get.back();
+            },
+          );
         },
         cancelText: Text(
           AppLocale.cancel.getString(Get.context!),
-          style: const TextStyle(
+          style: TextStyle(
             color: AppColors.primary,
           ),
         ),
@@ -2035,6 +2126,7 @@ class BuyLotteryController extends GetxController {
   }
 
   void onChangeTab(int index) {
+    // if cuurent stay in tab
     if (currentTab.value != 0) {
       switch (currentTab.value) {
         case 1:
@@ -2053,6 +2145,23 @@ class BuyLotteryController extends GetxController {
     changeTab(index);
   }
 
+  void goToAnimalPage() {
+    Get.to(
+      () => AnimalComponent(
+        padding: const EdgeInsets.only(bottom: 122),
+        onClickBuy: (lotterise) async {
+          // await controller.onClickAnimalBuy(lotterise);
+          onClickAnimalBuy(lotterise);
+        },
+        onBack: () {
+          // confirmOutAnimalBook(0);
+          currentTab.value = 0;
+          Get.back();
+        },
+      ),
+    );
+  }
+
   void changeTab(int index) async {
     if (index == 1) {
       final isSuccess = await openHoroscope(index);
@@ -2060,14 +2169,16 @@ class BuyLotteryController extends GetxController {
     } else if (index == 2) {
       final isSuccess = await openLuckyCard(index);
       if (isSuccess == false) return;
+    } else if (index == 3) {
+      goToAnimalPage();
     }
     currentTab.value = index;
-    if (index == 0) {
-      lotteryNode.requestFocus();
-      LayoutController.to.resetPaddingBottom();
-    } else {
-      LayoutController.to.removePaddingBottom();
-    }
+    // if (index == 0) {
+    //   lotteryNode.requestFocus();
+    //   LayoutController.to.resetPaddingBottom();
+    // } else {
+    //   LayoutController.to.removePaddingBottom();
+    // }
   }
 
   Future<bool> editTransaction(String lottery, int price) async {

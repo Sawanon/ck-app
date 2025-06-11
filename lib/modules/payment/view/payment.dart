@@ -21,6 +21,7 @@ import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PayMentPage extends StatelessWidget {
   const PayMentPage({super.key});
@@ -129,20 +130,20 @@ class PayMentPage extends StatelessWidget {
                                           child: Text(
                                             AppLocale.lotteryList
                                                 .getString(context),
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
                                             ),
                                           ),
                                         ),
                                       ),
-                                      const TableCell(
+                                      TableCell(
                                         verticalAlignment:
                                             TableCellVerticalAlignment.middle,
                                         child: Padding(
-                                          padding: const EdgeInsets.all(0),
+                                          padding: EdgeInsets.all(0),
                                           child: Text(
                                             "",
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
                                             ),
                                           ),
@@ -156,7 +157,7 @@ class PayMentPage extends StatelessWidget {
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text(
                                             AppLocale.amount.getString(context),
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 14,
                                             ),
                                           ),
@@ -171,7 +172,7 @@ class PayMentPage extends StatelessWidget {
                                       //       padding: const EdgeInsets.all(8.0),
                                       //       child: Text(
                                       //         AppLocale.bonus.getString(context),
-                                      //         style: const TextStyle(
+                                      //         style: TextStyle(
                                       //           fontSize: 14,
                                       //           fontWeight: FontWeight.w700,
                                       //           color: Colors.green,
@@ -196,7 +197,7 @@ class PayMentPage extends StatelessWidget {
                                                   const EdgeInsets.all(8.0),
                                               child: Text(
                                                 transaction.lottery,
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontSize: 14,
                                                 ),
                                               ),
@@ -223,7 +224,7 @@ class PayMentPage extends StatelessWidget {
                                                   const EdgeInsets.all(8.0),
                                               child: Text(
                                                 "${CommonFn.parseMoney(transaction.quota)} ${AppLocale.lak.getString(context)}",
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontSize: 14,
                                                 ),
                                               ),
@@ -242,7 +243,7 @@ class PayMentPage extends StatelessWidget {
                                           //         CommonFn.parseMoney(
                                           //             transaction.totalAmount! -
                                           //                 transaction.quota),
-                                          //         style: const TextStyle(
+                                          //         style: TextStyle(
                                           //           fontSize: 14,
                                           //           fontWeight: FontWeight.w700,
                                           //           color: Colors.green,
@@ -278,7 +279,7 @@ class PayMentPage extends StatelessWidget {
                                   //           child: Text(
                                   //             AppLocale.discount
                                   //                 .getString(context),
-                                  //             style: const TextStyle(
+                                  //             style: TextStyle(
                                   //               fontSize: 14,
                                   //             ),
                                   //           ),
@@ -294,7 +295,7 @@ class PayMentPage extends StatelessWidget {
                                   //             BuyLotteryController
                                   //                 .to.invoiceMeta.value.discount
                                   //                 .toString(),
-                                  //             style: const TextStyle(
+                                  //             style: TextStyle(
                                   //               fontSize: 14,
                                   //             ),
                                   //           ),
@@ -308,7 +309,7 @@ class PayMentPage extends StatelessWidget {
                                   //       //     padding: const EdgeInsets.all(8.0),
                                   //       //     // child: Text(
                                   //       //     //   AppLocale.bonus.getString(context),
-                                  //       //     //   style: const TextStyle(
+                                  //       //     //   style: TextStyle(
                                   //       //     //     fontSize: 14,
                                   //       //     //     fontWeight: FontWeight.w700,
                                   //       //     //     color: Colors.green,
@@ -336,7 +337,7 @@ class PayMentPage extends StatelessWidget {
                                   //           padding: const EdgeInsets.all(8.0),
                                   //           child: Text(
                                   //             "Point discount",
-                                  //             style: const TextStyle(
+                                  //             style: TextStyle(
                                   //               fontSize: 14,
                                   //             ),
                                   //           ),
@@ -351,7 +352,7 @@ class PayMentPage extends StatelessWidget {
                                   //           child: Text(
                                   //             CommonFn.parseMoney(
                                   //                 -controller.point!),
-                                  //             style: const TextStyle(
+                                  //             style: TextStyle(
                                   //               fontSize: 14,
                                   //             ),
                                   //           ),
@@ -365,7 +366,7 @@ class PayMentPage extends StatelessWidget {
                                   //       //     padding: const EdgeInsets.all(8.0),
                                   //       //     // child: Text(
                                   //       //     //   AppLocale.bonus.getString(context),
-                                  //       //     //   style: const TextStyle(
+                                  //       //     //   style: TextStyle(
                                   //       //     //     fontSize: 14,
                                   //       //     //     fontWeight: FontWeight.w700,
                                   //       //     //     color: Colors.green,
@@ -414,7 +415,7 @@ class PayMentPage extends StatelessWidget {
                                               : AppLocale.pointsCannotBeUsed
                                                   .getString(context),
                                           // AppLocale.point.getString(context),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             // fontWeight: FontWeight.bold,
                                             fontSize: 14,
                                           ),
@@ -624,7 +625,7 @@ class PayMentPage extends StatelessWidget {
                                 children: [
                                   Text(
                                     AppLocale.paymentMethod.getString(context),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -642,7 +643,7 @@ class PayMentPage extends StatelessWidget {
                                                 AppLocale
                                                     .pleaseSelectPaymentMethod
                                                     .getString(context),
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   color: AppColors.disableText,
                                                 ),
                                               ),
@@ -713,7 +714,7 @@ class PayMentPage extends StatelessWidget {
                                   Text(
                                     AppLocale.paymentInformation
                                         .getString(context),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -725,14 +726,14 @@ class PayMentPage extends StatelessWidget {
                                         child: Text(
                                           AppLocale.totalPayment
                                               .getString(context),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: AppColors.textPrimary,
                                           ),
                                         ),
                                       ),
                                       Text(
                                         "${CommonFn.parseMoney(BuyLotteryController.to.invoiceMeta.value.quota)} ${AppLocale.lak.getString(context)}",
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           color: AppColors.textPrimary,
                                         ),
                                       ),
@@ -746,14 +747,14 @@ class PayMentPage extends StatelessWidget {
                                           child: Text(
                                             AppLocale.pointDiscount
                                                 .getString(context),
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               color: Colors.red,
                                             ),
                                           ),
                                         ),
                                         Text(
                                           "-${CommonFn.parseMoney(controller.point ?? 0)} ${AppLocale.lak.getString(context)}",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: Colors.red,
                                           ),
                                         ),
@@ -769,14 +770,14 @@ class PayMentPage extends StatelessWidget {
                                           child: Text(
                                             AppLocale.discount
                                                 .getString(context),
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               color: Colors.red,
                                             ),
                                           ),
                                         ),
                                         Text(
                                           "-${CommonFn.parseMoney(invoice.discount ?? 0)} ${AppLocale.lak.getString(context)}",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: Colors.red,
                                           ),
                                         ),
@@ -796,7 +797,7 @@ class PayMentPage extends StatelessWidget {
                                               Text(
                                                 AppLocale.bonus
                                                     .getString(context),
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   color: Colors.green,
                                                 ),
                                               ),
@@ -816,7 +817,7 @@ class PayMentPage extends StatelessWidget {
                                         ),
                                         Text(
                                           "+${CommonFn.parseMoney(invoice.bonus ?? 0)} ${AppLocale.lak.getString(context)}",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: Colors.green,
                                           ),
                                         ),
@@ -834,14 +835,14 @@ class PayMentPage extends StatelessWidget {
                                         child: Text(
                                           AppLocale.totalOrderAmount
                                               .getString(context),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                       ),
                                       Text(
                                         "${CommonFn.parseMoney(amount)} ${AppLocale.lak.getString(context)}",
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
@@ -898,7 +899,7 @@ class PayMentPage extends StatelessWidget {
                                       Text(
                                         AppLocale.pointsToBeReceived
                                             .getString(context),
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -912,13 +913,13 @@ class PayMentPage extends StatelessWidget {
                                             Text(
                                               AppLocale.couponApplied
                                                   .getString(context),
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: AppColors.textPrimary,
                                               ),
                                             ),
                                             Text(
                                               "+${CommonFn.parseMoney(invoice.receivePoint ?? 0)} ${AppLocale.point.getString(context)}",
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: Colors.green,
                                               ),
                                             ),
@@ -933,13 +934,13 @@ class PayMentPage extends StatelessWidget {
                                             Text(
                                               AppLocale.bankPointDetail
                                                   .getString(context),
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: AppColors.textPrimary,
                                               ),
                                             ),
                                             Text(
                                               "+${CommonFn.parseMoney(invoice.pointBank ?? 0)} ${AppLocale.point.getString(context)}",
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 color: Colors.green,
                                               ),
                                             ),
@@ -992,7 +993,7 @@ class PayMentPage extends StatelessWidget {
                                         (controller.point ?? 0);
                                     return Text(
                                       "${CommonFn.parseMoney(amount)} ${AppLocale.lak.getString(context)}",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: AppColors.primary,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w700,
@@ -1009,7 +1010,7 @@ class PayMentPage extends StatelessWidget {
                                             (invoice.pointBank ?? 0);
                                     return Text(
                                       "+${CommonFn.parseMoney(allReceivePoint)} ${AppLocale.point.getString(context)}",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: Colors.green,
                                         fontSize: 12,
                                       ),
@@ -1046,7 +1047,7 @@ class PayMentPage extends StatelessWidget {
                                 },
                                 child: Text(
                                   AppLocale.confirmPayment.getString(context),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w700,
                                   ),

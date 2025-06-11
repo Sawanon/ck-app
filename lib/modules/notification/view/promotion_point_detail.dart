@@ -4,6 +4,7 @@ import 'package:lottery_ck/modules/notification/controller/promotion_point_detai
 import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PromotionPointDetailPage extends StatelessWidget {
   const PromotionPointDetailPage({super.key});

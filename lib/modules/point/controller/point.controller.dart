@@ -63,6 +63,9 @@ class PointController extends GetxController {
   // }
 
   String renderType(String type, BuildContext context) {
+    if (type.toLowerCase().contains("wheelreward")) {
+      return AppLocale.wheelOfFortuneBonus.getString(context);
+    }
     if (type.toLowerCase().contains("random")) {
       // return "ไพ่มงคล";
       return AppLocale.randomCard.getString(context);

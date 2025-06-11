@@ -12,6 +12,7 @@ import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BuyLotteryPage extends StatefulWidget {
   const BuyLotteryPage({super.key});
@@ -143,101 +144,93 @@ class _BuyLotteryPageState extends State<BuyLotteryPage> {
                     fit: StackFit.expand,
                     children: [
                       BuyLotteryFullscreenPage(),
-                      Obx(
-                        () {
-                          if (controller.currentTab.value == 1 &&
-                              controller.horoscopeUrl.value != "") {
-                            return WebviewPageV2(
-                              url: controller.horoscopeUrl.value,
-                              padding: EdgeInsets.only(bottom: 102),
-                              onBack: () {
-                                controller.confirmOutTodayHoroscope(0);
-                                // Get.dialog(
-                                //   DialogApp(
-                                //     title: Text("คุณต้องการออกจากดวงวันนี้?"),
-                                //     onConfirm: () async {
-                                //       controller.onChangeTab(0);
-                                //       Get.back();
-                                //     },
-                                //   ),
-                                // );
-                              },
-                              onMessageReceived: (data) {
-                                logger.w(data);
-                              },
-                            );
-                          } else if (controller.currentTab.value == 2 &&
-                              controller.luckyCardUrl.value != "") {
-                            // return InAppWebViewPage(
-                            //   // url: "https://staging.randomcards.pages.dev",
-                            //   // url: "https://demo.mylaos.life/zz/",
-                            //   // url: "http://192.168.1.40:3000",
-                            //   // url: "https://www.google.com/",
-                            //   url: controller.luckyCardUrl.value,
-                            //   onBack: () {
-                            //     controller.confirmOutTodayLuckyCard(0);
-                            //   },
-                            // );
-                            return WebviewPageV2(
-                              url: controller.luckyCardUrl.value,
-                              // url: "http://192.168.1.40:3000",
-                              // url: "https://staging.randomcards.pages.dev",
-                              padding: EdgeInsets.only(bottom: 102),
-                              onBack: () {
-                                controller.confirmOutTodayLuckyCard(0);
-                                // Get.dialog(
-                                //   DialogApp(
-                                //     title: Text("คุณต้องการออกจากไพ่นำโชค?"),
-                                //     onConfirm: () async {
-                                //       controller.onChangeTab(0);
-                                //       Get.back();
-                                //     },
-                                //   ),
-                                // );
-                              },
-                              onMessageReceived: (data) {
-                                try {
-                                  logger.w(data.message);
-                                  // {number: 123}
-                                  final dataMap = jsonDecode(data.message);
-                                  logger.w(dataMap);
-                                  final lottery = dataMap['number'];
-                                  controller.buyAndGotoLotteryPage(
-                                    lottery,
-                                    () async {
-                                      controller.changeTab(0);
-                                      SettingController.to.getPoint();
-                                      Get.back();
-                                    },
-                                  );
-                                  // controller.setLottery(dataMap['number']);
-                                  // final minPrice =
-                                  //     controller.getMinPrice(lottery);
-                                  // controller.addLottery(
-                                  //   minPrice,
-                                  //   lottery,
-                                  //   true,
-                                  // );
-                                } catch (e) {
-                                  logger.e("$e");
-                                }
-                                // controller.submitAddLottery(lottery, price)
-                              },
-                            );
-                          } else if (controller.currentTab.value == 3) {
-                            return AnimalComponent(
-                              padding: const EdgeInsets.only(bottom: 122),
-                              onClickBuy: (lotterise) async {
-                                await controller.onClickAnimalBuy(lotterise);
-                              },
-                              onBack: () {
-                                controller.confirmOutAnimalBook(0);
-                              },
-                            );
-                          }
-                          return const SizedBox.shrink();
-                        },
-                      ),
+                      // Obx(
+                      //   () {
+                      // FIXME: remove all tab change to use Get.to(() => Page());
+                      // if (controller.currentTab.value == 1 &&
+                      //     controller.horoscopeUrl.value != "") {
+                      //   return WebviewPageV2(
+                      //     url: controller.horoscopeUrl.value,
+                      //     padding: EdgeInsets.only(bottom: 102),
+                      //     onBack: () {
+                      //       controller.confirmOutTodayHoroscope(0);
+                      //       // Get.dialog(
+                      //       //   DialogApp(
+                      //       //     title: Text("คุณต้องการออกจากดวงวันนี้?"),
+                      //       //     onConfirm: () async {
+                      //       //       controller.onChangeTab(0);
+                      //       //       Get.back();
+                      //       //     },
+                      //       //   ),
+                      //       // );
+                      //     },
+                      //     onMessageReceived: (data) {
+                      //       logger.w(data);
+                      //     },
+                      //   );
+                      // } else
+                      // if (controller.currentTab.value == 2 &&
+                      //     controller.luckyCardUrl.value != "") {
+                      //   return WebviewPageV2(
+                      //     url: controller.luckyCardUrl.value,
+                      //     // url: "http://192.168.1.40:3000",
+                      //     // url: "https://staging.randomcards.pages.dev",
+                      //     padding: EdgeInsets.only(bottom: 102),
+                      //     onBack: () {
+                      //       controller.confirmOutTodayLuckyCard(0);
+                      //       // Get.dialog(
+                      //       //   DialogApp(
+                      //       //     title: Text("คุณต้องการออกจากไพ่นำโชค?"),
+                      //       //     onConfirm: () async {
+                      //       //       controller.onChangeTab(0);
+                      //       //       Get.back();
+                      //       //     },
+                      //       //   ),
+                      //       // );
+                      //     },
+                      //     onMessageReceived: (data) {
+                      //       try {
+                      //         logger.w(data.message);
+                      //         // {number: 123}
+                      //         final dataMap = jsonDecode(data.message);
+                      //         logger.w(dataMap);
+                      //         final lottery = dataMap['number'];
+                      //         controller.buyAndGotoLotteryPage(
+                      //           lottery,
+                      //           () async {
+                      //             controller.changeTab(0);
+                      //             SettingController.to.getPoint();
+                      //             Get.back();
+                      //           },
+                      //         );
+                      //         // controller.setLottery(dataMap['number']);
+                      //         // final minPrice =
+                      //         //     controller.getMinPrice(lottery);
+                      //         // controller.addLottery(
+                      //         //   minPrice,
+                      //         //   lottery,
+                      //         //   true,
+                      //         // );
+                      //       } catch (e) {
+                      //         logger.e("$e");
+                      //       }
+                      //       // controller.submitAddLottery(lottery, price)
+                      //     },
+                      //   );
+                      // } else if (controller.currentTab.value == 3) {
+                      //   return AnimalComponent(
+                      //     padding: const EdgeInsets.only(bottom: 122),
+                      //     onClickBuy: (lotterise) async {
+                      //       await controller.onClickAnimalBuy(lotterise);
+                      //     },
+                      //     onBack: () {
+                      //       controller.confirmOutAnimalBook(0);
+                      //     },
+                      //   );
+                      // }
+                      //     return const SizedBox.shrink();
+                      //   },
+                      // ),
                     ],
                   ),
                 ),

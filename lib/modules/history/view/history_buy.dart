@@ -7,6 +7,7 @@ import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HistoryBuyPage extends StatelessWidget {
   const HistoryBuyPage({super.key});
@@ -59,7 +60,7 @@ class HistoryBuyPage extends StatelessWidget {
                             ),
                             child: Text(
                               CommonFn.parseDMY(lotteryDate.dateTime),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey,
                               ),
@@ -166,14 +167,14 @@ class HistoryBuyPage extends StatelessWidget {
                                             children: [
                                               Text(
                                                 'ວັນທີ ${history.date}',
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontSize: 12,
                                                 ),
                                               ),
                                               const SizedBox(width: 8),
                                               Text(
                                                 'ເວລາຂອງການຊື້ ${history.time}',
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                   fontSize: 12,
                                                 ),
                                               ),
@@ -182,7 +183,7 @@ class HistoryBuyPage extends StatelessWidget {
                                           const SizedBox(height: 4),
                                           Text(
                                             'ລະຫັດໃບເກັບເງິນຫວຍ: ${history.billId}',
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 12,
                                             ),
                                           ),
@@ -195,9 +196,9 @@ class HistoryBuyPage extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          const Text(
+                                          Text(
                                             'ເລກທີ່ເຈົ້າຊື້',
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 12,
                                             ),
                                           ),
@@ -246,7 +247,8 @@ class HistoryBuyPage extends StatelessWidget {
                                                           ),
                                                           child: Text(
                                                             '$lottery',
-                                                            style: TextStyle(
+                                                            style: GoogleFonts
+                                                                .prompt(
                                                               fontSize: 14,
                                                             ),
                                                           ),

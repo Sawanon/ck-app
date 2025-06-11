@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
@@ -77,7 +78,7 @@ class DialogTransactionError extends StatelessWidget {
                             ? AppLocale.thisNumberNotSale.getString(context)
                             : AppLocale.thisNumberExceededQuota
                                 .getString(context),
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.red,
                           // fontSize: 16,
                         ),
@@ -108,7 +109,7 @@ class DialogTransactionError extends StatelessWidget {
                     const SizedBox(width: 4),
                     Text(
                       AppLocale.stilldBePurchasedTitle.getString(context),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 20,
                       ),
                     ),
@@ -127,7 +128,7 @@ class DialogTransactionError extends StatelessWidget {
                     children: [
                       Text(
                         "${AppLocale.number} $lottery",
-                        // style: const TextStyle(
+                        // style: TextStyle(
                         //     // fontSize: 16,
                         //     ),
                       ),

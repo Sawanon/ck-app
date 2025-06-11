@@ -129,7 +129,6 @@ class _WebviewPageV2State extends State<WebviewPageV2> {
             Container(
               color: AppColors.zinZaeBackground,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   GestureDetector(
                     onTap: () {
@@ -141,7 +140,7 @@ class _WebviewPageV2State extends State<WebviewPageV2> {
                       width: 48,
                       height: 48,
                       child: SvgPicture.asset(
-                        AppIcon.x,
+                        AppIcon.arrowLeft,
                         colorFilter: const ColorFilter.mode(
                             Colors.white, BlendMode.srcIn),
                       ),

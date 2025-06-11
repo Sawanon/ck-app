@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ReferrerPage extends StatelessWidget {
   const ReferrerPage({super.key});
@@ -24,7 +25,7 @@ class ReferrerPage extends StatelessWidget {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(24),
                     ),
-                    child: const Column(
+                    child: Column(
                       children: [
                         // profile image & full name
                         Row(
@@ -66,7 +67,7 @@ class ReferrerPage extends StatelessWidget {
               onPressed: () {
                 // TODO: change page to edit referrer form
               },
-              child: const Row(
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(

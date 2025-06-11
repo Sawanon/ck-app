@@ -16,6 +16,7 @@ import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/route/route_name.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -737,7 +738,7 @@ class SettingPage extends StatelessWidget {
                       },
                       child: Text(
                         AppLocale.login.getString(context),
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                         ),
                       ),
@@ -758,14 +759,14 @@ class SettingPage extends StatelessWidget {
                             },
                             confirmText: Text(
                               AppLocale.logout.getString(Get.context!),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
                               ),
                             ),
                             // onCancel: () => Get.back(),
                             cancelText: Text(
                               AppLocale.cancel.getString(Get.context!),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: AppColors.primary,
                               ),
                             ),

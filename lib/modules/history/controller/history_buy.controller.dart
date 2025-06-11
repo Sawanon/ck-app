@@ -14,6 +14,7 @@ import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HistoryBuyController extends GetxController {
   static HistoryBuyController get to => Get.find();
@@ -176,7 +177,7 @@ class HistoryBuyController extends GetxController {
                     },
                     child: Text(
                       AppLocale.close.getString(Get.context!),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
                       ),

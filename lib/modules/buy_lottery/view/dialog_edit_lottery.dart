@@ -7,6 +7,7 @@ import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DialogEditLottery extends StatefulWidget {
   final String lottery;
@@ -103,7 +104,7 @@ class _DialogEditLotteryState extends State<DialogEditLottery> {
             children: [
               Text(
                 AppLocale.editLottery.getString(context),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),

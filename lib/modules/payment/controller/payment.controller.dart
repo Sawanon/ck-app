@@ -36,6 +36,7 @@ import 'package:lottery_ck/utils/location.dart';
 import 'package:pubnub/networking.dart';
 import 'package:pubnub/pubnub.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PaymentController extends GetxController {
   static PaymentController get to => Get.find();
@@ -194,7 +195,7 @@ class PaymentController extends GetxController {
         promotionBankList.add(promotion);
       }
       final promotionType = promotion['receive_type'] as String;
-      final ignoreReceiveType = ["register", "friend", "kyc", "bank"];
+      final ignoreReceiveType = ["register", "friend", "kyc", "bank", "coupon"];
       return !ignoreReceiveType.contains(promotionType);
     }).toList();
     // logger.w(filteredPromotionList);
@@ -233,7 +234,7 @@ class PaymentController extends GetxController {
         DialogApp(
           title: Text(
             AppLocale.clearPointTitle.getString(Get.context!),
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
@@ -783,7 +784,7 @@ class PaymentController extends GetxController {
     //     Get.rawSnackbar(
     //       messageText: Text(
     //         message,
-    //         style: const TextStyle(
+    //         style: TextStyle(
     //           color: Colors.white,
     //         ),
     //       ),
@@ -849,7 +850,7 @@ class PaymentController extends GetxController {
       Get.dialog(DialogApp(
         title: Text(
           AppLocale.somethingWentWrong.getString(Get.context!),
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
           ),
         ),
@@ -872,7 +873,7 @@ class PaymentController extends GetxController {
       Get.dialog(DialogApp(
         title: Text(
           AppLocale.somethingWentWrong.getString(Get.context!),
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
           ),
         ),
@@ -972,7 +973,7 @@ class PaymentController extends GetxController {
         DialogApp(
           title: Text(
             AppLocale.somethingWentWrong.getString(Get.context!),
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -1048,7 +1049,7 @@ class PaymentController extends GetxController {
         DialogApp(
           title: Text(
             AppLocale.somethingWentWrong.getString(Get.context!),
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),

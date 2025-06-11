@@ -11,6 +11,7 @@ import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class WallpaperPage extends StatelessWidget {
   const WallpaperPage({super.key});
@@ -141,7 +142,7 @@ class WallpaperPage extends StatelessWidget {
                                       Text(
                                         "${wallpaper['wallpapers']['name']}",
                                         textAlign: TextAlign.center,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                           color: AppColors.textPrimary,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/res/logo.dart';
 
 class BlurApp extends StatelessWidget {
@@ -19,13 +21,18 @@ class BlurApp extends StatelessWidget {
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
           ),
-          child: Image.asset(
-            Logo.app,
-            fit: BoxFit.none,
+          child: SvgPicture.asset(
+            NavbarIcon.buyLottory,
             width: 200,
             height: 200,
-            scale: 2.2,
           ),
+          // child: Image.asset(
+          //   Logo.app,
+          //   fit: BoxFit.none,
+          //   width: 200,
+          //   height: 200,
+          //   scale: 2.2,
+          // ),
         ),
       ),
     );

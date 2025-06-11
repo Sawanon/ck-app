@@ -5,6 +5,7 @@ import 'package:lottery_ck/model/news.dart';
 import 'package:lottery_ck/modules/notification/controller/news.controller.dart';
 import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class NewsDetailPage extends StatelessWidget {
   final bool? isModal;

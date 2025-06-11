@@ -7,6 +7,7 @@ import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PromotionDetail extends StatelessWidget {
   final Map promotion;
@@ -34,7 +35,7 @@ class PromotionDetail extends StatelessWidget {
             children: [
               Text(
                 promotion['name'] ?? "",
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
@@ -54,7 +55,7 @@ class PromotionDetail extends StatelessWidget {
                       children: [
                         Text(
                           reason,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.red,
                             fontSize: 16,
                           ),
@@ -103,7 +104,7 @@ class PromotionDetail extends StatelessWidget {
                 backgroundColor: Colors.white,
                 child: Text(
                   AppLocale.close.getString(context),
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppColors.primary,
                   ),
                 ),

@@ -8,6 +8,7 @@ import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ChangeBirthPage extends StatefulWidget {
   const ChangeBirthPage({super.key});
@@ -68,7 +69,7 @@ class _ChangeBirthPageState extends State<ChangeBirthPage> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       AppLocale.birthDate.getString(context),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
@@ -113,7 +114,7 @@ class _ChangeBirthPageState extends State<ChangeBirthPage> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       AppLocale.birthTime.getString(context),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,

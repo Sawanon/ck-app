@@ -7,6 +7,7 @@ import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ChangeNamePage extends StatefulWidget {
   const ChangeNamePage({super.key});
@@ -59,7 +60,7 @@ class _ChangeNamePageState extends State<ChangeNamePage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         AppLocale.firstName.getString(context),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: AppColors.textPrimary,
@@ -116,7 +117,7 @@ class _ChangeNamePageState extends State<ChangeNamePage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         AppLocale.lastName.getString(context),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
                           color: AppColors.textPrimary,

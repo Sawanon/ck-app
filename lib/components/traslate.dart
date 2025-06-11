@@ -5,6 +5,7 @@ import 'package:lottery_ck/main.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TranslateComponent extends StatelessWidget {
   const TranslateComponent({super.key});
@@ -59,7 +60,7 @@ class TranslateComponent extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    const Text(
+                    Text(
                       // AppLocale.laoLanguage.getString(context),
                       "ລາວ",
                       style: TextStyle(
@@ -87,7 +88,7 @@ class TranslateComponent extends StatelessWidget {
                     Text(
                       "ไทย",
                       // AppLocale.thaiLanguage.getString(context),
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: AppColors.textPrimary,
                       ),
                     ),
@@ -109,7 +110,7 @@ class TranslateComponent extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    const Text(
+                    Text(
                       "English",
                       // AppLocale.englishLanguage.getString(context),
                       style: TextStyle(

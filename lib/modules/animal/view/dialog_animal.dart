@@ -8,6 +8,7 @@ import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:pinput/pinput.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DialogAnimal extends StatefulWidget {
   final Map animal;

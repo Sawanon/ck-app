@@ -52,6 +52,7 @@ class GetWheelActive {
 }
 
 class WheelReward {
+  String $id;
   String type;
   String? imageUrl;
   double? amount;
@@ -62,6 +63,7 @@ class WheelReward {
   SpinRewardsResults? spinRewardsResults;
 
   WheelReward({
+    required this.$id,
     required this.type,
     this.imageUrl,
     this.amount,
@@ -73,6 +75,7 @@ class WheelReward {
   });
 
   static WheelReward fromJson(Map json) => WheelReward(
+        $id: json['\$id'],
         type: json['type'],
         imageUrl: json['imageUrl'],
         amount:
@@ -87,6 +90,7 @@ class WheelReward {
       );
 
   Map toJson() => {
+        "\$id": $id,
         "type": type,
         "imageUrl": imageUrl,
         "amount": amount,

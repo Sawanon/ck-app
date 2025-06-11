@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottery_ck/modules/layout/controller/layout.controller.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class NavigationItem extends StatelessWidget {
   final void Function(TabApp tab) changeTab;

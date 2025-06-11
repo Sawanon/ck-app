@@ -10,6 +10,7 @@ import 'package:lottery_ck/modules/video/view/video_player.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class VideoMenu extends StatelessWidget {
   const VideoMenu({super.key});
@@ -229,7 +230,7 @@ class VideoMenu extends StatelessWidget {
                                     video.basicInfo.title,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 12,
                                     ),
                                   )

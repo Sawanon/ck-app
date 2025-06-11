@@ -7,6 +7,7 @@ import 'package:lottery_ck/modules/signup/view/signup.dart';
 import 'package:lottery_ck/modules/t_c/controller/t_c.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TCPage extends StatelessWidget {
   final bool? enabledAcceptBtn;

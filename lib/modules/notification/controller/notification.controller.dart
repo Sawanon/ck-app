@@ -116,6 +116,7 @@ class NotificationController extends GetxController {
 
   void onChangeTab(int index) async {
     currentTab = index;
+    // tabController.animateTo(index);
     update();
     if (index != 0) {
       await Future.delayed(const Duration(milliseconds: 250), () {

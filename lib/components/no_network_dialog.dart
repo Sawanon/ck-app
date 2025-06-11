@@ -3,6 +3,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class NoNetworkDialog extends StatefulWidget {
   final String identifier;
@@ -56,14 +57,14 @@ class _NoNetworkDialogState extends State<NoNetworkDialog> {
               children: [
                 Text(
                   AppLocale.noInternetConnectionFound.getString(context),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 Text(
                   AppLocale.noInternetConnectionFoundDetail.getString(context),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),

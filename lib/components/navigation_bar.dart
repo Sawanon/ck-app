@@ -11,6 +11,7 @@ import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils/theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CustomNavigationBar extends StatefulWidget {
   void Function(TabApp tab)? onChangeTab;
@@ -93,7 +94,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                   width: 24,
                   height: 24,
                   child: SvgPicture.asset(
-                    AppIcon.home,
+                    NavbarIcon.home,
                     colorFilter: const ColorFilter.mode(
                       // Colors.white.withOpacity(0.8),
                       Colors.black,
@@ -101,11 +102,15 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                     ),
                   ),
                 ),
-                activeIcon: SvgPicture.asset(
-                  AppIcon.homeBold,
-                  colorFilter: const ColorFilter.mode(
-                    AppColors.primary,
-                    BlendMode.srcIn,
+                activeIcon: SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: SvgPicture.asset(
+                    NavbarIcon.home,
+                    colorFilter: const ColorFilter.mode(
+                      AppColors.primary,
+                      BlendMode.srcIn,
+                    ),
                   ),
                 ),
                 label: AppLocale.home.getString(context),
@@ -116,14 +121,18 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                 changeTab: onChangeTab,
                 index: 1,
                 icon: SvgPicture.asset(
-                  AppIcon.history,
+                  NavbarIcon.history,
+                  width: 24,
+                  height: 24,
                   colorFilter: const ColorFilter.mode(
                     Colors.black,
                     BlendMode.srcIn,
                   ),
                 ),
                 activeIcon: SvgPicture.asset(
-                  AppIcon.historyBold,
+                  NavbarIcon.history,
+                  width: 24,
+                  height: 24,
                   colorFilter: const ColorFilter.mode(
                     AppColors.primary,
                     BlendMode.srcIn,
@@ -167,7 +176,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                   width: 24,
                   height: 24,
                   child: SvgPicture.asset(
-                    AppIcon.scan,
+                    NavbarIcon.scan,
                     colorFilter: const ColorFilter.mode(
                       Colors.black,
                       BlendMode.srcIn,
@@ -178,7 +187,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                   width: 24,
                   height: 24,
                   child: SvgPicture.asset(
-                    AppIcon.scanBold,
+                    NavbarIcon.scan,
                     colorFilter: const ColorFilter.mode(
                       AppColors.primary,
                       BlendMode.srcIn,
@@ -194,14 +203,18 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                 changeTab: onChangeTab,
                 index: 4,
                 icon: SvgPicture.asset(
-                  AppIcon.gift,
+                  NavbarIcon.privileges,
+                  width: 24,
+                  height: 24,
                   colorFilter: const ColorFilter.mode(
                     Colors.black,
                     BlendMode.srcIn,
                   ),
                 ),
                 activeIcon: SvgPicture.asset(
-                  AppIcon.giftBold,
+                  NavbarIcon.privileges,
+                  width: 24,
+                  height: 24,
                   colorFilter: const ColorFilter.mode(
                     AppColors.primary,
                     BlendMode.srcIn,
@@ -248,13 +261,16 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                     child: SizedBox(
                       width: 60,
                       height: 60,
-                      child: Image.asset(
-                        "assets/png/logo-t-bl.png",
-                        width: 100,
-                        height: 100,
-                        scale: 4,
-                        fit: BoxFit.none,
+                      child: SvgPicture.asset(
+                        NavbarIcon.buyLottory,
                       ),
+                      // child: Image.asset(
+                      //   "assets/png/logo-t-bl.png",
+                      //   width: 100,
+                      //   height: 100,
+                      //   scale: 4,
+                      //   fit: BoxFit.none,
+                      // ),
                       // child: SvgPicture.asset(
                       //   AppIcon.lotteryBold,
                       //   colorFilter: ColorFilter.mode(

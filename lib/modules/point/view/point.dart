@@ -7,6 +7,7 @@ import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PointPage extends StatelessWidget {
   const PointPage({super.key});
@@ -58,7 +59,7 @@ class PointPage extends StatelessWidget {
                               return Text(
                                 CommonFn.parseMoney(
                                     controller.totalPoint.value),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 48,
                                   fontWeight: FontWeight.w600,
                                   height: 0,
@@ -158,7 +159,7 @@ class PointPage extends StatelessWidget {
                             Text(
                               CommonFn.hidePhoneNumber(
                                   controller.userApp?.phoneNumber),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.textPrimary,
                               ),
@@ -241,7 +242,7 @@ class PointPage extends StatelessWidget {
                                 alignment: Alignment.center,
                                 child: Text(
                                   pointTransaction.createdDateStr,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 12,
                                   ),
                                 ),
@@ -256,7 +257,7 @@ class PointPage extends StatelessWidget {
                                 child: Text(
                                   controller.renderType(
                                       pointTransaction.type, context),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 12,
                                   ),
                                   softWrap: false,
@@ -275,7 +276,7 @@ class PointPage extends StatelessWidget {
                                 alignment: Alignment.center,
                                 child: Text(
                                   CommonFn.parseMoney(pointTransaction.point),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 12,
                                   ),
                                 ),

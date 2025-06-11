@@ -6,6 +6,7 @@ import 'package:lottery_ck/model/point_topup.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BillPoint extends StatelessWidget {
   final void Function() onBackHome;
@@ -58,7 +59,7 @@ class BillPoint extends StatelessWidget {
                         Text(AppLocale.numberPointsReceived.getString(context)),
                         Text(
                           "+${CommonFn.parseMoney(pointTop.point?.toInt() ?? 0)}",
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.green,
                             fontWeight: FontWeight.bold,
                           ),

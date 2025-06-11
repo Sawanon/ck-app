@@ -7,10 +7,13 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/header.dart';
 import 'package:lottery_ck/modules/wheel/controller/wheel_controller.dart';
+import 'package:lottery_ck/modules/wheel/view/dialog_win.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class WheelPage extends StatefulWidget {
   const WheelPage({super.key});
@@ -60,7 +63,7 @@ class _WheelPageState extends State<WheelPage> {
             ),
             const SizedBox(height: 24),
             Text(
-              "วงล้อเสี่ยงดวง",
+              AppLocale.wheelOfFortune.getString(context),
               style: TextStyle(
                 color: AppColors.wheelText,
                 fontSize: 24,
@@ -126,7 +129,7 @@ class _WheelPageState extends State<WheelPage> {
                           animateFirst: false,
                           physics: NoPanPhysics(),
                           curve: Curves.easeInOutExpo,
-                          duration: const Duration(seconds: 10),
+                          duration: const Duration(seconds: 3),
                           indicators: [
                             FortuneIndicator(
                               child: Container(
@@ -211,7 +214,7 @@ class _WheelPageState extends State<WheelPage> {
                                 child: Container(
                                   margin: const EdgeInsets.only(left: 32),
                                   child: Text(
-                                    "${value.amount ?? 0}",
+                                    "${value.amount == null ? 0 : CommonFn.parseMoney(value.amount!)}",
                                     style: TextStyle(
                                       color: AppColors.wheelText,
                                       fontWeight: FontWeight.w900,
@@ -239,8 +242,7 @@ class _WheelPageState extends State<WheelPage> {
                               width: double.infinity,
                               height: double.infinity,
                               decoration: BoxDecoration(
-                                color:
-                                    AppColors.wheelBackground.withOpacity(0.8),
+                                color: AppColors.wheelBackground,
                                 shape: BoxShape.circle,
                               ),
                               child: const CircularProgressIndicator(
@@ -265,60 +267,103 @@ class _WheelPageState extends State<WheelPage> {
               ),
             ),
             const SizedBox(height: 80),
-            GestureDetector(
-              onTap: () async {
-                selected.add(0);
-                int count = 0;
-                logger.w("start");
-                final timer = Timer.periodic(
-                  const Duration(seconds: 1),
-                  (timer) {
-                    final target = Random().nextInt(items.length);
-                    logger.w("target: $target");
-                    selected.add(target);
-                    count++;
-                    if (count > 10) {
-                      logger.w("stop maximum count");
-                      timer.cancel();
+            Obx(() {
+              return GestureDetector(
+                onTap: () async {
+                  if (wheelController.disabledSpin.value) {
+                    return;
+                  }
+                  selected.add(0);
+                  int count = 0;
+                  logger.w("start");
+                  // int? rewardIndex;
+                  final timer = Timer.periodic(
+                    const Duration(seconds: 1),
+                    (timer) {
+                      final target =
+                          Random().nextInt(wheelController.wheelRewards.length);
+                      logger.w("target: $target");
+                      selected.add(target);
+                      // rewardIndex = target;
+                      count++;
+                      if (count > 10) {
+                        logger.w("stop maximum count");
+                        timer.cancel();
+                      }
+                    },
+                  );
+                  // await Future.delayed(
+                  //   const Duration(seconds: 10),
+                  //   () {
+                  //     logger.w("stop maximum time");
+                  //     timer.cancel();
+                  //   },
+                  // );
+                  final response = await wheelController.requestReward(
+                    wheelController.wheelId.value,
+                  );
+                  timer.cancel();
+                  logger.w("timer cancel");
+                  if (response != null) {
+                    final rewardId = response['reward']['\$id'];
+                    final rewardIndex = wheelController.wheelRewards
+                        .indexWhere((reward) => reward.$id == rewardId);
+                    if (rewardIndex == -1) {
+                      logger.e("can't find reward");
+                      return;
                     }
-                  },
-                );
-                await Future.delayed(
-                  const Duration(seconds: 10),
-                  () {
-                    logger.w("stop maximum time");
-                    timer.cancel();
-                  },
-                );
-              },
-              child: Container(
-                margin: const EdgeInsets.only(
-                  bottom: 64,
-                  left: 16,
-                  right: 16,
-                ),
-                width: double.infinity,
-                height: 52,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: AppColors.wheelEven,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    width: 4,
-                    color: AppColors.wheelText,
-                    strokeAlign: BorderSide.strokeAlignOutside,
+                    logger.w("select reward real");
+                    selected.add(rewardIndex);
+                    final reward = wheelController.wheelRewards[rewardIndex];
+                    await Future.delayed(const Duration(seconds: 3), () {
+                      Get.dialog(
+                        DialogWin(
+                          reward: Text(
+                            CommonFn.parseMoney(reward.amount ?? 0),
+                            style: TextStyle(
+                              color: AppColors.wheelText,
+                              fontSize: 48,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        barrierDismissible: false,
+                      );
+                    });
+                  }
+                },
+                child: Opacity(
+                  opacity: wheelController.disabledSpin.value ? 0.5 : 1,
+                  child: Container(
+                    margin: const EdgeInsets.only(
+                      bottom: 64,
+                      left: 16,
+                      right: 16,
+                    ),
+                    width: double.infinity,
+                    height: 52,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: AppColors.wheelEven,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        width: 4,
+                        color: AppColors.wheelText,
+                        strokeAlign: BorderSide.strokeAlignOutside,
+                      ),
+                    ),
+                    child: Text(
+                      AppLocale.spin.getString(context),
+                      style: TextStyle(
+                        color: AppColors.wheelText,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
                 ),
-                child: const Text(
-                  "SPIN",
-                  style: TextStyle(
-                    color: AppColors.wheelText,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
+              );
+            }),
           ],
         ),
       ),

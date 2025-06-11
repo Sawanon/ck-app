@@ -14,6 +14,7 @@ import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class PinVerifyController extends GetxController {
   static PinVerifyController get to => Get.find();
@@ -91,7 +92,7 @@ class PinVerifyController extends GetxController {
           disableConfirm: true,
           cancelText: Text(
             AppLocale.close.getString(Get.context!),
-            style: const TextStyle(
+            style: TextStyle(
               color: AppColors.errorBorder,
             ),
           ),
@@ -181,17 +182,16 @@ class PinVerifyController extends GetxController {
   void startTimer(DateTime targetTime) {
     _timer?.cancel();
     remainingTime = targetTime.difference(DateTime.now());
-    blockMessage = AppLocale.blockMessage
-        .replaceAll("{minute}", "${remainingTime.inMinutes}");
+    blockMessage = AppLocale.blockMessageTitle;
     _timer = Timer.periodic(
       const Duration(seconds: 1),
       (timer) {
         if (remainingTime.inSeconds > 0) {
           remainingTime -= const Duration(seconds: 1);
-          final minute =
-              remainingTime.inMinutes == 0 ? 1 : remainingTime.inMinutes;
-          blockMessage =
-              AppLocale.blockMessage.replaceAll("{minute}", "$minute");
+          // final minute =
+          //     remainingTime.inMinutes == 0 ? 1 : remainingTime.inMinutes;
+          // blockMessage =
+          //     AppLocale.blockMessage.replaceAll("{minute}", "$minute");
         } else {
           logger.d("stop !");
           disable = false;

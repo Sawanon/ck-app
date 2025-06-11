@@ -5,9 +5,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:lottery_ck/model/bill.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:lottery_ck/res/icon.dart';
 import 'package:lottery_ck/res/logo.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BillComponent extends StatelessWidget {
   final Bill bill;
@@ -50,8 +52,12 @@ class BillComponent extends StatelessWidget {
             height: MediaQuery.of(context).size.width / 4,
           ),
           const SizedBox(height: 8),
-          Image.asset(
-            Logo.ck,
+          // Image.asset(
+          //   Logo.ck,
+          //   height: 40,
+          // ),
+          SvgPicture.asset(
+            AppIcon.ckLotto,
             height: 40,
           ),
           const SizedBox(height: 16),
@@ -91,14 +97,14 @@ class BillComponent extends StatelessWidget {
                     children: [
                       Text(
                         "${AppLocale.date.getString(context)} ",
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           color: AppColors.secondary,
                         ),
                       ),
                       Text(
                         CommonFn.parseDMY(bill.dateTime.toLocal()),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           color: AppColors.secondary,
                         ),
@@ -114,7 +120,7 @@ class BillComponent extends StatelessWidget {
                     children: [
                       Text(
                         bill.customerId.replaceAll("+", ""),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           color: AppColors.secondary,
                         ),
@@ -140,14 +146,14 @@ class BillComponent extends StatelessWidget {
                     children: [
                       Text(
                         "${AppLocale.time.getString(context)} ",
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           color: AppColors.secondary,
                         ),
                       ),
                       Text(
                         CommonFn.parseHMS(bill.dateTime.toLocal()),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           color: AppColors.secondary,
                         ),
@@ -244,13 +250,13 @@ class BillComponent extends StatelessWidget {
               children: [
                 Text(
                   AppLocale.pointDiscount.getString(context),
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.red,
                   ),
                 ),
                 Text(
                   "-${bill.pointMoney!} ${AppLocale.lak.getString(context)}",
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.red,
                   ),
                 ),
@@ -264,13 +270,13 @@ class BillComponent extends StatelessWidget {
               children: [
                 Text(
                   AppLocale.discount.getString(context),
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.red,
                   ),
                 ),
                 Text(
                   "-${CommonFn.parseMoney(bill.discount!)} ${AppLocale.lak.getString(context)}",
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.red,
                   ),
                 ),
@@ -312,21 +318,21 @@ class BillComponent extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             "${AppLocale.billId.getString(context)}: ${bill.billId}",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             "${AppLocale.paidBy.getString(context)}: ${bill.bankName}",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             "${AppLocale.contact.getString(context)} CK GROUP: 0865446524",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
             ),
           ),
@@ -334,7 +340,7 @@ class BillComponent extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               "Refcode: ${bill.refCode}",
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12,
               ),
             ),

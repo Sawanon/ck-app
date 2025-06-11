@@ -22,6 +22,7 @@ import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:image/image.dart' as img;
+import 'package:google_fonts/google_fonts.dart';
 
 class SettingController extends GetxController {
   static SettingController get to => Get.find();

@@ -10,6 +10,7 @@ import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:pinput/pinput.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MonneyConfirmOTP extends StatelessWidget {
   const MonneyConfirmOTP({super.key});
@@ -47,7 +48,7 @@ class MonneyConfirmOTP extends StatelessWidget {
                   children: [
                     Text(
                       AppLocale.confirmCode.getString(context),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 36,
                         fontWeight: FontWeight.w700,
                         color: AppColors.textPrimary,
@@ -55,7 +56,7 @@ class MonneyConfirmOTP extends StatelessWidget {
                     ),
                     Text(
                       '${AppLocale.pleaseEnterThe6Digit.getString(context)} ${CommonFn.hidePhoneNumber(controller.phoneNumber)}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w400,
                         color: AppColors.textPrimary,
@@ -149,7 +150,7 @@ class MonneyConfirmOTP extends StatelessWidget {
                               )
                             : Text(
                                 AppLocale.resendOTP.getString(context),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w700,
                                 ),

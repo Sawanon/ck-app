@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 enum Prefix { mr, mrs }
 
@@ -171,7 +172,7 @@ class PrefixRadioState extends State<PrefixRadio> {
           const SizedBox(height: 8),
           Text(
             widget.errorText!,
-            style: const TextStyle(
+            style: TextStyle(
               color: AppColors.errorBorder,
               fontSize: 12,
             ),

@@ -16,6 +16,7 @@ import 'package:lottery_ck/res/logo.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:lottery_ck/utils/theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BuyLotteryFullscreenPage extends StatelessWidget {
   const BuyLotteryFullscreenPage({super.key});
@@ -115,7 +116,7 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                         Text(
                                           AppLocale.lotteryList
                                               .getString(context),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             fontSize: 14,
                                           ),
                                         ),
@@ -124,7 +125,7 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                             Text(
                                               AppLocale.amount
                                                   .getString(context),
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontSize: 14,
                                               ),
                                             ),
@@ -143,7 +144,7 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                             //   Text(
                                             //     AppLocale.bonus
                                             //         .getString(context),
-                                            //     style: const TextStyle(
+                                            //     style: TextStyle(
                                             //       fontSize: 14,
                                             //     ),
                                             //   ),
@@ -187,7 +188,8 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                                     .getString(
                                                                         context),
                                                                 style:
-                                                                    TextStyle(
+                                                                    GoogleFonts
+                                                                        .prompt(
                                                                   fontSize: 16,
                                                                 ),
                                                               ),
@@ -340,11 +342,16 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                       height: 100,
                                                     ),
                                                     const SizedBox(width: 8),
-                                                    Image.asset(
-                                                      "assets/png/logo-t-bl.png",
+                                                    SvgPicture.asset(
+                                                      NavbarIcon.buyLottory,
                                                       width: 100,
                                                       height: 100,
                                                     ),
+                                                    // Image.asset(
+                                                    //   "assets/icon/icon.png",
+                                                    //   width: 100,
+                                                    //   height: 100,
+                                                    // ),
                                                   ],
                                                 ),
                                                 const SizedBox(height: 8),
@@ -403,7 +410,8 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                             child: Text(
                                                               lotteryData
                                                                   .lottery,
-                                                              style: TextStyle(
+                                                              style: GoogleFonts
+                                                                  .prompt(
                                                                 color: AppColors
                                                                     .textPrimary,
                                                                 fontSize: 16,
@@ -432,7 +440,8 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                                     lotteryData
                                                                         .quota),
                                                                 style:
-                                                                    TextStyle(
+                                                                    GoogleFonts
+                                                                        .prompt(
                                                                   color: AppColors
                                                                       .textPrimary,
                                                                   fontSize: 16,
@@ -619,7 +628,7 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                 ),
                                                 child: Text(
                                                   "${CommonFn.parseMoney(price)} ${AppLocale.lak.getString(context)}",
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     color:
                                                         AppColors.textPrimary,
                                                     fontWeight: FontWeight.bold,
@@ -646,7 +655,7 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                         .getString(context)),
                                     Text(
                                       "${controller.invoiceMeta.value.transactions.length}",
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                         color: AppColors.textPrimary,
@@ -821,7 +830,7 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                     .hihtPriceInput
                                                     .getString(context),
                                                 errorStyle:
-                                                    const TextStyle(height: 0),
+                                                    TextStyle(height: 0),
                                                 contentPadding:
                                                     const EdgeInsets.symmetric(
                                                         horizontal: 8),
@@ -961,7 +970,7 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                 .getString(context),
                                             // AppLocale.confirmBuyLottery
                                             //     .getString(context),
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontSize: 16,
                                             ),
                                           ),

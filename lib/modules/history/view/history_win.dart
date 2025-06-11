@@ -7,6 +7,7 @@ import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:lottery_ck/utils/theme.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Color checkWin(String buyNumber, String winNumber) {
   try {
@@ -72,7 +73,7 @@ class HistoryWinPage extends StatelessWidget {
                                   BorderRadius.all(Radius.circular(10))),
                           child: Text(
                             e,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.grey,
                             ),
@@ -184,7 +185,7 @@ class HistoryWinPage extends StatelessWidget {
                                           child: Center(
                                             child: Text(
                                               number,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontSize: 24,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -274,8 +275,8 @@ class HistoryWinPage extends StatelessWidget {
                                                   alignment: Alignment.center,
                                                   child: Text(
                                                     transaction['lottery'],
-                                                    style: const TextStyle(
-                                                        fontSize: 14),
+                                                    style:
+                                                        TextStyle(fontSize: 14),
                                                   ),
                                                 );
 
@@ -410,8 +411,8 @@ class HistoryWinPage extends StatelessWidget {
                                                         child: Text(
                                                           transaction[
                                                               'lottery'],
-                                                          style:
-                                                              const TextStyle(
+                                                          style: GoogleFonts
+                                                              .prompt(
                                                                   fontSize: 14),
                                                         ),
                                                       );
@@ -511,7 +512,7 @@ class HistoryWinPage extends StatelessWidget {
                               //                     alignment: Alignment.center,
                               //                     child: Text(
                               //                       transaction['lottery'],
-                              //                       style: const TextStyle(
+                              //                       style: TextStyle(
                               //                           fontSize: 14),
                               //                     ),
                               //                   );

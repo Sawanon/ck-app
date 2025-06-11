@@ -78,6 +78,7 @@ class AppWriteController extends GetxController {
   static const String COUPON = '67762ef9003b9b51c763';
   static const String GROUP_USER = 'group_users';
   static const String WHEEL_PROMOTION = 'wheel_promotions';
+  static const String WHEEL_USER = 'wheel_users';
 
   static const String FN_SIGNIN = '6759aebe003c92a6fa81';
   static const String FN_LOTTERY_DATE = '67949bd30000dc05f940';
@@ -3042,6 +3043,73 @@ class AppWriteController extends GetxController {
     }
   }
 
+  Future<ResponseApi<Map>> getMyReward(String userId, String wheelId) async {
+    try {
+      final response = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: WHEEL_USER,
+        queries: [
+          Query.equal('userId', userId),
+          Query.equal('wheelId', wheelId),
+        ],
+      );
+      if (response.documents.isEmpty) {
+        return ResponseApi(
+          isSuccess: true,
+          message: "no reward in this wheel",
+        );
+      }
+      final reward = response.documents.first;
+      return ResponseApi(
+        isSuccess: false,
+        message: "Success to get my reward",
+        data: reward.data,
+      );
+    } on AppwriteException catch (e) {
+      logger.e(e);
+      return ResponseApi(
+        isSuccess: false,
+        message: e.message ?? "${e.code ?? "appwrite: error"}",
+      );
+    } catch (e) {
+      logger.e(e);
+      return ResponseApi(isSuccess: false, message: "failed to get my reward");
+    }
+  }
+
+  Future<ResponseApi<Map>> requestReward(String userId, String wheelId) async {
+    try {
+      final option = BaseOptions(
+        connectTimeout: const Duration(seconds: 15),
+        receiveTimeout: const Duration(seconds: 15),
+      );
+      final dio = Dio(option);
+      final payload = {
+        "wheelId": wheelId,
+        "userId": userId,
+      };
+      final jwt = await getAppJWT();
+      final response = await dio.post(
+        "${AppConst.apiUrl}/wheel/lucky-wheel",
+        data: payload,
+        options: Options(headers: {
+          "Authorization": "Bearer $jwt",
+        }),
+      );
+      logger.d(response.data);
+      return ResponseApi(
+        isSuccess: true,
+        message: "Success to request reward",
+        data: response.data,
+      );
+    } catch (e) {
+      return ResponseApi(
+        isSuccess: false,
+        message: "failed to request reward",
+      );
+    }
+  }
+
   Future<ResponseApi<GetWheelActive>> getWheelActive() async {
     try {
       final responseCurrentTime = await AppWriteController.to.getCurrentTime();
@@ -3062,7 +3130,6 @@ class AppWriteController extends GetxController {
           Query.orderAsc('\$createdAt'),
         ],
       );
-      logger.w(response);
       if (response.documents.isEmpty) {
         return ResponseApi(
           isSuccess: false,

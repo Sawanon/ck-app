@@ -173,7 +173,7 @@ class _MyAppState extends State<MyApp> {
             // SplashScreenController.to.setStop(display);
             // SplashScreenController.to.checkNetWork();
           },
-          minAppVersion: '1.2.1',
+          minAppVersion: '2.0.0',
           debugLogging: true,
           // debugDisplayAlways: true,
           languageCode: 'en',

@@ -7,6 +7,7 @@ import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class BankPage extends StatelessWidget {
   const BankPage({super.key});
@@ -143,7 +144,7 @@ class BankPage extends StatelessWidget {
                                       Text(
                                         "${AppLocale.downtimeBank.getString(context)} ${bank.downtime!}",
                                         softWrap: true,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                           fontSize: 12,
                                           color: AppColors.disableText,
                                         ),

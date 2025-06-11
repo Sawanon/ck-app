@@ -20,6 +20,7 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 // import 'package:mobile_scanner_example/scanner_button_widgets.dart';
 // import 'package:mobile_scanner_example/scanner_error_widget.dart';
 import 'package:lottery_ck/components/scanner_error_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ScanQR extends StatefulWidget {
   const ScanQR({super.key});
@@ -33,8 +34,9 @@ class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
     formats: const [BarcodeFormat.qrCode],
   );
   bool isLoading = false;
-  final double scanWindowWidth = 200;
-  final double scanWindowHeight = 200;
+  // final double scanWindowWidth = 300;
+  double scanWindowWidth = 300;
+  double scanWindowHeight = 300;
   final marginTopMyQR = 16;
 
   void setIsLoading(bool value) {
@@ -222,15 +224,20 @@ class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
   }
 
   void setup() async {
-    await Future.delayed(const Duration(seconds: 1), () {
-      controller.switchCamera();
+    // await Future.delayed(const Duration(seconds: 1), () {
+    //   controller.switchCamera();
+    // });
+    setState(() {
+      final width = MediaQuery.of(Get.context!).size.width - (24 * 2);
+      scanWindowWidth = width;
+      scanWindowHeight = width;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    // setup();
+    setup();
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -362,7 +369,7 @@ class _ScanQRState extends State<ScanQR> with WidgetsBindingObserver {
                           )),
                       child: Text(
                         AppLocale.myQRcode.getString(context),
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
                         ),
                       ),

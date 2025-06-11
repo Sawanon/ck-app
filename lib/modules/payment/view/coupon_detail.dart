@@ -10,6 +10,7 @@ import 'package:lottery_ck/modules/payment/controller/payment.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CouponDetail extends StatelessWidget {
   final Coupon coupon;
@@ -106,7 +107,7 @@ class CouponDetail extends StatelessWidget {
                 backgroundColor: Colors.white,
                 child: Text(
                   AppLocale.close.getString(context),
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: AppColors.primary,
                   ),
                 ),

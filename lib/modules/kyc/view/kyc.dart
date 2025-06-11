@@ -17,6 +17,7 @@ import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class KYCPage extends StatelessWidget {
   const KYCPage({super.key});
@@ -95,13 +96,24 @@ class KYCPage extends StatelessWidget {
                                     },
                                   ),
                                   const SizedBox(height: 8),
-                                  Text(
-                                    AppLocale.firstName.getString(context),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.textPrimary,
-                                      fontSize: 14,
-                                    ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        AppLocale.firstName.getString(context),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.textPrimary,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      Text(
+                                        " *",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   InputText(
                                     // isError: controller.remark?['firstName']
@@ -118,13 +130,24 @@ class KYCPage extends StatelessWidget {
                                     onChanged: controller.onChangeFirstName,
                                   ),
                                   const SizedBox(height: 8),
-                                  Text(
-                                    AppLocale.lastName.getString(context),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.textPrimary,
-                                      fontSize: 14,
-                                    ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        AppLocale.lastName.getString(context),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.textPrimary,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      Text(
+                                        " *",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   InputText(
                                     // isError: controller.remark?['lastName']
@@ -141,13 +164,24 @@ class KYCPage extends StatelessWidget {
                                     onChanged: controller.onChangeLastName,
                                   ),
                                   const SizedBox(height: 8),
-                                  Text(
-                                    AppLocale.birthDate.getString(context),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.textPrimary,
-                                      fontSize: 14,
-                                    ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        AppLocale.birthDate.getString(context),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.textPrimary,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      Text(
+                                        " *",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   GestureDetector(
                                     onTap: () async {
@@ -201,7 +235,7 @@ class KYCPage extends StatelessWidget {
                                     Text(
                                       controller.remark?['birthDate']
                                           ['message'],
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 12,
                                         color: AppColors.errorBorder,
                                       ),
@@ -236,13 +270,24 @@ class KYCPage extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    AppLocale.houseNo.getString(context),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.textPrimary,
-                                      fontSize: 14,
-                                    ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        AppLocale.houseNo.getString(context),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.textPrimary,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      Text(
+                                        " *",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   InputText(
                                     errorText: controller.remark?['address']
@@ -256,13 +301,24 @@ class KYCPage extends StatelessWidget {
                                     onChanged: controller.onChangeAddress,
                                   ),
                                   const SizedBox(height: 8),
-                                  Text(
-                                    AppLocale.city.getString(context),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.textPrimary,
-                                      fontSize: 14,
-                                    ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        AppLocale.city.getString(context),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.textPrimary,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      Text(
+                                        " *",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   InputText(
                                     errorText: controller.remark?['city']
@@ -275,13 +331,24 @@ class KYCPage extends StatelessWidget {
                                     onChanged: controller.onChangeCity,
                                   ),
                                   const SizedBox(height: 8),
-                                  Text(
-                                    AppLocale.district.getString(context),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.textPrimary,
-                                      fontSize: 14,
-                                    ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        AppLocale.district.getString(context),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.textPrimary,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                      Text(
+                                        " *",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                   Container(
                                     decoration: BoxDecoration(
@@ -371,6 +438,13 @@ class KYCPage extends StatelessWidget {
                                             color: AppColors.textPrimary,
                                           ),
                                           softWrap: true,
+                                        ),
+                                      ),
+                                      Text(
+                                        " *",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ],
@@ -525,7 +599,7 @@ class KYCPage extends StatelessWidget {
                                         Text(
                                           AppLocale.takePhoto
                                               .getString(context),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -581,6 +655,13 @@ class KYCPage extends StatelessWidget {
                                             color: AppColors.textPrimary,
                                           ),
                                           softWrap: true,
+                                        ),
+                                      ),
+                                      Text(
+                                        " *",
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                     ],
