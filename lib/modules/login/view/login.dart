@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:lottery_ck/components/long_button.dart';
@@ -8,6 +9,7 @@ import 'package:lottery_ck/modules/login/controller/login.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottery_ck/res/icon.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -26,7 +28,7 @@ class LoginPage extends StatelessWidget {
                   gradient: LinearGradient(
                     colors: [
                       Colors.white,
-                      AppColors.primary.withOpacity(0.2),
+                      AppColors.ckOrange.withOpacity(0.2),
                     ],
                     begin: Alignment(0.0, -0.6),
                     end: Alignment.bottomCenter,
@@ -39,7 +41,11 @@ class LoginPage extends StatelessWidget {
                   child: ListView(
                     physics: BouncingScrollPhysics(),
                     children: [
-                      Image.asset("assets/ck-w1.png"),
+                      // Image.asset("assets/ck-w1.png"),
+                      SvgPicture.asset(
+                        AppIcon.ckLotto,
+                        height: 40,
+                      ),
                       const SizedBox(height: 24),
                       Align(
                         alignment: Alignment.topLeft,

@@ -403,7 +403,7 @@ class PaymentController extends GetxController {
       );
 
       // Subscribe to a channel
-      const mcid = 'mch5c2f0404102fb';
+      const mcid = AppConst.mcid;
       var channel = "uuid-$mcid-$uuid";
       subscriptionPubnub = pubnub.subscribe(channels: {channel});
       logger.d("channel: $channel");
@@ -804,10 +804,10 @@ class PaymentController extends GetxController {
   }
 
   void showBottomModalPoint(BuildContext context) {
-    final int myPoint = UserController.to.user.value?.point != null
+    final double myPoint = UserController.to.user.value?.point != null
         ? UserController.to.user.value!.point
         : 0;
-    int maxPointCanUse = 0;
+    double maxPointCanUse = 0;
     final invoice = BuyLotteryController.to.invoiceMeta.value;
 
     if (maxPercentPointCanuse != 0) {
@@ -815,7 +815,7 @@ class PaymentController extends GetxController {
       if (myPoint < valueCanUse) {
         maxPointCanUse = myPoint;
       } else {
-        maxPointCanUse = valueCanUse.toInt();
+        maxPointCanUse = valueCanUse.toDouble();
       }
     }
     isOpenedDialog = true;

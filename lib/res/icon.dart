@@ -127,6 +127,7 @@ class NavbarIcon {
 class MenuIcon {
   static const String inviteFriend = "assets/svg/menu/invite_friend.svg";
   static const String inviteFriend2 = "assets/svg/menu/invite_friend-2.svg";
+  static const String inviteFriend3 = "assets/svg/menu/invite_friend-3.svg";
   static const String dialyHoroscope = "assets/svg/menu/horoscope.svg";
   static const String dialyHoroscope2 = "assets/svg/menu/horoscope-2.svg";
   static const String wallpapers = "assets/svg/menu/wallpaper.svg";
@@ -143,6 +144,7 @@ class MenuIcon {
   static const String kyc2 = "assets/svg/menu/kyc-2.svg";
   static const String more = "assets/svg/menu/more.svg";
   static const String more2 = "assets/svg/menu/more-2.svg";
+  static const String more3 = "assets/svg/menu/more-3.svg";
   static const String chatWithFriend = "assets/svg/menu/chat_with_friend.svg";
   static const String ckAI = "assets/svg/menu/ck-ai.svg";
 }

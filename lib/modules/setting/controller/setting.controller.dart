@@ -40,7 +40,7 @@ class SettingController extends GetxController {
   Map? kycData;
   RxBool isLoadingProfile = false.obs;
   List<Map> userGroups = [];
-  RxInt point = 0.obs;
+  RxDouble point = 0.0.obs;
 
   Future<void> logout() async {
     // await AppWriteController.to.logout();

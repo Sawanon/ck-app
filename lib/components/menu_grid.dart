@@ -47,10 +47,10 @@ class MenuGrid extends StatelessWidget {
               );
             },
             icon: SizedBox(
-              height: 45,
-              width: 45,
+              height: 42,
+              width: 42,
               child: SvgPicture.asset(
-                MenuIcon.inviteFriend2,
+                MenuIcon.inviteFriend3,
                 // colorFilter: const ColorFilter.mode(
                 //   AppColors.secondaryColor,
                 //   BlendMode.srcIn,
@@ -65,7 +65,7 @@ class MenuGrid extends StatelessWidget {
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w600,
                   fontSize: 11,
-                  height: 1.2,
+                  height: 1,
                 ),
                 textAlign: TextAlign.center,
                 softWrap: true,
@@ -79,8 +79,8 @@ class MenuGrid extends StatelessWidget {
               Get.toNamed(RouteName.horoscopeDaily);
             },
             icon: SizedBox(
-              height: 41,
-              width: 41,
+              height: 42,
+              width: 42,
               child: SvgPicture.asset(
                 MenuIcon.dialyHoroscope2,
                 // colorFilter: const ColorFilter.mode(
@@ -97,7 +97,7 @@ class MenuGrid extends StatelessWidget {
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w600,
                   fontSize: 11,
-                  height: 1.2,
+                  height: 1,
                 ),
                 textAlign: TextAlign.center,
                 softWrap: true,
@@ -105,30 +105,6 @@ class MenuGrid extends StatelessWidget {
             ),
           ),
           // 3
-          MenuModel(
-            ontab: controller.gotoWallPaperPage,
-            icon: SizedBox(
-              height: 40,
-              width: 40,
-              child: SvgPicture.asset(
-                MenuIcon.wallpapers2,
-                // colorFilter: const ColorFilter.mode(
-                //   AppColors.secondaryColor,
-                //   BlendMode.srcIn,
-                // ),
-              ),
-            ),
-            name: Text(
-              AppLocale.auspiciousWallpaper.getString(context),
-              style: TextStyle(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w600,
-                fontSize: 11,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-          // 4
           MenuModel(
             disabled: true,
             ontab: () {
@@ -139,8 +115,8 @@ class MenuGrid extends StatelessWidget {
               Get.to(() => const WheelPage());
             },
             icon: SizedBox(
-              height: 46,
-              width: 46,
+              height: 38,
+              width: 38,
               child: SvgPicture.asset(
                 MenuIcon.wheelFortune,
                 // colorFilter: ColorFilter.mode(
@@ -150,21 +126,24 @@ class MenuGrid extends StatelessWidget {
               ),
               // child: Image.asset("assets/png/menu-icon-wheel.png"),
             ),
-            name: Align(
-              alignment: Alignment.center,
-              child: Text(
-                AppLocale.wheelOfFortune.getString(context),
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 11,
-                  height: 1.2,
-                  color: AppColors.textPrimary,
+            name: Container(
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  AppLocale.wheelOfFortune.getString(context),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 11,
+                    height: 1,
+                    color: AppColors.textPrimary,
+                  ),
+                  textAlign: TextAlign.center,
+                  softWrap: true,
                 ),
-                textAlign: TextAlign.center,
-                softWrap: true,
               ),
             ),
           ),
+          // 4
           // 5
           MenuModel(
             disabled: true,
@@ -173,9 +152,10 @@ class MenuGrid extends StatelessWidget {
               // NotificationController.to.onChangeTab(0);
               // Get.to(() => const GuessPage());
             },
-            icon: SizedBox(
-              height: 52,
-              width: 52,
+            icon: Container(
+              // color: Colors.blue,
+              height: 42,
+              width: 42,
               // child: Icon(
               //   Icons.image_aspect_ratio_rounded,
               //   color: AppColors.secondaryColor,
@@ -200,7 +180,7 @@ class MenuGrid extends StatelessWidget {
                   color: AppColors.menuTextDisabled,
                   fontWeight: FontWeight.w600,
                   fontSize: 11,
-                  height: 1.2,
+                  height: 1,
                 ),
                 textAlign: TextAlign.center,
                 softWrap: true,
@@ -248,53 +228,53 @@ class MenuGrid extends StatelessWidget {
             ),
           ),
           // 7
-          MenuModel(
-            disabled: true,
-            ontab: () {
-              LayoutController.to.changeTab(TabApp.settings);
-              NotificationController.to.onChangeTab(0);
-            },
-            icon: SizedBox(
-              height: 40,
-              width: 40,
-              child: SvgPicture.asset(
-                MenuIcon.promotion2,
-                // colorFilter: const ColorFilter.mode(
-                //   AppColors.secondaryColor,
-                //   BlendMode.srcIn,
-                // ),
-              ),
-              // child: SvgPicture.asset(
-              //   AppIcon.promotion,
-              //   colorFilter: const ColorFilter.mode(
-              //     AppColors.redGradient,
-              //     BlendMode.srcIn,
-              //   ),
-              // ),
-            ),
-            name: Align(
-              alignment: Alignment.center,
-              child: Text(
-                AppLocale.promotion.getString(context),
-                style: TextStyle(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 11,
-                  height: 1.2,
-                ),
-                textAlign: TextAlign.center,
-                softWrap: true,
-              ),
-            ),
-          ),
+          // MenuModel(
+          //   disabled: true,
+          //   ontab: () {
+          //     LayoutController.to.changeTab(TabApp.settings);
+          //     NotificationController.to.onChangeTab(0);
+          //   },
+          //   icon: SizedBox(
+          //     height: 40,
+          //     width: 40,
+          //     child: SvgPicture.asset(
+          //       MenuIcon.promotion2,
+          //       // colorFilter: const ColorFilter.mode(
+          //       //   AppColors.secondaryColor,
+          //       //   BlendMode.srcIn,
+          //       // ),
+          //     ),
+          //     // child: SvgPicture.asset(
+          //     //   AppIcon.promotion,
+          //     //   colorFilter: const ColorFilter.mode(
+          //     //     AppColors.redGradient,
+          //     //     BlendMode.srcIn,
+          //     //   ),
+          //     // ),
+          //   ),
+          //   name: Align(
+          //     alignment: Alignment.center,
+          //     child: Text(
+          //       AppLocale.promotion.getString(context),
+          //       style: TextStyle(
+          //         color: AppColors.textPrimary,
+          //         fontWeight: FontWeight.w600,
+          //         fontSize: 11,
+          //         height: 1.2,
+          //       ),
+          //       textAlign: TextAlign.center,
+          //       softWrap: true,
+          //     ),
+          //   ),
+          // ),
           // 8
           MenuModel(
             ontab: () {
               controller.gotoTopupPoint();
             },
             icon: SizedBox(
-              height: 40,
-              width: 40,
+              height: 38,
+              width: 38,
               child: SvgPicture.asset(
                 MenuIcon.topup2,
                 // AppIcon.buyPoint,
@@ -337,8 +317,8 @@ class MenuGrid extends StatelessWidget {
               Get.toNamed(RouteName.kyc);
             },
             icon: SizedBox(
-              height: 39,
-              width: 39,
+              height: 37,
+              width: 37,
               child: SvgPicture.asset(
                 MenuIcon.kyc2,
                 // colorFilter: const ColorFilter.mode(
@@ -406,7 +386,7 @@ class MenuGrid extends StatelessWidget {
           // ),
           // 10
           MenuModel(
-            disabled: true,
+            // disabled: true,
             ontab: () {
               logger.d("comming soon");
               showModalBottomSheet(
@@ -420,7 +400,7 @@ class MenuGrid extends StatelessWidget {
               height: 40,
               width: 40,
               child: SvgPicture.asset(
-                MenuIcon.more2,
+                MenuIcon.more3,
                 // colorFilter: const ColorFilter.mode(
                 //   AppColors.secondaryColor,
                 //   BlendMode.srcIn,
@@ -447,10 +427,10 @@ class MenuGrid extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 5,
-            childAspectRatio: 3 / 4.2,
-            crossAxisSpacing: 2,
-            mainAxisSpacing: 0,
+            crossAxisCount: 4,
+            childAspectRatio: 3 / 3,
+            crossAxisSpacing: 6,
+            mainAxisSpacing: 6,
           ),
           padding: const EdgeInsets.all(0),
           itemBuilder: (context, index) {
@@ -463,28 +443,44 @@ class MenuGrid extends StatelessWidget {
                   padding: const EdgeInsets.all(0.0),
                   child: GestureDetector(
                     onTap: menu.ontab,
-                    child: Container(
-                      width: 64,
-                      height: 64,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          AppTheme.softShadow,
-                        ],
-                      ),
+                    child: AspectRatio(
+                      aspectRatio: 1,
                       child: Container(
-                        // alignment: Alignment.center,
-                        child: menu.icon,
+                        padding: EdgeInsets.symmetric(
+                          vertical: 8,
+                        ),
+                        width: 100,
+                        // height: 100,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: [
+                            AppTheme.softShadow,
+                          ],
+                        ),
+                        child: Column(
+                          // mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              // alignment: Alignment.center,
+                              child: menu.icon,
+                            ),
+                            const SizedBox(height: 4),
+                            Align(
+                              child: menu.name,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 4),
-                Align(
-                  child: menu.name,
-                ),
+                // const SizedBox(height: 4),
+                // Align(
+                //   child: menu.name,
+                // ),
               ],
             );
           },

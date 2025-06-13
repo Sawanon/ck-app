@@ -454,14 +454,20 @@ class AppWriteController extends GetxController {
 
   Future<List<LotteryDate>?> listLotteryBuyDate() async {
     try {
+      // FIXME: continue dev ทำ 17:00 ของ timezone +0 ไปเลยจบๆ
+      final now = DateTime.now()
+          .subtract(const Duration(days: 1))
+          .toUtc()
+          .toIso8601String();
+      logger.w("now 459");
+      final isoDate = "${now.split("T").first}T17:00:00Z";
       final listLotteryDate = await databases.listDocuments(
         databaseId: _databaseName,
         collectionId: LOTTERY_DATE,
         queries: [
           Query.equal('active', true),
           Query.equal('is_emergency', false),
-          Query.lessThanEqual(
-              'start_time', DateTime.now().toUtc().toIso8601String()),
+          Query.lessThanEqual('start_time', isoDate),
           Query.orderDesc("datetime"),
           Query.limit(10),
         ],
@@ -2730,7 +2736,7 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<ResponseApi<int?>> getPoint(String userId) async {
+  Future<ResponseApi<double?>> getPoint(String userId) async {
     try {
       final response = await databases.getDocument(
         databaseId: _databaseName,
@@ -2740,10 +2746,11 @@ class AppWriteController extends GetxController {
           Query.select(["point"]),
         ],
       );
+      final resultPoint = response.data['point'];
       return ResponseApi(
         isSuccess: true,
         message: "Successfully to get point",
-        data: response.data['point'],
+        data: resultPoint is num ? resultPoint.toDouble() : 0,
       );
     } catch (e) {
       logger.e("$e");
@@ -2787,10 +2794,16 @@ class AppWriteController extends GetxController {
       if (bankId != null) {
         payload['bankId'] = bankId;
       }
+      final jwt = await getAppJWT();
       logger.w(payload);
       final response = await dio.post(
         "${AppConst.apiUrl}/payment/buy-promotion",
         data: payload,
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $jwt",
+          },
+        ),
       );
       return ResponseApi(
         isSuccess: true,

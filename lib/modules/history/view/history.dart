@@ -64,7 +64,7 @@ class HistoryPage extends StatelessWidget {
                             child: Text(
                               AppLocale.buyHistory.getString(context),
                               style: GoogleFonts.prompt(
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                             ),
                           ),
@@ -72,7 +72,7 @@ class HistoryPage extends StatelessWidget {
                             child: Text(
                               AppLocale.winHistory.getString(context),
                               style: GoogleFonts.prompt(
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                             ),
                           ),
@@ -80,7 +80,7 @@ class HistoryPage extends StatelessWidget {
                             child: Text(
                               AppLocale.lotteryResult.getString(context),
                               style: GoogleFonts.prompt(
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                             ),
                           ),

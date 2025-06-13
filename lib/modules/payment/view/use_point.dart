@@ -12,7 +12,7 @@ import 'package:lottery_ck/utils/common_fn.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class UsePointComponent extends StatefulWidget {
-  final int myPoint;
+  final double myPoint;
   final Future<void> Function(int usePoint) onSubmit;
   const UsePointComponent({
     super.key,
@@ -137,7 +137,7 @@ class _UsePointComponentState extends State<UsePointComponent> {
                 color: Colors.black.withOpacity(0.4),
               ),
             ),
-            maxValue: widget.myPoint,
+            maxValue: widget.myPoint.toInt(),
             keyboardType: TextInputType.number,
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,

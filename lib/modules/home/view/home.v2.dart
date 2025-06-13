@@ -13,6 +13,7 @@ import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/components/menu_card.dart';
 import 'package:lottery_ck/components/menu_grid.dart';
 import 'package:lottery_ck/controller/user_controller.dart';
+import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
 import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/modules/notification/controller/notification.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
@@ -53,7 +54,7 @@ class HomePageV2 extends StatelessWidget {
                     width: double.infinity,
                     height: 200,
                     decoration: BoxDecoration(
-                      color: Colors.red.shade100,
+                      color: AppColors.ckOrange,
                       borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(64),
                         bottomRight: Radius.circular(64),
@@ -167,7 +168,7 @@ class HomePageV2 extends StatelessWidget {
                                   // ),
                                   clipBehavior: Clip.hardEdge,
                                   decoration: BoxDecoration(
-                                      color: Colors.white,
+                                      color: Colors.white.withOpacity(0.8),
                                       borderRadius: BorderRadius.circular(8),
                                       boxShadow: const [
                                         AppTheme.softShadow,
@@ -690,8 +691,8 @@ class HomePageV2 extends StatelessWidget {
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           height: 1,
-                                                          color:
-                                                              AppColors.disable,
+                                                          color: AppColors
+                                                              .disableText,
                                                         ),
                                                       ),
                                                       Text(
@@ -702,8 +703,8 @@ class HomePageV2 extends StatelessWidget {
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           fontSize: 12,
-                                                          color:
-                                                              AppColors.disable,
+                                                          color: AppColors
+                                                              .disableText,
                                                         ),
                                                       ),
                                                     ],
@@ -887,6 +888,33 @@ class HomePageV2 extends StatelessWidget {
                           ),
                         ],
                       ),
+                      // GestureDetector(
+                      //   onTap: () async {
+                      //     const invoiceId = "684966360033d61e3afc";
+                      //     const lotteryStr = "20250611";
+                      //     final invoiceDocument = await AppWriteController.to
+                      //         .getInvoice(invoiceId, lotteryStr);
+                      //     logger.w("invoiceDocument");
+                      //     logger.d(invoiceDocument?.data);
+                      //     final lotteryList = await AppWriteController.to
+                      //         .listTransactionByInvoiceId(
+                      //             invoiceId, lotteryStr);
+                      //     logger.w("lotteryList: data");
+                      //     logger.d(lotteryList);
+                      //     // for (var i = 0; i < count; i++) {}
+                      //   },
+                      //   child: Container(
+                      //     decoration: BoxDecoration(
+                      //       color: Colors.red,
+                      //     ),
+                      //     child: Text(
+                      //       "test",
+                      //       style: TextStyle(
+                      //         color: Colors.white,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       const SizedBox(height: 8),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -1156,7 +1184,8 @@ class HomePageV2 extends StatelessWidget {
                                       title: AppLocale.socialMediaFamousTeachers
                                           .getString(context),
                                       backgroundImageUrl:
-                                          'https://baas.moevedigital.com/v1/storage/buckets/66fa748a001a67ac8a70/files/67628a9f0019f3d0086d/view?project=667afb24000fbd66b4df',
+                                          'https://baas.moevedigital.com/v1/storage/buckets/67653ec20022f42dcfb5/files/684c34d500282d37c3e8/view?project=667afb24000fbd66b4df',
+                                      imageFullCard: true,
                                     ),
                                   ),
                                   // const SizedBox(height: 8),

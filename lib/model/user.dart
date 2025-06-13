@@ -9,7 +9,7 @@ class UserApp {
   DateTime birthDate;
   String? birthTime;
   int? topupPoint;
-  int point;
+  double point;
   String? profile;
   String? gender;
   String? idCard;
@@ -49,7 +49,7 @@ class UserApp {
       birthDate: DateTime.parse(json['birthDate'] as String),
       birthTime: json['birthTime'] as String?,
       topupPoint: json['topup_point'] as int?,
-      point: json['point'] as int,
+      point: json['point'] is num ? (json['point'] as num).toDouble() : 0,
       profile: json['profile'] as String?,
       gender: json['gender'] as String?,
       idCard: json['idCard'] as String?,

@@ -29,7 +29,7 @@ class TCPage extends StatelessWidget {
                   gradient: LinearGradient(
                     colors: [
                       Colors.white,
-                      AppColors.primary.withOpacity(0.2),
+                      AppColors.ckOrange.withOpacity(0.2),
                     ],
                     begin: Alignment(0.0, -0.6),
                     end: Alignment.bottomCenter,

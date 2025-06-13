@@ -988,7 +988,7 @@ mixin AppLocale {
     youHavePoint: "คุณมีคะแนน",
     amountInWallet: "จำนวนเงินในกระเป๋าตัง",
     quickMenu: "เมนูด่วน",
-    dailyFortune: "โชคลาภประจำวัน",
+    dailyFortune: "โชคประจำวัน",
     wallet: "กระเป๋าเงิน",
     chatWithFriends: "คุยกับเพื่อน",
     verifyIdentity: "ยืนยันตัวตน",

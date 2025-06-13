@@ -3,6 +3,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/model/menu.dart';
+import 'package:lottery_ck/modules/home/controller/home.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
@@ -16,6 +17,29 @@ class MoreMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<MenuModel> menuList = [
+      MenuModel(
+        ontab: HomeController.to.gotoWallPaperPage,
+        icon: SizedBox(
+          height: 28,
+          width: 28,
+          child: SvgPicture.asset(
+            MenuIcon.wallpapers2,
+            // colorFilter: const ColorFilter.mode(
+            //   AppColors.secondaryColor,
+            //   BlendMode.srcIn,
+            // ),
+          ),
+        ),
+        name: Text(
+          AppLocale.auspiciousWallpaper.getString(context),
+          style: TextStyle(
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.w600,
+            fontSize: 11,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
       MenuModel(
         disabled: true,
         ontab: () {

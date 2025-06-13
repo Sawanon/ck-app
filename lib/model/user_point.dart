@@ -3,7 +3,7 @@ import 'package:lottery_ck/utils/common_fn.dart';
 class UserPoint {
   DateTime createdDate;
   String type;
-  int point;
+  double point;
   String? value;
 
   UserPoint({
@@ -17,7 +17,7 @@ class UserPoint {
     return UserPoint(
       createdDate: DateTime.parse(json['\$createdAt']),
       type: json['type'],
-      point: json['point'] ?? 0,
+      point: json['point'] is num ? (json['point'] as num).toDouble() : 0,
       value: json['value'],
     );
   }

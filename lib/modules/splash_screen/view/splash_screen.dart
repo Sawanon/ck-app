@@ -88,6 +88,7 @@ class SplashScreenPage extends StatelessWidget {
                     const SizedBox(height: 20),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
                           "CK LOTTO",
@@ -97,20 +98,29 @@ class SplashScreenPage extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-                        const SizedBox(width: 4),
-                        Text(
-                          "BY CK GROUP",
-                          style: TextStyle(
-                            color: AppColors.ckRed,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
+                        // const SizedBox(width: 4),
+                        // Text(
+                        //   "Powered by",
+                        //   style: TextStyle(
+                        //     color: AppColors.ckRed,
+                        //     fontSize: 14,
+                        //     fontWeight: FontWeight.w600,
+                        //   ),
+                        // ),
+                        // const SizedBox(width: 4),
+                        // Text(
+                        //   "CK GROUP",
+                        //   style: TextStyle(
+                        //     color: AppColors.ckRed,
+                        //     fontSize: 16,
+                        //     fontWeight: FontWeight.w800,
+                        //   ),
+                        // ),
                       ],
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "2.4.1+45",
+                      "2.4.1+47",
                       style: TextStyle(
                         color: AppColors.ckRed,
                         fontSize: 14,
@@ -136,6 +146,35 @@ class SplashScreenPage extends StatelessWidget {
                     //   // child: Image.asset(Logo.lotto),
                     // ),
                   ],
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(width: 4),
+                        Text(
+                          "Powered by",
+                          style: TextStyle(
+                            color: AppColors.ckRed,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          "CK GROUP",
+                          style: TextStyle(
+                            color: AppColors.ckRed,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),

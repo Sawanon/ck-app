@@ -12,7 +12,7 @@ import 'package:lottery_ck/utils.dart';
 
 class PointController extends GetxController {
   RxList<UserPoint> userPointList = <UserPoint>[].obs;
-  RxInt totalPoint = 0.obs;
+  RxDouble totalPoint = 0.0.obs;
   RxBool isLoadingPoint = true.obs;
   UserApp? userApp;
   ScrollController scrollController = ScrollController();

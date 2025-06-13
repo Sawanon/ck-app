@@ -11,11 +11,13 @@ class MenuCardComponent extends StatelessWidget {
   final String title;
   final String backgroundImageUrl;
   final void Function()? onTap;
+  final bool imageFullCard;
   const MenuCardComponent({
     super.key,
     required this.title,
     required this.backgroundImageUrl,
     this.onTap,
+    this.imageFullCard = false,
   });
 
   @override
@@ -35,41 +37,51 @@ class MenuCardComponent extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.w400,
+            if (imageFullCard)
+              Container(
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(),
+                child: CachedNetworkImage(
+                  imageUrl: backgroundImageUrl,
+                  fit: BoxFit.cover,
+                ),
+              )
+            else
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: Container(
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(1000),
-                        bottomLeft: Radius.circular(1000),
+                  Expanded(
+                    child: Container(
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(1000),
+                          bottomLeft: Radius.circular(1000),
+                        ),
+                      ),
+                      child: CachedNetworkImage(
+                        imageUrl: backgroundImageUrl,
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    child: CachedNetworkImage(
-                      imageUrl: backgroundImageUrl,
-                      fit: BoxFit.cover,
-                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
             Positioned(
-              top: 10,
-              right: 10,
+              top: 8,
+              right: 8,
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                 decoration: BoxDecoration(
