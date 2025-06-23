@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
@@ -12,8 +13,10 @@ import 'package:lottery_ck/modules/point/view/bill_point.dart';
 import 'package:lottery_ck/modules/point/view/payment_method.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
+import 'package:lottery_ck/res/constant.dart';
 import 'package:lottery_ck/utils.dart';
 import 'package:lottery_ck/utils/common_fn.dart';
+import 'package:pubnub/networking.dart';
 import 'package:pubnub/pubnub.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -59,17 +62,26 @@ class BuyPointController extends GetxController {
     // publishKey: 'pub-c-ff681b02-4518-4dbd-a081-f98d1b2fcef6',
     // subscribeKey: 'sub-c-8ae0d87d-51b2-4f42-83b6-e201bb96d7bd',
     var pubnub = PubNub(
+      networking: NetworkingModule(
+        retryPolicy: RetryPolicy.exponential(maxRetries: 10),
+      ),
       defaultKeyset: Keyset(
-        subscribeKey: 'sub-c-91489692-fa26-11e9-be22-ea7c5aada356',
-        userId: const UserId('BCELBANK'),
+        subscribeKey: AppConst.pubNubSubscribeKeyBCEL,
+        userId: const UserId(AppConst.pubNubUserIdBCEL),
       ),
     );
 
     // Subscribe to a channel
-    const mcid = 'mch5c2f0404102fb';
+    const mcid = AppConst.mcid;
     var channel = "uuid-$mcid-$uuid";
     subscriptionPubnub = pubnub.subscribe(channels: {channel});
     logger.d("channel: $channel");
+    Get.rawSnackbar(
+      icon: const Icon(Icons.check),
+      message: "subscription start: $uuid",
+      backgroundColor: Colors.green,
+      overlayColor: Colors.white,
+    );
     // Print every message
     subscriptionPubnub?.messages.listen((message) async {
       final contentJson = jsonDecode(message.content);
@@ -102,7 +114,8 @@ class BuyPointController extends GetxController {
           },
         ),
       );
-      SettingController.to.getPoint();
+      // SettingController.to.getPoint();
+      UserController.to.reLoadUser("buy point con 118");
       subscriptionPubnub?.dispose();
       // subscriptionPubnub?.unsubscribe();
       // subscriptionPubnub?.cancel();
@@ -163,6 +176,7 @@ class BuyPointController extends GetxController {
         return;
       }
       isLoading.value = true;
+
       final response = await AppWriteController.to.topup(
         pointWantToBuy!,
         selectedBank!.$id,
@@ -175,10 +189,37 @@ class BuyPointController extends GetxController {
         final payment = result['payment'];
         final deeplink = payment['deeplink'];
         final uuid = payment['uuid'];
-        logger.w("uuid: $uuid");
-        await launchUrl(Uri.parse('$deeplink'));
+        try {
+          await launchUrl(Uri.parse('$deeplink'));
+        } catch (e) {
+          if (Platform.isAndroid) {
+            await launchUrl(Uri.parse(
+                "https://play.google.com/store/apps/details?id=com.bcel.bcelone"));
+          } else if (Platform.isIOS) {
+            await launchUrl(Uri.parse(
+                "https://apps.apple.com/th/app/bcel-one/id654946527"));
+          }
+          return;
+        }
 
         subRealTime(uuid!);
+      } else if (selectedBank?.name == "ldb") {
+        final payment = result['payment'];
+        logger.w("payment:186");
+        logger.d(payment);
+        final deeplink = payment['dataResponse']['link'];
+        try {
+          await launchUrl(Uri.parse(deeplink));
+        } catch (e) {
+          if (Platform.isAndroid) {
+            await launchUrl(Uri.parse(
+                "https://play.google.com/store/apps/details?id=com.ldb.wallet"));
+          } else if (Platform.isIOS) {
+            await launchUrl(Uri.parse(
+                "https://apps.apple.com/th/app/ldb-trust/id1496733309"));
+          }
+          return;
+        }
       }
     } catch (e) {
       logger.e(e);
@@ -219,8 +260,8 @@ class BuyPointController extends GetxController {
       );
       return;
     }
-    // this.bankList = bankList.where((bank) => bank.name == "mmoney").toList();
-    this.bankList = bankList;
+    this.bankList = bankList.where((bank) => bank.name != "mmoney").toList();
+    // this.bankList = bankList;
   }
 
   void gotoPaymentMethod() async {

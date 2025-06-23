@@ -355,15 +355,36 @@ class BuyLotteryFullscreenPage extends StatelessWidget {
                                                   ],
                                                 ),
                                                 const SizedBox(height: 8),
-                                                Text(
-                                                  "${AppLocale.lotteryDateAt.getString(context)}: ${HomeController.to.lotteryDateStr}",
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                                const SizedBox(height: 8),
-                                                Text(
-                                                  "${AppLocale.closeSaleIn.getString(context)}: ${HomeController.to.remainingDateTime.value.inDays} ${AppLocale.day.getString(context)} : ${HomeController.to.remainingDateTime.value.inHours.remainder(24).toString().padLeft(2, "0")} : ${HomeController.to.remainingDateTime.value.inMinutes.remainder(60).toString().padLeft(2, "0")} : ${HomeController.to.remainingDateTime.value.inSeconds.remainder(60).toString().padLeft(2, "0")}",
-                                                  textAlign: TextAlign.center,
-                                                ),
+                                                if (HomeController
+                                                        .to.lotteryDateStr ==
+                                                    null)
+                                                  Text(
+                                                    AppLocale.thisRoundNotSale
+                                                        .getString(context),
+                                                    textAlign: TextAlign.center,
+                                                    style: const TextStyle(
+                                                      color:
+                                                          AppColors.textPrimary,
+                                                    ),
+                                                  )
+                                                else
+                                                  Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Text(
+                                                        "${AppLocale.lotteryDateAt.getString(context)}: ${HomeController.to.lotteryDateStr ?? '-'}",
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                      const SizedBox(height: 8),
+                                                      Text(
+                                                        "${AppLocale.closeSaleIn.getString(context)}: ${HomeController.to.remainingDateTime.value.inDays} ${AppLocale.day.getString(context)} : ${HomeController.to.remainingDateTime.value.inHours.remainder(24).toString().padLeft(2, "0")} : ${HomeController.to.remainingDateTime.value.inMinutes.remainder(60).toString().padLeft(2, "0")} : ${HomeController.to.remainingDateTime.value.inSeconds.remainder(60).toString().padLeft(2, "0")}",
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ],
+                                                  ),
                                               ]
                                             // : controller.lotteryList.map(
                                             : invoice.transactions.reversed

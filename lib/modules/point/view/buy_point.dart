@@ -79,7 +79,7 @@ class TopupPoint extends StatelessWidget {
                                       child: Builder(
                                         builder: (context) {
                                           // if (avatar == '') {
-                                          final profileImage = SettingController
+                                          final profileImage = UserController
                                               .to.profileByte.value;
                                           if (profileImage != null) {
                                             return Image.memory(profileImage,
@@ -127,7 +127,8 @@ class TopupPoint extends StatelessWidget {
                           Expanded(
                             child: Obx(
                               () {
-                                final point = SettingController.to.point.value;
+                                final point =
+                                    UserController.to.user.value?.point ?? 0;
                                 return Column(
                                   children: [
                                     Text(

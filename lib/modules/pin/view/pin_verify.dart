@@ -41,16 +41,17 @@ class PinVerifyPage extends StatelessWidget {
                 child: Column(
                   children: [
                     Obx(() {
-                      if (SettingController.to.profileByte.value != null) {
+                      final profileByte = UserController.to.profileByte.value;
+                      if (profileByte != null) {
                         return Container(
                           width: 100,
                           height: 100,
                           clipBehavior: Clip.hardEdge,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                           ),
                           child: Image.memory(
-                            SettingController.to.profileByte.value!,
+                            profileByte,
                             fit: BoxFit.cover,
                           ),
                         );

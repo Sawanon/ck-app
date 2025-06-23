@@ -56,6 +56,9 @@ class SplashScreenController extends GetxController {
 
   void setup() async {
     try {
+      if (stop) {
+        return;
+      }
       await Future.delayed(
         const Duration(seconds: 2),
         () async {
@@ -209,7 +212,7 @@ class SplashScreenController extends GetxController {
           identifier: 'noNetwork',
           onConfirm: () async {
             logger.w("start loading");
-            await UserController.to.setup();
+            await UserController.to.setup("splash screen con 215");
             await checkNetWork();
             logger.w("end loading");
           },

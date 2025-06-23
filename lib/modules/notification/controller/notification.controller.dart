@@ -34,8 +34,7 @@ class NotificationController extends GetxController {
         logger.e("can't list user groups: listGroup NotificationController");
         return;
       }
-      final groupIds =
-          userGroups.map((group) => group['\$id'] as String).toList();
+      final groupIds = userGroups.map((group) => group.$id).toList();
       final newsList = await AppWriteController.to.listNews(groupIds);
       if (newsList != null) {
         this.newsList.value = newsList;
@@ -45,19 +44,7 @@ class NotificationController extends GetxController {
     }
   }
 
-  Future<void> listPromotions() async {
-    final user = await AppWriteController.to.getUserApp();
-    if (user == null) {
-      return;
-    }
-    final userGroups = await AppWriteController.to.listMyGroup(user.userId);
-    logger.w("userGroups: $userGroups");
-    if (userGroups == null) {
-      logger.e("can't list user groups: listGroup NotificationController");
-      return;
-    }
-    final groupIds =
-        userGroups.map((group) => group['\$id'] as String).toList();
+  Future<void> listPromotionAndAssign(List<String> groupIds) async {
     final promotionListData =
         await AppWriteController.to.listPromotions(groupIds);
     List<Map> allPromotionList = [];
@@ -85,6 +72,29 @@ class NotificationController extends GetxController {
     );
     // logger.d(allPromotionList);
     promotionList.value = allPromotionList;
+  }
+
+  Future<void> listPromotions() async {
+    final user = await AppWriteController.to.getUserApp();
+    if (user == null) {
+      final allUserId = await AppWriteController.to.getGroupId(
+        groupName: 'All User',
+      );
+      logger.d(allUserId);
+      if (allUserId == null) {
+        return;
+      }
+      listPromotionAndAssign([allUserId]);
+      return;
+    }
+    final userGroups = await AppWriteController.to.listMyGroup(user.userId);
+    logger.w("userGroups: $userGroups");
+    if (userGroups == null) {
+      logger.e("can't list user groups: listGroup NotificationController");
+      return;
+    }
+    final groupIds = userGroups.map((group) => group.$id).toList();
+    listPromotionAndAssign(groupIds);
   }
 
   void openNewsDetail(String newsId) {

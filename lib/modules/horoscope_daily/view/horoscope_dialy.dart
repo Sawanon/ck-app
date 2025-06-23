@@ -183,7 +183,7 @@ class HoroscopeDialyPage extends StatelessWidget {
                         onTap: () {
                           Get.to(
                             AnimalComponent(
-                              enabledHeader: true,
+                              enabledHeader: false,
                               onClickBuy: (lotterise) async {
                                 Get.back();
                                 Get.back();

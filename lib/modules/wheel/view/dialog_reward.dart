@@ -12,6 +12,15 @@ class DialogReward extends StatelessWidget {
     required this.reward,
   });
 
+// วันนี้คุณได้ใช้สิทธิ ในการหมุนวงล้อโชคดีแล้ว
+
+// รางวัลที่ได้รับวันนี้
+
+// 2,000
+// คะแนน
+
+// รับทราบ
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -33,10 +42,21 @@ class DialogReward extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                "${AppLocale.awardsYouHaveReceived.getString(context)} !!",
-                style: TextStyle(
+                "${AppLocale.wheelTitle1.getString(context)} !!",
+                textAlign: TextAlign.center,
+                style: const TextStyle(
                   color: AppColors.wheelText,
-                  fontSize: 36,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "${AppLocale.wheelTitle2.getString(context)} !!",
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: AppColors.wheelText,
+                  fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -48,7 +68,7 @@ class DialogReward extends StatelessWidget {
               //     fontWeight: FontWeight.bold,
               //   ),
               // ),
-              const SizedBox(height: 48),
+              const SizedBox(height: 32),
               reward,
               const SizedBox(height: 24),
               GestureDetector(
@@ -68,8 +88,8 @@ class DialogReward extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    "OK",
-                    style: TextStyle(
+                    AppLocale.acknowledge.getString(context),
+                    style: const TextStyle(
                       color: AppColors.wheelText,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

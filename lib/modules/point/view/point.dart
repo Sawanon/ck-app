@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/header.dart';
+import 'package:lottery_ck/controller/user_controller.dart';
 import 'package:lottery_ck/modules/point/controller/point.controller.dart';
 import 'package:lottery_ck/modules/setting/controller/setting.controller.dart';
 import 'package:lottery_ck/res/app_locale.dart';
@@ -112,7 +113,7 @@ class PointPage extends StatelessWidget {
                               builder: (context) {
                                 // if (avatar == '') {
                                 final profileImage =
-                                    SettingController.to.profileByte.value;
+                                    UserController.to.profileByte.value;
                                 if (profileImage != null) {
                                   return Image.memory(profileImage,
                                       fit: BoxFit.cover);

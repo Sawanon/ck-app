@@ -46,7 +46,9 @@ class UserApp {
       address: json['address'] as String?,
       customerId: json['customerId'] as String?,
       userId: json['userId'] as String,
-      birthDate: DateTime.parse(json['birthDate'] as String),
+      birthDate: json['birthDate'] != null
+          ? DateTime.parse(json['birthDate'] as String)
+          : DateTime.now(),
       birthTime: json['birthTime'] as String?,
       topupPoint: json['topup_point'] as int?,
       point: json['point'] is num ? (json['point'] as num).toDouble() : 0,

@@ -4,6 +4,7 @@ import 'package:appwrite/models.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/model/user.dart';
 import 'package:lottery_ck/modules/appwrite/controller/appwrite.controller.dart';
+import 'package:lottery_ck/modules/firebase/controller/firebase_messaging.controller.dart';
 import 'package:lottery_ck/storage.dart';
 import 'package:lottery_ck/utils.dart';
 
@@ -24,20 +25,23 @@ class UserController extends GetxController {
       }
       return userApp;
     } catch (e) {
+      logger.e(e);
       return null;
     } finally {
       isLoadingUser.value = false;
     }
   }
 
-  Future<void> reLoadUser() async {
+  Future<void> reLoadUser(String line) async {
     try {
+      logger.w("line use: reLoadUser $line");
       final userApp = await getUser();
       user.value = userApp;
       if (userApp == null) {
         return;
       }
       final profile = await getProfileImage(userApp);
+      if (profile == null) return;
       profileByte.value = profile;
     } catch (e) {
       logger.e(e);
@@ -52,6 +56,9 @@ class UserController extends GetxController {
         return;
       }
       final profile = await getProfileImage(userApp);
+      logger.w("profile:57");
+      logger.d(profile);
+      if (profile == null) return;
       profileByte.value = profile;
     } catch (e) {
       logger.e(e);
@@ -71,12 +78,11 @@ class UserController extends GetxController {
     this.user.value?.point = responsePoint.data ?? 0;
   }
 
-  Future<Uint8List?> getProfileImage(UserApp user,
-      [bool forseReload = false]) async {
+  Future<Uint8List?> getProfileImage(UserApp user) async {
     if (user.profile == null || user.profile == "") {
       return null;
     }
-    if (profileByte.value != null && forseReload == false) return null;
+    // if (forseReload == false) return null;
     final fileId = user.profile!.split(":").last;
     final fileByte = await AppWriteController.to.getProfileImage(fileId);
     profileByte.value = fileByte;
@@ -107,19 +113,43 @@ class UserController extends GetxController {
     clearUser();
   }
 
-  Future<void> setup() async {
+  Future<void> listGroupUser(String userId) async {
+    try {
+      final listGroupMap = await AppWriteController.to.listMyGroup(userId);
+      logger.w("listGroupMap");
+      if (listGroupMap == null) {
+        logger.e("group user is empty");
+        return;
+      }
+      final checkDev = listGroupMap.where((group) => group.name == "Dev test");
+      logger.w("checkDev.isNotEmpty: ${checkDev.isNotEmpty}");
+      if (checkDev.isNotEmpty) {
+        FirebaseMessagingController.to.subscribeToTopic("devtest");
+      }
+      // return listGroupMap;
+    } catch (e) {
+      logger.e(e);
+    }
+  }
+
+  Future<void> setup(String line) async {
+    logger.w("line use: $line");
     final userApp = await getUser();
     user.value = userApp;
+    logger.w("userApp:113");
+    logger.d(userApp?.fullName);
     if (userApp == null) {
       return;
     }
     final profile = await getProfileImage(userApp);
+    // logger.w("profile:119 is null: ${profile == null}");
     profileByte.value = profile;
+    await listGroupUser(userApp.userId);
   }
 
   @override
   void onInit() {
-    setup();
+    setup("user con 151");
     super.onInit();
   }
 

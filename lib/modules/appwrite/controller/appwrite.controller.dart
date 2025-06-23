@@ -31,10 +31,12 @@ import 'package:lottery_ck/model/response/bytedance_response.dart';
 import 'package:lottery_ck/model/response/find_influencer.dart';
 import 'package:lottery_ck/model/response/get_current_time.dart';
 import 'package:lottery_ck/model/response/get_my_friends.dart';
+import 'package:lottery_ck/model/response/get_my_reward.dart';
 import 'package:lottery_ck/model/response/get_otp.dart';
 import 'package:lottery_ck/model/response/get_user_by_ref_code.dart';
 import 'package:lottery_ck/model/response/get_wheel_active.dart';
 import 'package:lottery_ck/model/response/list_my_friends_user.dart';
+import 'package:lottery_ck/model/response/list_my_group.dart';
 import 'package:lottery_ck/model/response/response_api.dart';
 import 'package:lottery_ck/model/response/signup.dart';
 import 'package:lottery_ck/model/special_reward.dart';
@@ -135,29 +137,29 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<Session?> login(String email, String password) async {
-    try {
-      final session = await account.createEmailPasswordSession(
-        email: email,
-        password: password,
-      );
-      await clearOtherSession(session.$id);
-      await createTarget();
-      final storageController = StorageController.to;
-      storageController.setSessionId(session.$id);
-      return session;
-    } on Exception catch (e) {
-      logger.e(e.toString());
-      Get.snackbar(
-        "Something went wrong appwrite:74",
-        "Please try again later or plaese contact admin",
-      );
-      return null;
-    }
-    // setState(() {
-    //   loggedInUser = user;
-    // });
-  }
+  // Future<Session?> login(String email, String password) async {
+  //   try {
+  //     final session = await account.createEmailPasswordSession(
+  //       email: email,
+  //       password: password,
+  //     );
+  //     await clearOtherSession(session.$id);
+  //     await createTarget();
+  //     final storageController = StorageController.to;
+  //     storageController.setSessionId(session.$id);
+  //     return session;
+  //   } on Exception catch (e) {
+  //     logger.e(e.toString());
+  //     Get.snackbar(
+  //       "Something went wrong appwrite:74",
+  //       "Please try again later or plaese contact admin",
+  //     );
+  //     return null;
+  //   }
+  //   // setState(() {
+  //   //   loggedInUser = user;
+  //   // });
+  // }
 
   Future<void> createTarget() async {
     try {
@@ -249,12 +251,13 @@ class AppWriteController extends GetxController {
   Future<List<Bank>?> listBank() async {
     try {
       final bankDocumentList = await databases.listDocuments(
-          databaseId: _databaseName,
-          collectionId: BANK,
-          queries: [
-            Query.select(["name", "logo", "\$id", "full_name"]),
-            Query.equal('status', true),
-          ]);
+        databaseId: _databaseName,
+        collectionId: BANK,
+        queries: [
+          Query.select(["name", "logo", "\$id", "full_name"]),
+          Query.equal('status', true),
+        ],
+      );
       final bankList = bankDocumentList.documents.map(
         (document) {
           return Bank.fromJson(document.data);
@@ -847,6 +850,27 @@ class AppWriteController extends GetxController {
     return bearer;
   }
 
+  Future<String?> getGroupId({required String groupName}) async {
+    try {
+      final response = await databases.listDocuments(
+        databaseId: _databaseName,
+        collectionId: GROUP_USER,
+        queries: [
+          Query.equal('name', groupName),
+          Query.select(['\$id', 'name']),
+        ],
+      );
+      if (response.documents.isEmpty) {
+        return null;
+      }
+      final groupd = response.documents.first.data;
+      return groupd['\$id'];
+    } catch (e) {
+      logger.e(e);
+      return null;
+    }
+  }
+
   Future<void> detaulGroupUser(String userId) async {
     try {
       final allUser = await databases.listDocuments(
@@ -1085,6 +1109,7 @@ class AppWriteController extends GetxController {
     DateTime birthDate,
     TimeOfDay? birthTime,
     Gender gender,
+    String? fcm,
   ) async {
     try {
       logger.d("signUp");
@@ -1100,6 +1125,7 @@ class AppWriteController extends GetxController {
         "birthTime":
             birthTime == null ? null : CommonFn.parseTimeOfDayToHMS(birthTime),
         "gender": gender.name,
+        "fcm": fcm,
       });
       logger.d("response: ${response.data}");
       if (response.data["status"] == false) {
@@ -1215,14 +1241,15 @@ class AppWriteController extends GetxController {
     }
   }
 
+// FIXME: check create target don't work
   Future<Session?> createSession(String userId, String secret) async {
     try {
-      await createTarget();
       final session = await account.createSession(
         userId: userId,
         secret: secret,
       );
       await clearOtherSession(session.$id);
+      await createTarget();
       final storageController = StorageController.to;
       storageController.setSessionId(session.$id);
       return session;
@@ -2717,7 +2744,7 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<List<Map>?> listMyGroup(String userId) async {
+  Future<List<ListMyGroup>?> listMyGroup(String userId) async {
     try {
       final response = await databases.listDocuments(
         databaseId: _databaseName,
@@ -2728,7 +2755,9 @@ class AppWriteController extends GetxController {
           Query.select(['name', 'value', '\$id']),
         ],
       );
-      final result = response.documents.map((docment) => docment.data).toList();
+      final result = response.documents
+          .map((docment) => ListMyGroup.fromJson(docment.data))
+          .toList();
       return result;
     } catch (e) {
       logger.e("$e");
@@ -3056,7 +3085,8 @@ class AppWriteController extends GetxController {
     }
   }
 
-  Future<ResponseApi<Map>> getMyReward(String userId, String wheelId) async {
+  Future<ResponseApi<GetMyReward>> getMyReward(String userId, String wheelId,
+      [List<String> queries = const []]) async {
     try {
       final response = await databases.listDocuments(
         databaseId: _databaseName,
@@ -3064,6 +3094,7 @@ class AppWriteController extends GetxController {
         queries: [
           Query.equal('userId', userId),
           Query.equal('wheelId', wheelId),
+          ...queries,
         ],
       );
       if (response.documents.isEmpty) {
@@ -3076,7 +3107,7 @@ class AppWriteController extends GetxController {
       return ResponseApi(
         isSuccess: false,
         message: "Success to get my reward",
-        data: reward.data,
+        data: GetMyReward.fromJson(reward.data),
       );
     } on AppwriteException catch (e) {
       logger.e(e);
@@ -3101,6 +3132,8 @@ class AppWriteController extends GetxController {
         "wheelId": wheelId,
         "userId": userId,
       };
+      logger.w("payload");
+      logger.d(payload);
       final jwt = await getAppJWT();
       final response = await dio.post(
         "${AppConst.apiUrl}/wheel/lucky-wheel",
@@ -3115,15 +3148,24 @@ class AppWriteController extends GetxController {
         message: "Success to request reward",
         data: response.data,
       );
-    } catch (e) {
+    } on DioException catch (e) {
+      logger.e(e.response?.statusCode);
+      logger.e(e.response?.statusMessage);
+      logger.e(e.response?.data);
       return ResponseApi(
         isSuccess: false,
-        message: "failed to request reward",
+        message: e.response?.statusMessage ?? "failed to request reward",
+      );
+    } catch (e) {
+      logger.e(e);
+      return ResponseApi(
+        isSuccess: false,
+        message: "$e",
       );
     }
   }
 
-  Future<ResponseApi<GetWheelActive>> getWheelActive() async {
+  Future<ResponseApi<List<GetWheelActive>>> getWheelActive() async {
     try {
       final responseCurrentTime = await AppWriteController.to.getCurrentTime();
       final currentTime = responseCurrentTime.data;
@@ -3149,11 +3191,18 @@ class AppWriteController extends GetxController {
           message: "wheel is empty",
         );
       }
-      final wheel = response.documents.first;
+      logger.w("response:3152");
+
+      for (var document in response.documents) {
+        logger.d(document.data);
+      }
+      final wheel = response.documents;
       return ResponseApi(
         isSuccess: true,
         message: "Success to get fortune wheel",
-        data: GetWheelActive.fromJson(wheel.data),
+        data: wheel
+            .map((wheelData) => GetWheelActive.fromJson(wheelData.data))
+            .toList(),
       );
     } on AppwriteException catch (e) {
       logger.e(e);

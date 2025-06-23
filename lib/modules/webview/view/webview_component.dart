@@ -65,12 +65,12 @@ class _WebviewPageV2State extends State<WebviewPageV2> {
     );
 
   void configWebview(String url) async {
-    controllerWebview.addJavaScriptChannel(
-      "zinzae",
-      onMessageReceived: (data) {
-        logger.d(jsonEncode(data.message));
-      },
-    );
+    // controllerWebview.addJavaScriptChannel(
+    //   "zinzae",
+    //   onMessageReceived: (data) {
+    //     logger.d(jsonEncode(data.message));
+    //   },
+    // );
 
     await controllerWebview.loadRequest(Uri.parse(url));
     await Future.delayed(const Duration(seconds: 1, milliseconds: 300)).then(

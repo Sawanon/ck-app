@@ -67,7 +67,7 @@ class SignupController extends GetxController {
         return;
       }
       submitting(true);
-      // await createUserAppwrite();
+      await createUserAppwrite();
       submitting(false);
     }
   }
@@ -135,6 +135,7 @@ class SignupController extends GetxController {
       final phoneNumber = argument["phoneNumber"] as String;
       final appwriteController = AppWriteController.to;
       final email = '$phoneNumber@ckmail.com';
+      final fcm = await FirebaseMessagingController.to.getToken();
       final response = await appwriteController.signUp(
         email,
         firstName,
@@ -145,6 +146,7 @@ class SignupController extends GetxController {
         birthDate!,
         birthTime,
         gender!,
+        fcm,
       );
       logger.d("response: $response");
       if (response == null) {
@@ -169,12 +171,11 @@ class SignupController extends GetxController {
         Get.rawSnackbar(message: "get token failed");
         return;
       }
-      await FirebaseMessagingController.to.getToken();
       setProcess(80);
       await connectInfluencerWithCode(inviteCode);
       setProcess(100);
       // if (user != null) {
-      Get.delete<UserStore>();
+      // Get.delete<UserStore>();
       Get.toNamed(
         RouteName.pin,
         arguments: {
@@ -194,7 +195,7 @@ class SignupController extends GetxController {
               return;
             }
             // Get.delete<BuyLotteryController>();
-            Get.delete<UserStore>();
+            // Get.delete<UserStore>();
             LayoutController.to.intialApp();
             Get.offAllNamed(RouteName.layout);
           }

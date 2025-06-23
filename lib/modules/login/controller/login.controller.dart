@@ -20,10 +20,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginController extends GetxController {
   // final devPhone = "+8562055265064";
-  // final appleAccount = "+8562012121313";
-  // final nonAccount = "+8562013131414";
-  // final nonAccount2 = "+8562014141515";
-  // final nonAccount3 = "+8562015151616";
+  final nonAccount = "+8562013131414";
+  final nonAccount2 = "+8562014141515";
   static LoginController get to => Get.find();
   String phoneNumber = '';
   GlobalKey<FormState> keyForm = GlobalKey();
@@ -92,7 +90,8 @@ class LoginController extends GetxController {
             return null;
           }
           otpRef = result.otpRef;
-          if (phoneNumber == "+8562013131414") {
+          if (phoneNumber == nonAccount || phoneNumber == nonAccount2) {
+            // if (true) {
             Get.dialog(
               DialogOtpComponent(
                 otp: result.otp ?? 'empty',
@@ -156,7 +155,8 @@ class LoginController extends GetxController {
             return null;
           }
           final data = response.data!;
-          if (phoneNumber == "+8562013131414") {
+          if (phoneNumber == nonAccount || phoneNumber == nonAccount2) {
+            // if (true) {
             Get.dialog(
               DialogOtpComponent(otp: data.otp ?? 'empty'),
             );
@@ -204,7 +204,9 @@ class LoginController extends GetxController {
                         return null;
                       }
                       final data = response.data!;
-                      if (phoneNumber == "+8562013131414") {
+                      if (phoneNumber == nonAccount ||
+                          phoneNumber == nonAccount2) {
+                        // if (true) {
                         Get.dialog(
                           DialogOtpComponent(otp: data.otp ?? 'empty'),
                         );

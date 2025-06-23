@@ -120,7 +120,7 @@ class SplashScreenPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      "2.4.1+47",
+                      "2.4.3+55",
                       style: TextStyle(
                         color: AppColors.ckRed,
                         fontSize: 14,

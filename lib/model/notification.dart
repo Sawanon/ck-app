@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:lottery_ck/utils.dart';
+
 class NotificationDataModel {
   List<NotificationModel> data;
   int totalItems;
@@ -46,7 +48,15 @@ class NotificationModel {
   });
 
   static NotificationModel fromJson(Map json) {
-    final createdAt = DateTime.parse(json['createAt']);
+    logger.w({
+      "_id": json['_id'],
+      "title": json['title'],
+      "body": json['body'],
+      "link": json['link'],
+      "isRead": json['isRead'],
+    });
+    logger.w(json);
+    final createdAt = DateTime.parse(json['createdAt']);
     return NotificationModel(
       id: json['_id'],
       title: json['title'],

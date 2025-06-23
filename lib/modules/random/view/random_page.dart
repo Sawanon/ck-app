@@ -24,7 +24,6 @@ class RandomPage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Header(title: AppLocale.randomNumber),
-              Text("${controller.maxNumberLottery}"),
               const SizedBox(height: 16),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),

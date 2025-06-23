@@ -110,16 +110,19 @@ class ProfilePage extends StatelessWidget {
                                     fit: StackFit.expand,
                                     children: [
                                       Obx(() {
+                                        final profileByte =
+                                            UserController.to.profileByte.value;
+                                        logger.w(
+                                            "profile is null: ${UserController.to.profileByte.value == null}");
                                         return Container(
                                           clipBehavior: Clip.hardEdge,
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             shape: BoxShape.circle,
                                           ),
-                                          child: controller.profileByte.value !=
-                                                  null
+                                          child: profileByte != null
                                               ? Image.memory(
-                                                  controller.profileByte.value!,
+                                                  profileByte,
                                                   fit: BoxFit.cover,
                                                 )
                                               : Icon(
@@ -177,7 +180,13 @@ class ProfilePage extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Builder(builder: (context) {
+                        Obx(() {
+                          // logger.d("controller.kycData:184");
+                          // logger.w(controller.kycData);
+                          final user = UserController.to.user.value;
+                          if (user?.isKYC == true) {
+                            return const SizedBox.shrink();
+                          }
                           if (controller.kycData == null) {
                             return Column(
                               children: [

@@ -84,6 +84,8 @@ class SettingPage extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Obx(() {
+                                      final profileByte =
+                                          UserController.to.profileByte.value;
                                       return Container(
                                           height: 80,
                                           width: 80,
@@ -104,18 +106,15 @@ class SettingPage extends StatelessWidget {
                                             decoration: const BoxDecoration(
                                               shape: BoxShape.circle,
                                             ),
-                                            child:
-                                                controller.profileByte.value !=
-                                                        null
-                                                    ? Image.memory(
-                                                        controller
-                                                            .profileByte.value!,
-                                                        fit: BoxFit.cover,
-                                                      )
-                                                    : const Icon(
-                                                        Icons.person_2,
-                                                        size: 40,
-                                                      ),
+                                            child: profileByte != null
+                                                ? Image.memory(
+                                                    profileByte,
+                                                    fit: BoxFit.cover,
+                                                  )
+                                                : const Icon(
+                                                    Icons.person_2,
+                                                    size: 40,
+                                                  ),
                                           ));
                                     }),
                                     const SizedBox(width: 16),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:lottery_ck/components/long_button.dart';
 import 'package:lottery_ck/modules/biometrics/controller/enable_biometrics.controller.dart';
+import 'package:lottery_ck/res/app_locale.dart';
 import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/res/icon.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,34 +22,42 @@ class EnableBiometricsPage extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: [
+                SvgPicture.asset(
+                  AppIcon.ckLotto,
+                  width: 200,
+                  height: 40,
+                ),
+                const SizedBox(height: 24),
                 Expanded(
                   child: ListView(
                     physics: const BouncingScrollPhysics(),
                     children: [
-                      SizedBox(
-                        width: 128,
-                        height: 128,
-                        child: SvgPicture.asset(
-                          AppIcon.fingerScan,
-                          colorFilter: ColorFilter.mode(
-                            AppColors.secondary,
-                            BlendMode.srcIn,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 24),
                       Text(
-                        "ເປີດໃຊ້ການສະແກນລາຍນິ້ວມື",
-                        style: TextStyle(
+                        AppLocale.enbaleBioTitle1.getString(context),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w700,
                         ),
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "ເປີດໃຊ້ການສະແກນລາຍນິ້ວມືເພື່ອຄວາມປອດໄພໃນການນຳໃຊ້ແອັບພລິເຄຊັນ",
+                        AppLocale.enbaleBioTitle2.getString(context),
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: AppColors.textPrimary,
+                        ),
+                      ),
+                      const SizedBox(height: 100),
+                      SizedBox(
+                        width: 200,
+                        height: 200,
+                        child: SvgPicture.asset(
+                          AppIcon.fingerScan,
+                          colorFilter: const ColorFilter.mode(
+                            Color.fromRGBO(111, 111, 111, 1),
+                            BlendMode.srcIn,
+                          ),
                         ),
                       ),
                     ],
@@ -65,7 +75,7 @@ class EnableBiometricsPage extends StatelessWidget {
                       ),
                       onPressed: controller.skipBiometrics,
                       child: Text(
-                        "ຂ້າມ",
+                        AppLocale.skip.getString(context),
                         style: TextStyle(
                           color: AppColors.primary,
                           fontSize: 16,
@@ -77,7 +87,7 @@ class EnableBiometricsPage extends StatelessWidget {
                       maximumSize: Size(100, 48),
                       onPressed: controller.enableBiometrics,
                       child: Text(
-                        "ເປີດໃຊ້",
+                        AppLocale.enable.getString(context),
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w900,

@@ -127,7 +127,7 @@ class HomePageV2 extends StatelessWidget {
                               const SizedBox(height: 36),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 24.0),
+                                    horizontal: 16.0),
                                 child: Text(
                                   AppLocale.hello.getString(context),
                                   style: TextStyle(
@@ -146,7 +146,7 @@ class HomePageV2 extends StatelessWidget {
                                 // },
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 24.0),
+                                      horizontal: 16.0),
                                   child: Text(
                                     AppLocale.welcome.getString(context),
                                     style: TextStyle(
@@ -160,7 +160,7 @@ class HomePageV2 extends StatelessWidget {
                               const SizedBox(height: 2),
                               Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 24.0),
+                                    horizontal: 16.0),
                                 child: Container(
                                   // padding: const EdgeInsets.symmetric(
                                   //   vertical: 18,
@@ -373,18 +373,38 @@ class HomePageV2 extends StatelessWidget {
                                                           ),
                                                           SizedBox(
                                                             width: 30,
-                                                            child: Text(
-                                                              AppLocale
-                                                                  .inviteFriends
-                                                                  .getString(
-                                                                      context),
-                                                              style: GoogleFonts
-                                                                  .prompt(
-                                                                fontSize: 10,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                              softWrap: true,
+                                                            child: Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                Text(
+                                                                  AppLocale
+                                                                      .inviteFriends1
+                                                                      .getString(
+                                                                          context),
+                                                                  style:
+                                                                      GoogleFonts
+                                                                          .prompt(
+                                                                    fontSize: 9,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                  AppLocale
+                                                                      .inviteFriends2
+                                                                      .getString(
+                                                                          context),
+                                                                  style:
+                                                                      GoogleFonts
+                                                                          .prompt(
+                                                                    fontSize: 9,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             ),
                                                           ),
                                                           // Column(
@@ -917,7 +937,7 @@ class HomePageV2 extends StatelessWidget {
                       // ),
                       const SizedBox(height: 8),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Obx(
                           () {
                             // CarouselSlider
@@ -1048,7 +1068,7 @@ class HomePageV2 extends StatelessWidget {
                       // ),
                       const SizedBox(height: 8),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: MenuGrid(),
                       ),
                       // Padding(
@@ -1145,8 +1165,8 @@ class HomePageV2 extends StatelessWidget {
                             ),
                             Padding(
                               padding: const EdgeInsets.only(
-                                left: 24.0,
-                                right: 24,
+                                left: 16.0,
+                                right: 16,
                                 top: 12,
                               ),
                               child: Column(

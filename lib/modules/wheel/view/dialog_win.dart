@@ -69,8 +69,8 @@ class DialogWin extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    "OK",
-                    style: TextStyle(
+                    AppLocale.acknowledge.getString(context),
+                    style: const TextStyle(
                       color: AppColors.wheelText,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

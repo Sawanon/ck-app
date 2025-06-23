@@ -275,7 +275,8 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
 
   void intialApp() async {
     try {
-      await checkUser();
+      // await checkUser();
+      UserController.to.setup("layout con 279");
       isUsedBiometrics = true;
     } catch (e) {
       logger.e("$e");
@@ -298,19 +299,19 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
     });
   }
 
-  Future<void> checkUser() async {
-    try {
-      // logger.d("checkUser");
-      UserController.to.setup();
-      // userApp = await AppWriteController.to.getUserApp();
-      // if (userApp == null) {
-      //   throw "userApp is null";
-      // }
-    } catch (e) {
-      logger.e("log out auto $e");
-      SettingController.to.logout();
-    }
-  }
+  // Future<void> checkUser() async {
+  //   try {
+  //     // logger.d("checkUser");
+  //     UserController.to.setup();
+  //     // userApp = await AppWriteController.to.getUserApp();
+  //     // if (userApp == null) {
+  //     //   throw "userApp is null";
+  //     // }
+  //   } catch (e) {
+  //     logger.e("log out auto $e");
+  //     // SettingController.to.logout();
+  //   }
+  // }
 
   void actionWithPath() async {
     final uri = SplashScreenController.to.openPath;
@@ -441,7 +442,7 @@ class LayoutController extends GetxController with WidgetsBindingObserver {
   @override
   void onInit() {
     super.onInit();
-    checkUser();
+    // checkUser();
     listenNetworkEvents();
     listBackgroundTheme();
     WidgetsBinding.instance.addObserver(this);

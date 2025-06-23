@@ -820,6 +820,7 @@ class BuyLotteryController extends GetxController {
       // if (invoiceMeta.value.invoiceId == null) {
       // new invoice
       final lotteryDate = HomeController.to.lotteryDate;
+      logger.w("lotteryDate: $lotteryDate");
       if (lotteryDate == null) {
         return;
       }
@@ -1902,6 +1903,7 @@ class BuyLotteryController extends GetxController {
                 return;
               }
               horoscopeUrl.value = result;
+              gotoHoroScope(result);
               currentTab.value = index;
             },
             onUnknowBirthDate: () async {
@@ -1910,6 +1912,7 @@ class BuyLotteryController extends GetxController {
                 logger.e("result createZZUrl is: $result");
                 return;
               }
+              gotoHoroScope(result);
               StorageController.to.setUnknowBirthTime(true);
               horoscopeUrl.value = result;
               currentTab.value = index;
@@ -1922,33 +1925,7 @@ class BuyLotteryController extends GetxController {
         return false;
       }
       horoscopeUrl.value = result;
-      Get.to(
-        () => PopScope(
-          canPop: false,
-          onPopInvoked: (didPop) async {
-            // await confirmOutTodayHoroscope(index);
-          },
-          child: WebviewPageV2(
-            url: result,
-            onBack: () async {
-              await confirmOutTodayHoroscope(index);
-              // controller.confirmOutTodayHoroscope(0);
-              // Get.dialog(
-              //   DialogApp(
-              //     title: Text("คุณต้องการออกจากดวงวันนี้?"),
-              //     onConfirm: () async {
-              //       controller.onChangeTab(0);
-              //       Get.back();
-              //     },
-              //   ),
-              // );
-            },
-            onMessageReceived: (data) {
-              logger.w(data);
-            },
-          ),
-        ),
-      );
+      gotoHoroScope(result);
       return true;
     } catch (e) {
       logger.e("$e");
@@ -1956,6 +1933,36 @@ class BuyLotteryController extends GetxController {
     } finally {
       isLoadingAddLottery.value = false;
     }
+  }
+
+  void gotoHoroScope(String url) {
+    Get.to(
+      () => PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) async {
+          // await confirmOutTodayHoroscope(index);
+        },
+        child: WebviewPageV2(
+          url: url,
+          onBack: () async {
+            await confirmOutTodayHoroscope();
+            // controller.confirmOutTodayHoroscope(0);
+            // Get.dialog(
+            //   DialogApp(
+            //     title: Text("คุณต้องการออกจากดวงวันนี้?"),
+            //     onConfirm: () async {
+            //       controller.onChangeTab(0);
+            //       Get.back();
+            //     },
+            //   ),
+            // );
+          },
+          onMessageReceived: (data) {
+            logger.w(data);
+          },
+        ),
+      ),
+    );
   }
 
   Future<bool> openLuckyCard(int index) async {
@@ -1973,6 +1980,7 @@ class BuyLotteryController extends GetxController {
                 return;
               }
               luckyCardUrl.value = result;
+              gotoLuckyCard(result);
               currentTab.value = index;
             },
             onUnknowBirthDate: () async {
@@ -1981,6 +1989,7 @@ class BuyLotteryController extends GetxController {
                 logger.e("result createZZUrl is: $result");
                 return;
               }
+              gotoLuckyCard(result);
               StorageController.to.setUnknowBirthTime(true);
               luckyCardUrl.value = result;
               currentTab.value = index;
@@ -1994,33 +2003,7 @@ class BuyLotteryController extends GetxController {
         return false;
       }
       luckyCardUrl.value = result;
-      Get.to(
-        () => PopScope(
-          canPop: false,
-          onPopInvoked: (didPop) async {
-            // await confirmOutTodayHoroscope(index);
-          },
-          child: WebviewPageV2(
-            url: result,
-            onBack: () async {
-              confirmOutTodayLuckyCard(index);
-              // controller.confirmOutTodayHoroscope(0);
-              // Get.dialog(
-              //   DialogApp(
-              //     title: Text("คุณต้องการออกจากดวงวันนี้?"),
-              //     onConfirm: () async {
-              //       controller.onChangeTab(0);
-              //       Get.back();
-              //     },
-              //   ),
-              // );
-            },
-            onMessageReceived: (data) {
-              logger.w(data);
-            },
-          ),
-        ),
-      );
+      gotoLuckyCard(result);
       return true;
     } catch (e) {
       logger.e("$e");
@@ -2030,7 +2013,37 @@ class BuyLotteryController extends GetxController {
     }
   }
 
-  Future<bool> confirmOutTodayHoroscope(int index) async {
+  void gotoLuckyCard(String url) {
+    Get.to(
+      () => PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) async {
+          // await confirmOutTodayHoroscope(index);
+        },
+        child: WebviewPageV2(
+          url: url,
+          onBack: () async {
+            confirmOutTodayLuckyCard();
+            // controller.confirmOutTodayHoroscope(0);
+            // Get.dialog(
+            //   DialogApp(
+            //     title: Text("คุณต้องการออกจากดวงวันนี้?"),
+            //     onConfirm: () async {
+            //       controller.onChangeTab(0);
+            //       Get.back();
+            //     },
+            //   ),
+            // );
+          },
+          onMessageReceived: (data) {
+            logger.w(data);
+          },
+        ),
+      ),
+    );
+  }
+
+  Future<bool> confirmOutTodayHoroscope() async {
     logger.d("message");
     bool isClose = false;
     Get.dialog(
@@ -2064,7 +2077,7 @@ class BuyLotteryController extends GetxController {
     return isClose;
   }
 
-  void confirmOutTodayLuckyCard(int index) async {
+  void confirmOutTodayLuckyCard() async {
     Get.dialog(
       DialogApp(
         title: Text(
@@ -2073,7 +2086,7 @@ class BuyLotteryController extends GetxController {
         onConfirm: () async {
           // changeTab(index);
           currentTab.value = 0;
-          SettingController.to.getPoint();
+          UserController.to.reLoadUser("buy lottery con 2089");
           Get.back();
           Future.delayed(
             const Duration(
@@ -2130,10 +2143,10 @@ class BuyLotteryController extends GetxController {
     if (currentTab.value != 0) {
       switch (currentTab.value) {
         case 1:
-          confirmOutTodayHoroscope(index);
+          confirmOutTodayHoroscope();
           break;
         case 2:
-          confirmOutTodayLuckyCard(index);
+          confirmOutTodayLuckyCard();
           break;
         case 3:
           confirmOutAnimalBook(index);
@@ -2147,17 +2160,23 @@ class BuyLotteryController extends GetxController {
 
   void goToAnimalPage() {
     Get.to(
-      () => AnimalComponent(
-        padding: const EdgeInsets.only(bottom: 122),
-        onClickBuy: (lotterise) async {
-          // await controller.onClickAnimalBuy(lotterise);
-          onClickAnimalBuy(lotterise);
-        },
-        onBack: () {
-          // confirmOutAnimalBook(0);
+      () => PopScope(
+        canPop: true,
+        onPopInvoked: (didPop) {
           currentTab.value = 0;
-          Get.back();
         },
+        child: AnimalComponent(
+          padding: const EdgeInsets.only(bottom: 122),
+          onClickBuy: (lotterise) async {
+            // await controller.onClickAnimalBuy(lotterise);
+            onClickAnimalBuy(lotterise);
+          },
+          onBack: () {
+            // confirmOutAnimalBook(0);
+            currentTab.value = 0;
+            Get.back();
+          },
+        ),
       ),
     );
   }

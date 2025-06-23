@@ -858,24 +858,30 @@ class UserBannerComponent extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  child: SettingController.to.profileByte.value != null
-                      ? Container(
+                  child: Obx(
+                    () {
+                      final profileByte = UserController.to.profileByte.value;
+                      if (profileByte != null) {
+                        return Container(
                           width: 100,
                           height: 100,
                           clipBehavior: Clip.hardEdge,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             shape: BoxShape.circle,
                           ),
                           child: Image.memory(
-                            SettingController.to.profileByte.value!,
+                            profileByte,
                             fit: BoxFit.cover,
                           ),
-                        )
-                      : Icon(
-                          Icons.person,
-                          size: 40,
-                          color: Colors.white,
-                        ),
+                        );
+                      }
+                      return const Icon(
+                        Icons.person,
+                        size: 40,
+                        color: Colors.white,
+                      );
+                    },
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Obx(() {

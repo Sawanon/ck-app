@@ -74,7 +74,7 @@ class PointController extends GetxController {
       final result = type.split(":");
       String bank = "";
       if (result.length > 1) {
-        bank = result[1];
+        bank = result[1].toUpperCase();
       }
       return "${AppLocale.pointsFromPayment.getString(context)} $bank";
     }

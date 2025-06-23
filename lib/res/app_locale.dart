@@ -158,6 +158,8 @@ mixin AppLocale {
   static const String hello = "ສະບາຍດີ";
   static const String welcome = "ຍິນດີຕ້ອນຮັບ";
   static const String inviteFriends = "ແນະນໍາຫມູ່";
+  static const String inviteFriends1 = "ແນະ";
+  static const String inviteFriends2 = "ນໍາຫມູ່";
   static const String inviteAccept = "ເຊີນ/ຍອມຮັບ";
   static const String youHavePoint = "ທ່ານມີຄະແນນ";
   static const String amountInWallet = "ຈຳນວນເງິນໃນກະເປົາເງິນ";
@@ -437,6 +439,16 @@ mixin AppLocale {
   static const String congrate = "ຍິນດີດ້ວຍ";
   static const String youGotPrize = "ທ່ານໄດ້ລາງວັນ";
   static const String awardsYouHaveReceived = "ລາງວັນທີ່ທ່ານເຄີຍໄດ້";
+  static const String wheelTitle1 = "ທ່ານໄດ້ໃຊ້ສິດໃນການຫມຸນວົງລໍໂຊກດີແລ້ວ";
+  static const String wheelTitle2 = "ລາງວັນທີ່ໄດ້ຮັບມື້ນີ້";
+  static const String wheelPageTitle1 = "ລວມມູນຄ່າຫຼາຍກວ່າ";
+  static const String influencerTitle = "ຢືນຢັນຜູ້ແນະນຳ";
+  static const String enbaleBioTitle1 = "ເປີດໃຊ້ການສະແກນລາຍນິ້ວມື";
+  static const String enbaleBioTitle2 =
+      "ເປີດໃຊ້ການສະແກນລາຍນິ້ວມືເພື່ອຄວາມປອດໄພໃນການນຳໃຊ້ແອັບພລິເຄຊັນ";
+  static const String skip = "ຂ້າມ";
+  static const String enable = "ເປີດໃຊ້";
+  static const String thisRoundNotSale = "ງວດນີ້ຍັງບໍ່ໄດ້ເປີດຂາຍ";
 
   static const Map<String, dynamic> LO = {
     home: 'ໜ້າຫຼັກ',
@@ -545,7 +557,7 @@ mixin AppLocale {
     district: "ແຂວງ",
     yourDocumentPhoto: "ຮູບພາບຂອງເອກະສານຂອງທ່ານ",
     pleaseEnterInformationAndPhotoIDCard:
-        "ກະລຸນາໃສ່ຂໍ້ມູນ ແລະຖ່າຍຮູບບັດປະຈຳຕົວຂອງເຈົ້າ",
+        "ກະລຸນາໃສ່ໝາຍເລກບັດປະຈຳຕົວ ແລະ ຖ່າຍຮູບບັດປະຈຳຕົວຂອງທ່ານ",
     example: "ຕົວຢ່າງ",
     takePhoto: "ຖ່າຍຮູບ",
     verificationPhoto: "ຮູບພາບການລະບຸຕົວຕົນ",
@@ -586,6 +598,8 @@ mixin AppLocale {
     hello: "ສະບາຍດີ",
     welcome: "ຍິນດີຕ້ອນຮັບ",
     inviteFriends: "ແນະນໍາຫມູ່",
+    inviteFriends1: "ແນະ",
+    inviteFriends2: "ນໍາຫມູ່",
     inviteAccept: "ເຊີນ/ຍອມຮັບ",
     youHavePoint: "ທ່ານມີຄະແນນ",
     amountInWallet: "ຈຳນວນເງິນໃນກະເປົາເງິນ",
@@ -828,12 +842,22 @@ mixin AppLocale {
     notKYC: "ຍັງບໍ່ໄດ້ຢັ້ງຢືນຕົວຕົນເທື່ອ",
     youHave: "ທ່ານມີ",
     wheelOfFortune: "ວົງລໍ້ໂຊກດີ",
-    wheelOfFortuneBonus: "ໂບນັດວົງລໍ້ສ່ຽງດວງ",
+    wheelOfFortuneBonus: "ໂບນັດວົງລໍ້ໂຊກດີ",
     pointRatio: "{point} ຄະແນນ ມູນຄ່າ {lak} ກີບ",
     spin: "ໝຸນ",
     congrate: "ຍິນດີດ້ວຍ",
     youGotPrize: "ທ່ານໄດ້ລາງວັນ",
     awardsYouHaveReceived: "ລາງວັນທີ່ທ່ານເຄີຍໄດ້",
+    wheelTitle1: "ທ່ານໄດ້ໃຊ້ສິດໃນການຫມຸນວົງລໍໂຊກດີແລ້ວ",
+    wheelTitle2: "ລາງວັນທີ່ໄດ້ຮັບມື້ນີ້",
+    influencerTitle: "ຢືນຢັນຜູ້ແນະນຳ",
+    wheelPageTitle1: "ລາງວັນລວມມູນຄ່າກວ່າ",
+    enbaleBioTitle1: "ເປີດໃຊ້ການສະແກນລາຍນິ້ວມື",
+    enbaleBioTitle2:
+        "ເປີດໃຊ້ການສະແກນລາຍນິ້ວມືເພື່ອຄວາມປອດໄພໃນການນຳໃຊ້ແອັບພລິເຄຊັນ",
+    skip: "ຂ້າມ",
+    enable: "ເປີດໃຊ້",
+    thisRoundNotSale: "ງວດນີ້ຍັງບໍ່ໄດ້ເປີດຂາຍ",
   };
   static const Map<String, dynamic> TH = {
     home: 'หน้าแรก',
@@ -984,6 +1008,8 @@ mixin AppLocale {
     hello: "สวัสดี",
     welcome: "ยินดีต้อนรับ",
     inviteFriends: "แนะนำเพื่อน",
+    inviteFriends1: "แนะ",
+    inviteFriends2: "นำเพื่อน",
     inviteAccept: "ชวน/รับ",
     youHavePoint: "คุณมีคะแนน",
     amountInWallet: "จำนวนเงินในกระเป๋าตัง",
@@ -1226,12 +1252,22 @@ mixin AppLocale {
     notKYC: "ยังไม่ได้ยืนยันตัวตน",
     youHave: "ท่านมี",
     wheelOfFortune: "วงล้อโชคดี",
-    wheelOfFortuneBonus: "โบนัสวงล้อเสี่ยงดวง",
+    wheelOfFortuneBonus: "โบนัสวงล้อโชคดี",
     pointRatio: "{point} คะแนน มีมูลค่าเท่ากับ {lak} กีบ",
     spin: "หมุน",
     congrate: "ยินดีด้วย",
     youGotPrize: "คุณได้รางวัล",
     awardsYouHaveReceived: "รางวัลที่คุณเคยได้",
+    wheelTitle1: "วันนี้คุณได้ใช้สิทธิในการหมุนวงล้อโชคดีแล้ว",
+    wheelTitle2: "รางวัลที่ได้รับวันนี้",
+    influencerTitle: "ยืนยันผู้แนะนำ",
+    wheelPageTitle1: "ของรางวัลรวมมูลค่ากว่า",
+    enbaleBioTitle1: "เปิดใช้การสแกนลายนิ้วมือ",
+    enbaleBioTitle2:
+        "เปิดใช้งานการสแกนลายนิ้วมือเพื่อความปลอดภัยในการใช้งานแอปพลิเคชัน",
+    skip: "ข้าม",
+    enable: "เปิดใช้",
+    thisRoundNotSale: "งวดนี้ยังไม่เปิดขาย",
   };
   static const Map<String, dynamic> EN = {
     home: 'Home',
@@ -1341,7 +1377,7 @@ mixin AppLocale {
     district: "Dsistrict",
     yourDocumentPhoto: "Your document photo",
     pleaseEnterInformationAndPhotoIDCard:
-        "Please enter your information and take a photo of your ID card",
+        "	Please enter your ID card number and take a photo of your ID card",
     example: "Example",
     takePhoto: "Take a photo",
     verificationPhoto: "Verification photo",
@@ -1383,6 +1419,8 @@ mixin AppLocale {
     hello: "Hello",
     welcome: "Welcome",
     inviteFriends: "Invite friends",
+    inviteFriends1: "Invite",
+    inviteFriends2: "friends",
     inviteAccept: "Invite/Accept",
     youHavePoint: "You have point",
     amountInWallet: "Amount in wallet",
@@ -1641,5 +1679,15 @@ mixin AppLocale {
     congrate: "Congratulations",
     youGotPrize: "You got the prize",
     awardsYouHaveReceived: "Awards you have received",
+    wheelTitle1:
+        "You have already used your chance to spin the lucky wheel today",
+    wheelTitle2: "Today's reward",
+    influencerTitle: "Confirm Referrer",
+    wheelPageTitle1: "Prizes worth over",
+    enbaleBioTitle1: "Enable fingerprint scanning",
+    enbaleBioTitle2: "Enable fingerprint scanning for secure app usage",
+    skip: "Skip",
+    enable: "Enable",
+    thisRoundNotSale: "This round is not open for sale yet",
   };
 }

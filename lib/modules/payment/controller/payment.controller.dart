@@ -179,8 +179,7 @@ class PaymentController extends GetxController {
       logger.e("can't list user groups: listGroup NotificationController");
       return;
     }
-    final groupIds =
-        userGroups.map((group) => group['\$id'] as String).toList();
+    final groupIds = userGroups.map((group) => group.$id).toList();
     final promotionListData =
         await AppWriteController.to.listPromotions(groupIds);
     logger.w(promotionListData);

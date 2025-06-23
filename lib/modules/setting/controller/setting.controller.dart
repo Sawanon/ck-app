@@ -36,11 +36,10 @@ class SettingController extends GetxController {
   GlobalKey<FormState> keyFormAddress = GlobalKey();
   String? newPhoneNumber;
   String? newAddress;
-  Rx<Uint8List?> profileByte = Rx<Uint8List?>(null);
+  // Rx<Uint8List?> profileByte = Rx<Uint8List?>(null);
   Map? kycData;
   RxBool isLoadingProfile = false.obs;
-  List<Map> userGroups = [];
-  RxDouble point = 0.0.obs;
+  // RxDouble point = 0.0.obs;
 
   Future<void> logout() async {
     // await AppWriteController.to.logout();
@@ -48,7 +47,7 @@ class SettingController extends GetxController {
     // user = null;
     update();
     HomeController.to.updateController();
-    profileByte.value = null;
+    // profileByte.value = null;
     // Get.offAllNamed(RouteName.login);
     // LayoutController.to.changeTab(TabApp.home);
   }
@@ -57,25 +56,27 @@ class SettingController extends GetxController {
     final user = UserController.to.user.value;
     if (user == null) return;
     final kycData = await AppWriteController.to.getKYC(user.userId);
+    logger.d("kycData");
+    logger.w(kycData);
     this.kycData = kycData;
     update();
   }
 
-  Future<void> getPoint() async {
-    final user = UserController.to.user.value;
-    if (user == null) {
-      return;
-    }
-    final responsePoint = await AppWriteController.to.getPoint(user.userId);
-    if (responsePoint.isSuccess == false) {
-      Get.rawSnackbar(message: responsePoint.message);
-      return;
-    }
-    logger.w("new point: ${responsePoint.data ?? 0}");
-    // this.user?.point = responsePoint.data ?? 0;
-    // TODO: remove this point
-    point.value = responsePoint.data ?? 0;
-  }
+  // Future<void> getPoint() async {
+  //   final user = UserController.to.user.value;
+  //   if (user == null) {
+  //     return;
+  //   }
+  //   final responsePoint = await AppWriteController.to.getPoint(user.userId);
+  //   if (responsePoint.isSuccess == false) {
+  //     Get.rawSnackbar(message: responsePoint.message);
+  //     return;
+  //   }
+  //   logger.w("new point: ${responsePoint.data ?? 0}");
+  //   // this.user?.point = responsePoint.data ?? 0;
+  //   // TODO: remove this point
+  //   point.value = responsePoint.data ?? 0;
+  // }
 
   Future<void> getUser([bool forceReloadProfile = false]) async {
     isLoadingUser.value = true;
@@ -87,12 +88,11 @@ class SettingController extends GetxController {
       return;
     }
     update();
-    getPoint();
+    // getPoint();
     isLoadingUser.value = false;
-    await listGroup(user.userId);
     AppWriteController.to.subscribeTopic(user.userId);
     update();
-    getProfileImage(user, forceReloadProfile);
+    // getProfileImage(user, forceReloadProfile);
     if (user.isKYC != true) {
       await getKYC();
     } else {
@@ -101,25 +101,16 @@ class SettingController extends GetxController {
     }
   }
 
-  void getProfileImage(UserApp user, [bool forseReload = false]) async {
-    if (user.profile == null || user.profile == "") {
-      profileByte.value = null;
-      return;
-    }
-    if (profileByte.value != null && forseReload == false) return;
-    final fileId = user.profile!.split(":").last;
-    final fileByte = await AppWriteController.to.getProfileImage(fileId);
-    profileByte.value = fileByte;
-  }
-
-  Future<void> listGroup(String userId) async {
-    final response = await AppWriteController.to.listMyGroup(userId);
-    if (response == null) {
-      logger.e("can't list user groups: listGroup SettingController");
-      return;
-    }
-    userGroups = response;
-  }
+  // void getProfileImage(UserApp user, [bool forseReload = false]) async {
+  //   if (user.profile == null || user.profile == "") {
+  //     profileByte.value = null;
+  //     return;
+  //   }
+  //   if (profileByte.value != null && forseReload == false) return;
+  //   final fileId = user.profile!.split(":").last;
+  //   final fileByte = await AppWriteController.to.getProfileImage(fileId);
+  //   profileByte.value = fileByte;
+  // }
 
   Future<void> setup() async {
     try {
@@ -322,7 +313,7 @@ class SettingController extends GetxController {
           getUser(true);
           isLoadingProfile.value = false;
           // getProfileImage(user!, true);
-          UserController.to.reloadUserProfile();
+          UserController.to.setup("setting con 316");
         }
       },
     );

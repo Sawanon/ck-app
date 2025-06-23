@@ -78,6 +78,14 @@ class _InfluencerCardState extends State<InfluencerCard> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+              Text(
+                AppLocale.influencerTitle.getString(context),
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
               Container(
                 width: 100,
                 height: 100,
@@ -110,6 +118,7 @@ class _InfluencerCardState extends State<InfluencerCard> {
                 children: [
                   Expanded(
                     child: LongButton(
+                      disabled: isLoading,
                       backgroundColor: Colors.white,
                       borderSide: BorderSide(
                         width: 1,
@@ -129,6 +138,7 @@ class _InfluencerCardState extends State<InfluencerCard> {
                   const SizedBox(width: 16),
                   Expanded(
                     child: LongButton(
+                      isLoading: isLoading,
                       onPressed: handleConfirm,
                       child: Text(
                         AppLocale.confirm.getString(context),

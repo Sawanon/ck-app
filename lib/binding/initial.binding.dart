@@ -46,6 +46,8 @@ class InitialBinding extends Bindings {
   void dependencies() {
     Get.put<SplashScreenController>(SplashScreenController());
     Get.put<AppWriteController>(AppWriteController());
+    Get.put<StorageController>(StorageController());
+    Get.put<FirebaseMessagingController>(FirebaseMessagingController());
     Get.put<UserController>(UserController());
   }
 }
@@ -53,8 +55,6 @@ class InitialBinding extends Bindings {
 class LayoutBindings extends Bindings {
   @override
   void dependencies() {
-    Get.put<StorageController>(StorageController());
-    Get.put<FirebaseMessagingController>(FirebaseMessagingController());
     Get.put<AppWriteController>(AppWriteController());
     Get.put<UserStore>(UserStore());
     Get.put<LayoutController>(LayoutController(), permanent: true);

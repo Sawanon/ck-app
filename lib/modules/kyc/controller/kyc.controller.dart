@@ -492,7 +492,13 @@ class KYCController extends GetxController {
       return;
     }
     final kycData = SettingController.to.kycData;
-    if (user.isKYC == false && kycData == null) {
+    logger.d("kycData:495");
+    logger.w(kycData);
+    logger.d("user.isKYC");
+    logger.w(user.isKYC);
+    logger.d("user.isKYC == false && kycData == null");
+    logger.w(user.isKYC == false && kycData == null);
+    if (kycData == null) {
       firstNameController.text = user.firstName;
       firstName = user.firstName;
       lastNameController.text = user.lastName;
@@ -504,8 +510,8 @@ class KYCController extends GetxController {
       address = user.address ?? "";
       return;
     }
-    logger.d(kycData);
-    if (kycData == null) return;
+    // logger.d(kycData);
+    // if (kycData == null) return;
     final Map remark = jsonDecode(kycData['remark']);
     logger.w(remark);
     if (remark['data']['firstName']['status'] != false) {

@@ -331,7 +331,7 @@ class BillComponent extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            "${AppLocale.contact.getString(context)} CK GROUP: 0865446524",
+            "${AppLocale.contact.getString(context)} CK GROUP: 020 5256 6266",
             style: TextStyle(
               fontSize: 12,
             ),

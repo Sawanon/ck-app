@@ -1,7 +1,7 @@
 class AppConst {
-  static const String cloudfareUrl = "http://demo.mylaos.life:3000";
-  static String apiUrl = "https://demo.mylaos.life/api";
-  static String apiInviteFriends = "https://demo.mylaos.life/api/invite-friend";
+  static String apiUrl = "https://admin.mylaos.life/api";
+  static String apiInviteFriends =
+      "https://admin.mylaos.life/api/invite-friend";
   // static String apiInviteFriends = "http://192.168.1.157:3001/api";
 
   static String videoUrl = "10.101.23.10:3000/api";
@@ -20,7 +20,7 @@ class AppConst {
   static const String appwriteProjectId = "667afb24000fbd66b4df";
 
   // zz
-  static const String secretZZ = "sHib5ycSalFybq6dhFdmvmQSw82+fj/nhhLM0sAPVqs=";
+  static const String secretZZ = "kc9kJE0tFwHQsrkLa+q7womUyRpjHUVc4knGcyNXOMo=";
 
   // production
   // https://daily.horodd.win/?payload=<token>
@@ -29,7 +29,8 @@ class AppConst {
   // staging
   // static const String horoScopeUrl =
   //     "https://staging.daily-ce2.pages.dev/?payload=";
-  static const String horoScopeUrl = "https://demo.mylaos.life/daily/?payload=";
+  static const String horoScopeUrl =
+      "https://admin.mylaos.life/daily/?payload=";
 
   // production
   // https://randomcards.horodd.win/?payload=<token>
@@ -40,7 +41,7 @@ class AppConst {
   // static const String randomCardUrl =
   //     "https://staging.randomcards.pages.dev/?payload=";
   static const String randomCardUrl =
-      "https://demo.mylaos.life/randomcards/?payload=";
+      "https://admin.mylaos.life/randomcards/?payload=";
 
   static const animalDatas = [
     {

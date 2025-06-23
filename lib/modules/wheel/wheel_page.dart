@@ -38,16 +38,6 @@ class _WheelPageState extends State<WheelPage> {
 
   @override
   Widget build(BuildContext context) {
-    final items = <String>[
-      '1K',
-      '5K',
-      '10K',
-      '15K',
-      '20K',
-      '30K',
-      '50K',
-      '100K',
-    ];
     final wheelController = Get.put(WheelController());
 
     return Scaffold(
@@ -72,7 +62,7 @@ class _WheelPageState extends State<WheelPage> {
             ),
             const SizedBox(height: 16),
             Text(
-              "รวมมูลค่ามากกว่า",
+              AppLocale.wheelPageTitle1.getString(context),
               style: TextStyle(
                 color: AppColors.wheelText,
                 fontSize: 16,
@@ -80,7 +70,7 @@ class _WheelPageState extends State<WheelPage> {
               ),
             ),
             Text(
-              "400,000,000 กีบ",
+              "400,000,000 ${AppLocale.lak.getString(context)}",
               style: TextStyle(
                 fontSize: 36,
                 fontWeight: FontWeight.bold,
@@ -218,7 +208,7 @@ class _WheelPageState extends State<WheelPage> {
                                     style: TextStyle(
                                       color: AppColors.wheelText,
                                       fontWeight: FontWeight.w900,
-                                      fontSize: 30,
+                                      fontSize: 22,
                                       shadows: [
                                         BoxShadow(
                                           offset: const Offset(0, 1),
@@ -303,6 +293,7 @@ class _WheelPageState extends State<WheelPage> {
                     wheelController.wheelId.value,
                   );
                   timer.cancel();
+                  logger.w(response);
                   logger.w("timer cancel");
                   if (response != null) {
                     final rewardId = response['reward']['\$id'];
@@ -318,13 +309,26 @@ class _WheelPageState extends State<WheelPage> {
                     await Future.delayed(const Duration(seconds: 3), () {
                       Get.dialog(
                         DialogWin(
-                          reward: Text(
-                            CommonFn.parseMoney(reward.amount ?? 0),
-                            style: TextStyle(
-                              color: AppColors.wheelText,
-                              fontSize: 48,
-                              fontWeight: FontWeight.bold,
-                            ),
+                          reward: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                CommonFn.parseMoney(reward.amount ?? 0),
+                                style: const TextStyle(
+                                  color: AppColors.wheelText,
+                                  fontSize: 48,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                AppLocale.point.getString(Get.context!),
+                                style: const TextStyle(
+                                  color: AppColors.wheelText,
+                                  fontSize: 42,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                         barrierDismissible: false,

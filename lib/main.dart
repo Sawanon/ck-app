@@ -20,8 +20,15 @@ import 'package:lottery_ck/res/color.dart';
 import 'package:lottery_ck/route/routes.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:lottery_ck/utils.dart';
+import 'package:lottery_ck/utils/notification_service.dart';
 import 'package:upgrader/upgrader.dart';
 import 'firebase_options.dart';
+
+@pragma('vm:entry-point')
+void notificationTapBackground(NotificationResponse notificationResponse) {
+  // handle action
+  logger.w("detail: 29: ${notificationResponse.payload}");
+}
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -78,24 +85,9 @@ void main() async {
   await checkDeeplink();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   initTTSDK();
-  setupLocalNotification();
+  NotificationService().initNotification();
 
   runApp(const MyApp());
-}
-
-Future<void> setupLocalNotification() async {
-  // ตั้งค่า Notification สำหรับ Android
-  const AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/launcher_icon');
-
-  const DarwinInitializationSettings initializationSettingsDarwin =
-      DarwinInitializationSettings();
-
-  const InitializationSettings initializationSettings = InitializationSettings(
-    android: initializationSettingsAndroid,
-    iOS: initializationSettingsDarwin,
-  );
-  await FlutterLocalNotificationsPlugin().initialize(initializationSettings);
 }
 
 Future checkDeeplink() async {
@@ -170,14 +162,16 @@ class _MyAppState extends State<MyApp> {
           willDisplayUpgrade: (
               {required display, installedVersion, versionInfo}) {
             logger.d("display: $display");
-            // SplashScreenController.to.setStop(display);
+            SplashScreenController.to.setStop(display);
             // SplashScreenController.to.checkNetWork();
           },
-          minAppVersion: '2.0.0',
+          minAppVersion: '2.4.3',
           debugLogging: true,
           // debugDisplayAlways: true,
           languageCode: 'en',
         ),
+        showIgnore: false,
+        showLater: false,
         child: SplashScreenPage(),
         // child: WheelPage(),
       ),
